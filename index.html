@@ -1,0 +1,3062 @@
+﻿<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Back to Being — The World as our Office</title>
+  <meta name="description" id="metaDesc" content="Drie AI-founders lopen 115 km over de Camino en bouwen onderweg een AI-tool voor mentale gezondheid — voor stichting MIND." />
+
+  <!-- Open Graph / sociale previews -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Back to Being — The World as our Office" />
+  <meta property="og:description" id="ogDesc" content="Drie AI-founders lopen 115 km over de Camino en bouwen onderweg een AI-tool voor mentale gezondheid — voor stichting MIND." />
+  <meta property="og:locale" id="ogLocale" content="nl_NL" />
+  <meta property="og:site_name" content="Back to Being" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Back to Being — The World as our Office" />
+  <meta name="twitter:description" id="twDesc" content="Drie AI-founders lopen 115 km over de Camino en bouwen onderweg een AI-tool voor mentale gezondheid." />
+  <meta name="theme-color" content="#3d5a3d" />
+
+  <!-- Inline SVG favicon (cirkel met B, in brand-groen) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233d5a3d'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='middle' font-family='Georgia,serif' font-size='20' font-weight='600' fill='%23f7f5f0'%3EB%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:          #ebebe8;
+      --bg-dark:     #0d0d0d;
+      --ink:         #1a1a1a;
+      --ink-soft:    #6a6a64;
+      --line:        #cfcfca;
+      --line-dark:   #2a2a28;
+      --green:       #3d5a3d;
+      --green-soft:  #4f7050;
+      --green-light: #a8c98c;
+      --cream:       #f7f5f0;
+      --nav-h:       72px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+
+    .page { display: none; }
+    .page.active { display: block; animation: pageIn 0.35s ease forwards; }
+    @keyframes pageIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    /* Keyboard focus */
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 3px; border-radius: 4px;
+    }
+
+    /* NAV */
+    .site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6vw;
+      transition: background 0.3s, backdrop-filter 0.3s, border-color 0.3s;
+      border-bottom: 1px solid transparent;
+    }
+    .site-nav.scrolled {
+      background: rgba(235,235,232,0.93);
+      backdrop-filter: blur(16px);
+      border-bottom-color: var(--line);
+    }
+    .site-nav.on-hero .nav-logo,
+    .site-nav.on-hero .nav-link { color: var(--cream); }
+    .site-nav.scrolled.on-hero .nav-logo,
+    .site-nav.scrolled.on-hero .nav-link { color: var(--ink); }
+
+    .nav-logo {
+      display: flex; align-items: center;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 500; font-size: 1.25rem; letter-spacing: 0.005em;
+      background: none; border: none; cursor: pointer; color: inherit;
+    }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+    .nav-link {
+      font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--ink-soft); cursor: pointer; transition: color 0.2s;
+      background: none; border: none;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--green); }
+    .nav-cta-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.6rem 1.25rem;
+      background: var(--green); color: var(--cream) !important;
+      border-radius: 100px; font-size: 0.75rem !important; font-weight: 500;
+      letter-spacing: 0.04em !important; text-transform: none !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta-btn:hover { background: var(--green-soft) !important; }
+
+    /* LANG TOGGLE */
+    .lang-toggle {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding-left: 0.25rem;
+    }
+    .lang-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--ink-soft);
+      padding: 0.25rem 0.1rem;
+      transition: color 0.2s;
+    }
+    .lang-btn:hover { color: var(--green); }
+    .lang-btn.active { color: var(--green); }
+    .lang-sep {
+      color: var(--ink-soft); opacity: 0.35;
+      font-size: 0.7rem; user-select: none;
+    }
+    .site-nav.on-hero .lang-btn { color: rgba(247,245,240,0.5); }
+    .site-nav.on-hero .lang-btn:hover,
+    .site-nav.on-hero .lang-btn.active { color: var(--cream); }
+    .site-nav.on-hero .lang-sep { color: rgba(247,245,240,0.35); }
+    .site-nav.scrolled.on-hero .lang-btn { color: var(--ink-soft); }
+    .site-nav.scrolled.on-hero .lang-btn:hover,
+    .site-nav.scrolled.on-hero .lang-btn.active { color: var(--green); }
+    .site-nav.scrolled.on-hero .lang-sep { color: var(--ink-soft); }
+
+    /* SHARED */
+    .pill {
+      display: inline-flex; align-items: center;
+      padding: 0.45rem 1rem;
+      border: 1.5px solid var(--green); color: var(--green);
+      border-radius: 100px; font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+    }
+    .section-label {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--green); margin-bottom: 1.25rem;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.95rem 1.8rem;
+      background: var(--green); color: var(--cream);
+      border-radius: 100px; font-family: 'Inter', sans-serif;
+      font-size: 0.92rem; font-weight: 500; letter-spacing: 0.01em;
+      border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.2s; text-decoration: none;
+    }
+    .btn:hover { background: var(--green-soft); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent; border: 1.5px solid var(--green); color: var(--green);
+    }
+    .btn-outline:hover { background: var(--green); color: var(--cream); }
+
+    /* ========= HOME ========= */
+
+    /* HERO */
+    .hero {
+      position: relative; height: 100svh; min-height: 600px;
+      display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 70% 50% at 40% 35%, rgba(61,90,61,0.22) 0%, transparent 65%),
+                  linear-gradient(160deg, #0d1a0d 0%, #182a18 30%, #0a1508 60%, #080e06 100%);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+      opacity: 0.5;
+    }
+    .hero-video { position: absolute; inset: 0; z-index: 0; background: #080e06; }
+    .hero-video video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to bottom,
+        rgba(8,14,6,0.2) 0%,
+        rgba(8,14,6,0.05) 40%,
+        rgba(8,14,6,0.6) 75%,
+        rgba(8,14,6,0.88) 100%);
+    }
+    .hero-content { position: relative; z-index: 2; padding: 0 6vw 7vh; }
+    .hero-eyebrow {
+      font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(247,245,240,0.5); margin-bottom: 1.25rem;
+    }
+    .hero-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400; font-variation-settings: "opsz" 144, "SOFT" 30;
+      font-size: clamp(3.5rem, 8.5vw, 9.5rem);
+      line-height: 0.94; letter-spacing: -0.035em;
+      color: var(--cream); margin-bottom: 2.5rem;
+    }
+    .hero-title em { font-style: italic; color: var(--green-light); }
+    .hero-foot {
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 3rem;
+      padding-top: 2rem; border-top: 1px solid rgba(247,245,240,0.12);
+    }
+    .hero-tagline {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300;
+      font-size: clamp(1rem, 1.3vw, 1.25rem);
+      color: rgba(247,245,240,0.78); max-width: 44ch; line-height: 1.55;
+    }
+    .hero-meta {
+      text-align: right; font-size: 0.7rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: rgba(247,245,240,0.42); line-height: 1.9; flex-shrink: 0;
+    }
+
+    /* INTRO */
+    .intro-strip {
+      padding: 7rem 6vw;
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: start;
+    }
+    .intro-strip h2 {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-size: clamp(2rem, 3.5vw, 3.2rem); line-height: 1.04; letter-spacing: -0.02em;
+    }
+    .intro-strip h2 em { font-style: italic; color: var(--green); }
+    .intro-strip p {
+      font-size: clamp(0.95rem, 1.05vw, 1.05rem); line-height: 1.7;
+      color: var(--ink-soft); margin-bottom: 1.25rem;
+    }
+    .intro-strip p:last-of-type { margin-bottom: 0; }
+    .intro-actions { display: flex; gap: 0.85rem; flex-wrap: wrap; margin-top: 2rem; }
+
+    /* STATS */
+    .stats { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .stats-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+    .stat { padding: 3.5rem 2rem 3.5rem 6vw; border-right: 1px solid var(--line); }
+    .stat:last-child { border-right: none; }
+    .stat-number {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400;
+      font-size: clamp(2.5rem, 3.5vw, 3.5rem); color: var(--green);
+      line-height: 1; letter-spacing: -0.02em; margin-bottom: 0.6rem;
+    }
+    .stat-label { font-size: 0.8rem; letter-spacing: 0.06em; color: var(--ink-soft); line-height: 1.55; }
+
+    /* PLAN — drie stappen (rows-stijl uit pitchdeck) */
+    .plan-section { padding: 7rem 6vw; max-width: 1200px; margin: 0 auto; }
+    .plan-header {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: end;
+      margin-bottom: 3.5rem;
+    }
+    .plan-header h2 {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1.05; letter-spacing: -0.02em;
+    }
+    .plan-header h2 em { font-style: italic; color: var(--green); }
+    .plan-header p {
+      font-size: clamp(0.95rem, 1.05vw, 1.05rem); line-height: 1.65; color: var(--ink-soft);
+    }
+    .plan-rows { border-top: 1px solid var(--line); }
+    .plan-row {
+      display: grid; grid-template-columns: 60px 1fr 1.2fr; gap: 2.5rem;
+      padding: 1.4rem 0; border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .plan-row .num {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic;
+      font-size: 0.95rem; color: var(--green);
+    }
+    .plan-row .title {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 500;
+      font-size: clamp(1.15rem, 1.5vw, 1.45rem); color: var(--ink); line-height: 1.25;
+    }
+    .plan-row .detail {
+      font-size: clamp(0.9rem, 1.05vw, 1.05rem); color: var(--ink-soft);
+      line-height: 1.55; text-align: right;
+    }
+
+    /* RETURN — wat krijg je terug (rows met 'uniek' tag) */
+    .return-section { background: var(--cream); padding: 7rem 6vw; }
+    .return-inner { max-width: 1200px; margin: 0 auto; }
+    .return-header { margin-bottom: 3.5rem; max-width: 64ch; }
+    .return-header h2 {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1.05; letter-spacing: -0.02em;
+      margin-top: 1rem;
+    }
+    .return-header h2 em { font-style: italic; color: var(--green); }
+    .return-header p {
+      margin-top: 1.5rem; font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+      line-height: 1.7; color: var(--ink-soft);
+    }
+    .return-rows { border-top: 1px solid var(--line); }
+    .return-row {
+      display: grid; grid-template-columns: 60px 1fr 1.2fr; gap: 2.5rem;
+      padding: 1.5rem 0; border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .return-row .num {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic;
+      font-size: 0.95rem; color: var(--green);
+    }
+    .return-row .title {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 500;
+      font-size: clamp(1.15rem, 1.5vw, 1.45rem); color: var(--ink); line-height: 1.3;
+    }
+    .return-row .title-tag {
+      display: inline-block; margin-left: 0.6rem;
+      padding: 0.18rem 0.55rem;
+      border: 1px solid var(--green); color: var(--green);
+      border-radius: 100px; font-family: 'Inter', sans-serif;
+      font-size: 0.6rem; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase; vertical-align: middle; transform: translateY(-2px);
+    }
+    .return-row .detail {
+      font-size: clamp(0.9rem, 1.05vw, 1.05rem); color: var(--ink-soft);
+      line-height: 1.55; text-align: right;
+    }
+
+    /* SPONSOR TIERS (uit pitchdeck slide 6, geen bedragen) */
+    .tiers-section { padding: 7rem 6vw; max-width: 1200px; margin: 0 auto; }
+    .tiers-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line);
+      gap: 2rem; flex-wrap: wrap;
+    }
+    .tiers-header h2 {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-size: clamp(1.8rem, 2.8vw, 2.8rem); line-height: 1.1; letter-spacing: -0.02em;
+    }
+    .tiers-header h2 em { font-style: italic; color: var(--green); }
+    .tiers-header p { font-size: 0.92rem; color: var(--ink-soft); max-width: 28ch; text-align: right; line-height: 1.55; }
+
+    .tiers-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    }
+    .tier {
+      padding: 2rem 1.75rem;
+      border-right: 1px solid var(--line);
+      display: flex; flex-direction: column; position: relative;
+    }
+    .tier:first-child { padding-left: 0; }
+    .tier:last-child { padding-right: 0; border-right: none; }
+    .tier-main { background: rgba(168, 201, 140, 0.10); padding-left: 1.75rem; padding-right: 1.75rem; }
+    .tier-main:first-child { padding-left: 1.75rem; }
+    .tier-featured {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: 0.6rem; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--green);
+      padding: 0.18rem 0.55rem; border: 1px solid var(--green); border-radius: 100px;
+    }
+    .tier-tag {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.9rem;
+    }
+    .tier-main .tier-tag { color: var(--green); }
+    .tier-amount {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400;
+      font-size: clamp(1.8rem, 2.6vw, 2.6rem); color: var(--ink);
+      line-height: 1; margin-bottom: 0.4rem; letter-spacing: -0.01em;
+    }
+    .tier-main .tier-amount { color: var(--green); }
+    .tier-spots {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300;
+      font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 1.5rem;
+    }
+    .tier-examples {
+      font-size: 0.82rem; color: var(--ink-soft); line-height: 1.5;
+      padding: 0.6rem 0.7rem; margin-bottom: 0.9rem;
+      background: rgba(61, 90, 61, 0.06); border-left: 2px solid var(--green);
+    }
+    .tier-examples strong {
+      font-weight: 500; color: var(--green); letter-spacing: 0.06em;
+      text-transform: uppercase; font-size: 0.65rem;
+      display: block; margin-bottom: 0.25rem;
+    }
+    .tier-examples em { font-style: normal; color: var(--ink); font-weight: 500; }
+    .tier-perks { list-style: none; }
+    .tier-perks li {
+      font-size: 0.88rem; color: var(--ink); line-height: 1.5;
+      padding: 0.6rem 0; border-top: 1px solid var(--line);
+      display: flex; gap: 0.55rem;
+    }
+    .tier-perks li:first-child { border-top: none; padding-top: 0; }
+    .tier-perks li::before { content: "→"; color: var(--green); flex-shrink: 0; }
+
+    /* Logo strip onderaan tiers (huidige sponsors) */
+    .partners-strip { margin-top: 4rem; padding-top: 2.5rem; border-top: 1px solid var(--line); }
+    .partners-label {
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft);
+      margin-bottom: 1.5rem;
+    }
+    .partners-logos { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+    .partner-slot {
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(61,90,61,0.05); border: 1px dashed var(--line);
+      border-radius: 6px; color: var(--ink-soft); font-size: 0.72rem;
+      font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+      width: 140px; height: 64px; transition: border-color 0.2s, background 0.2s;
+    }
+    .partner-slot:hover { border-color: var(--green); background: rgba(61,90,61,0.09); }
+
+    .partners-names {
+      display: flex; flex-wrap: wrap;
+      align-items: center; gap: 0.85rem 1.1rem;
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic; font-weight: 400;
+      font-size: clamp(1.05rem, 1.35vw, 1.3rem);
+      color: var(--ink); line-height: 1.4;
+      margin-top: 0.25rem;
+    }
+    .partner-sep {
+      color: var(--ink-soft); opacity: 0.35;
+      font-style: normal; font-size: 0.85em;
+    }
+
+    .tiers-cta {
+      margin-top: 4rem; padding-top: 2.5rem; border-top: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap;
+    }
+    .tiers-cta p {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300;
+      font-size: clamp(1rem, 1.25vw, 1.25rem); color: var(--ink-soft);
+      max-width: 46ch; line-height: 1.5;
+    }
+
+    /* ========= VERHAAL (redesign — wider, alternating, dynamic) ========= */
+    .story-hero {
+      padding: calc(var(--nav-h) + 5rem) max(1.5rem, 5vw) 4rem;
+      max-width: 1440px; margin: 0 auto;
+    }
+    .story-hero h1 {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-variation-settings: "opsz" 144;
+      font-size: clamp(2.75rem, 9vw, 9rem);
+      line-height: 0.94; letter-spacing: -0.035em;
+      margin: 1.5rem 0 3rem;
+      max-width: 14ch;
+    }
+    .story-hero h1 em { font-style: italic; color: var(--green); }
+    #page-verhaal .story-hero {
+      padding-bottom: 2.5rem;
+    }
+    #page-verhaal .story-hero h1 {
+      max-width: 12ch;
+      margin-bottom: 2.25rem;
+    }
+    #page-verhaal .story-photo-full,
+    #page-verhaal .story-photo-full + .story-body,
+    #page-verhaal .story-pullquote,
+    #page-verhaal .philosophy-section,
+    #page-verhaal .photo-grid,
+    #page-verhaal .story-closing {
+      display: none;
+    }
+    #page-verhaal .story-body {
+      padding-top: 2rem;
+      padding-bottom: 5rem;
+    }
+    #page-verhaal .story-chapter {
+      padding: 4rem 0;
+      border-top: 1px solid var(--line);
+    }
+    #page-verhaal .story-chapter:last-of-type {
+      border-bottom: 0;
+    }
+    #page-verhaal .ch-meta {
+      display: none;
+    }
+    #page-verhaal .ch-content h3 {
+      margin-bottom: 0.75rem;
+    }
+    #page-verhaal .ch-content p.ch-lead {
+      max-width: 34ch;
+    }
+    .story-hero-foot {
+      display: grid; grid-template-columns: 1fr; gap: 2rem;
+      padding-top: 2.5rem; border-top: 1px solid var(--line);
+    }
+    @media (min-width: 760px) {
+      .story-hero-foot { grid-template-columns: 1fr 1fr; gap: 4rem; }
+    }
+    .story-hero-foot p {
+      font-size: clamp(0.95rem, 1.1vw, 1.1rem); line-height: 1.7;
+      color: var(--ink-soft); max-width: 48ch;
+    }
+
+    .story-photo-full { width: 100%; height: clamp(280px, 55vw, 720px); overflow: hidden; background: var(--bg-dark); }
+    .story-photo-full img { width: 100%; height: 100%; object-fit: cover; }
+
+    .photo-ph {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #0f1f0f 0%, #162816 50%, #0a1208 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 1rem; color: rgba(247,245,240,0.28);
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    }
+    .photo-ph svg { opacity: 0.18; }
+
+    /* Story body — wider container, asymmetric chapters */
+    .story-body {
+      max-width: 1440px; margin: 0 auto;
+      padding: 4rem max(1.5rem, 5vw) 5rem;
+    }
+    .story-chapter {
+      display: grid; grid-template-columns: 1fr; gap: 2.5rem;
+      padding: 5rem 0; border-top: 1px solid var(--line);
+      align-items: center;
+    }
+    .story-chapter:last-of-type { border-bottom: 1px solid var(--line); }
+    @media (min-width: 900px) {
+      .story-chapter {
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 5rem; padding: 6rem 0;
+      }
+      .story-chapter:nth-of-type(even) {
+        grid-template-columns: 0.9fr 1.1fr;
+      }
+      .story-chapter:nth-of-type(even) .ch-visual { order: -1; }
+    }
+
+    .ch-content { display: flex; flex-direction: column; gap: 1.25rem; }
+    .ch-meta {
+      display: flex; align-items: baseline; gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .ch-num-big {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400;
+      font-size: clamp(2.4rem, 4vw, 3.6rem); color: var(--green); line-height: 1;
+    }
+    .ch-label {
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .ch-content h3 {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-size: clamp(1.75rem, 3vw, 2.75rem); line-height: 1.05; letter-spacing: -0.02em;
+      margin: 0 0 1rem;
+    }
+    .ch-content h3 em { font-style: italic; color: var(--green); }
+    .ch-content p {
+      font-size: clamp(0.95rem, 1.05vw, 1.075rem); line-height: 1.75;
+      color: var(--ink-soft); max-width: 56ch;
+    }
+    .ch-content p.ch-lead {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400;
+      font-size: clamp(1.1rem, 1.5vw, 1.45rem); line-height: 1.4;
+      color: var(--ink); max-width: 32ch;
+    }
+
+    /* Chapter visuals (photo placeholders, alternating sides) */
+    .ch-visual {
+      position: relative; overflow: hidden; border-radius: 4px;
+      aspect-ratio: 4/5;
+      background: linear-gradient(135deg, #0f1f0f 0%, #182a18 60%, #0a1208 100%);
+    }
+    .ch-visual .photo-ph { height: 100%; }
+    .ch-visual img { width: 100%; height: 100%; object-fit: cover; }
+
+    .camino-map-wrap {
+      position: relative;
+      aspect-ratio: 4/5;
+      min-height: 420px;
+      overflow: hidden;
+      border: 1px solid rgba(61,90,61,0.22);
+      border-radius: 4px;
+      background: #101b10;
+      box-shadow: inset 0 0 0 1px rgba(247,245,240,0.08);
+    }
+    #page-verhaal .camino-map-wrap {
+      min-height: auto;
+      aspect-ratio: 4/3;
+      width: min(100%, 880px);
+      margin: 0 auto;
+    }
+    #page-verhaal .story-route-bottom {
+      display: block;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 4.25rem max(1.5rem, 5vw);
+      border-top: 1px solid var(--line);
+    }
+    #page-verhaal .story-route-bottom .ch-content {
+      max-width: 760px;
+      margin-bottom: 2rem;
+    }
+    #page-verhaal .story-route-bottom .ch-content p {
+      max-width: 58ch;
+    }
+    #page-verhaal .story-route-bottom .camino-map-wrap {
+      max-width: 880px;
+    }
+    #page-verhaal .story-route-bottom + .story-final-cta {
+      border-top: 0;
+      padding-top: 2rem;
+    }
+    .camino-map {
+      position: absolute;
+      inset: 0;
+    }
+    .camino-map-card {
+      position: absolute;
+      left: clamp(1rem, 4vw, 1.5rem);
+      right: clamp(1rem, 4vw, 1.5rem);
+      bottom: clamp(1rem, 4vw, 1.5rem);
+      z-index: 2;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem;
+      border: 1px solid rgba(247,245,240,0.14);
+      border-radius: 4px;
+      background: rgba(13,13,13,0.74);
+      color: var(--cream);
+      backdrop-filter: blur(14px);
+    }
+    .camino-map-card .eyebrow {
+      display: block;
+      margin-bottom: 0.4rem;
+      color: var(--green-light);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .camino-map-card strong {
+      display: block;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.15rem, 2.2vw, 1.65rem);
+      font-weight: 400;
+      line-height: 1.05;
+    }
+    .camino-map-card .distance {
+      flex: 0 0 auto;
+      color: rgba(247,245,240,0.72);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-align: right;
+      text-transform: uppercase;
+    }
+    .camino-day-controls {
+      position: absolute;
+      top: clamp(1rem, 4vw, 1.5rem);
+      left: clamp(1rem, 4vw, 1.5rem);
+      right: clamp(1rem, 4vw, 1.5rem);
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      max-width: 92%;
+    }
+    .camino-day-btn {
+      min-height: 32px;
+      padding: 0.45rem 0.62rem;
+      border: 1px solid rgba(13,13,13,0.12);
+      border-radius: 999px;
+      background: rgba(247,245,240,0.86);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      text-transform: uppercase;
+      backdrop-filter: blur(12px);
+      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .camino-day-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(61,90,61,0.35);
+      background: var(--cream);
+    }
+    .camino-day-btn.active {
+      border-color: var(--green);
+      background: var(--green);
+      color: var(--cream);
+    }
+    .camino-map .maplibregl-ctrl-bottom-left,
+    .camino-map .maplibregl-ctrl-bottom-right {
+      display: none;
+    }
+    .camino-activate {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: clamp(1rem, 4vw, 1.5rem);
+      border: 0;
+      background: rgba(13,13,13,0.04);
+      color: var(--cream);
+      cursor: pointer;
+    }
+    .camino-activate span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid rgba(247,245,240,0.18);
+      border-radius: 999px;
+      background: rgba(13,13,13,0.72);
+      backdrop-filter: blur(12px);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .camino-map-wrap.is-active .camino-activate {
+      display: none;
+    }
+    .camino-marker {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--cream);
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(61,90,61,0.22);
+    }
+    .camino-marker.is-end {
+      background: var(--green-light);
+      box-shadow: 0 0 0 6px rgba(168,201,140,0.28);
+    }
+    .camino-popup .maplibregl-popup-content {
+      border: 1px solid rgba(61,90,61,0.18);
+      border-radius: 4px;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 0.78rem;
+      box-shadow: 0 18px 42px rgba(13,13,13,0.18);
+    }
+    .camino-popup .maplibregl-popup-tip {
+      border-top-color: var(--cream);
+      border-bottom-color: var(--cream);
+    }
+    @media (max-width: 620px) {
+      .camino-map-wrap {
+        min-height: 360px;
+        aspect-ratio: 1/1.12;
+      }
+      #page-verhaal .camino-map-wrap {
+        aspect-ratio: 1/1.08;
+      }
+      .camino-map-card {
+        align-items: start;
+        flex-direction: column;
+      }
+      .camino-map-card .distance {
+        text-align: left;
+      }
+      .camino-day-controls {
+        gap: 0.35rem;
+      }
+      .camino-day-btn {
+        min-height: 30px;
+        padding-inline: 0.5rem;
+        font-size: 0.6rem;
+      }
+    }
+
+    .ch-visual.ch-visual-mind {
+      background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 0;
+      padding: clamp(1rem, 3vw, 2rem);
+      aspect-ratio: auto;
+      border: 0;
+    }
+    .ch-visual.ch-visual-mind img {
+      width: 100%; max-width: 300px;
+      height: auto; object-fit: contain;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    /* Pull-quote breakers between chapters */
+    .story-pullquote {
+      padding: 5rem max(1.5rem, 5vw);
+      max-width: 1440px; margin: 0 auto;
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+    .story-pullquote-dark {
+      background: var(--bg-dark);
+      max-width: 100%; border: none; margin: 0;
+      color: var(--cream);
+      padding: clamp(5rem, 10vw, 8rem) max(1.5rem, 5vw);
+    }
+    .story-pullquote blockquote {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300;
+      font-size: clamp(1.5rem, 3.8vw, 3rem); line-height: 1.18; letter-spacing: -0.015em;
+      color: inherit; max-width: 22ch; margin: 0 auto;
+    }
+    .story-pullquote-dark blockquote { color: rgba(247,245,240,0.95); }
+    .story-pullquote blockquote em { font-style: italic; color: var(--green); }
+    .story-pullquote-dark blockquote em { color: var(--green-light); }
+    .story-pullquote .cite {
+      margin-top: 2rem;
+      font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .story-pullquote-dark .cite { color: rgba(247,245,240,0.5); }
+
+    /* PHILOSOPHY — feature grid redesign */
+    .philosophy-section { background: var(--cream); padding: 7rem 0; }
+    .philosophy-inner { max-width: 1440px; margin: 0 auto; padding: 0 max(1.5rem, 5vw); }
+    .philosophy-header {
+      display: grid; grid-template-columns: 1fr; gap: 2rem;
+      margin-bottom: 4rem;
+    }
+    @media (min-width: 900px) {
+      .philosophy-header {
+        grid-template-columns: 1fr 1fr; gap: 5rem; align-items: end;
+      }
+    }
+    .philosophy-header h2 {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.05; letter-spacing: -0.02em;
+      margin-top: 1rem;
+    }
+    .philosophy-header h2 em { font-style: italic; color: var(--green); }
+    .philosophy-header p {
+      font-size: clamp(0.95rem, 1.05vw, 1.075rem); line-height: 1.7;
+      color: var(--ink-soft); max-width: 44ch;
+    }
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+      gap: 1px; background: var(--line);
+      border: 1px solid var(--line);
+    }
+    .philo-card {
+      background: var(--cream);
+      padding: 2.25rem;
+      display: flex; flex-direction: column;
+      gap: 1.5rem; min-height: 260px;
+      transition: background 0.3s;
+    }
+    .philo-card:hover { background: rgba(168, 201, 140, 0.10); }
+    .philo-card .num {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400;
+      font-size: 2rem; color: var(--green); line-height: 1;
+    }
+    .philo-card .text {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400;
+      font-size: clamp(1.1rem, 1.4vw, 1.3rem); line-height: 1.4;
+      color: var(--ink); margin-top: auto;
+    }
+
+    /* PHOTO GRID — full-bleed feel */
+    .photo-grid {
+      max-width: 1440px; margin: 0 auto;
+      padding: 0 max(0.75rem, 2vw) 6rem;
+      display: grid; grid-template-columns: repeat(12, 1fr);
+      gap: clamp(6px, 0.8vw, 12px);
+    }
+    .pg-item { overflow: hidden; border-radius: 3px; }
+    .pg-item:nth-child(1) { grid-column: span 7; height: clamp(360px, 42vw, 620px); }
+    .pg-item:nth-child(2) { grid-column: span 5; height: clamp(176px, 20vw, 304px); }
+    .pg-item:nth-child(3) { grid-column: span 5; height: clamp(176px, 20vw, 304px); }
+    .pg-item:nth-child(4) { grid-column: span 4; height: clamp(200px, 22vw, 320px); }
+    .pg-item:nth-child(5) { grid-column: span 4; height: clamp(200px, 22vw, 320px); }
+    .pg-item:nth-child(6) { grid-column: span 4; height: clamp(200px, 22vw, 320px); }
+    .pg-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .pg-item:hover img { transform: scale(1.03); }
+    .pg-item .photo-ph { height: 100%; }
+
+    /* STORY CLOSING — bridge to founders / CTA */
+    .story-closing {
+      padding: 6rem max(1.5rem, 5vw);
+      max-width: 1440px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr; gap: 2.5rem;
+    }
+    @media (min-width: 900px) {
+      .story-closing {
+        grid-template-columns: 1.1fr 1fr;
+        gap: 5rem; align-items: end;
+      }
+    }
+    .story-closing h2 {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.04; letter-spacing: -0.02em;
+    }
+    .story-closing h2 em { font-style: italic; color: var(--green); }
+    .story-closing p {
+      color: var(--ink-soft);
+      font-size: clamp(0.95rem, 1.05vw, 1.075rem); line-height: 1.75;
+      max-width: 46ch;
+    }
+    .story-closing .actions {
+      margin-top: 1.5rem;
+      display: flex; gap: 0.85rem; flex-wrap: wrap;
+    }
+
+    /* ========= HOME — extra sections onderaan landing ========= */
+
+    /* HOME — story tease */
+    .home-story-tease[hidden],
+    .home-journey[hidden] {
+      display: none !important;
+    }
+    .home-story-tease {
+      padding: 7rem max(1.5rem, 5vw);
+      max-width: 1440px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr; gap: 3rem;
+    }
+    @media (min-width: 900px) {
+      .home-story-tease {
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 5rem; align-items: center;
+      }
+    }
+    .home-story-tease .visual {
+      aspect-ratio: 4/5; overflow: hidden; border-radius: 4px;
+      background: linear-gradient(135deg, #0f1f0f 0%, #182a18 60%, #0a1208 100%);
+      position: relative;
+    }
+    .home-story-tease .visual .photo-ph { height: 100%; }
+    .home-story-tease .text { display: flex; flex-direction: column; gap: 1.5rem; }
+    .home-story-tease h2 {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-size: clamp(2rem, 3.5vw, 3.25rem); line-height: 1.05; letter-spacing: -0.02em;
+    }
+    .home-story-tease h2 em { font-style: italic; color: var(--green); }
+    .home-story-tease p {
+      font-size: clamp(0.95rem, 1.05vw, 1.075rem); line-height: 1.75;
+      color: var(--ink-soft); max-width: 52ch;
+    }
+    .home-story-tease .actions {
+      display: flex; gap: 0.85rem; flex-wrap: wrap; margin-top: 0.5rem;
+    }
+
+    /* HOME — journey / route preview (donker) */
+    .home-journey {
+      background: var(--bg-dark);
+      padding: 7rem max(1.5rem, 5vw);
+      color: var(--cream);
+    }
+    .home-journey-inner {
+      max-width: 1440px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr; gap: 3rem;
+    }
+    @media (min-width: 900px) {
+      .home-journey-inner {
+        grid-template-columns: 1fr 1.35fr;
+        gap: 6rem; align-items: center;
+      }
+    }
+    .home-journey .section-label { color: var(--green-light); }
+    .home-journey h2 {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.05; letter-spacing: -0.02em;
+      margin-bottom: 1.5rem; color: var(--cream);
+    }
+    .home-journey h2 em { font-style: italic; color: var(--green-light); }
+    .home-journey p {
+      font-size: clamp(0.95rem, 1.05vw, 1.075rem); line-height: 1.7;
+      color: rgba(247,245,240,0.7);
+      margin-bottom: 1rem; max-width: 44ch;
+    }
+    .home-journey-stats {
+      display: flex; gap: clamp(1.5rem, 3vw, 2.5rem);
+      margin-top: 2.25rem; padding-top: 2rem;
+      border-top: 1px solid var(--line-dark);
+      flex-wrap: wrap;
+    }
+    .home-journey-stat .v {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400;
+      font-size: clamp(1.5rem, 2.2vw, 2.2rem); color: var(--green-light);
+      line-height: 1; display: block; margin-bottom: 0.5rem;
+    }
+    .home-journey-stat .l {
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(247,245,240,0.5);
+    }
+    .home-journey-map {
+      width: 100%;
+      height: auto;
+      display: block;
+      overflow: visible;
+      filter: drop-shadow(0 12px 30px rgba(0,0,0,0.36));
+    }
+    .home-journey-map + .home-journey-map {
+      display: none;
+    }
+    .home-journey-map .route-base {
+      stroke: rgba(247,245,240,0.12);
+      stroke-width: 16;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .home-journey-map .route-line {
+      stroke: var(--green-light);
+      stroke-width: 5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .home-journey-map .route-dot {
+      fill: var(--bg-dark);
+      stroke: var(--green-light);
+      stroke-width: 3;
+    }
+    .home-journey-map .route-dot-main {
+      fill: var(--green-light);
+      stroke: var(--cream);
+      stroke-width: 3;
+    }
+    .home-journey-map .route-label {
+      fill: rgba(247,245,240,0.72);
+      font-family: Inter, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+    .home-journey-map .route-day {
+      fill: rgba(247,245,240,0.46);
+      font-family: Inter, sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .home-journey-map .route-distance {
+      fill: rgba(247,245,240,0.34);
+      font-family: Inter, sans-serif;
+      font-size: 10px;
+      letter-spacing: 1.6px;
+    }
+
+    /* HOME — closing CTA */
+    .home-closing {
+      padding: 7rem max(1.5rem, 5vw);
+      max-width: 1440px; margin: 0 auto;
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+    .home-closing h2 {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-variation-settings: "opsz" 144, "SOFT" 30;
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      line-height: 0.98; letter-spacing: -0.025em;
+      margin-bottom: 1.5rem;
+    }
+    .home-closing h2 em { font-style: italic; color: var(--green); }
+    .home-closing p {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300;
+      font-size: clamp(1.05rem, 1.4vw, 1.4rem);
+      color: var(--ink-soft); max-width: 42ch;
+      margin: 0 auto 2.5rem; line-height: 1.5;
+    }
+    .home-closing .actions {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    }
+
+    /* FOUNDERS */
+    .founders-section { background: var(--bg-dark); padding: 7rem 6vw; }
+    .founders-inner { max-width: 1440px; margin: 0 auto; }
+    .founders-header {
+      margin-bottom: 4rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line-dark);
+    }
+    .founders-header .section-label { color: var(--green-light); }
+    .founders-header h2 {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-size: clamp(2rem, 3.2vw, 3.2rem); line-height: 1.05; letter-spacing: -0.02em;
+      color: var(--cream);
+    }
+    .founders-header h2 em { font-style: italic; color: var(--green-light); }
+    .founders-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line-dark);
+    }
+    .founder-card { padding: 2.5rem 2.5rem 2.5rem 0; border-right: 1px solid var(--line-dark); }
+    .founder-card:last-child { border-right: none; padding-right: 0; }
+    .founder-card:not(:first-child) { padding-left: 2.5rem; }
+    .founder-photo {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 3px;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #0f1f0f 0%, #182a18 60%, #0a1208 100%);
+    }
+    .founder-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(15%); }
+    .founder-photo .photo-ph { height: 100%; min-height: 0; }
+    .founder-name {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 500;
+      font-size: 1.2rem; color: var(--cream); margin-bottom: 0.25rem;
+    }
+    .founder-role {
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--green-light); margin-bottom: 1.1rem;
+    }
+    .founder-bio { font-size: 0.9rem; line-height: 1.65; color: rgba(247,245,240,0.58); margin-bottom: 1.5rem; }
+    .founder-li {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--green-light);
+      border-bottom: 1px solid rgba(168,201,140,0.3); padding-bottom: 2px; transition: border-color 0.2s;
+    }
+    .founder-li:hover { border-color: var(--green-light); }
+    #page-verhaal .founders-section {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+    #page-verhaal .founders-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.75rem;
+    }
+    #page-verhaal .founders-grid {
+      gap: clamp(2rem, 4vw, 4rem);
+      border-top: 1px solid var(--line-dark);
+    }
+    #page-verhaal .founder-photo {
+      margin-bottom: 1.25rem;
+    }
+    #page-verhaal .founder-card {
+      padding: 0 !important;
+      border-right: 0;
+    }
+
+    .story-final-cta {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 5rem max(1.5rem, 5vw);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      border-top: 1px solid var(--line);
+    }
+    @media (min-width: 900px) {
+      .story-final-cta {
+        grid-template-columns: 1fr 1fr;
+        align-items: end;
+        gap: 5rem;
+      }
+    }
+    .story-final-cta h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+    }
+    .story-final-cta h2 em { font-style: italic; color: var(--green); }
+    .story-final-cta p {
+      max-width: 48ch;
+      color: var(--ink-soft);
+      font-size: clamp(0.95rem, 1.05vw, 1.075rem);
+      line-height: 1.75;
+    }
+    .story-final-cta .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 1.5rem;
+    }
+
+    /* ========= CONTACT ========= */
+    .contact-page {
+      min-height: 100svh;
+      padding-top: var(--nav-h);
+      background:
+        linear-gradient(180deg, rgba(247,245,240,0.78) 0%, rgba(235,235,232,0) 48rem),
+        var(--bg);
+    }
+    .contact-hero {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: clamp(3.25rem, 7vw, 6rem) 6vw 5rem;
+    }
+    .contact-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+      gap: clamp(2.5rem, 6vw, 6rem);
+      align-items: end;
+      padding-bottom: clamp(2.25rem, 5vw, 4rem);
+      border-bottom: 1px solid var(--line);
+    }
+    .contact-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+    .contact-kicker::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: currentColor;
+    }
+    .contact-hero h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      font-variation-settings: "opsz" 144, "SOFT" 30;
+      font-size: clamp(3.6rem, 8.5vw, 9rem);
+      line-height: 0.93;
+      letter-spacing: -0.035em;
+      margin: 1.2rem 0 1.4rem;
+      max-width: 9ch;
+    }
+    .contact-hero h1 em { font-style: italic; color: var(--green); }
+    .contact-lead {
+      max-width: 42ch;
+      font-size: clamp(1rem, 1.2vw, 1.16rem);
+      line-height: 1.7;
+      color: var(--ink-soft);
+    }
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 2rem;
+    }
+    .contact-primary {
+      position: relative;
+      overflow: hidden;
+      min-height: 360px;
+      background: var(--bg-dark);
+      color: var(--cream);
+      padding: clamp(1.6rem, 3vw, 2.4rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 8px;
+    }
+    .contact-primary::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(145deg, rgba(61,90,61,0.92), rgba(13,13,13,0.88)),
+        url("caesar-schoorl.jpg") center 20% / cover;
+      opacity: 0.92;
+    }
+    .contact-primary > * { position: relative; z-index: 1; }
+    .contact-status {
+      width: max-content;
+      max-width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid rgba(247,245,240,0.28);
+      border-radius: 999px;
+      font-size: 0.66rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(247,245,240,0.84);
+      background: rgba(13,13,13,0.24);
+      backdrop-filter: blur(12px);
+    }
+    .contact-card-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.65rem, 2.5vw, 2.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      max-width: 11ch;
+    }
+    .contact-card-text {
+      margin-top: 0.9rem;
+      max-width: 28ch;
+      color: rgba(247,245,240,0.78);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: clamp(2.25rem, 5vw, 5rem);
+      padding-top: clamp(2.25rem, 5vw, 4rem);
+    }
+    .contact-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 1.35rem;
+    }
+    .contact-section-head .section-label { margin-bottom: 0; }
+    .contact-note {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+      max-width: 26ch;
+      text-align: right;
+    }
+    .contact-rows { list-style: none; border-top: 1px solid var(--line); }
+    .contact-row {
+      display: grid;
+      grid-template-columns: 4.75rem 1fr;
+      gap: 1.25rem;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+    }
+    .cr-label {
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      padding-top: 2px;
+    }
+    .cr-value {
+      min-width: 0;
+      font-size: clamp(1rem, 1.25vw, 1.22rem);
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+    .cr-value a { color: var(--green); transition: opacity 0.2s; }
+    .cr-value a:hover { opacity: 0.65; }
+    .founder-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+    .c-founder {
+      min-width: 0;
+      background: var(--bg);
+      padding: 1.15rem;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 1rem;
+    }
+    .c-avatar {
+      aspect-ratio: 4 / 5;
+      width: 100%;
+      overflow: hidden;
+      background: #1a2e1a;
+      border-radius: 6px;
+    }
+    .c-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .c-avatar .photo-ph {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: rgba(247,245,240,0.72);
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(2.1rem, 4vw, 3.6rem);
+      background: linear-gradient(145deg, #203620, #0f1c0f);
+    }
+    .c-name {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 500;
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      line-height: 1.15;
+      margin-bottom: 0.35rem;
+    }
+    .c-role {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      line-height: 1.45;
+    }
+    .c-li {
+      width: max-content;
+      max-width: 100%;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      border-bottom: 1px solid rgba(61,90,61,0.3);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+    .c-li:hover { border-color: var(--green); }
+
+    /* DARK ROUTE STRIP */
+    .route-strip { background: var(--bg-dark); padding: 5rem 6vw; margin-top: 5rem; }
+    .route-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 4rem;
+    }
+    .route-text .section-label { color: var(--green-light); }
+    .route-text blockquote {
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300;
+      font-size: clamp(1.3rem, 2vw, 2rem); line-height: 1.45;
+      color: rgba(247,245,240,0.78); max-width: 34ch; margin-top: 1rem;
+    }
+    .route-svg { flex-shrink: 0; width: 320px; }
+
+    /* SIGNOFF op contact */
+    .closer-signoff {
+      max-width: 1200px; margin: 0 auto;
+      padding: 4rem 6vw;
+      font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300;
+      font-size: clamp(1.05rem, 1.3vw, 1.3rem); color: var(--ink-soft); line-height: 1.5;
+      border-top: 1px solid var(--line);
+    }
+    .closer-signoff strong { font-style: normal; font-weight: 500; color: var(--ink); }
+
+    /* FOOTER */
+    .site-footer {
+      padding: 2.25rem 6vw; border-top: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo {
+      display: flex; align-items: center;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 500; font-size: 1.25rem; letter-spacing: 0.005em;
+    }
+    .footer-right { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+
+    /* MIND LOGO TREATMENTS */
+    .cr-value-with-icon {
+      display: inline-flex; align-items: center; gap: 0.65rem;
+    }
+    .mind-icon {
+      width: 28px; height: 28px; flex-shrink: 0;
+      display: inline-block;
+    }
+    .for-mind-bar {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 6vw 1rem;
+    }
+    .for-mind-inner {
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 1.75rem 0;
+      border-top: 1px solid var(--line);
+    }
+    .for-mind-label {
+      font-size: 0.7rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--ink-soft);
+      flex-shrink: 0;
+    }
+    .for-mind-logo {
+      height: 56px; width: auto; display: block;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      .intro-strip { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 6vw; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .stat:nth-child(2) { border-right: none; }
+      .stat:nth-child(3) { border-right: 1px solid var(--line); }
+      .plan-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .plan-row, .return-row { grid-template-columns: 40px 1fr; }
+      .plan-row .detail, .return-row .detail { grid-column: 2; text-align: left; }
+      .tiers-grid { grid-template-columns: 1fr; }
+      .tier { border-right: none; border-bottom: 1px solid var(--line); padding: 1.5rem 0 !important; }
+      .tier:last-child { border-bottom: none; }
+      .tier-main { background: rgba(168, 201, 140, 0.10); padding: 1.5rem 1rem !important; }
+      .founders-grid { grid-template-columns: 1fr; }
+      .founder-card { padding: 2rem 0; border-right: none; border-bottom: 1px solid var(--line-dark); }
+      .founder-card:not(:first-child) { padding-left: 0; }
+      .contact-top { grid-template-columns: 1fr; align-items: start; }
+      .contact-primary { min-height: 300px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3.5rem; }
+      .tiers-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .tiers-header p { text-align: left; }
+      .hero-foot { flex-direction: column; gap: 1.5rem; }
+      .hero-meta { text-align: left; }
+      .route-inner { flex-direction: column; gap: 2rem; }
+      .route-svg { display: none; }
+    }
+    @media (max-width: 760px) {
+      .for-mind-inner { flex-direction: column; align-items: flex-start; gap: 1rem; padding: 1.5rem 0; }
+      .for-mind-logo { height: 48px; }
+      .story-chapter { padding: 3.5rem 0; gap: 2rem; }
+      .story-pullquote { padding: 4rem max(1.25rem, 5vw); }
+      .home-story-tease { padding: 5rem max(1.25rem, 5vw); }
+      .home-journey { padding: 5rem max(1.25rem, 5vw); }
+      .home-closing { padding: 5rem max(1.25rem, 5vw); }
+      .home-journey-stats { gap: 1.5rem; }
+      .story-closing { padding: 4rem max(1.25rem, 5vw); }
+      .philosophy-section { padding: 5rem 0; }
+      .founder-list { grid-template-columns: 1fr; }
+      .c-founder {
+        grid-template-columns: 76px 1fr auto;
+        grid-template-rows: auto;
+        align-items: center;
+      }
+      .c-avatar { aspect-ratio: 1; border-radius: 50%; }
+    }
+    @media (max-width: 600px) {
+      .pg-item:nth-child(1) { grid-column: span 12; height: 240px; }
+      .pg-item:nth-child(n+2) { grid-column: span 6; height: 180px; }
+      .nav-links .nav-cta-btn { display: none; }
+      .nav-links { gap: 1.5rem; }
+      .ch-visual { aspect-ratio: 3/2; }
+      .ch-visual.ch-visual-mind { aspect-ratio: 3/2; }
+      .contact-hero { padding-inline: max(1.25rem, 5vw); }
+      .contact-actions { flex-direction: column; align-items: stretch; }
+      .contact-actions .btn { justify-content: center; }
+      .contact-section-head { display: block; }
+      .contact-note { margin-top: 0.55rem; text-align: left; }
+      .contact-row { grid-template-columns: 1fr; gap: 0.35rem; }
+      .c-founder { grid-template-columns: 64px 1fr; }
+      .c-li { grid-column: 2; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="site-nav on-hero" id="siteNav">
+    <button class="nav-logo" onclick="showPage('home')" type="button">Back to Being</button>
+    <div class="nav-links">
+      <button class="nav-link" data-page="verhaal"    data-i18n="nav.story"      onclick="showPage('verhaal')"    type="button">Ons verhaal</button>
+      <button class="nav-link" data-page="sponsoring" data-i18n="nav.sponsorship" onclick="showPage('sponsoring')" type="button">Sponsoring</button>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button class="lang-btn" data-lang="nl" type="button" aria-label="Nederlands">NL</button>
+        <span class="lang-sep" aria-hidden="true">·</span>
+        <button class="lang-btn" data-lang="en" type="button" aria-label="English">EN</button>
+      </div>
+      <button class="nav-link nav-cta-btn" data-page="contact" data-i18n="nav.contact" onclick="showPage('contact')" type="button">Contact</button>
+    </div>
+  </nav>
+
+  <!-- ======== PAGE: HOME ======== -->
+  <div class="page active" id="page-home">
+
+    <section class="hero">
+      <div class="hero-video">
+        <video autoplay muted loop playsinline preload="auto">
+          <source src="hero.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">
+          The world<br>as our <em>office.</em>
+        </h1>
+        <div class="hero-foot">
+          <p class="hero-tagline" data-i18n="hero.tagline">
+            Drie AI-founders lopen 115 km over de Camino en bouwen
+            onderweg een AI-tool voor mentale gezondheid.
+          </p>
+          <div class="hero-meta" data-i18n="hero.meta">
+            115 km &nbsp;·&nbsp; 6 dagen<br>
+            Back to Being<br>
+            Camino de Santiago
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro-strip">
+      <div>
+        <h2 data-i18n="intro.heading">Drie founders. Eén route.<br><em>Eén AI-tool</em> voor MIND.</h2>
+      </div>
+      <div>
+        <p data-i18n="intro.body">We zijn drie AI-founders uit Amsterdam. Deze zomer lopen we 115 km van Tui naar Santiago en bouwen onderweg een AI-tool die we gratis overdragen aan stichting MIND. Geen bureau, geen vergaderzaal — beweging maakt creativiteit, lopen is denken, denken is bouwen.</p>
+        <div class="intro-actions">
+          <button class="btn"         data-i18n="intro.cta1" onclick="showPage('verhaal')"    type="button">Ons verhaal →</button>
+          <button class="btn btn-outline" data-i18n="intro.cta2" onclick="showPage('sponsoring')" type="button">Sponsoring →</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="stats">
+      <div class="stats-inner">
+        <div class="stat">
+          <div class="stat-number">115</div>
+          <div class="stat-label" data-i18n="stats.km">kilometer<br>Tui → Santiago</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">6</div>
+          <div class="stat-label" data-i18n="stats.days">dagen<br>on the road</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">3</div>
+          <div class="stat-label" data-i18n="stats.founders">AI-founders<br>Amsterdam</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">1</div>
+          <div class="stat-label" data-i18n="stats.tool">AI-tool<br>voor MIND</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOME — story tease -->
+    <section class="home-story-tease" hidden>
+      <div class="visual">
+        <div class="photo-ph">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span data-i18n="photo.1">Foto 1</span>
+        </div>
+      </div>
+      <div class="text">
+        <div class="section-label" data-i18n="home.tease.label">Het verhaal</div>
+        <h2 data-i18n="home.tease.h">Een rit die we zelf<br><em>nodig hadden.</em></h2>
+        <p data-i18n="home.tease.p">We werken in tech, maar we voelden dat het kantoor steeds meer een kooi werd. Back to Being is ons antwoord: drie founders, één route, één AI-tool voor mentale gezondheid.</p>
+        <div class="actions">
+          <button class="btn" data-i18n="home.tease.cta" onclick="showPage('verhaal')" type="button">Lees het hele verhaal →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOME — journey / route preview -->
+    <div class="home-journey" hidden>
+      <div class="home-journey-inner">
+        <div>
+          <div class="section-label" data-i18n="home.journey.label">De route</div>
+          <h2 data-i18n="home.journey.h">115 km van Tui<br>naar <em>Santiago.</em></h2>
+          <p data-i18n="home.journey.p">Zes dagen lopen op de Camino Portugués. Geen vergaderzaal, geen bureau — alleen het pad, drie founders, smart glasses en de tijd om iets te bouwen dat ertoe doet.</p>
+          <div class="home-journey-stats">
+            <div class="home-journey-stat">
+              <span class="v" data-i18n="home.journey.stat.km.v">115</span>
+              <span class="l" data-i18n="home.journey.stat.km.l">kilometer</span>
+            </div>
+            <div class="home-journey-stat">
+              <span class="v" data-i18n="home.journey.stat.days.v">6</span>
+              <span class="l" data-i18n="home.journey.stat.days.l">dagen</span>
+            </div>
+            <div class="home-journey-stat">
+              <span class="v" data-i18n="home.journey.stat.start.v">Tui</span>
+              <span class="l" data-i18n="home.journey.stat.start.l">start</span>
+            </div>
+            <div class="home-journey-stat">
+              <span class="v" data-i18n="home.journey.stat.end.v">Santiago</span>
+              <span class="l" data-i18n="home.journey.stat.end.l">finish</span>
+            </div>
+          </div>
+        </div>
+        <svg class="home-journey-map" viewBox="0 0 620 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Route van Tui naar Santiago de Compostela">
+          <defs>
+            <marker id="homeRouteArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+              <path d="M1 1 L9 5 L1 9 Z" fill="#a8c98c"/>
+            </marker>
+          </defs>
+          <path class="route-base" d="M54 206 C 96 178, 126 154, 178 142 C 226 130, 252 160, 304 136 C 356 112, 374 86, 430 82 C 482 78, 520 54, 568 34"/>
+          <path class="route-line" d="M54 206 C 96 178, 126 154, 178 142 C 226 130, 252 160, 304 136 C 356 112, 374 86, 430 82 C 482 78, 520 54, 568 34" marker-end="url(#homeRouteArrow)"/>
+          <circle class="route-dot-main" cx="54" cy="206" r="9"/>
+          <circle class="route-dot" cx="128" cy="156" r="6"/>
+          <circle class="route-dot" cx="210" cy="145" r="6"/>
+          <circle class="route-dot" cx="304" cy="136" r="6"/>
+          <circle class="route-dot" cx="394" cy="86" r="6"/>
+          <circle class="route-dot" cx="478" cy="72" r="6"/>
+          <circle class="route-dot-main" cx="568" cy="34" r="9"/>
+          <text class="route-label" x="54" y="232" text-anchor="middle">TUI</text>
+          <text class="route-day" x="128" y="180" text-anchor="middle">DAG 1</text>
+          <text class="route-day" x="210" y="124" text-anchor="middle">DAG 2</text>
+          <text class="route-day" x="304" y="160" text-anchor="middle">DAG 3</text>
+          <text class="route-day" x="394" y="66" text-anchor="middle">DAG 4</text>
+          <text class="route-day" x="478" y="96" text-anchor="middle">DAG 5</text>
+          <text class="route-day" x="548" y="62" text-anchor="middle">DAG 6</text>
+          <text class="route-label" x="568" y="22" text-anchor="middle">SANTIAGO</text>
+          <text class="route-distance" x="310" y="232" text-anchor="middle" data-i18n="route.map">115 KM / 6 DAGEN</text>
+        </svg>
+        <svg class="home-journey-map" viewBox="0 0 560 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- achtergrond grid lijnen -->
+          <line x1="0" y1="180" x2="560" y2="180" stroke="rgba(247,245,240,0.05)" stroke-width="1"/>
+          <line x1="0" y1="120" x2="560" y2="120" stroke="rgba(247,245,240,0.04)" stroke-width="1"/>
+          <line x1="0" y1="60"  x2="560" y2="60"  stroke="rgba(247,245,240,0.04)" stroke-width="1"/>
+          <!-- route -->
+          <path d="M28 180 C 70 165, 110 130, 168 104 C 226 78, 268 132, 336 96 C 404 60, 448 76, 532 32"
+            stroke="#3d5a3d" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- glow -->
+          <path d="M28 180 C 70 165, 110 130, 168 104 C 226 78, 268 132, 336 96 C 404 60, 448 76, 532 32"
+            stroke="rgba(168,201,140,0.18)" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <!-- tussenstops -->
+          <circle cx="168" cy="104" r="5"   fill="rgba(168,201,140,0.5)"/>
+          <circle cx="336" cy="96"  r="5"   fill="rgba(168,201,140,0.5)"/>
+          <!-- start / einde -->
+          <circle cx="28"  cy="180" r="7.5" fill="#a8c98c"/>
+          <circle cx="532" cy="32"  r="7.5" fill="#a8c98c"/>
+          <!-- labels -->
+          <text x="28"  y="200" fill="rgba(247,245,240,0.5)" font-family="Inter,sans-serif" font-size="11" letter-spacing="2" text-anchor="middle">TUI</text>
+          <text x="532" y="20"  fill="rgba(247,245,240,0.5)" font-family="Inter,sans-serif" font-size="11" letter-spacing="2" text-anchor="middle">SANTIAGO</text>
+          <text x="290" y="200" fill="rgba(247,245,240,0.28)" font-family="Inter,sans-serif" font-size="9.5" letter-spacing="1.5" text-anchor="middle" data-i18n="route.map">115 KM · 6 DAGEN</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- HOME — closing CTA -->
+    <div class="home-closing">
+      <h2 data-i18n="home.closing.h">Loop je<br><em>mee?</em></h2>
+      <p data-i18n="home.closing.p">Of je nu hoofdsponsor wordt, hardware levert, of gewoon het verhaal volgt — er is plek.</p>
+      <div class="actions">
+        <button class="btn" data-i18n="home.closing.cta1" onclick="showPage('sponsoring')" type="button">Word partner →</button>
+        <button class="btn btn-outline" data-i18n="home.closing.cta2" onclick="showPage('verhaal')" type="button">Ons verhaal →</button>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-logo">Back to Being</div>
+      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
+    </footer>
+  </div>
+
+  <!-- ======== PAGE: VERHAAL ======== -->
+  <div class="page" id="page-verhaal">
+
+    <section class="story-hero">
+      <h1 data-i18n="verhaal.h1">Drie founders.<br>E&eacute;n route.<br><em>E&eacute;n missie.</em></h1>
+      <div class="story-hero-foot">
+        <p data-i18n="verhaal.intro1">We werken in tech. We bouwen tools die mensen helpen. Maar ergens vroegen we ons af: wie helpt de mensen die de tools bouwen? En waarom voelt "het kantoor" zo steeds meer als een kooi?</p>
+        <p data-i18n="verhaal.intro2">Back to Being is ons antwoord. Een rit die we zelf nodig hadden — en waarvan we denken dat anderen het verhaal nodig hebben.</p>
+      </div>
+    </section>
+
+    <!-- FOTO 1 — vervang door <img src="camino1.jpg" alt="Camino dag 1"> -->
+    <div class="story-photo-full">
+      <div class="photo-ph">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span data-i18n="verhaal.photo">Foto — vervang door jouw Camino-video of -foto</span>
+      </div>
+    </div>
+
+    <div class="story-body">
+
+      <!-- Hoofdstuk 01: tekst links, foto rechts -->
+      <div class="story-chapter">
+        <div class="ch-content">
+          <div class="ch-meta">
+            <span class="ch-num-big">01</span>
+            <span class="ch-label" data-i18n="verhaal.ch1.label">Hoofdstuk</span>
+          </div>
+          <h3 data-i18n="verhaal.ch1.h">We nemen het kantoor<br><em>naar buiten.</em></h3>
+          <p class="ch-lead" data-i18n="verhaal.ch1.lead">Productief zijn terwijl je beweegt. Een gesprek op een bergpad. Bouwen met je handen vrij.</p>
+          <p data-i18n="verhaal.ch1.p1">Tech-founders zijn de eersten om te zeggen dat AI de wereld beter maakt. Maar in de praktijk: we staren langer dan ooit in schermen, vergaderen meer dan ooit, en noemen het "deep work" als we de hele dag bezig zijn met e-mail.</p>
+          <p data-i18n="verhaal.ch1.p2">Wij denken dat het anders kan. Dat je productief kunt zijn terwijl je beweegt. Dat een gesprek op een bergpad meer oplevert dan een dag vol standups. En dat je een AI-tool kunt bouwen met je handen vrij — spraak, glasses, frisse lucht.</p>
+        </div>
+        <div class="ch-visual">
+          <div class="photo-ph">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span data-i18n="photo.1">Foto 1</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pull-quote 1 -->
+    <div class="story-pullquote">
+      <blockquote data-i18n="verhaal.quote1">Lopen is denken.<br><em>Denken is bouwen.</em></blockquote>
+      <p class="cite" data-i18n="verhaal.quote1.cite">Back to Being · Camino 2026</p>
+    </div>
+
+    <div class="story-body" style="padding-top:0;">
+
+      <!-- Hoofdstuk 02: foto links, tekst rechts (even) -->
+      <div class="story-chapter">
+        <div class="ch-content">
+          <div class="ch-meta">
+            <span class="ch-num-big">02</span>
+            <span class="ch-label" data-i18n="verhaal.ch2.label">Hoofdstuk</span>
+          </div>
+          <h3 data-i18n="verhaal.ch2.h">Een tool voor<br><em>mentale gezondheid.</em></h3>
+          <p class="ch-lead" data-i18n="verhaal.ch2.lead">Wat het wordt, bepalen we samen met MIND. Het gaat om wat zij nodig hebben.</p>
+          <p data-i18n="verhaal.ch2.p1">Stichting MIND zet zich in voor mentale gezondheid in Nederland — jaarlijks bereiken ze miljoenen mensen met informatie, tools en ondersteuning.</p>
+          <p data-i18n="verhaal.ch2.p2">De AI-tool die we bouwen dragen we gratis over. Wat het precies wordt — intern, extern, voor hun gebruikers — bepalen we samen met MIND. Het gaat om wat zij nodig hebben, niet wat wij cool vinden.</p>
+        </div>
+        <div class="ch-visual ch-visual-mind">
+          <img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" />
+        </div>
+      </div>
+
+      <!-- Hoofdstuk 03: tekst links, foto rechts (odd) -->
+      <div class="story-chapter">
+        <div class="ch-content">
+          <div class="ch-meta">
+            <span class="ch-num-big">03</span>
+            <span class="ch-label" data-i18n="verhaal.ch3.label">Hoofdstuk</span>
+          </div>
+          <h3 data-i18n="verhaal.ch3.h">De Camino als<br><em>metafoor.</em></h3>
+          <p class="ch-lead" data-i18n="verhaal.ch3.lead">Elke dag lopen. Elke dag bouwen. Elke avond reflecteren.</p>
+          <p data-i18n="verhaal.ch3.p1">115 kilometer van Tui naar Santiago. De Camino Portugués — een route die je dwingt aanwezig te zijn. Elke dag lopen we, elke dag bouwen we, elke avond reflecteren we.</p>
+          <p data-i18n="verhaal.ch3.p2">Een mini-docu legt het vast — niet als marketing, maar als eerlijk verslag van wat er gebeurt als je tech en natuur combineert. Het eindproduct gaat naar MIND, het verhaal delen we met de wereld.</p>
+        </div>
+        <div class="ch-visual camino-map-wrap" aria-label="Kaart van de Camino-route van Tui naar Santiago de Compostela">
+          <div id="caminoMap" class="camino-map"></div>
+          <div id="caminoDayControls" class="camino-day-controls" aria-label="Bekijk de Camino-route per dag"></div>
+          <button id="caminoActivate" class="camino-activate" type="button" aria-label="Activeer de kaart">
+            <span data-i18n="verhaal.map.activate">Klik om kaart te gebruiken</span>
+          </button>
+          <div class="camino-map-card">
+            <div>
+              <span id="caminoMapLabel" class="eyebrow" data-i18n="verhaal.map.label">De route</span>
+              <strong id="caminoMapTitle" data-i18n="verhaal.map.title">Tui naar Santiago de Compostela</strong>
+            </div>
+            <span id="caminoMapDistance" class="distance" data-i18n="verhaal.map.distance">115 km / 6 dagen</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pull-quote 2 — dark -->
+    <div class="story-pullquote story-pullquote-dark">
+      <blockquote data-i18n="verhaal.quote2">Tech maakt ons mensélijker —<br><em>als je 'm goed inzet.</em></blockquote>
+      <p class="cite" data-i18n="verhaal.quote2.cite">Tui → Santiago · 115 km</p>
+    </div>
+
+    <!-- FILOSOFIE — feature grid redesign -->
+    <section class="philosophy-section">
+      <div class="philosophy-inner">
+        <div class="philosophy-header">
+          <div>
+            <div class="section-label" data-i18n="philo.label">De filosofie</div>
+            <h2 data-i18n="philo.h">Niet bouwen vanachter een bureau,<br>maar <em>lopend.</em></h2>
+          </div>
+          <p data-i18n="philo.intro">Vier dingen die we geloven — en die we bewijzen door ze gewoon te doen.</p>
+        </div>
+        <div class="philosophy-grid">
+          <div class="philo-card">
+            <span class="num">01</span>
+            <span class="text" data-i18n="philo.1">We werken steeds robotachtiger, terwijl AI dat zou moeten oplossen, niet versterken.</span>
+          </div>
+          <div class="philo-card">
+            <span class="num">02</span>
+            <span class="text" data-i18n="philo.2">Mentale gezondheid staat onder druk. Hoog tijd voor een ander gesprek.</span>
+          </div>
+          <div class="philo-card">
+            <span class="num">03</span>
+            <span class="text" data-i18n="philo.3">Beweging maakt creativiteit. Lopen is denken, denken is bouwen.</span>
+          </div>
+          <div class="philo-card">
+            <span class="num">04</span>
+            <span class="text" data-i18n="philo.4">De mini-docu maakt het verhaal blijvend — voor onszelf, voor MIND, voor onze partners.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Story closing — brug naar founders / CTA -->
+    <div class="story-closing">
+      <div>
+        <div class="section-label" data-i18n="verhaal.closing.label">Doe mee</div>
+        <h2 data-i18n="verhaal.closing.h">Een verhaal is leuker<br>met <em>partners.</em></h2>
+      </div>
+      <div>
+        <p data-i18n="verhaal.closing.p">We doen dit niet alleen. Hardware, cash, expertise, een dak boven het hoofd — er is plek voor partners die hetzelfde voelen.</p>
+        <div class="actions">
+          <button class="btn" data-i18n="verhaal.closing.cta1" onclick="showPage('sponsoring')" type="button">Sponsoring →</button>
+          <button class="btn btn-outline" data-i18n="verhaal.closing.cta2" onclick="showPage('contact')" type="button">Contact →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOTO GRID — vervang .photo-ph door <img src="…"> -->
+    <div class="photo-grid">
+      <div class="pg-item"><div class="photo-ph"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span data-i18n="photo.1">Foto 1</span></div></div>
+      <div class="pg-item"><div class="photo-ph"><span data-i18n="photo.2">Foto 2</span></div></div>
+      <div class="pg-item"><div class="photo-ph"><span data-i18n="photo.3">Foto 3</span></div></div>
+      <div class="pg-item"><div class="photo-ph"><span data-i18n="photo.4">Foto 4</span></div></div>
+      <div class="pg-item"><div class="photo-ph"><span data-i18n="photo.5">Foto 5</span></div></div>
+      <div class="pg-item"><div class="photo-ph"><span data-i18n="photo.6">Foto 6</span></div></div>
+    </div>
+
+    <!-- FOUNDERS -->
+    <div class="founders-section">
+      <div class="founders-inner">
+        <div class="founders-header">
+          <div class="section-label" data-i18n="founders.label">De founders</div>
+          <h2 data-i18n="founders.h">De mensen achter<br><em>Back to Being.</em></h2>
+        </div>
+        <div class="founders-grid">
+
+          <div class="founder-card">
+            <div class="founder-photo"><img src="caesar-schoorl.jpg" alt="Caesar Schoorl" loading="lazy" /></div>
+            <div class="founder-name">Caesar Schoorl</div>
+            <div class="founder-role" data-i18n="founders.role1">AI-founder · Amsterdam</div>
+            <p class="founder-bio" data-i18n="founders.bio1">Vul hier de korte bio van Caesar in — wat hij doet, wat hem drijft, en waarom hij meeloopt op de Camino.</p>
+            <a href="https://www.linkedin.com/in/caesar-schoorl-ai/" target="_blank" rel="noopener" class="founder-li">LinkedIn →</a>
+          </div>
+
+          <div class="founder-card">
+            <div class="founder-photo"><img src="stijn-smit.jpg" alt="Stijn Smit" loading="lazy" /></div>
+            <div class="founder-name" data-i18n="founders.name2">Stijn Smit</div>
+            <div class="founder-role" data-i18n="founders.role2">Rol · Amsterdam</div>
+            <p class="founder-bio" data-i18n="founders.bio2">Korte bio — achtergrond, expertise, motivatie om mee te lopen.</p>
+            <a href="https://www.linkedin.com/in/stijn-smit-ai/" target="_blank" rel="noopener" class="founder-li">LinkedIn →</a>
+          </div>
+
+          <div class="founder-card">
+            <div class="founder-photo"><div class="photo-ph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div></div>
+            <div class="founder-name" data-i18n="founders.name3">Max Helmantel</div>
+            <div class="founder-role" data-i18n="founders.role3">Rol · Amsterdam</div>
+            <p class="founder-bio" data-i18n="founders.bio3">Korte bio — achtergrond, expertise, motivatie om mee te lopen.</p>
+            <a href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener" class="founder-li">LinkedIn →</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <section class="story-final-cta">
+      <div>
+        <div class="section-label" data-i18n="verhaal.closing.label">Doe mee</div>
+        <h2 data-i18n="verhaal.closing.h">Partner worden<br>in dit <em>verhaal?</em></h2>
+      </div>
+      <div>
+        <p data-i18n="verhaal.closing.p">We zoeken partners die willen bijdragen met budget, hardware, expertise of bereik. Niet als logo op een shirt, maar als onderdeel van het verhaal.</p>
+        <div class="actions">
+          <button class="btn" data-i18n="verhaal.closing.cta1" onclick="showPage('sponsoring')" type="button">Sponsoring â†’</button>
+          <button class="btn btn-outline" data-i18n="verhaal.closing.cta2" onclick="showPage('contact')" type="button">Contact â†’</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-logo">Back to Being</div>
+      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
+    </footer>
+  </div>
+
+  <!-- ======== PAGE: SPONSORING ======== -->
+  <div class="page" id="page-sponsoring">
+
+    <section class="story-hero">
+      <span class="pill" data-i18n="sponsor.pill">Sponsoring</span>
+      <h1 data-i18n="sponsor.h1">Word jij onze<br><em>partner in dit verhaal?</em></h1>
+      <div class="story-hero-foot">
+        <p data-i18n="sponsor.intro1">Geen logo op een shirt. Cash of in natura — hoe meer partners, hoe groter de impact. Hieronder wat we doen, wat je ervoor terugkrijgt, en in welke vorm partnership past.</p>
+        <p data-i18n="sponsor.intro2">Plekken zijn beperkt: één hoofdsponsor, een handvol co-sponsors, en ruimte voor in-natura partners die meebouwen met hardware, gear of expertise.</p>
+      </div>
+    </section>
+
+    <div class="for-mind-bar">
+      <div class="for-mind-inner">
+        <span class="for-mind-label" data-i18n="formind.label">We bouwen dit voor</span>
+        <img src="mind-logo.webp" alt="Stichting MIND" class="for-mind-logo" loading="lazy" />
+      </div>
+    </div>
+
+    <!-- HET PLAN — uit pitchdeck slide 3 -->
+    <section class="plan-section">
+      <div class="plan-header">
+        <div>
+          <div class="section-label" data-i18n="plan.label">Het plan</div>
+          <h2 data-i18n="plan.h">Lopen. Bouwen.<br><em>Overdragen.</em></h2>
+        </div>
+        <p data-i18n="plan.body">Drie simpele stappen. Geen kantoor, geen vergaderzaal. Wel ritme, reflectie en zichtbaar bouwen — alles vastgelegd in een mini-docu.</p>
+      </div>
+      <div class="plan-rows">
+        <div class="plan-row">
+          <span class="num">01</span>
+          <span class="title"  data-i18n="plan.row1.t">We lopen.</span>
+          <span class="detail" data-i18n="plan.row1.d">115 km in 6 dagen, Tui naar Santiago, 3 rugzakken.</span>
+        </div>
+        <div class="plan-row">
+          <span class="num">02</span>
+          <span class="title"  data-i18n="plan.row2.t">We bouwen onderweg.</span>
+          <span class="detail" data-i18n="plan.row2.d">Live aan de AI-tool werken — handsfree via spraak en smart glasses, camera's leggen het proces vast.</span>
+        </div>
+        <div class="plan-row">
+          <span class="num">03</span>
+          <span class="title"  data-i18n="plan.row3.t">We dragen het over.</span>
+          <span class="detail" data-i18n="plan.row3.d">Tool gratis naar stichting MIND, plus een mini-docu.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- WAT KRIJG JE TERUG — uit pitchdeck slide 7 -->
+    <section class="return-section">
+      <div class="return-inner">
+        <div class="return-header">
+          <div class="section-label" data-i18n="return.label">Wat krijg je terug</div>
+          <h2 data-i18n="return.h">Geen logo op een shirt.<br><em>Vier dingen</em> die ergens om gaan.</h2>
+          <p data-i18n="return.body">Eentje die je nergens anders krijgt: je team mee naar buiten. De rest is content, bereik en een verhaal dat blijft hangen.</p>
+        </div>
+        <div class="return-rows">
+          <div class="return-row">
+            <span class="num">01</span>
+            <span class="title"  data-i18n="return.row1.t">Het kantoor naar buiten voor jouw team <span class="title-tag" data-i18n="return.row1.tag">uniek</span></span>
+            <span class="detail" data-i18n="return.row1.d">Walking workshop + AI session bij jullie. Wij brengen Back to Being naar je bedrijf.</span>
+          </div>
+          <div class="return-row">
+            <span class="num">02</span>
+            <span class="title"  data-i18n="return.row2.t">Mini-docu met merkvermelding</span>
+            <span class="detail" data-i18n="return.row2.d">Distributie via TikTok, Instagram en YouTube. Prominent verbonden aan een verhaal dat blijft hangen.</span>
+          </div>
+          <div class="return-row">
+            <span class="num">03</span>
+            <span class="title"  data-i18n="return.row3.t">Earned media</span>
+            <span class="detail" data-i18n="return.row3.d">We pitchen het verhaal actief richting podcasts, kranten en eigen netwerk. Jouw merk reist mee.</span>
+          </div>
+          <div class="return-row">
+            <span class="num">04</span>
+            <span class="title"  data-i18n="return.row4.t">Content voor jouw kanalen</span>
+            <span class="detail" data-i18n="return.row4.d">Beelden, quotes en updates, klaar om te delen op je eigen socials.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPONSORTIERS — uit pitchdeck slide 6, ZONDER bedragen -->
+    <section class="tiers-section">
+      <div class="tiers-header">
+        <h2 data-i18n="tiers.h">Drie manieren<br>om <em>mee te lopen.</em></h2>
+        <p data-i18n="tiers.body">Cash of in natura. Hoe meer partners, hoe groter de impact.</p>
+      </div>
+
+      <div class="tiers-grid">
+        <div class="tier tier-main">
+          <span class="tier-featured" data-i18n="tier1.featured">Meest impact</span>
+          <span class="tier-tag"      data-i18n="tier1.tag">Hoofdsponsor</span>
+          <div class="tier-amount"    data-i18n="tier1.amount">Volledig</div>
+          <div class="tier-spots"     data-i18n="tier1.spots">Volledige partnership</div>
+          <ul class="tier-perks">
+            <li data-i18n="tier1.p1">Naam in titel mini-docu ("presented by")</li>
+            <li data-i18n="tier1.p2">Walking workshop + AI session bij jouw team</li>
+            <li data-i18n="tier1.p3">Custom content pakket: beelden, quotes, edits</li>
+            <li data-i18n="tier1.p4">Merkvermelding in earned media campagne</li>
+            <li data-i18n="tier1.p5">Spreker bij debrief event na de Camino</li>
+          </ul>
+        </div>
+
+        <div class="tier">
+          <span class="tier-tag"   data-i18n="tier2.tag">Co-sponsor</span>
+          <div class="tier-amount" data-i18n="tier2.amount">Verbonden</div>
+          <div class="tier-spots"  data-i18n="tier2.spots">Aan het verhaal verbonden</div>
+          <ul class="tier-perks">
+            <li data-i18n="tier2.p1">Logo en vermelding in mini-docu</li>
+            <li data-i18n="tier2.p2">Plek bij gezamenlijke walking workshop</li>
+            <li data-i18n="tier2.p3">Gedeeld content pakket voor eigen kanalen</li>
+            <li data-i18n="tier2.p4">Co-vermelding in earned media</li>
+          </ul>
+        </div>
+
+        <div class="tier">
+          <span class="tier-tag"   data-i18n="tier3.tag">Supporter</span>
+          <div class="tier-amount" data-i18n="tier3.amount">In natura</div>
+          <div class="tier-spots"  data-i18n="tier3.spots">Goederen of diensten</div>
+          <div class="tier-examples" data-i18n="tier3.examples">
+            <strong>Denk aan</strong>
+            Hardware (<em>MacBooks, smart glasses</em>), AI-credits, gear, verblijf. <em>Substantiële bijdragen krijgen co- of hoofdsponsor perks.</em>
+          </div>
+          <ul class="tier-perks">
+            <li data-i18n="tier3.p1">Product zichtbaar in beeld waar passend</li>
+            <li data-i18n="tier3.p2">Vermelding in aftiteling mini-docu</li>
+            <li data-i18n="tier3.p3">Eerste toegang tot docu en updates</li>
+            <li data-i18n="tier3.p4">Vermelding in updates en social content</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Wish-sponsors, eerlijk gelabeld als gesprekken -->
+      <div class="partners-strip">
+        <div class="partners-label" data-i18n="partners.label">In gesprek met</div>
+        <div class="partners-names">
+          <span>Polarsteps</span>
+          <span class="partner-sep">·</span>
+          <span>Coolblue</span>
+          <span class="partner-sep">·</span>
+          <span>House of Founders</span>
+        </div>
+      </div>
+
+      <div class="tiers-cta">
+        <p data-i18n="tiers.cta.text">Plekken zijn beperkt. Eén hoofdsponsor, een handvol co-sponsors, ruimte voor in-natura partners.</p>
+        <button class="btn" data-i18n="tiers.cta.btn" onclick="showPage('contact')" type="button">Word partner →</button>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-logo">Back to Being</div>
+      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
+    </footer>
+  </div>
+
+  <!-- ======== PAGE: CONTACT ======== -->
+  <div class="page" id="page-contact">
+    <div class="contact-page">
+
+      <section class="contact-hero">
+        <div class="contact-top">
+          <div>
+            <span class="contact-kicker" data-i18n="contact.pill">Contact</span>
+            <h1 data-i18n="contact.h1">Laten we<br><em>beginnen.</em></h1>
+            <p class="contact-lead" data-i18n="contact.lead">Een partnership hoeft geen lang traject te zijn. Stuur ons een mail of bel Caesar direct; dan plannen we een korte check om te zien waar jullie kunnen instappen.</p>
+            <div class="contact-actions">
+              <a class="btn" id="mailtoBtn" data-i18n="contact.btn" href="mailto:Caesar.schoorl@gmail.com?subject=Back%20to%20Being%3A%2010%20min%20koffie&body=Hi%2C%0A%0AIk%20wil%20graag%20een%20kort%20gesprek%20over%20een%20partnerschap.%0A%0AHartelijke%20groet">Mail ons direct &rarr;</a>
+              <a class="btn btn-outline" data-i18n="contact.call" href="tel:+31683032377">Bel Caesar</a>
+            </div>
+          </div>
+
+          <aside class="contact-primary" aria-label="Korte contactintro">
+            <div class="contact-status" data-i18n="contact.status">Zomer 2026 / Camino Portugues</div>
+            <div>
+              <div class="contact-card-title" data-i18n="contact.card.title">10 minuten is genoeg.</div>
+              <p class="contact-card-text" data-i18n="contact.card.text">We vertellen wat we bouwen, wat MIND eraan heeft en welke partnerrol logisch is voor jullie merk.</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-left">
+            <div class="contact-section-head">
+              <div class="section-label" data-i18n="contact.details.label">Direct contact</div>
+              <p class="contact-note" data-i18n="contact.details.note">Meestal reageren we dezelfde werkdag.</p>
+            </div>
+            <ul class="contact-rows">
+              <li class="contact-row">
+                <span class="cr-label" data-i18n="contact.label.mail">Mail</span>
+                <span class="cr-value"><a href="mailto:Caesar.schoorl@gmail.com">Caesar.schoorl@gmail.com</a></span>
+              </li>
+              <li class="contact-row">
+                <span class="cr-label" data-i18n="contact.label.tel">Tel</span>
+                <span class="cr-value"><a href="tel:+31683032377">+31 6 83032377</a></span>
+              </li>
+              <li class="contact-row">
+                <span class="cr-label" data-i18n="contact.label.web">Web</span>
+                <span class="cr-value">backtobeing.tech</span>
+              </li>
+              <li class="contact-row">
+                <span class="cr-label" data-i18n="contact.label.goal">Doel</span>
+                <span class="cr-value cr-value-with-icon">
+                  <img src="mind-logo.webp" alt="" class="mind-icon" aria-hidden="true" loading="lazy" />
+                  <span data-i18n="contact.value.goal">Voor stichting MIND</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="contact-right">
+            <div class="contact-section-head">
+              <div class="section-label" data-i18n="contact.founders.label">De founders</div>
+              <p class="contact-note" data-i18n="contact.founders.note">Drie AI-founders onderweg naar Santiago.</p>
+            </div>
+
+            <div class="founder-list">
+              <div class="c-founder">
+                <div class="c-avatar"><img src="caesar-schoorl.jpg" alt="Caesar Schoorl" loading="lazy" /></div>
+                <div>
+                  <div class="c-name">Caesar Schoorl</div>
+                  <div class="c-role" data-i18n="contact.role1">AI-founder</div>
+                </div>
+                <a href="https://www.linkedin.com/in/caesar-schoorl-ai/" target="_blank" rel="noopener" class="c-li">LinkedIn &rarr;</a>
+              </div>
+
+              <div class="c-founder">
+                <div class="c-avatar"><img src="stijn-smit.jpg" alt="Stijn Smit" loading="lazy" /></div>
+                <div>
+                  <div class="c-name" data-i18n="contact.name2">Stijn Smit</div>
+                  <div class="c-role" data-i18n="contact.role2">AI-founder</div>
+                </div>
+                <a href="https://www.linkedin.com/in/stijn-smit-ai/" target="_blank" rel="noopener" class="c-li">LinkedIn &rarr;</a>
+              </div>
+
+              <div class="c-founder">
+                <div class="c-avatar"><div class="photo-ph" aria-hidden="true">M</div></div>
+                <div>
+                  <div class="c-name" data-i18n="contact.name3">Max Helmantel</div>
+                  <div class="c-role" data-i18n="contact.role3">AI-founder</div>
+                </div>
+                <a href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener" class="c-li">LinkedIn &rarr;</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <div class="route-strip">
+        <div class="route-inner">
+          <div class="route-text">
+            <div class="section-label" data-i18n="route.label">De route</div>
+            <blockquote data-i18n="route.quote">
+              "Wij laten zien dat tech ons mensélijker kan maken — als je 'm op de goede manier inzet."
+            </blockquote>
+          </div>
+          <svg class="route-svg" viewBox="0 0 320 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <line x1="16" y1="94" x2="304" y2="94" stroke="rgba(247,245,240,0.08)" stroke-width="1"/>
+            <path d="M16 94 C 50 85, 72 65, 110 52 C 148 39, 170 68, 210 48 C 250 28, 272 40, 304 16"
+              stroke="#3d5a3d" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="16"  cy="94" r="4.5" fill="#a8c98c"/>
+            <circle cx="110" cy="52" r="3"   fill="rgba(168,201,140,0.4)"/>
+            <circle cx="210" cy="48" r="3"   fill="rgba(168,201,140,0.4)"/>
+            <circle cx="304" cy="16" r="4.5" fill="#a8c98c"/>
+            <text x="16"  y="108" fill="rgba(247,245,240,0.38)" font-family="Inter,sans-serif" font-size="8.5" letter-spacing="1.5">TUI</text>
+            <text x="272" y="11"  fill="rgba(247,245,240,0.38)" font-family="Inter,sans-serif" font-size="8.5" letter-spacing="1.5">SANTIAGO</text>
+            <text x="144" y="108" fill="rgba(247,245,240,0.25)" font-family="Inter,sans-serif" font-size="8" letter-spacing="1" data-i18n="route.map">115 KM · 6 DAGEN</text>
+          </svg>
+        </div>
+      </div>
+
+      <p class="closer-signoff" data-i18n="closer">
+        <strong>De wereld als ons kantoor</strong> — we zien je onderweg. Zomer 2026.
+      </p>
+
+      <footer class="site-footer">
+        <div class="footer-logo">Back to Being</div>
+        <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.js"></script>
+  <script>
+    /* ============================================================
+       i18n DICTIONARY
+       Hero h1 ("The world as our office.") staat hardcoded in HTML
+       en blijft Engels in beide talen.
+       ============================================================ */
+    const I18N = {
+      nl: {
+        // meta
+        'meta.desc':        'Drie AI-founders lopen 115 km over de Camino en bouwen onderweg een AI-tool voor mentale gezondheid — voor stichting MIND.',
+        'meta.descShort':   'Drie AI-founders lopen 115 km over de Camino en bouwen onderweg een AI-tool voor mentale gezondheid.',
+        'meta.locale':      'nl_NL',
+
+        // nav
+        'nav.story':        'Ons verhaal',
+        'nav.sponsorship':  'Sponsoring',
+        'nav.contact':      'Contact',
+
+        // hero
+        'hero.tagline':     'Drie AI-founders lopen 115 km over de Camino en bouwen onderweg een AI-tool voor mentale gezondheid.',
+        'hero.meta':        '115 km &nbsp;·&nbsp; 6 dagen<br>Back to Being<br>Camino de Santiago',
+
+        // intro
+        'intro.heading':    'Drie founders. Eén route.<br><em>Eén AI-tool</em> voor MIND.',
+        'intro.body':       'We zijn drie AI-founders uit Amsterdam. Deze zomer lopen we 115 km van Tui naar Santiago en bouwen onderweg een AI-tool die we gratis overdragen aan stichting MIND. Geen bureau, geen vergaderzaal — beweging maakt creativiteit, lopen is denken, denken is bouwen.',
+        'intro.cta1':       'Ons verhaal →',
+        'intro.cta2':       'Sponsoring →',
+
+        // stats
+        'stats.km':         'kilometer<br>Tui → Santiago',
+        'stats.days':       'dagen<br>on the road',
+        'stats.founders':   'AI-founders<br>Amsterdam',
+        'stats.tool':       'AI-tool<br>voor MIND',
+
+        // footer
+        'footer.right':     'backtobeing.tech &nbsp;·&nbsp; Zomer 2026',
+
+        // verhaal
+        'verhaal.h1':       'Drie founders.<br>E&eacute;n route.<br><em>E&eacute;n missie.</em>',
+        'verhaal.intro1':   'We werken in tech. We bouwen tools die mensen helpen. Maar ergens vroegen we ons af: wie helpt de mensen die de tools bouwen? En waarom voelt "het kantoor" zo steeds meer als een kooi?',
+        'verhaal.intro2':   'Back to Being is ons antwoord. Een rit die we zelf nodig hadden — en waarvan we denken dat anderen het verhaal nodig hebben.',
+        'verhaal.photo':    'Foto — vervang door jouw Camino-video of -foto',
+        'verhaal.ch1.label':'Hoofdstuk',
+        'verhaal.ch1.h':    'We nemen het kantoor<br><em>naar buiten.</em>',
+        'verhaal.ch1.lead': 'Productief zijn terwijl je beweegt. Een gesprek op een bergpad. Bouwen met je handen vrij.',
+        'verhaal.ch1.p1':   'Tech-founders zijn de eersten om te zeggen dat AI de wereld beter maakt. Maar in de praktijk: we staren langer dan ooit in schermen, vergaderen meer dan ooit, en noemen het "deep work" als we de hele dag bezig zijn met e-mail.',
+        'verhaal.ch1.p2':   'Wij denken dat het anders kan. Dat je productief kunt zijn terwijl je beweegt. Dat een gesprek op een bergpad meer oplevert dan een dag vol standups. En dat je een AI-tool kunt bouwen met je handen vrij — spraak, glasses, frisse lucht.',
+        'verhaal.ch2.label':'Hoofdstuk',
+        'verhaal.ch2.h':    'Een tool voor<br><em>mentale gezondheid.</em>',
+        'verhaal.ch2.lead': 'Wat het wordt, bepalen we samen met MIND. Het gaat om wat zij nodig hebben.',
+        'verhaal.ch2.p1':   'Stichting MIND zet zich in voor mentale gezondheid in Nederland — jaarlijks bereiken ze miljoenen mensen met informatie, tools en ondersteuning.',
+        'verhaal.ch2.p2':   'De AI-tool die we bouwen dragen we gratis over. Wat het precies wordt — intern, extern, voor hun gebruikers — bepalen we samen met MIND. Het gaat om wat zij nodig hebben, niet wat wij cool vinden.',
+        'verhaal.ch3.label':'Hoofdstuk',
+        'verhaal.ch3.h':    'De Camino als<br><em>metafoor.</em>',
+        'verhaal.ch3.lead': 'Elke dag lopen. Elke dag bouwen. Elke avond reflecteren.',
+        'verhaal.ch3.p1':   '115 kilometer van Tui naar Santiago. De Camino Portugués — een route die je dwingt aanwezig te zijn. Elke dag lopen we, elke dag bouwen we, elke avond reflecteren we.',
+        'verhaal.ch3.p2':   'Een mini-docu legt het vast — niet als marketing, maar als eerlijk verslag van wat er gebeurt als je tech en natuur combineert. Het eindproduct gaat naar MIND, het verhaal delen we met de wereld.',
+        'verhaal.map.label':'De route',
+        'verhaal.map.title':'Tui naar Santiago de Compostela',
+        'verhaal.map.distance':'115 km / 6 dagen',
+        'verhaal.quote1':     'Lopen is denken.<br><em>Denken is bouwen.</em>',
+        'verhaal.quote1.cite':'Back to Being · Camino 2026',
+        'verhaal.quote2':     'Tech maakt ons mensélijker —<br><em>als je \'m goed inzet.</em>',
+        'verhaal.quote2.cite':'Tui → Santiago · 115 km',
+        'verhaal.closing.label': 'Doe mee',
+        'verhaal.closing.h':     'Een verhaal is leuker<br>met <em>partners.</em>',
+        'verhaal.closing.p':     'We doen dit niet alleen. Hardware, cash, expertise, een dak boven het hoofd — er is plek voor partners die hetzelfde voelen.',
+        'verhaal.closing.cta1':  'Sponsoring →',
+        'verhaal.closing.cta2':  'Contact →',
+
+        // home additions
+        'home.tease.label':   'Het verhaal',
+        'home.tease.h':       'Een rit die we zelf<br><em>nodig hadden.</em>',
+        'home.tease.p':       'We werken in tech, maar we voelden dat het kantoor steeds meer een kooi werd. Back to Being is ons antwoord: drie founders, één route, één AI-tool voor mentale gezondheid.',
+        'home.tease.cta':     'Lees het hele verhaal →',
+        'home.journey.label': 'De route',
+        'home.journey.h':     '115 km van Tui<br>naar <em>Santiago.</em>',
+        'home.journey.p':     'Zes dagen lopen op de Camino Portugués. Geen vergaderzaal, geen bureau — alleen het pad, drie founders, smart glasses en de tijd om iets te bouwen dat ertoe doet.',
+        'home.journey.stat.km.v':    '115',
+        'home.journey.stat.km.l':    'kilometer',
+        'home.journey.stat.days.v':  '6',
+        'home.journey.stat.days.l':  'dagen',
+        'home.journey.stat.start.v': 'Tui',
+        'home.journey.stat.start.l': 'start',
+        'home.journey.stat.end.v':   'Santiago',
+        'home.journey.stat.end.l':   'finish',
+        'home.closing.h':    'Loop je<br><em>mee?</em>',
+        'home.closing.p':    'Of je nu hoofdsponsor wordt, hardware levert, of gewoon het verhaal volgt — er is plek.',
+        'home.closing.cta1': 'Word partner →',
+        'home.closing.cta2': 'Ons verhaal →',
+
+        // philosophy
+        'philo.label':      'De filosofie',
+        'philo.h':          'Niet bouwen vanachter een bureau,<br>maar <em>lopend.</em>',
+        'philo.intro':      'Vier dingen die we geloven — en die we bewijzen door ze gewoon te doen.',
+        'philo.1':          'We werken steeds robotachtiger, terwijl AI dat zou moeten oplossen, niet versterken.',
+        'philo.2':          'Mentale gezondheid staat onder druk. Hoog tijd voor een ander gesprek.',
+        'philo.3':          'Beweging maakt creativiteit. Lopen is denken, denken is bouwen.',
+        'philo.4':          'De mini-docu maakt het verhaal blijvend — voor onszelf, voor MIND, voor onze partners.',
+
+        // photos placeholder
+        'photo.1':          'Foto 1',
+        'photo.2':          'Foto 2',
+        'photo.3':          'Foto 3',
+        'photo.4':          'Foto 4',
+        'photo.5':          'Foto 5',
+        'photo.6':          'Foto 6',
+
+        // founders
+        'founders.label':   'De founders',
+        'founders.h':       'De mensen achter<br><em>Back to Being.</em>',
+        'founders.role1':   'AI-founder · Amsterdam',
+        'founders.bio1':    'Vul hier de korte bio van Caesar in — wat hij doet, wat hem drijft, en waarom hij meeloopt op de Camino.',
+        'founders.name2':   'Stijn Smit',
+        'founders.role2':   'Rol · Amsterdam',
+        'founders.bio2':    'Korte bio — achtergrond, expertise, motivatie om mee te lopen.',
+        'founders.name3':   'Max Helmantel',
+        'founders.role3':   'Rol · Amsterdam',
+        'founders.bio3':    'Korte bio — achtergrond, expertise, motivatie om mee te lopen.',
+
+        // sponsor
+        'sponsor.pill':     'Sponsoring',
+        'sponsor.h1':       'Word jij onze<br><em>partner in dit verhaal?</em>',
+        'sponsor.intro1':   'Geen logo op een shirt. Cash of in natura — hoe meer partners, hoe groter de impact. Hieronder wat we doen, wat je ervoor terugkrijgt, en in welke vorm partnership past.',
+        'sponsor.intro2':   'Plekken zijn beperkt: één hoofdsponsor, een handvol co-sponsors, en ruimte voor in-natura partners die meebouwen met hardware, gear of expertise.',
+        'formind.label':    'We bouwen dit voor',
+
+        // plan
+        'plan.label':       'Het plan',
+        'plan.h':           'Lopen. Bouwen.<br><em>Overdragen.</em>',
+        'plan.body':        'Drie simpele stappen. Geen kantoor, geen vergaderzaal. Wel ritme, reflectie en zichtbaar bouwen — alles vastgelegd in een mini-docu.',
+        'plan.row1.t':      'We lopen.',
+        'plan.row1.d':      '115 km in 6 dagen, Tui naar Santiago, 3 rugzakken.',
+        'plan.row2.t':      'We bouwen onderweg.',
+        'plan.row2.d':      "Live aan de AI-tool werken — handsfree via spraak en smart glasses, camera's leggen het proces vast.",
+        'plan.row3.t':      'We dragen het over.',
+        'plan.row3.d':      'Tool gratis naar stichting MIND, plus een mini-docu.',
+
+        // return
+        'return.label':     'Wat krijg je terug',
+        'return.h':         'Geen logo op een shirt.<br><em>Vier dingen</em> die ergens om gaan.',
+        'return.body':      'Eentje die je nergens anders krijgt: je team mee naar buiten. De rest is content, bereik en een verhaal dat blijft hangen.',
+        'return.row1.t':    'Het kantoor naar buiten voor jouw team <span class="title-tag">uniek</span>',
+        'return.row1.tag':  'uniek',
+        'return.row1.d':    'Walking workshop + AI session bij jullie. Wij brengen Back to Being naar je bedrijf.',
+        'return.row2.t':    'Mini-docu met merkvermelding',
+        'return.row2.d':    'Distributie via TikTok, Instagram en YouTube. Prominent verbonden aan een verhaal dat blijft hangen.',
+        'return.row3.t':    'Earned media',
+        'return.row3.d':    'We pitchen het verhaal actief richting podcasts, kranten en eigen netwerk. Jouw merk reist mee.',
+        'return.row4.t':    'Content voor jouw kanalen',
+        'return.row4.d':    'Beelden, quotes en updates, klaar om te delen op je eigen socials.',
+
+        // tiers
+        'tiers.h':          'Drie manieren<br>om <em>mee te lopen.</em>',
+        'tiers.body':       'Cash of in natura. Hoe meer partners, hoe groter de impact.',
+        'tier1.featured':   'Meest impact',
+        'tier1.tag':        'Hoofdsponsor',
+        'tier1.amount':     'Volledig',
+        'tier1.spots':      'Volledige partnership',
+        'tier1.p1':         'Naam in titel mini-docu ("presented by")',
+        'tier1.p2':         'Walking workshop + AI session bij jouw team',
+        'tier1.p3':         'Custom content pakket: beelden, quotes, edits',
+        'tier1.p4':         'Merkvermelding in earned media campagne',
+        'tier1.p5':         'Spreker bij debrief event na de Camino',
+        'tier2.tag':        'Co-sponsor',
+        'tier2.amount':     'Verbonden',
+        'tier2.spots':      'Aan het verhaal verbonden',
+        'tier2.p1':         'Logo en vermelding in mini-docu',
+        'tier2.p2':         'Plek bij gezamenlijke walking workshop',
+        'tier2.p3':         'Gedeeld content pakket voor eigen kanalen',
+        'tier2.p4':         'Co-vermelding in earned media',
+        'tier3.tag':        'Supporter',
+        'tier3.amount':     'In natura',
+        'tier3.spots':      'Goederen of diensten',
+        'tier3.examples':   '<strong>Denk aan</strong>Hardware (<em>MacBooks, smart glasses</em>), AI-credits, gear, verblijf. <em>Substantiële bijdragen krijgen co- of hoofdsponsor perks.</em>',
+        'tier3.p1':         'Product zichtbaar in beeld waar passend',
+        'tier3.p2':         'Vermelding in aftiteling mini-docu',
+        'tier3.p3':         'Eerste toegang tot docu en updates',
+        'tier3.p4':         'Vermelding in updates en social content',
+
+        'partners.label':   'In gesprek met',
+        'tiers.cta.text':   'Plekken zijn beperkt. Eén hoofdsponsor, een handvol co-sponsors, ruimte voor in-natura partners.',
+        'tiers.cta.btn':    'Word partner →',
+
+        // contact
+        'contact.pill':         'Contact',
+        'contact.h1':           'Laten we<br><em>beginnen.</em>',
+        'contact.lead':         'Een partnership hoeft geen lang traject te zijn. Stuur ons een mail of bel Caesar direct; dan plannen we een korte check om te zien waar jullie kunnen instappen.',
+        'contact.call':         'Bel Caesar',
+        'contact.status':       'Zomer 2026 / Camino Portugues',
+        'contact.card.title':   '10 minuten is genoeg.',
+        'contact.card.text':    'We vertellen wat we bouwen, wat MIND eraan heeft en welke partnerrol logisch is voor jullie merk.',
+        'contact.details.label':'Direct contact',
+        'contact.details.note': 'Meestal reageren we dezelfde werkdag.',
+        'contact.label.mail':   'Mail',
+        'contact.label.tel':    'Tel',
+        'contact.label.web':    'Web',
+        'contact.label.goal':   'Doel',
+        'contact.value.goal':   'Voor stichting MIND',
+        'contact.btn':          'Mail ons direct &rarr;',
+        'contact.btn.href':     'mailto:Caesar.schoorl@gmail.com?subject=Back%20to%20Being%3A%2010%20min%20koffie&body=Hi%2C%0A%0AIk%20wil%20graag%20een%20kort%20gesprek%20over%20een%20partnerschap.%0A%0AHartelijke%20groet',
+        'contact.founders.label': 'De founders',
+        'contact.founders.note': 'Drie AI-founders onderweg naar Santiago.',
+        'contact.role1':        'AI-founder',
+        'contact.name2':        'Stijn Smit',
+        'contact.role2':        'AI-founder',
+        'contact.name3':        'Max Helmantel',
+        'contact.role3':        'AI-founder',
+
+        // route + closer
+        'route.label':      'De route',
+        'route.quote':      '"Wij laten zien dat tech ons mensélijker kan maken — als je \'m op de goede manier inzet."',
+        'route.map':        '115 KM · 6 DAGEN',
+        'closer':           '<strong>De wereld als ons kantoor</strong> — we zien je onderweg. Zomer 2026.'
+      },
+
+      en: {
+        // meta
+        'meta.desc':        'Three AI founders walk 115 km of the Camino and build an AI tool for mental health along the way — for the MIND foundation.',
+        'meta.descShort':   'Three AI founders walk 115 km of the Camino and build an AI tool for mental health along the way.',
+        'meta.locale':      'en_US',
+
+        // nav
+        'nav.story':        'Our story',
+        'nav.sponsorship':  'Sponsorship',
+        'nav.contact':      'Contact',
+
+        // hero (tagline + meta)
+        'hero.tagline':     'Three AI founders walking 115 km of the Camino — building an AI tool for mental health along the way.',
+        'hero.meta':        '115 km &nbsp;·&nbsp; 6 days<br>Back to Being<br>Camino de Santiago',
+
+        // intro
+        'intro.heading':    'Three founders. One route.<br><em>One AI tool</em> for MIND.',
+        'intro.body':       "We're three AI founders from Amsterdam. This summer we're walking 115 km from Tui to Santiago while building an AI tool along the way, which we'll hand over to the MIND foundation for free. The route becomes our workspace. Movement sparks creativity. Walking is thinking, thinking is building.",
+        'intro.cta1':       'Our story →',
+        'intro.cta2':       'Sponsorship →',
+
+        // stats
+        'stats.km':         'kilometers<br>Tui → Santiago',
+        'stats.days':       'days<br>on the road',
+        'stats.founders':   'AI founders<br>Amsterdam',
+        'stats.tool':       'AI tool<br>for MIND',
+
+        // footer
+        'footer.right':     'backtobeing.tech &nbsp;·&nbsp; Summer 2026',
+
+        // verhaal
+        'verhaal.h1':       'Three founders.<br>One route.<br><em>One mission.</em>',
+        'verhaal.intro1':   'We work in tech. We build tools that help people. But somewhere along the way we started wondering: who helps the people building the tools? And why does "the office" feel more and more like a cage?',
+        'verhaal.intro2':   'Back to Being is our answer. A trip we needed ourselves — and a story we think others need to hear.',
+        'verhaal.photo':    'Photo — replace with your Camino video or photo',
+        'verhaal.ch1.label':'Chapter',
+        'verhaal.ch1.h':    "We're taking the office<br><em>outside.</em>",
+        'verhaal.ch1.lead': 'Productive while moving. A conversation on a mountain trail. Building hands-free.',
+        'verhaal.ch1.p1':   'Tech founders are the first to say AI is making the world better. In reality: we stare at screens longer than ever, meet more than ever, and call it "deep work" when we spend the whole day on email.',
+        'verhaal.ch1.p2':   "We think it can be different. That you can be productive while moving. That a conversation on a mountain trail beats a day full of standups. And that you can build an AI tool hands-free — voice, smart glasses, fresh air.",
+        'verhaal.ch2.label':'Chapter',
+        'verhaal.ch2.h':    'A tool for<br><em>mental health.</em>',
+        'verhaal.ch2.lead': "What it becomes, we figure out together with MIND. It's about what they need.",
+        'verhaal.ch2.p1':   'The MIND foundation works on mental health in the Netherlands — every year, they reach millions of people with information, tools and support.',
+        'verhaal.ch2.p2':   "The AI tool we're building, we hand over for free. What it becomes exactly — internal, external, for their users — we figure out together with MIND. It's about what they need, not what we think is cool.",
+        'verhaal.ch3.label':'Chapter',
+        'verhaal.ch3.h':    'The Camino as<br><em>metaphor.</em>',
+        'verhaal.ch3.lead': 'Every day we walk. Every day we build. Every evening we reflect.',
+        'verhaal.ch3.p1':   '115 kilometers from Tui to Santiago. The Camino Portugués — a route that forces you to be present. Every day we walk, every day we build, every evening we reflect.',
+        'verhaal.ch3.p2':   'A mini-doc captures it — not as marketing, but as an honest record of what happens when you combine tech and nature. The end product goes to MIND. The story, we share with the world.',
+        'verhaal.map.label':'The route',
+        'verhaal.map.title':'Tui to Santiago de Compostela',
+        'verhaal.map.distance':'115 km / 6 days',
+        'verhaal.quote1':     'Walking is thinking.<br><em>Thinking is building.</em>',
+        'verhaal.quote1.cite':'Back to Being · Camino 2026',
+        'verhaal.quote2':     'Tech can make us more human —<br><em>if you use it right.</em>',
+        'verhaal.quote2.cite':'Tui → Santiago · 115 km',
+        'verhaal.closing.label': 'Join us',
+        'verhaal.closing.h':     'A story is better<br>with <em>partners.</em>',
+        'verhaal.closing.p':     "We don't do this alone. Hardware, cash, expertise, a place to sleep — there's room for partners who feel the same way.",
+        'verhaal.closing.cta1':  'Sponsorship →',
+        'verhaal.closing.cta2':  'Contact →',
+
+        // home additions
+        'home.tease.label':   'The story',
+        'home.tease.h':       'A trip we<br><em>needed ourselves.</em>',
+        'home.tease.p':       "We work in tech, but we felt the office becoming more of a cage. Back to Being is our answer: three founders, one route, one AI tool for mental health.",
+        'home.tease.cta':     'Read the whole story →',
+        'home.journey.label': 'The route',
+        'home.journey.h':     '115 km from Tui<br>to <em>Santiago.</em>',
+        'home.journey.p':     "Six days on the Camino Portugués. No meeting room, no desk — just the path, three founders, smart glasses and time to build something that matters.",
+        'home.journey.stat.km.v':    '115',
+        'home.journey.stat.km.l':    'kilometers',
+        'home.journey.stat.days.v':  '6',
+        'home.journey.stat.days.l':  'days',
+        'home.journey.stat.start.v': 'Tui',
+        'home.journey.stat.start.l': 'start',
+        'home.journey.stat.end.v':   'Santiago',
+        'home.journey.stat.end.l':   'finish',
+        'home.closing.h':    'Will you<br><em>walk with us?</em>',
+        'home.closing.p':    "Whether you become a headline sponsor, ship hardware, or just follow the story, there's a spot.",
+        'home.closing.cta1': 'Become a partner →',
+        'home.closing.cta2': 'Our story →',
+
+        // philosophy
+        'philo.label':      'The philosophy',
+        'philo.h':          'Not building behind a desk —<br>but <em>on foot.</em>',
+        'philo.intro':      'Four things we believe — and prove by simply doing them.',
+        'philo.1':          'We work more robotically every year. AI was supposed to fix that, not amplify it.',
+        'philo.2':          'Mental health is under pressure. Time for a different conversation.',
+        'philo.3':          'Movement sparks creativity. Walking is thinking, thinking is building.',
+        'philo.4':          'The mini-doc makes the story last — for us, for MIND, for our partners.',
+
+        // photos
+        'photo.1':          'Photo 1',
+        'photo.2':          'Photo 2',
+        'photo.3':          'Photo 3',
+        'photo.4':          'Photo 4',
+        'photo.5':          'Photo 5',
+        'photo.6':          'Photo 6',
+
+        // founders
+        'founders.label':   'The founders',
+        'founders.h':       'The people behind<br><em>Back to Being.</em>',
+        'founders.role1':   'AI founder · Amsterdam',
+        'founders.bio1':    "Short bio for Caesar — what he does, what drives him, and why he's walking the Camino.",
+        'founders.name2':   'Stijn Smit',
+        'founders.role2':   'Role · Amsterdam',
+        'founders.bio2':    'Short bio — background, expertise, why they joined the walk.',
+        'founders.name3':   'Max Helmantel',
+        'founders.role3':   'Role · Amsterdam',
+        'founders.bio3':    'Short bio — background, expertise, why they joined the walk.',
+
+        // sponsor
+        'sponsor.pill':     'Sponsorship',
+        'sponsor.h1':       'Want to be part<br>of the <em>story?</em>',
+        'sponsor.intro1':   "No logo on a shirt. Cash or in kind — more partners, more impact. Below: what we do, what you get back, and what a partnership can look like.",
+        'sponsor.intro2':   'Spots are limited: one headline sponsor, a handful of co-sponsors, plus room for in-kind partners chipping in with hardware, gear or expertise.',
+        'formind.label':    "We're building this for",
+
+        // plan
+        'plan.label':       'The plan',
+        'plan.h':           'Walk. Build.<br><em>Hand it over.</em>',
+        'plan.body':        "Three simple steps. No office, no meeting room. Just rhythm, reflection and building in plain sight — all captured in a mini-doc.",
+        'plan.row1.t':      'We walk.',
+        'plan.row1.d':      '115 km in 6 days, Tui to Santiago, 3 backpacks.',
+        'plan.row2.t':      'We build along the way.',
+        'plan.row2.d':      'Working on the AI tool live — hands-free via voice and smart glasses. Cameras capture the process.',
+        'plan.row3.t':      'We hand it over.',
+        'plan.row3.d':      'The tool goes to the MIND foundation for free, plus a mini-doc.',
+
+        // return
+        'return.label':     'What you get back',
+        'return.h':         'No logo on a shirt.<br><em>Four things</em> that actually matter.',
+        'return.body':      "One you won't get anywhere else: your team out the door. The rest is content, reach, and a story that sticks.",
+        'return.row1.t':    'The office outside, for your team <span class="title-tag">unique</span>',
+        'return.row1.tag':  'unique',
+        'return.row1.d':    "Walking workshop + AI session at your place. We bring Back to Being to your company.",
+        'return.row2.t':    'Your brand in the mini-doc',
+        'return.row2.d':    'Distributed via TikTok, Instagram and YouTube. Tied to a story that sticks.',
+        'return.row3.t':    'Press & podcasts',
+        'return.row3.d':    'We actively pitch the story to podcasts, press and our network. Your brand comes along for the ride.',
+        'return.row4.t':    'Content for your channels',
+        'return.row4.d':    'Footage, quotes and updates — ready to drop on your own socials.',
+
+        // tiers
+        'tiers.h':          'Three ways to<br><em>walk with us.</em>',
+        'tiers.body':       'Cash or in kind. The more partners, the bigger the impact.',
+        'tier1.featured':   'Most impact',
+        'tier1.tag':        'Headline sponsor',
+        'tier1.amount':     'Full',
+        'tier1.spots':      'Full partnership',
+        'tier1.p1':         'Name in the mini-doc title ("presented by")',
+        'tier1.p2':         'Walking workshop + AI session for your team',
+        'tier1.p3':         'Custom content pack: footage, quotes, edits',
+        'tier1.p4':         'Brand mention in press outreach',
+        'tier1.p5':         'Speaker slot at the post-Camino debrief event',
+        'tier2.tag':        'Co-sponsor',
+        'tier2.amount':     'Linked',
+        'tier2.spots':      'Tied to the story',
+        'tier2.p1':         'Logo and mention in the mini-doc',
+        'tier2.p2':         'Spot at the joint walking workshop',
+        'tier2.p3':         'Shared content pack for your channels',
+        'tier2.p4':         'Co-mention in press outreach',
+        'tier3.tag':        'Supporter',
+        'tier3.amount':     'In kind',
+        'tier3.spots':      'Goods or services',
+        'tier3.examples':   '<strong>Like</strong>Hardware (<em>MacBooks, smart glasses</em>), AI credits, gear, lodging. <em>Substantial contributions get co- or headline sponsor perks.</em>',
+        'tier3.p1':         'Product visible on camera where it fits',
+        'tier3.p2':         'Mention in the mini-doc credits',
+        'tier3.p3':         'First access to doc and updates',
+        'tier3.p4':         'Mention in updates and social content',
+
+        'partners.label':   'In talks with',
+        'tiers.cta.text':   'Spots are limited. One headline sponsor, a handful of co-sponsors, room for in-kind partners.',
+        'tiers.cta.btn':    'Become a partner →',
+
+        // contact
+        'contact.pill':         'Contact',
+        'contact.h1':           "Let's<br><em>start.</em>",
+        'contact.lead':         "A partnership does not need a long process. Email us or call Caesar directly; we will plan a short check to see where your team can step in.",
+        'contact.call':         'Call Caesar',
+        'contact.status':       'Summer 2026 / Camino Portugues',
+        'contact.card.title':   '10 minutes is enough.',
+        'contact.card.text':    'We explain what we are building, how MIND benefits, and which partner role makes sense for your brand.',
+        'contact.details.label':'Direct contact',
+        'contact.details.note': 'We usually reply the same business day.',
+        'contact.label.mail':   'Email',
+        'contact.label.tel':    'Phone',
+        'contact.label.web':    'Web',
+        'contact.label.goal':   'For',
+        'contact.value.goal':   'The MIND foundation',
+        'contact.btn':          'Email us &rarr;',
+        'contact.btn.href':     "mailto:Caesar.schoorl@gmail.com?subject=Back%20to%20Being%3A%2010%20min%20coffee&body=Hi%2C%0A%0AI'd%20love%20a%20short%20chat%20about%20a%20partnership.%0A%0ABest",
+        'contact.founders.label': 'The founders',
+        'contact.founders.note': 'Three AI founders on the road to Santiago.',
+        'contact.role1':        'AI founder',
+        'contact.name2':        'Stijn Smit',
+        'contact.role2':        'AI founder',
+        'contact.name3':        'Max Helmantel',
+        'contact.role3':        'AI founder',
+
+        // route + closer
+        'route.label':      'The route',
+        'route.quote':      '"We\'re showing that tech can make us <em>more human</em> — if you use it right."',
+        'route.map':        '115 KM · 6 DAYS',
+        'closer':           '<strong>The world as our office</strong> — see you on the road. Summer 2026.'
+      }
+    };
+
+    Object.assign(I18N.nl, {
+      'verhaal.h1': 'Drie founders.<br>E&eacute;n route.<br><em>E&eacute;n missie.</em>',
+      'verhaal.intro1': 'We lopen 115 kilometer van Tui naar Santiago de Compostela en bouwen onderweg een AI-tool voor mentale gezondheid.',
+      'verhaal.intro2': 'Niet als campagnepraat, maar als zichtbaar experiment: werken terwijl je beweegt, bouwen met aandacht, en het resultaat gratis overdragen aan MIND.',
+      'verhaal.ch2.h': 'Partnership met<br><em>stichting MIND.</em>',
+      'verhaal.ch2.lead': 'De tool die we onderweg bouwen, dragen we gratis over aan MIND.',
+      'verhaal.ch2.p1': 'Wat het precies wordt bepalen we samen met MIND. Hun behoefte is leidend; ons werk is om iets bruikbaars te bouwen.',
+      'verhaal.ch2.p2': 'Zo blijft het verhaal concreet: een route, een proces in de open lucht, en een eindproduct dat terechtkomt bij een organisatie die werkt aan mentale gezondheid.',
+      'verhaal.ch3.h': 'Volg de route<br><em>per dag.</em>',
+      'verhaal.ch3.lead': 'Van Tui naar Santiago, stap voor stap.',
+      'verhaal.ch3.p1': 'De kaart laat de volledige Camino Portugues zien en zoomt per dag in op de etappe die we lopen.',
+      'verhaal.ch3.p2': 'Zo wordt het verhaal makkelijk te volgen: waar starten we, waar eindigen we, en welk stuk lopen we vandaag?',
+      'verhaal.map.activate': 'Klik om kaart te gebruiken',
+      'verhaal.closing.h': 'Partner worden<br>in dit <em>verhaal?</em>',
+      'verhaal.closing.p': 'We zoeken partners die willen bijdragen met budget, hardware, expertise of bereik. Niet als logo op een shirt, maar als onderdeel van het verhaal.',
+      'founders.bio1': 'AI-founder uit Amsterdam. Caesar loopt mee om te onderzoeken hoe technologie minder schermgericht en juist menselijker kan worden.',
+      'founders.bio2': 'AI-founder uit Amsterdam. Korte bio over expertise, rol in het project en waarom deze Camino persoonlijk relevant is.',
+      'founders.bio3': 'AI-founder uit Amsterdam. Korte bio over achtergrond, motivatie en bijdrage aan de tool voor MIND.',
+    });
+
+    Object.assign(I18N.en, {
+      'verhaal.h1': 'Three founders.<br>One route.<br><em>One mission.</em>',
+      'verhaal.intro1': 'We are walking 115 kilometers from Tui to Santiago de Compostela while building an AI tool for mental health.',
+      'verhaal.intro2': 'Not as campaign talk, but as a visible experiment: working while moving, building with attention, and handing the result to MIND for free.',
+      'verhaal.ch2.h': 'Partnership with<br><em>the MIND foundation.</em>',
+      'verhaal.ch2.lead': 'The tool we build along the way will be handed over to MIND for free.',
+      'verhaal.ch2.p1': 'What it becomes will be decided together with MIND. Their needs lead; our job is to build something useful.',
+      'verhaal.ch2.p2': 'That keeps the story concrete: a route, an open-air build process, and a final product that lands with an organization working on mental health.',
+      'verhaal.ch3.h': 'Follow the route<br><em>day by day.</em>',
+      'verhaal.ch3.lead': 'From Tui to Santiago, step by step.',
+      'verhaal.ch3.p1': 'The map shows the full Camino Portugues and zooms into the stage we walk each day.',
+      'verhaal.ch3.p2': 'That makes the story easy to follow: where we start, where we end, and which section we walk today.',
+      'verhaal.map.activate': 'Click to use map',
+      'verhaal.closing.h': 'Become a partner<br>in this <em>story?</em>',
+      'verhaal.closing.p': 'We are looking for partners who can contribute budget, hardware, expertise, or reach. Not as a logo on a shirt, but as part of the story.',
+      'founders.bio1': 'AI founder from Amsterdam. Caesar joins the walk to explore how technology can become less screen-led and more human.',
+      'founders.bio2': 'AI founder from Amsterdam. Short bio about expertise, role in the project, and why this Camino matters personally.',
+      'founders.bio3': 'AI founder from Amsterdam. Short bio about background, motivation, and contribution to the tool for MIND.',
+    });
+
+    let caminoMapInstance = null;
+    const caminoRoute = [
+      [-8.6440, 42.0471], // Tui
+      [-8.6226, 42.0958], // A Madalena
+      [-8.6167, 42.1616], // O Porrino
+      [-8.6142, 42.1968], // Mos
+      [-8.6096, 42.2835], // Redondela
+      [-8.6066, 42.3362], // Arcade
+      [-8.6114, 42.3454], // Ponte Sampaio
+      [-8.6444, 42.4310], // Pontevedra
+      [-8.6327, 42.4752], // Santa Maria de Alba
+      [-8.6412, 42.5487], // Barro
+      [-8.6420, 42.6040], // Caldas de Reis
+      [-8.6410, 42.6518], // Santa Marina
+      [-8.6424, 42.6915], // O Pino
+      [-8.6606, 42.7387], // Padron
+      [-8.6464, 42.7975], // A Esclavitude
+      [-8.6372, 42.8217], // Castro Lupario
+      [-8.5814, 42.8462], // Milladoiro
+      [-8.5448, 42.8782], // Santiago de Compostela
+    ];
+    const caminoStages = [
+      { day: 1, from: 'Tui', to: 'O Porrino', km: 16, coords: caminoRoute.slice(0, 3) },
+      { day: 2, from: 'O Porrino', to: 'Redondela', km: 17, coords: caminoRoute.slice(2, 5) },
+      { day: 3, from: 'Redondela', to: 'Pontevedra', km: 18, coords: caminoRoute.slice(4, 8) },
+      { day: 4, from: 'Pontevedra', to: 'Caldas de Reis', km: 22, coords: caminoRoute.slice(7, 11) },
+      { day: 5, from: 'Caldas de Reis', to: 'Padron', km: 18, coords: caminoRoute.slice(10, 14) },
+      { day: 6, from: 'Padron', to: 'Santiago', km: 24, coords: caminoRoute.slice(13) },
+    ];
+    let activeCaminoStage = null;
+
+    function currentLang() {
+      return localStorage.getItem('b2b-lang') === 'en' ? 'en' : 'nl';
+    }
+
+    function updateCaminoCard() {
+      const label = document.getElementById('caminoMapLabel');
+      const title = document.getElementById('caminoMapTitle');
+      const distance = document.getElementById('caminoMapDistance');
+      if (!label || !title || !distance) return;
+
+      const lang = currentLang();
+      if (!activeCaminoStage) {
+        label.textContent = lang === 'en' ? 'The route' : 'De route';
+        title.textContent = lang === 'en'
+          ? 'Tui to Santiago de Compostela'
+          : 'Tui naar Santiago de Compostela';
+        distance.textContent = lang === 'en' ? '115 km / 6 days' : '115 km / 6 dagen';
+        return;
+      }
+
+      label.textContent = lang === 'en' ? `Day ${activeCaminoStage.day}` : `Dag ${activeCaminoStage.day}`;
+      title.textContent = lang === 'en'
+        ? `${activeCaminoStage.from} to ${activeCaminoStage.to}`
+        : `${activeCaminoStage.from} naar ${activeCaminoStage.to}`;
+      distance.textContent = `${activeCaminoStage.km} km`;
+    }
+
+    function fitCaminoBounds(coords, padding = 82, duration = 650, maxZoom = 10.8) {
+      if (!caminoMapInstance || !coords.length) return;
+      const bounds = new maplibregl.LngLatBounds(coords[0], coords[0]);
+      coords.forEach(coord => bounds.extend(coord));
+      caminoMapInstance.fitBounds(bounds, { padding, maxZoom, duration });
+    }
+
+    function stageFeature(coords) {
+      return {
+        type: 'Feature',
+        properties: {},
+        geometry: { type: 'LineString', coordinates: coords },
+      };
+    }
+
+    function routeMapPadding(stage) {
+      if (window.matchMedia('(max-width: 620px)').matches) {
+        return stage
+          ? { top: 66, bottom: 150, left: 42, right: 42 }
+          : { top: 74, bottom: 160, left: 36, right: 36 };
+      }
+      return stage
+        ? { top: 76, bottom: 150, left: 64, right: 64 }
+        : { top: 72, bottom: 160, left: 40, right: 40 };
+    }
+
+    function disableCaminoInteractions() {
+      if (!caminoMapInstance) return;
+      caminoMapInstance.dragPan.disable();
+      caminoMapInstance.scrollZoom.disable();
+      caminoMapInstance.boxZoom.disable();
+      caminoMapInstance.dragRotate.disable();
+      caminoMapInstance.keyboard.disable();
+      caminoMapInstance.doubleClickZoom.disable();
+      caminoMapInstance.touchZoomRotate.disable();
+    }
+
+    function activateCaminoMap() {
+      const wrap = document.getElementById('caminoMap')?.closest('.camino-map-wrap');
+      if (!caminoMapInstance || !wrap) return;
+      wrap.classList.add('is-active');
+      caminoMapInstance.dragPan.enable();
+      caminoMapInstance.boxZoom.enable();
+      caminoMapInstance.doubleClickZoom.enable();
+      caminoMapInstance.touchZoomRotate.enable();
+      caminoMapInstance.scrollZoom.disable();
+    }
+
+    function setCaminoStage(stage) {
+      if (!caminoMapInstance || !caminoMapInstance.getSource('camino-stage')) return;
+      activeCaminoStage = stage;
+      const coords = stage ? stage.coords : caminoRoute;
+      caminoMapInstance.getSource('camino-stage').setData(stageFeature(coords));
+      fitCaminoBounds(
+        coords,
+        routeMapPadding(stage),
+        700,
+        stage ? 10.2 : 8.7
+      );
+      updateCaminoCard();
+
+      document.querySelectorAll('.camino-day-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.day === String(stage ? stage.day : 'all'));
+      });
+    }
+
+    function buildCaminoControls() {
+      const controls = document.getElementById('caminoDayControls');
+      if (!controls || controls.children.length) return;
+
+      const makeButton = (label, day, onClick) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'camino-day-btn';
+        button.dataset.day = String(day);
+        button.textContent = label;
+        button.addEventListener('click', onClick);
+        controls.appendChild(button);
+      };
+
+      makeButton(currentLang() === 'en' ? 'Full route' : 'Hele route', 'all', () => setCaminoStage(null));
+      caminoStages.forEach(stage => {
+        const dayLabel = currentLang() === 'en' ? `Day ${stage.day}` : `Dag ${stage.day}`;
+        makeButton(`${dayLabel} / ${stage.km} km`, stage.day, () => setCaminoStage(stage));
+      });
+      controls.querySelector('[data-day="all"]').classList.add('active');
+    }
+
+    function updateCaminoControlLanguage() {
+      const controls = document.getElementById('caminoDayControls');
+      if (!controls || !controls.children.length) return;
+      const lang = currentLang();
+      const allBtn = controls.querySelector('[data-day="all"]');
+      if (allBtn) allBtn.textContent = lang === 'en' ? 'Full route' : 'Hele route';
+      caminoStages.forEach(stage => {
+        const btn = controls.querySelector(`[data-day="${stage.day}"]`);
+        if (btn) btn.textContent = `${lang === 'en' ? 'Day' : 'Dag'} ${stage.day} / ${stage.km} km`;
+      });
+      updateCaminoCard();
+    }
+
+    function placeStoryRouteAtBottom() {
+      const mapEl = document.getElementById('caminoMap');
+      const founders = document.querySelector('#page-verhaal .founders-section');
+      const cta = document.querySelector('#page-verhaal .story-final-cta');
+      if (!mapEl || !founders || !cta) return;
+
+      const routeChapter = mapEl.closest('.story-chapter');
+      if (!routeChapter || routeChapter.classList.contains('story-route-bottom')) return;
+
+      routeChapter.classList.add('story-route-bottom');
+      cta.parentNode.insertBefore(routeChapter, cta);
+    }
+
+    function initCaminoMap() {
+      placeStoryRouteAtBottom();
+      const mapEl = document.getElementById('caminoMap');
+      if (!mapEl || caminoMapInstance || typeof maplibregl === 'undefined') return;
+
+      const stops = [
+        { name: 'Tui', coord: caminoRoute[0], end: false },
+        { name: 'O Porrino', coord: caminoRoute[2], end: false },
+        { name: 'Redondela', coord: caminoRoute[4], end: false },
+        { name: 'Arcade / Ponte Sampaio', coord: caminoRoute[5], end: false },
+        { name: 'Pontevedra', coord: caminoRoute[7], end: false },
+        { name: 'Caldas de Reis', coord: caminoRoute[10], end: false },
+        { name: 'Padron', coord: caminoRoute[13], end: false },
+        { name: 'Santiago de Compostela', coord: caminoRoute[17], end: true },
+      ];
+
+      caminoMapInstance = new maplibregl.Map({
+        container: mapEl,
+        style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+        center: [-8.61, 42.46],
+        zoom: 8.15,
+        interactive: true,
+        attributionControl: false,
+      });
+      disableCaminoInteractions();
+
+      caminoMapInstance.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+      caminoMapInstance.scrollZoom.disable();
+
+      const activateBtn = document.getElementById('caminoActivate');
+      if (activateBtn) activateBtn.addEventListener('click', activateCaminoMap);
+
+      caminoMapInstance.on('load', () => {
+        caminoMapInstance.addSource('camino-route', {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            properties: {},
+            geometry: { type: 'LineString', coordinates: caminoRoute },
+          },
+          lineMetrics: true,
+        });
+        caminoMapInstance.addSource('camino-stage', {
+          type: 'geojson',
+          data: stageFeature(caminoRoute),
+          lineMetrics: true,
+        });
+
+        caminoMapInstance.addLayer({
+          id: 'camino-route-glow',
+          type: 'line',
+          source: 'camino-route',
+          layout: { 'line-cap': 'round', 'line-join': 'round' },
+          paint: {
+            'line-color': '#a8c98c',
+            'line-width': 10,
+            'line-opacity': 0.24,
+          },
+        });
+
+        caminoMapInstance.addLayer({
+          id: 'camino-route-line',
+          type: 'line',
+          source: 'camino-route',
+          layout: { 'line-cap': 'round', 'line-join': 'round' },
+          paint: {
+            'line-color': '#3d5a3d',
+            'line-width': 4,
+            'line-opacity': 0.94,
+          },
+        });
+
+        caminoMapInstance.addLayer({
+          id: 'camino-stage-line',
+          type: 'line',
+          source: 'camino-stage',
+          layout: { 'line-cap': 'round', 'line-join': 'round' },
+          paint: {
+            'line-color': '#a8c98c',
+            'line-width': 6,
+            'line-opacity': 0.92,
+          },
+        });
+
+        caminoMapInstance.addLayer({
+          id: 'camino-direction-arrows',
+          type: 'symbol',
+          source: 'camino-route',
+          layout: {
+            'symbol-placement': 'line',
+            'symbol-spacing': 64,
+            'text-field': '>',
+            'text-size': 20,
+            'text-keep-upright': false,
+            'text-allow-overlap': true,
+            'text-ignore-placement': true,
+          },
+          paint: {
+            'text-color': '#1f3b20',
+            'text-halo-color': '#f7f5f0',
+            'text-halo-width': 1.5,
+          },
+        });
+
+        fitCaminoBounds(caminoRoute, routeMapPadding(null), 0, 8.7);
+        buildCaminoControls();
+      });
+
+      stops.forEach(stop => {
+        const markerEl = document.createElement('div');
+        markerEl.className = `camino-marker${stop.end ? ' is-end' : ''}`;
+        new maplibregl.Marker({ element: markerEl, anchor: 'center' })
+          .setLngLat(stop.coord)
+          .setPopup(
+            new maplibregl.Popup({
+              closeButton: false,
+              className: 'camino-popup',
+              offset: 16,
+            }).setText(stop.name)
+          )
+          .addTo(caminoMapInstance);
+      });
+    }
+
+    /* ============================================================
+       LANGUAGE SWITCHING
+       ============================================================ */
+    function detectInitialLang() {
+      const stored = localStorage.getItem('b2b-lang');
+      if (stored === 'nl' || stored === 'en') return stored;
+      const browser = (navigator.language || 'nl').toLowerCase();
+      return browser.startsWith('nl') ? 'nl' : 'en';
+    }
+
+    function setLanguage(lang) {
+      if (lang !== 'nl' && lang !== 'en') lang = 'nl';
+      const dict = I18N[lang];
+
+      // text content via data-i18n (innerHTML to allow <br>, <em>, <strong>)
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key] !== undefined) {
+          el.innerHTML = dict[key];
+        }
+      });
+
+      // <html lang>
+      document.documentElement.lang = lang;
+
+      // meta tags
+      const metaDesc = document.getElementById('metaDesc');
+      const ogDesc   = document.getElementById('ogDesc');
+      const ogLocale = document.getElementById('ogLocale');
+      const twDesc   = document.getElementById('twDesc');
+      if (metaDesc) metaDesc.setAttribute('content', dict['meta.desc']);
+      if (ogDesc)   ogDesc.setAttribute('content',   dict['meta.desc']);
+      if (ogLocale) ogLocale.setAttribute('content', dict['meta.locale']);
+      if (twDesc)   twDesc.setAttribute('content',   dict['meta.descShort']);
+
+      // mailto href
+      const mailBtn = document.getElementById('mailtoBtn');
+      if (mailBtn) mailBtn.setAttribute('href', dict['contact.btn.href']);
+
+      // toggle UI active state
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      localStorage.setItem('b2b-lang', lang);
+      updateCaminoControlLanguage();
+    }
+
+    /* ============================================================
+       PAGE ROUTING
+       ============================================================ */
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
+      document.querySelectorAll('.nav-link[data-page]').forEach(a => {
+        a.classList.toggle('active', a.dataset.page === name);
+      });
+
+      const nav = document.getElementById('siteNav');
+      if (name === 'home') {
+        nav.classList.add('on-hero');
+      } else {
+        nav.classList.remove('on-hero');
+        nav.classList.add('scrolled');
+      }
+
+      if (name === 'verhaal') {
+        requestAnimationFrame(() => {
+          placeStoryRouteAtBottom();
+          initCaminoMap();
+          if (caminoMapInstance) {
+            caminoMapInstance.resize();
+            if (!activeCaminoStage) {
+              fitCaminoBounds(caminoRoute, routeMapPadding(null), 0, 8.7);
+            }
+          }
+        });
+      }
+    }
+
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('siteNav');
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    /* ============================================================
+       INIT
+       ============================================================ */
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+    });
+
+    setLanguage(detectInitialLang());
+    showPage('home');
+  </script>
+</body>
+</html>
+
+
