@@ -102,6 +102,60 @@
     .nav-logo-mark {
       width: auto; height: 2rem; flex: 0 0 auto;
     }
+    .nav-menu-btn {
+      display: none;
+      width: 42px; height: 42px;
+      align-items: center; justify-content: center;
+      border: 1px solid rgba(22,22,22,0.14);
+      border-radius: 999px;
+      background: rgba(255,254,241,0.1);
+      color: var(--ink);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .nav-menu-icon {
+      width: 18px; height: 12px;
+      position: relative;
+      display: block;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .nav-menu-icon span {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background: currentColor;
+      border-radius: 999px;
+      transition: transform 0.2s, opacity 0.2s, top 0.2s;
+    }
+    .nav-menu-icon span:nth-child(1) { top: 0; }
+    .nav-menu-icon span:nth-child(2) { top: 5px; }
+    .nav-menu-icon span:nth-child(3) { top: 10px; }
+    .nav-menu-logo {
+      position: absolute;
+      width: 24px;
+      height: auto;
+      opacity: 0;
+      transform: rotate(90deg) scale(0.72);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+    }
+    .site-nav.menu-open .nav-menu-icon {
+      opacity: 0;
+      transform: rotate(-12deg) scale(0.72);
+    }
+    .site-nav.menu-open .nav-menu-logo {
+      opacity: 1;
+      transform: rotate(90deg) scale(1);
+    }
+    .site-nav.on-hero .nav-menu-btn {
+      border-color: rgba(247,245,240,0.22);
+      color: var(--cream);
+    }
+    .site-nav.scrolled.on-hero .nav-menu-btn {
+      border-color: rgba(22,22,22,0.14);
+      color: var(--ink);
+    }
     .nav-links { display: flex; align-items: center; gap: 2.5rem; }
     .nav-link {
       font-family: var(--subhead);
@@ -218,7 +272,7 @@
       font-family: var(--serif);
       font-weight: 400; font-variation-settings: "opsz" 144, "SOFT" 30;
       font-size: clamp(3.5rem, 8.5vw, 9.5rem);
-      line-height: 0.94; letter-spacing: -0.035em;
+      line-height: 0.94; letter-spacing: 0;
       color: var(--cream); margin-bottom: 2.5rem;
     }
     .hero-title em { font-style: italic; color: var(--green-light); }
@@ -245,7 +299,7 @@
     }
     .intro-strip h2 {
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(2rem, 3.5vw, 3.2rem); line-height: 1.04; letter-spacing: -0.02em;
+      font-size: clamp(2rem, 3.5vw, 3.2rem); line-height: 1.04; letter-spacing: 0;
     }
     .intro-strip h2 em { font-style: italic; color: var(--green); }
     .intro-strip p {
@@ -271,7 +325,7 @@
     .stat-number {
       font-family: var(--serif); font-style: italic; font-weight: 400;
       font-size: clamp(2.5rem, 3.5vw, 3.5rem); color: var(--green);
-      line-height: 1; letter-spacing: -0.02em; margin-bottom: 0.75rem;
+      line-height: 1; letter-spacing: 0; margin-bottom: 0.75rem;
     }
     .stat-label {
       max-width: 16ch;
@@ -313,7 +367,7 @@
     }
     .plan-header h2 {
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1.05; letter-spacing: -0.02em;
+      font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1.05; letter-spacing: 0;
     }
     .plan-header h2 em { font-style: italic; color: var(--green); }
     .plan-header p {
@@ -344,7 +398,7 @@
     .return-header { margin-bottom: 3.5rem; max-width: 64ch; }
     .return-header h2 {
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1.05; letter-spacing: -0.02em;
+      font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1.05; letter-spacing: 0;
       margin-top: 1rem;
     }
     .return-header h2 em { font-style: italic; color: var(--green); }
@@ -403,7 +457,7 @@
     .sponsor-cta-section h2 {
       font-family: var(--serif); font-weight: 400;
       font-size: clamp(2.75rem, 6vw, 5.5rem);
-      line-height: 0.96; letter-spacing: -0.03em; color: var(--cream); margin-bottom: 1.75rem;
+      line-height: 0.96; letter-spacing: 0; color: var(--cream); margin-bottom: 1.75rem;
     }
     .sponsor-cta-section h2 em { font-style: italic; color: var(--green-light); }
     .sponsor-cta-section p {
@@ -433,7 +487,7 @@
       font-family: var(--serif); font-weight: 400;
       font-variation-settings: "opsz" 144;
       font-size: clamp(2.75rem, 9vw, 9rem);
-      line-height: 0.94; letter-spacing: -0.035em;
+      line-height: 0.94; letter-spacing: 0;
       margin: 1.5rem 0 3rem;
       max-width: 14ch;
     }
@@ -534,7 +588,7 @@
     }
     .ch-content h3 {
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.75rem, 3vw, 2.75rem); line-height: 1.05; letter-spacing: -0.02em;
+      font-size: clamp(1.75rem, 3vw, 2.75rem); line-height: 1.05; letter-spacing: 0;
       margin: 0 0 1rem;
     }
     .ch-content h3 em { font-style: italic; color: var(--green); }
@@ -796,7 +850,7 @@
     }
     .story-pullquote blockquote {
       font-family: var(--serif); font-style: italic; font-weight: 300;
-      font-size: clamp(1.5rem, 3.8vw, 3rem); line-height: 1.18; letter-spacing: -0.015em;
+      font-size: clamp(1.5rem, 3.8vw, 3rem); line-height: 1.18; letter-spacing: 0;
       color: inherit; max-width: 22ch; margin: 0 auto;
     }
     .story-pullquote-dark blockquote { color: rgba(247,245,240,0.95); }
@@ -838,7 +892,7 @@
     .home-story-tease .text { display: flex; flex-direction: column; gap: 1.5rem; }
     .home-story-tease h2 {
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(2rem, 3.5vw, 3.25rem); line-height: 1.05; letter-spacing: -0.02em;
+      font-size: clamp(2rem, 3.5vw, 3.25rem); line-height: 1.05; letter-spacing: 0;
     }
     .home-story-tease h2 em { font-style: italic; color: var(--green); }
     .home-story-tease p {
@@ -868,7 +922,7 @@
     .home-journey .section-label { color: var(--green-light); }
     .home-journey h2 {
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.05; letter-spacing: -0.02em;
+      font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.05; letter-spacing: 0;
       margin-bottom: 1.5rem; color: var(--cream);
     }
     .home-journey h2 em { font-style: italic; color: var(--green-light); }
@@ -959,7 +1013,7 @@
     .founders-header .section-label { color: var(--green-light); }
     .founders-header h2 {
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(2rem, 3.2vw, 3.2rem); line-height: 1.05; letter-spacing: -0.02em;
+      font-size: clamp(2rem, 3.2vw, 3.2rem); line-height: 1.05; letter-spacing: 0;
       color: var(--cream);
     }
     .founders-header h2 em { font-style: italic; color: var(--green-light); }
@@ -1039,7 +1093,7 @@
       font-weight: 400;
       font-size: clamp(2rem, 4vw, 3.25rem);
       line-height: 1.04;
-      letter-spacing: -0.02em;
+      letter-spacing: 0;
     }
     .story-final-cta h2 em { font-style: italic; color: var(--green); }
     .story-final-cta p {
@@ -1110,7 +1164,7 @@
       font-family: var(--serif);
       font-size: clamp(1.65rem, 2.6vw, 2.6rem);
       line-height: 1.05;
-      letter-spacing: -0.02em;
+      letter-spacing: 0;
       color: var(--cream);
       text-decoration: none;
       display: block;
@@ -1272,18 +1326,210 @@
       .hero-meta { text-align: left; }
     }
     @media (max-width: 760px) {
+      :root { --nav-h: 72px; }
+      .site-nav {
+        height: var(--nav-h);
+        flex-wrap: nowrap;
+        align-content: center;
+        gap: 1rem;
+        padding: 0 max(1rem, 5vw);
+      }
+      .nav-logo {
+        width: auto;
+        justify-content: flex-start;
+      }
+      .nav-logo-mark { height: 1.5rem; max-width: min(64vw, 230px); }
+      .nav-menu-btn { display: inline-flex; margin-left: auto; }
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        left: max(1rem, 5vw);
+        right: max(1rem, 5vw);
+        width: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0;
+        padding: 0.45rem;
+        border: 1px solid rgba(42,55,35,0.14);
+        border-radius: 8px;
+        background: rgba(255,254,241,0.96);
+        box-shadow: 0 18px 48px rgba(13,13,13,0.16);
+        backdrop-filter: blur(18px);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition: opacity 0.2s, transform 0.2s;
+      }
+      .site-nav.menu-open .nav-links {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+      .nav-link {
+        width: 100%;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0 0.85rem;
+        border-radius: 6px;
+        color: var(--ink) !important;
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        line-height: 1.1;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        background: rgba(151,160,129,0.14);
+        color: var(--tree) !important;
+      }
+      .lang-toggle {
+        justify-content: flex-start;
+        gap: 0.45rem;
+        padding: 0.6rem 0.85rem;
+        border-top: 1px solid var(--line);
+      }
+      .lang-btn {
+        color: var(--ink-soft) !important;
+        font-size: 0.68rem;
+        letter-spacing: 0.1em;
+      }
+      .lang-btn.active,
+      .lang-btn:hover { color: var(--tree) !important; }
+      .lang-sep { color: var(--ink-soft) !important; }
+      .nav-cta-btn {
+        margin-top: 0.25rem;
+        justify-content: center;
+        background: var(--green) !important;
+        color: var(--charcoal) !important;
+      }
+      .hero {
+        min-height: 620px;
+        height: 100dvh;
+      }
+      .hero-video video { object-position: center; }
+      .hero-content { padding: 0 max(1.25rem, 5vw) 4.5rem; }
+      .hero-title {
+        font-size: clamp(3rem, 16vw, 5.8rem);
+        line-height: 0.98;
+        margin-bottom: 1.75rem;
+      }
+      .hero-foot {
+        align-items: flex-start;
+        gap: 1.2rem;
+        padding-top: 1.4rem;
+      }
+      .hero-tagline {
+        max-width: 100%;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+      .intro-strip,
+      .plan-section,
+      .return-section,
+      .founders-section {
+        padding-top: 4.5rem;
+        padding-bottom: 4.5rem;
+      }
+      .partners-strip { padding: 3.5rem max(1.25rem, 5vw); }
+      .plan-header,
+      .return-header,
+      .founders-header { margin-bottom: 2.25rem; }
+      .plan-row,
+      .return-row {
+        gap: 0.9rem;
+        padding: 1.25rem 0;
+      }
+      .return-row .title-tag {
+        margin: 0.45rem 0 0;
+        display: table;
+        transform: none;
+      }
       .sponsor-cta-section { padding: 5rem max(1.25rem, 5vw); }
       .story-chapter { padding: 3.5rem 0; gap: 2rem; }
       .story-pullquote { padding: 4rem max(1.25rem, 5vw); }
+      .story-hero {
+        padding: calc(var(--nav-h) + 3rem) max(1.25rem, 5vw) 3rem;
+      }
+      .story-hero h1,
+      #page-contact .story-hero h1 {
+        font-size: clamp(3rem, 17vw, 5.8rem);
+        line-height: 0.98;
+        max-width: 100%;
+        margin-bottom: 2rem;
+      }
+      .story-hero-foot {
+        gap: 1.25rem;
+        padding-top: 1.75rem;
+      }
+      .story-body {
+        padding: 2.5rem max(1.25rem, 5vw) 4rem;
+      }
       .home-story-tease { padding: 5rem max(1.25rem, 5vw); }
       .home-journey { padding: 5rem max(1.25rem, 5vw); }
       .home-journey-stats { gap: 1.5rem; }
+      .founder-card:last-child { border-bottom: none; }
+      .story-final-cta { padding: 4rem max(1.25rem, 5vw); }
+      .site-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.75rem max(1.25rem, 5vw);
+      }
     }
     @media (max-width: 600px) {
-      .nav-links .nav-cta-btn { display: none; }
-      .nav-links { gap: 1.5rem; }
+      .nav-links .nav-cta-btn { display: flex; }
+      .nav-links { justify-content: flex-start; gap: 0; }
+      .nav-link,
+      .lang-btn { font-size: 0.68rem; letter-spacing: 0.08em; }
+      .btn {
+        width: 100%;
+        justify-content: center;
+        min-height: 48px;
+        padding-inline: 1rem;
+        text-align: center;
+      }
+      .intro-actions,
+      .sponsor-cta-actions,
+      .home-story-tease .actions,
+      .story-final-cta .actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .stats-inner { grid-template-columns: 1fr; }
+      .stat {
+        padding: 2.25rem 1.25rem;
+        border-right: none !important;
+        border-bottom: 1px solid var(--line);
+      }
+      .stat:last-child { border-bottom: none; }
+      .partners-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .partner-logo { min-height: 44px; }
+      .plan-row,
+      .return-row {
+        grid-template-columns: 1fr;
+        gap: 0.45rem;
+      }
+      .plan-row .detail,
+      .return-row .detail { grid-column: auto; }
+      .plan-row .num,
+      .return-row .num { font-size: 0.85rem; }
       .ch-visual { aspect-ratio: 3/2; }
       .ch-visual.ch-visual-mind { aspect-ratio: 3/2; }
+      #page-verhaal .story-route-bottom {
+        padding: 3.25rem max(1.25rem, 5vw);
+      }
+      .camino-map-card {
+        left: 0.75rem;
+        right: 0.75rem;
+        bottom: 0.75rem;
+        padding: 0.85rem;
+      }
       .contact-shell { border-left: none; border-right: none; }
       .contact-hero { padding-inline: max(1.25rem, 5vw); }
       .contact-actions { flex-direction: column; align-items: stretch; }
@@ -1292,6 +1538,66 @@
       .contact-box-body { align-items: flex-start; }
       .contact-final { flex-direction: column; align-items: flex-start; }
       .contact-final .btn { width: 100%; justify-content: center; }
+      .contact-grid-section {
+        padding-inline: 0;
+        padding-bottom: 3.5rem;
+      }
+      .contact-grid {
+        border-left: none;
+        border-right: none;
+      }
+      .contact-grid-body {
+        gap: 1.25rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+      }
+      .contact-grid-value {
+        font-size: clamp(1.55rem, 10vw, 2.1rem);
+      }
+      .contact-grid-value-row {
+        gap: 0.5rem;
+      }
+      .contact-copy-btn {
+        width: 34px;
+        height: 34px;
+      }
+      .contact-online-strip {
+        padding: 3rem max(1.25rem, 5vw);
+      }
+      .contact-links {
+        width: 100%;
+        flex-direction: column;
+      }
+      .contact-social {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    @media (max-width: 390px) {
+      .site-nav { padding-inline: 0.85rem; }
+      .nav-logo-mark { height: 1.35rem; max-width: 72vw; }
+      .nav-links {
+        left: 0.85rem;
+        right: 0.85rem;
+        gap: 0;
+      }
+      .nav-link,
+      .lang-btn {
+        font-size: 0.66rem;
+        letter-spacing: 0.06em;
+      }
+      .hero-title,
+      .story-hero h1,
+      #page-contact .story-hero h1 {
+        font-size: clamp(2.6rem, 16vw, 4.4rem);
+      }
+      .hero-content { padding-bottom: 3.5rem; }
+      .section-label,
+      .photo-ph,
+      .home-journey-stat .l,
+      .footer-right {
+        letter-spacing: 0.1em;
+      }
     }
   </style>
 </head>
@@ -1302,7 +1608,15 @@
     <button class="nav-logo" onclick="showPage('home')" type="button" aria-label="Back to Being">
       <img class="nav-logo-mark" src="b2b_horizontal banner.svg" alt="Back to Being" />
     </button>
-    <div class="nav-links">
+    <button class="nav-menu-btn" id="navMenuBtn" type="button" aria-label="Menu" aria-controls="navLinks" aria-expanded="false">
+      <span class="nav-menu-icon" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+      <img class="nav-menu-logo" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+    </button>
+    <div class="nav-links" id="navLinks">
       <button class="nav-link" data-page="verhaal"    data-i18n="nav.story"      onclick="showPage('verhaal')"    type="button">Ons verhaal</button>
       <button class="nav-link" data-page="sponsoring" data-i18n="nav.sponsorship" onclick="showPage('sponsoring')" type="button">Sponsoring</button>
       <div class="lang-toggle" role="group" aria-label="Language">
@@ -2589,7 +2903,17 @@
     /* ============================================================
        PAGE ROUTING
        ============================================================ */
+    function setMobileMenu(open) {
+      const nav = document.getElementById('siteNav');
+      const btn = document.getElementById('navMenuBtn');
+      if (!nav || !btn) return;
+
+      nav.classList.toggle('menu-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
     function showPage(name) {
+      setMobileMenu(false);
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + name).classList.add('active');
       window.scrollTo({ top: 0, behavior: 'instant' });
@@ -2629,7 +2953,26 @@
        INIT
        ============================================================ */
     document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+      btn.addEventListener('click', () => {
+        setLanguage(btn.dataset.lang);
+        setMobileMenu(false);
+      });
+    });
+    const navMenuBtn = document.getElementById('navMenuBtn');
+    if (navMenuBtn) {
+      navMenuBtn.addEventListener('click', event => {
+        event.stopPropagation();
+        const nav = document.getElementById('siteNav');
+        setMobileMenu(!nav.classList.contains('menu-open'));
+      });
+    }
+    document.addEventListener('click', event => {
+      const nav = document.getElementById('siteNav');
+      if (!nav || !nav.classList.contains('menu-open')) return;
+      if (!nav.contains(event.target)) setMobileMenu(false);
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') setMobileMenu(false);
     });
     document.querySelectorAll('.contact-copy-btn').forEach(btn => {
       btn.addEventListener('click', () => copyContactValue(btn));
