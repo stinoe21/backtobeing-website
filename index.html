@@ -943,31 +943,6 @@
       letter-spacing: 1.6px;
     }
 
-    /* HOME — closing CTA */
-    .home-closing {
-      padding: 7rem max(1.5rem, 5vw);
-      max-width: 1440px; margin: 0 auto;
-      text-align: center;
-      border-top: 1px solid var(--line);
-    }
-    .home-closing h2 {
-      font-family: var(--serif); font-weight: 400;
-      font-variation-settings: "opsz" 144, "SOFT" 30;
-      font-size: clamp(2.4rem, 6vw, 5rem);
-      line-height: 0.98; letter-spacing: -0.025em;
-      margin-bottom: 1.5rem;
-    }
-    .home-closing h2 em { font-style: italic; color: var(--green); }
-    .home-closing p {
-      font-family: var(--serif); font-style: italic; font-weight: 300;
-      font-size: clamp(1.05rem, 1.4vw, 1.4rem);
-      color: var(--ink-soft); max-width: 42ch;
-      margin: 0 auto 2.5rem; line-height: 1.5;
-    }
-    .home-closing .actions {
-      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-    }
-
     /* FOUNDERS */
     .founders-section { background: var(--bg-dark); padding: 7rem 6vw; }
     .founders-inner { max-width: 1440px; margin: 0 auto; }
@@ -1237,7 +1212,6 @@
       .story-pullquote { padding: 4rem max(1.25rem, 5vw); }
       .home-story-tease { padding: 5rem max(1.25rem, 5vw); }
       .home-journey { padding: 5rem max(1.25rem, 5vw); }
-      .home-closing { padding: 5rem max(1.25rem, 5vw); }
       .home-journey-stats { gap: 1.5rem; }
     }
     @media (max-width: 600px) {
@@ -1446,14 +1420,16 @@
     </div>
 
     <!-- HOME — closing CTA -->
-    <div class="home-closing">
-      <h2 data-i18n="home.closing.h">Loop je<br><em>mee?</em></h2>
-      <p data-i18n="home.closing.p">Of je nu partner wordt, hardware levert, of gewoon het verhaal volgt. Er is plek.</p>
-      <div class="actions">
-        <button class="btn" data-i18n="home.closing.cta1" onclick="showPage('sponsoring')" type="button">Word partner &rarr;</button>
-        <button class="btn btn-outline" data-i18n="home.closing.cta2" onclick="showPage('verhaal')" type="button">Ons verhaal &rarr;</button>
+    <section class="sponsor-cta-section">
+      <div class="sponsor-cta-inner">
+        <h2 data-i18n="home.closing.h">Loop je<br><em>mee?</em></h2>
+        <p data-i18n="home.closing.p">Of je nu partner wordt, hardware levert, of gewoon het verhaal volgt. Er is plek.</p>
+        <div class="sponsor-cta-actions">
+          <button class="btn sponsor-cta-btn" data-i18n="home.closing.cta1" onclick="showPage('sponsoring')" type="button">Word partner &rarr;</button>
+          <button class="btn btn-outline sponsor-cta-outline" data-i18n="home.closing.cta2" onclick="showPage('verhaal')" type="button">Ons verhaal &rarr;</button>
+        </div>
       </div>
-    </div>
+    </section>
 
     <footer class="site-footer">
       <div class="footer-logo">
