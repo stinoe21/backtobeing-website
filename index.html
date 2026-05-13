@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Back to Being — The World as our Office</title>
-  <meta name="description" id="metaDesc" content="Drie AI-founders lopen 115 km over de Camino en bouwen onderweg een AI-tool voor mentale gezondheid — voor stichting MIND." />
+  <title>Back to Being: The World as our Office</title>
+  <meta name="description" id="metaDesc" content="Drie AI-nerds maken van de Camino hun kantoor: 115 km, live bouwen in beeld, daarna een echte overdracht aan stichting MIND." />
 
   <!-- Open Graph / sociale previews -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Back to Being — The World as our Office" />
-  <meta property="og:description" id="ogDesc" content="Drie AI-founders lopen 115 km over de Camino en bouwen onderweg een AI-tool voor mentale gezondheid — voor stichting MIND." />
+  <meta property="og:title" content="Back to Being: The World as our Office" />
+  <meta property="og:description" id="ogDesc" content="Drie AI-nerds maken van de Camino hun kantoor: 115 km, live bouwen in beeld, daarna een echte overdracht aan stichting MIND." />
   <meta property="og:locale" id="ogLocale" content="nl_NL" />
   <meta property="og:site_name" content="Back to Being" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Back to Being — The World as our Office" />
-  <meta name="twitter:description" id="twDesc" content="Drie AI-founders lopen 115 km over de Camino en bouwen onderweg een AI-tool voor mentale gezondheid." />
+  <meta name="twitter:title" content="Back to Being: The World as our Office" />
+  <meta name="twitter:description" id="twDesc" content="Drie AI-nerds maken van de Camino hun kantoor: 115 km, live bouwen in beeld, daarna een echte overdracht aan MIND." />
   <meta name="theme-color" content="#3d5a3d" />
 
   <!-- Inline SVG favicon (cirkel met B, in brand-groen) -->
@@ -22,22 +22,36 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link href="https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.css" rel="stylesheet" />
   <style>
     :root {
-      --bg:          #ebebe8;
-      --bg-dark:     #0d0d0d;
-      --ink:         #1a1a1a;
-      --ink-soft:    #6a6a64;
-      --line:        #cfcfca;
-      --line-dark:   #2a2a28;
-      --green:       #3d5a3d;
-      --green-soft:  #4f7050;
-      --green-light: #a8c98c;
-      --cream:       #f7f5f0;
+      --tree:        #2a3723;
+      --grass:       #97a081;
+      --sky:         #a7bdd5;
+      --creek:       #424d69;
+      --charcoal:    #161616;
+      --canvas:      #fffef1;
+      --sand:        #b9a26e;
+
+      --bg:          var(--canvas);
+      --bg-dark:     var(--charcoal);
+      --ink:         var(--charcoal);
+      --ink-soft:    rgba(22, 22, 22, 0.62);
+      --line:        rgba(42, 55, 35, 0.18);
+      --line-dark:   rgba(255, 254, 241, 0.16);
+      --green:       var(--grass);
+      --green-soft:  var(--grass);
+      --green-light: var(--grass);
+      --cream:       var(--canvas);
+      --route-main:  var(--grass);
+      --route-strong: var(--tree);
+      --route-soft:  rgba(151, 160, 129, 0.22);
+      --route-wash:  rgba(151, 160, 129, 0.12);
       --nav-h:       72px;
-      --sans:        Futura, "Futura PT", "Avenir Next", "Century Gothic", Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      --serif:       "Instrument Serif", Georgia, serif;
+      --subhead:     "Inter Tight", Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      --sans:        Inter, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -83,13 +97,17 @@
     .site-nav.scrolled.on-hero .nav-link { color: var(--ink); }
 
     .nav-logo {
-      display: flex; align-items: center;
-      font-family: 'Instrument Serif', Georgia, serif;
+      display: flex; align-items: center; gap: 0.55rem;
+      font-family: var(--serif);
       font-weight: 500; font-size: 1.45rem; letter-spacing: 0.005em;
       background: none; border: none; cursor: pointer; color: inherit;
     }
+    .nav-logo-mark {
+      width: auto; height: 1.45rem; flex: 0 0 auto;
+    }
     .nav-links { display: flex; align-items: center; gap: 2.5rem; }
     .nav-link {
+      font-family: var(--subhead);
       font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
       color: var(--ink-soft); cursor: pointer; transition: color 0.2s;
       background: none; border: none;
@@ -98,12 +116,12 @@
     .nav-cta-btn {
       display: inline-flex; align-items: center; gap: 0.4rem;
       padding: 0.6rem 1.25rem;
-      background: var(--green); color: var(--cream) !important;
+      background: var(--green); color: var(--charcoal) !important;
       border-radius: 100px; font-size: 0.75rem !important; font-weight: 500;
       letter-spacing: 0.04em !important; text-transform: none !important;
-      transition: background 0.2s !important;
+      transition: background 0.2s, color 0.2s, transform 0.2s !important;
     }
-    .nav-cta-btn:hover { background: var(--green-soft) !important; }
+    .nav-cta-btn:hover { background: var(--tree) !important; color: var(--canvas) !important; transform: translateY(-1px); }
 
     /* LANG TOGGLE */
     .lang-toggle {
@@ -112,7 +130,7 @@
     }
     .lang-btn {
       background: none; border: none; cursor: pointer;
-      font-family: var(--sans);
+      font-family: var(--subhead);
       font-size: 0.72rem; font-weight: 500;
       letter-spacing: 0.16em; text-transform: uppercase;
       color: var(--ink-soft);
@@ -138,28 +156,32 @@
     .pill {
       display: inline-flex; align-items: center;
       padding: 0.45rem 1rem;
-      border: 1.5px solid var(--green); color: var(--green);
+      border: 1.5px solid rgba(151, 160, 129, 0.55);
+      background: rgba(151, 160, 129, 0.12);
+      color: var(--tree);
+      font-family: var(--subhead);
       border-radius: 100px; font-size: 0.7rem; font-weight: 500;
       letter-spacing: 0.18em; text-transform: uppercase;
     }
     .section-label {
+      font-family: var(--subhead);
       font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em;
       text-transform: uppercase; color: var(--green); margin-bottom: 1.25rem;
     }
     .btn {
       display: inline-flex; align-items: center; gap: 0.6rem;
       padding: 0.95rem 1.8rem;
-      background: var(--green); color: var(--cream);
-      border-radius: 100px; font-family: var(--sans);
+      background: var(--green); color: var(--charcoal);
+      border-radius: 100px; font-family: var(--subhead);
       font-size: 0.92rem; font-weight: 500; letter-spacing: 0.01em;
       border: none; cursor: pointer;
-      transition: background 0.2s, transform 0.2s; text-decoration: none;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s; text-decoration: none;
     }
-    .btn:hover { background: var(--green-soft); transform: translateY(-1px); }
+    .btn:hover { background: var(--tree); color: var(--canvas); transform: translateY(-1px); }
     .btn-outline {
-      background: transparent; border: 1.5px solid var(--green); color: var(--green);
+      background: transparent; border: 1.5px solid var(--green); color: var(--tree);
     }
-    .btn-outline:hover { background: var(--green); color: var(--cream); }
+    .btn-outline:hover { background: var(--green); color: var(--charcoal); border-color: var(--green); }
 
     /* ========= HOME ========= */
 
@@ -170,8 +192,8 @@
     }
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
-      background: radial-gradient(ellipse 70% 50% at 40% 35%, rgba(61,90,61,0.22) 0%, transparent 65%),
-                  linear-gradient(160deg, #0d1a0d 0%, #182a18 30%, #0a1508 60%, #080e06 100%);
+      background: radial-gradient(ellipse 70% 50% at 40% 35%, rgba(151,160,129,0.18) 0%, transparent 65%),
+                  linear-gradient(160deg, var(--tree) 0%, rgba(42,55,35,0.92) 34%, var(--charcoal) 100%);
     }
     .hero-bg::after {
       content: '';
@@ -179,23 +201,24 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
       opacity: 0.5;
     }
-    .hero-video { position: absolute; inset: 0; z-index: 0; background: #080e06; }
+    .hero-video { position: absolute; inset: 0; z-index: 0; background: var(--charcoal); }
     .hero-video video { width: 100%; height: 100%; object-fit: cover; display: block; }
     .hero-overlay {
       position: absolute; inset: 0; z-index: 1;
       background: linear-gradient(to bottom,
-        rgba(8,14,6,0.2) 0%,
-        rgba(8,14,6,0.05) 40%,
-        rgba(8,14,6,0.6) 75%,
-        rgba(8,14,6,0.88) 100%);
+        rgba(22,22,22,0.24) 0%,
+        rgba(42,55,35,0.08) 40%,
+        rgba(22,22,22,0.62) 75%,
+        rgba(22,22,22,0.9) 100%);
     }
     .hero-content { position: relative; z-index: 2; padding: 0 6vw 7vh; }
     .hero-eyebrow {
+      font-family: var(--subhead);
       font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
-      color: rgba(247,245,240,0.5); margin-bottom: 1.25rem;
+      color: rgba(255,254,241,0.56); margin-bottom: 1.25rem;
     }
     .hero-title {
-      font-family: 'Instrument Serif', Georgia, serif;
+      font-family: var(--serif);
       font-weight: 400; font-variation-settings: "opsz" 144, "SOFT" 30;
       font-size: clamp(3.5rem, 8.5vw, 9.5rem);
       line-height: 0.94; letter-spacing: -0.035em;
@@ -204,16 +227,17 @@
     .hero-title em { font-style: italic; color: var(--green-light); }
     .hero-foot {
       display: flex; align-items: flex-end; justify-content: space-between; gap: 3rem;
-      padding-top: 2rem; border-top: 1px solid rgba(247,245,240,0.12);
+      padding-top: 2rem; border-top: 1px solid rgba(255,254,241,0.14);
     }
     .hero-tagline {
-      font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 300;
+      font-family: var(--serif); font-style: italic; font-weight: 300;
       font-size: clamp(1rem, 1.3vw, 1.25rem);
-      color: rgba(247,245,240,0.78); max-width: 44ch; line-height: 1.55;
+      color: rgba(255,254,241,0.8); max-width: 44ch; line-height: 1.55;
     }
     .hero-meta {
+      font-family: var(--subhead);
       text-align: right; font-size: 0.7rem; letter-spacing: 0.16em;
-      text-transform: uppercase; color: rgba(247,245,240,0.42); line-height: 1.9; flex-shrink: 0;
+      text-transform: uppercase; color: rgba(255,254,241,0.46); line-height: 1.9; flex-shrink: 0;
     }
 
     /* INTRO */
@@ -223,7 +247,7 @@
       display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: start;
     }
     .intro-strip h2 {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+      font-family: var(--serif); font-weight: 400;
       font-size: clamp(2rem, 3.5vw, 3.2rem); line-height: 1.04; letter-spacing: -0.02em;
     }
     .intro-strip h2 em { font-style: italic; color: var(--green); }
@@ -243,11 +267,36 @@
     .stat { padding: 3.5rem 2rem 3.5rem 6vw; border-right: 1px solid var(--line); }
     .stat:last-child { border-right: none; }
     .stat-number {
-      font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400;
+      font-family: var(--serif); font-style: italic; font-weight: 400;
       font-size: clamp(2.5rem, 3.5vw, 3.5rem); color: var(--green);
       line-height: 1; letter-spacing: -0.02em; margin-bottom: 0.6rem;
     }
     .stat-label { font-size: 0.8rem; letter-spacing: 0.06em; color: var(--ink-soft); line-height: 1.55; }
+
+    /* PARTNERS — credibility strip (homepage + sponsoring) */
+    .partners-strip {
+      border-bottom: 1px solid var(--line);
+      padding: 4.5rem 6vw;
+    }
+    .partners-strip-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center; gap: 2.25rem;
+    }
+    .partners-strip .section-label { margin-bottom: 0; text-align: center; }
+    .partners-grid {
+      width: 100%;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      align-items: center; gap: 2rem;
+    }
+    .partner-logo {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 56px;
+    }
+    .partner-logo img {
+      max-height: 38px; width: auto; max-width: 100%;
+    }
+    /* witte logo's omzetten naar zwart op cream-achtergrond */
+    .partner-logo.is-light img { filter: invert(1); }
 
     /* PLAN — drie stappen (rows-stijl uit pitchdeck) */
     .plan-section { padding: 7rem 6vw; max-width: 1200px; margin: 0 auto; }
@@ -256,7 +305,7 @@
       margin-bottom: 3.5rem;
     }
     .plan-header h2 {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+      font-family: var(--serif); font-weight: 400;
       font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1.05; letter-spacing: -0.02em;
     }
     .plan-header h2 em { font-style: italic; color: var(--green); }
@@ -270,11 +319,11 @@
       align-items: baseline;
     }
     .plan-row .num {
-      font-family: 'Instrument Serif', Georgia, serif; font-style: italic;
+      font-family: var(--serif); font-style: italic;
       font-size: 0.95rem; color: var(--green);
     }
     .plan-row .title {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 500;
+      font-family: var(--serif); font-weight: 500;
       font-size: clamp(1.15rem, 1.5vw, 1.45rem); color: var(--ink); line-height: 1.25;
     }
     .plan-row .detail {
@@ -287,7 +336,7 @@
     .return-inner { max-width: 1200px; margin: 0 auto; }
     .return-header { margin-bottom: 3.5rem; max-width: 64ch; }
     .return-header h2 {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+      font-family: var(--serif); font-weight: 400;
       font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1.05; letter-spacing: -0.02em;
       margin-top: 1rem;
     }
@@ -303,18 +352,20 @@
       align-items: baseline;
     }
     .return-row .num {
-      font-family: 'Instrument Serif', Georgia, serif; font-style: italic;
+      font-family: var(--serif); font-style: italic;
       font-size: 0.95rem; color: var(--green);
     }
     .return-row .title {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 500;
+      font-family: var(--serif); font-weight: 500;
       font-size: clamp(1.15rem, 1.5vw, 1.45rem); color: var(--ink); line-height: 1.3;
     }
     .return-row .title-tag {
       display: inline-block; margin-left: 0.6rem;
       padding: 0.18rem 0.55rem;
-      border: 1px solid var(--green); color: var(--green);
-      border-radius: 100px; font-family: var(--sans);
+      border: 1px solid rgba(151, 160, 129, 0.55);
+      background: rgba(151, 160, 129, 0.12);
+      color: var(--tree);
+      border-radius: 100px; font-family: var(--subhead);
       font-size: 0.6rem; font-weight: 500; letter-spacing: 0.18em;
       text-transform: uppercase; vertical-align: middle; transform: translateY(-2px);
     }
@@ -325,13 +376,25 @@
 
     /* SPONSOR CTA SECTION */
     .sponsor-cta-section {
+      position: relative; overflow: hidden;
       background: var(--bg-dark); padding: 8rem max(1.5rem, 5vw);
       color: var(--cream); text-align: center;
     }
-    .sponsor-cta-inner { max-width: 820px; margin: 0 auto; }
+    .sponsor-cta-section::before {
+      content: '';
+      position: absolute;
+      inset: -10%;
+      background-image: url("LOGOMARK_B2B.svg");
+      background-repeat: repeat;
+      background-size: clamp(150px, 14vw, 220px) auto;
+      opacity: 0.075;
+      transform: rotate(-8deg);
+      pointer-events: none;
+    }
+    .sponsor-cta-inner { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; }
     .sponsor-cta-label { color: var(--green-light) !important; margin-bottom: 2rem; }
     .sponsor-cta-section h2 {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+      font-family: var(--serif); font-weight: 400;
       font-size: clamp(2.75rem, 6vw, 5.5rem);
       line-height: 0.96; letter-spacing: -0.03em; color: var(--cream); margin-bottom: 1.75rem;
     }
@@ -343,15 +406,15 @@
     .sponsor-cta-actions {
       display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
     }
-    .sponsor-cta-btn { background: var(--green) !important; color: var(--cream) !important; }
-    .sponsor-cta-btn:hover { background: var(--green-soft) !important; transform: translateY(-1px); }
+    .sponsor-cta-btn { background: var(--green) !important; color: var(--charcoal) !important; }
+    .sponsor-cta-btn:hover { background: var(--canvas) !important; color: var(--charcoal) !important; transform: translateY(-1px); }
     .sponsor-cta-outline {
       border-color: rgba(247,245,240,0.32) !important; color: rgba(247,245,240,0.82) !important;
       background: transparent !important;
     }
     .sponsor-cta-outline:hover {
-      background: rgba(247,245,240,0.07) !important;
-      border-color: rgba(247,245,240,0.6) !important; color: var(--cream) !important;
+      background: var(--green) !important;
+      border-color: var(--green) !important; color: var(--charcoal) !important;
     }
 
     /* ========= VERHAAL (redesign — wider, alternating, dynamic) ========= */
@@ -360,7 +423,7 @@
       max-width: 1440px; margin: 0 auto;
     }
     .story-hero h1 {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+      font-family: var(--serif); font-weight: 400;
       font-variation-settings: "opsz" 144;
       font-size: clamp(2.75rem, 9vw, 9rem);
       line-height: 0.94; letter-spacing: -0.035em;
@@ -383,14 +446,6 @@
       font-size: clamp(2.25rem, 5vw, 5rem);
       margin: 1rem 0 2rem;
       max-width: 16ch;
-    }
-    #page-verhaal .story-photo-full,
-    #page-verhaal .story-photo-full + .story-body,
-    #page-verhaal .story-pullquote,
-    #page-verhaal .philosophy-section,
-    #page-verhaal .photo-grid,
-    #page-verhaal .story-closing {
-      display: none;
     }
     #page-verhaal .story-body {
       padding-top: 2rem;
@@ -424,14 +479,12 @@
       color: var(--ink-soft); max-width: 48ch;
     }
 
-    .story-photo-full { width: 100%; height: clamp(280px, 55vw, 720px); overflow: hidden; background: var(--bg-dark); }
-    .story-photo-full img { width: 100%; height: 100%; object-fit: cover; }
-
     .photo-ph {
       width: 100%; height: 100%;
       background: linear-gradient(135deg, #0f1f0f 0%, #162816 50%, #0a1208 100%);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 1rem; color: rgba(247,245,240,0.28);
+      font-family: var(--subhead);
       font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
     }
     .photo-ph svg { opacity: 0.18; }
@@ -464,15 +517,16 @@
       margin-bottom: 0.5rem;
     }
     .ch-num-big {
-      font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400;
+      font-family: var(--serif); font-style: italic; font-weight: 400;
       font-size: clamp(2.4rem, 4vw, 3.6rem); color: var(--green); line-height: 1;
     }
     .ch-label {
+      font-family: var(--subhead);
       font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--ink-soft);
     }
     .ch-content h3 {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+      font-family: var(--serif); font-weight: 400;
       font-size: clamp(1.75rem, 3vw, 2.75rem); line-height: 1.05; letter-spacing: -0.02em;
       margin: 0 0 1rem;
     }
@@ -482,7 +536,7 @@
       color: var(--ink-soft); max-width: 56ch;
     }
     .ch-content p.ch-lead {
-      font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400;
+      font-family: var(--serif); font-style: italic; font-weight: 400;
       font-size: clamp(1.1rem, 1.5vw, 1.45rem); line-height: 1.4;
       color: var(--ink); max-width: 32ch;
     }
@@ -501,10 +555,10 @@
       aspect-ratio: 4/5;
       min-height: 420px;
       overflow: hidden;
-      border: 1px solid rgba(61,90,61,0.22);
+      border: 1px solid rgba(151,160,129,0.28);
       border-radius: 4px;
-      background: #101b10;
-      box-shadow: inset 0 0 0 1px rgba(247,245,240,0.08);
+      background: var(--charcoal);
+      box-shadow: inset 0 0 0 1px rgba(255,254,241,0.08);
     }
     #page-verhaal .camino-map-wrap {
       min-height: auto;
@@ -548,9 +602,9 @@
       justify-content: space-between;
       gap: 1rem;
       padding: 1rem;
-      border: 1px solid rgba(247,245,240,0.14);
+      border: 1px solid rgba(255,254,241,0.14);
       border-radius: 4px;
-      background: rgba(13,13,13,0.74);
+      background: rgba(22,22,22,0.78);
       color: var(--cream);
       backdrop-filter: blur(14px);
     }
@@ -558,6 +612,7 @@
       display: block;
       margin-bottom: 0.4rem;
       color: var(--green-light);
+      font-family: var(--subhead);
       font-size: 0.62rem;
       font-weight: 600;
       letter-spacing: 0.2em;
@@ -565,14 +620,15 @@
     }
     .camino-map-card strong {
       display: block;
-      font-family: 'Instrument Serif', Georgia, serif;
+      font-family: var(--serif);
       font-size: clamp(1.15rem, 2.2vw, 1.65rem);
       font-weight: 400;
       line-height: 1.05;
     }
     .camino-map-card .distance {
       flex: 0 0 auto;
-      color: rgba(247,245,240,0.72);
+      color: rgba(255,254,241,0.72);
+      font-family: var(--subhead);
       font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 0.16em;
@@ -593,11 +649,12 @@
     .camino-day-btn {
       min-height: 32px;
       padding: 0.45rem 0.62rem;
-      border: 1px solid rgba(13,13,13,0.12);
+      border: 1px solid rgba(22,22,22,0.12);
       border-radius: 999px;
-      background: rgba(247,245,240,0.86);
+      background: rgba(255,254,241,0.88);
       color: var(--ink);
       cursor: pointer;
+      font-family: var(--subhead);
       font-size: 0.66rem;
       font-weight: 600;
       letter-spacing: 0.08em;
@@ -608,13 +665,13 @@
     }
     .camino-day-btn:hover {
       transform: translateY(-1px);
-      border-color: rgba(61,90,61,0.35);
+      border-color: rgba(151,160,129,0.42);
       background: var(--cream);
     }
     .camino-day-btn.active {
       border-color: var(--green);
       background: var(--green);
-      color: var(--cream);
+      color: var(--charcoal);
     }
     .camino-map .maplibregl-ctrl-bottom-left,
     .camino-map .maplibregl-ctrl-bottom-right {
@@ -629,7 +686,7 @@
       justify-content: flex-end;
       padding: clamp(1rem, 4vw, 1.5rem);
       border: 0;
-      background: rgba(13,13,13,0.04);
+      background: rgba(22,22,22,0.04);
       color: var(--cream);
       cursor: pointer;
     }
@@ -638,10 +695,11 @@
       align-items: center;
       min-height: 34px;
       padding: 0.5rem 0.75rem;
-      border: 1px solid rgba(247,245,240,0.18);
+      border: 1px solid rgba(255,254,241,0.18);
       border-radius: 999px;
-      background: rgba(13,13,13,0.72);
+      background: rgba(22,22,22,0.76);
       backdrop-filter: blur(12px);
+      font-family: var(--subhead);
       font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 0.12em;
@@ -655,15 +713,15 @@
       height: 16px;
       border: 2px solid var(--cream);
       border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 0 5px rgba(61,90,61,0.22);
+      background: var(--route-main);
+      box-shadow: 0 0 0 5px var(--route-soft);
     }
     .camino-marker.is-end {
-      background: var(--green-light);
-      box-shadow: 0 0 0 6px rgba(168,201,140,0.28);
+      background: var(--route-strong);
+      box-shadow: 0 0 0 6px rgba(151,160,129,0.28);
     }
     .camino-popup .maplibregl-popup-content {
-      border: 1px solid rgba(61,90,61,0.18);
+      border: 1px solid rgba(151,160,129,0.28);
       border-radius: 4px;
       background: var(--cream);
       color: var(--ink);
@@ -730,7 +788,7 @@
       padding: clamp(5rem, 10vw, 8rem) max(1.5rem, 5vw);
     }
     .story-pullquote blockquote {
-      font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 300;
+      font-family: var(--serif); font-style: italic; font-weight: 300;
       font-size: clamp(1.5rem, 3.8vw, 3rem); line-height: 1.18; letter-spacing: -0.015em;
       color: inherit; max-width: 22ch; margin: 0 auto;
     }
@@ -739,102 +797,13 @@
     .story-pullquote-dark blockquote em { color: var(--green-light); }
     .story-pullquote .cite {
       margin-top: 2rem;
+      font-family: var(--subhead);
       font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
       color: var(--ink-soft);
     }
     .story-pullquote-dark .cite { color: rgba(247,245,240,0.5); }
 
     /* PHILOSOPHY — feature grid redesign */
-    .philosophy-section { background: var(--cream); padding: 7rem 0; }
-    .philosophy-inner { max-width: 1440px; margin: 0 auto; padding: 0 max(1.5rem, 5vw); }
-    .philosophy-header {
-      display: grid; grid-template-columns: 1fr; gap: 2rem;
-      margin-bottom: 4rem;
-    }
-    @media (min-width: 900px) {
-      .philosophy-header {
-        grid-template-columns: 1fr 1fr; gap: 5rem; align-items: end;
-      }
-    }
-    .philosophy-header h2 {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
-      font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.05; letter-spacing: -0.02em;
-      margin-top: 1rem;
-    }
-    .philosophy-header h2 em { font-style: italic; color: var(--green); }
-    .philosophy-header p {
-      font-size: clamp(0.95rem, 1.05vw, 1.075rem); line-height: 1.7;
-      color: var(--ink-soft); max-width: 44ch;
-    }
-    .philosophy-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
-      gap: 1px; background: var(--line);
-      border: 1px solid var(--line);
-    }
-    .philo-card {
-      background: var(--cream);
-      padding: 2.25rem;
-      display: flex; flex-direction: column;
-      gap: 1.5rem; min-height: 260px;
-      transition: background 0.3s;
-    }
-    .philo-card:hover { background: rgba(168, 201, 140, 0.10); }
-    .philo-card .num {
-      font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400;
-      font-size: 2rem; color: var(--green); line-height: 1;
-    }
-    .philo-card .text {
-      font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400;
-      font-size: clamp(1.1rem, 1.4vw, 1.3rem); line-height: 1.4;
-      color: var(--ink); margin-top: auto;
-    }
-
-    /* PHOTO GRID — full-bleed feel */
-    .photo-grid {
-      max-width: 1440px; margin: 0 auto;
-      padding: 0 max(0.75rem, 2vw) 6rem;
-      display: grid; grid-template-columns: repeat(12, 1fr);
-      gap: clamp(6px, 0.8vw, 12px);
-    }
-    .pg-item { overflow: hidden; border-radius: 3px; }
-    .pg-item:nth-child(1) { grid-column: span 7; height: clamp(360px, 42vw, 620px); }
-    .pg-item:nth-child(2) { grid-column: span 5; height: clamp(176px, 20vw, 304px); }
-    .pg-item:nth-child(3) { grid-column: span 5; height: clamp(176px, 20vw, 304px); }
-    .pg-item:nth-child(4) { grid-column: span 4; height: clamp(200px, 22vw, 320px); }
-    .pg-item:nth-child(5) { grid-column: span 4; height: clamp(200px, 22vw, 320px); }
-    .pg-item:nth-child(6) { grid-column: span 4; height: clamp(200px, 22vw, 320px); }
-    .pg-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-    .pg-item:hover img { transform: scale(1.03); }
-    .pg-item .photo-ph { height: 100%; }
-
-    /* STORY CLOSING — bridge to founders / CTA */
-    .story-closing {
-      padding: 6rem max(1.5rem, 5vw);
-      max-width: 1440px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr; gap: 2.5rem;
-    }
-    @media (min-width: 900px) {
-      .story-closing {
-        grid-template-columns: 1.1fr 1fr;
-        gap: 5rem; align-items: end;
-      }
-    }
-    .story-closing h2 {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
-      font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.04; letter-spacing: -0.02em;
-    }
-    .story-closing h2 em { font-style: italic; color: var(--green); }
-    .story-closing p {
-      color: var(--ink-soft);
-      font-size: clamp(0.95rem, 1.05vw, 1.075rem); line-height: 1.75;
-      max-width: 46ch;
-    }
-    .story-closing .actions {
-      margin-top: 1.5rem;
-      display: flex; gap: 0.85rem; flex-wrap: wrap;
-    }
-
     /* ========= HOME — extra sections onderaan landing ========= */
 
     /* HOME — story tease */
@@ -861,7 +830,7 @@
     .home-story-tease .visual .photo-ph { height: 100%; }
     .home-story-tease .text { display: flex; flex-direction: column; gap: 1.5rem; }
     .home-story-tease h2 {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+      font-family: var(--serif); font-weight: 400;
       font-size: clamp(2rem, 3.5vw, 3.25rem); line-height: 1.05; letter-spacing: -0.02em;
     }
     .home-story-tease h2 em { font-style: italic; color: var(--green); }
@@ -891,7 +860,7 @@
     }
     .home-journey .section-label { color: var(--green-light); }
     .home-journey h2 {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+      font-family: var(--serif); font-weight: 400;
       font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.05; letter-spacing: -0.02em;
       margin-bottom: 1.5rem; color: var(--cream);
     }
@@ -908,11 +877,12 @@
       flex-wrap: wrap;
     }
     .home-journey-stat .v {
-      font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400;
+      font-family: var(--serif); font-style: italic; font-weight: 400;
       font-size: clamp(1.5rem, 2.2vw, 2.2rem); color: var(--green-light);
       line-height: 1; display: block; margin-bottom: 0.5rem;
     }
     .home-journey-stat .l {
+      font-family: var(--subhead);
       font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
       color: rgba(247,245,240,0.5);
     }
@@ -952,7 +922,7 @@
     }
     .home-journey-map .route-label {
       fill: rgba(247,245,240,0.72);
-      font-family: var(--sans);
+      font-family: var(--subhead);
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 1.4px;
@@ -960,7 +930,7 @@
     }
     .home-journey-map .route-day {
       fill: rgba(247,245,240,0.46);
-      font-family: var(--sans);
+      font-family: var(--subhead);
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 1px;
@@ -968,7 +938,7 @@
     }
     .home-journey-map .route-distance {
       fill: rgba(247,245,240,0.34);
-      font-family: var(--sans);
+      font-family: var(--subhead);
       font-size: 10px;
       letter-spacing: 1.6px;
     }
@@ -981,7 +951,7 @@
       border-top: 1px solid var(--line);
     }
     .home-closing h2 {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+      font-family: var(--serif); font-weight: 400;
       font-variation-settings: "opsz" 144, "SOFT" 30;
       font-size: clamp(2.4rem, 6vw, 5rem);
       line-height: 0.98; letter-spacing: -0.025em;
@@ -989,7 +959,7 @@
     }
     .home-closing h2 em { font-style: italic; color: var(--green); }
     .home-closing p {
-      font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 300;
+      font-family: var(--serif); font-style: italic; font-weight: 300;
       font-size: clamp(1.05rem, 1.4vw, 1.4rem);
       color: var(--ink-soft); max-width: 42ch;
       margin: 0 auto 2.5rem; line-height: 1.5;
@@ -1006,7 +976,7 @@
     }
     .founders-header .section-label { color: var(--green-light); }
     .founders-header h2 {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+      font-family: var(--serif); font-weight: 400;
       font-size: clamp(2rem, 3.2vw, 3.2rem); line-height: 1.05; letter-spacing: -0.02em;
       color: var(--cream);
     }
@@ -1029,16 +999,18 @@
     .founder-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(15%); }
     .founder-photo .photo-ph { height: 100%; min-height: 0; }
     .founder-name {
-      font-family: 'Instrument Serif', Georgia, serif; font-weight: 500;
+      font-family: var(--serif); font-weight: 500;
       font-size: 1.2rem; color: var(--cream); margin-bottom: 0.25rem;
     }
     .founder-role {
+      font-family: var(--subhead);
       font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--green-light); margin-bottom: 1.1rem;
     }
     .founder-bio { font-size: 0.9rem; line-height: 1.65; color: rgba(247,245,240,0.58); margin-bottom: 1.5rem; }
     .founder-li {
       display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: var(--subhead);
       font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--green-light);
       border-bottom: 1px solid rgba(168,201,140,0.3); padding-bottom: 2px; transition: border-color 0.2s;
@@ -1081,7 +1053,7 @@
       }
     }
     .story-final-cta h2 {
-      font-family: 'Instrument Serif', Georgia, serif;
+      font-family: var(--serif);
       font-weight: 400;
       font-size: clamp(2rem, 4vw, 3.25rem);
       line-height: 1.04;
@@ -1132,6 +1104,7 @@
       flex-shrink: 0;
     }
     .contact-grid-head-label {
+      font-family: var(--subhead);
       font-size: 0.82rem;
       font-weight: 500;
       color: var(--ink);
@@ -1145,14 +1118,14 @@
       gap: 1rem;
     }
     .contact-grid-value {
-      font-family: 'Instrument Serif', Georgia, serif;
+      font-family: var(--serif);
       font-size: clamp(1.05rem, 1.6vw, 1.4rem);
       line-height: 1.35;
       color: var(--ink);
       text-decoration: none;
       display: block;
     }
-    a.contact-grid-value:hover { color: var(--green); }
+    a.contact-grid-value:hover { color: var(--tree); text-decoration: underline; text-decoration-color: var(--green); text-underline-offset: 0.18em; }
     .contact-grid-value-row {
       display: flex;
       align-items: center;
@@ -1185,9 +1158,9 @@
       transition: color 0.2s, background 0.2s, border-color 0.2s;
     }
     .contact-copy-btn:hover {
-      color: var(--green);
-      background: rgba(61,90,61,0.06);
-      border-color: rgba(61,90,61,0.14);
+      color: var(--tree);
+      background: rgba(151,160,129,0.14);
+      border-color: rgba(151,160,129,0.38);
     }
     .contact-copy-btn svg { width: 15px; height: 15px; }
     .contact-copy-btn .check-icon { display: none; color: #2f7d46; }
@@ -1199,13 +1172,13 @@
       min-height: 42px; padding: 0.7rem 1rem;
       border: 1px solid var(--line); border-radius: 999px;
       background: rgba(247,245,240,0.7); color: var(--ink);
-      text-decoration: none; font-size: 0.82rem; font-weight: 500;
+      text-decoration: none; font-family: var(--subhead); font-size: 0.82rem; font-weight: 500;
       transition: color 0.2s, border-color 0.2s, background 0.2s;
     }
     .contact-social:hover {
-      color: var(--green);
-      border-color: rgba(61,90,61,0.32);
-      background: rgba(61,90,61,0.06);
+      color: var(--tree);
+      border-color: rgba(151,160,129,0.42);
+      background: rgba(151,160,129,0.14);
     }
     .contact-social svg { width: 17px; height: 17px; }
     @media (max-width: 680px) {
@@ -1220,11 +1193,14 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     .footer-logo {
-      display: flex; align-items: center;
-      font-family: 'Instrument Serif', Georgia, serif;
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: var(--serif);
       font-weight: 500; font-size: 1.25rem; letter-spacing: 0.005em;
     }
-    .footer-right { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+    .footer-logo-mark {
+      width: auto; height: 1.25rem; flex: 0 0 auto;
+    }
+    .footer-right { font-family: var(--subhead); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
 
     /* MIND LOGO TREATMENTS */
     .cr-value-with-icon {
@@ -1240,6 +1216,8 @@
       .stats-inner { grid-template-columns: repeat(2, 1fr); }
       .stat:nth-child(2) { border-right: none; }
       .stat:nth-child(3) { border-right: 1px solid var(--line); }
+      .partners-grid { grid-template-columns: repeat(2, 1fr); gap: 1.75rem 2rem; }
+      .partner-logo img { max-height: 32px; }
       .plan-header { grid-template-columns: 1fr; gap: 1.5rem; }
       .plan-row, .return-row { grid-template-columns: 40px 1fr; }
       .plan-row .detail, .return-row .detail { grid-column: 2; text-align: left; }
@@ -1261,12 +1239,8 @@
       .home-journey { padding: 5rem max(1.25rem, 5vw); }
       .home-closing { padding: 5rem max(1.25rem, 5vw); }
       .home-journey-stats { gap: 1.5rem; }
-      .story-closing { padding: 4rem max(1.25rem, 5vw); }
-      .philosophy-section { padding: 5rem 0; }
     }
     @media (max-width: 600px) {
-      .pg-item:nth-child(1) { grid-column: span 12; height: 240px; }
-      .pg-item:nth-child(n+2) { grid-column: span 6; height: 180px; }
       .nav-links .nav-cta-btn { display: none; }
       .nav-links { gap: 1.5rem; }
       .ch-visual { aspect-ratio: 3/2; }
@@ -1286,7 +1260,10 @@
 
   <!-- NAV -->
   <nav class="site-nav on-hero" id="siteNav">
-    <button class="nav-logo" onclick="showPage('home')" type="button">Back to Being</button>
+    <button class="nav-logo" onclick="showPage('home')" type="button">
+      <img class="nav-logo-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+      <span>Back to Being</span>
+    </button>
     <div class="nav-links">
       <button class="nav-link" data-page="verhaal"    data-i18n="nav.story"      onclick="showPage('verhaal')"    type="button">Ons verhaal</button>
       <button class="nav-link" data-page="sponsoring" data-i18n="nav.sponsorship" onclick="showPage('sponsoring')" type="button">Sponsoring</button>
@@ -1315,8 +1292,8 @@
         </h1>
         <div class="hero-foot">
           <p class="hero-tagline" data-i18n="hero.tagline">
-            Drie AI-founders lopen 115 km over de Camino en bouwen
-            onderweg een AI-tool voor mentale gezondheid.
+            Drie AI-nerds maken van de Camino hun kantoor: 115 km,
+            live bouwen in beeld, daarna een echte overdracht aan MIND.
           </p>
           <div class="hero-meta" data-i18n="hero.meta">
             115 km &nbsp;·&nbsp; 6 dagen<br>
@@ -1329,13 +1306,26 @@
 
     <section class="intro-strip">
       <div>
-        <h2 data-i18n="intro.heading">Drie founders. Eén route.<br><em>Eén AI-tool</em> voor MIND.</h2>
+        <h2 data-i18n="intro.heading">Drie nerds. Eén route.<br><em>Eén AI-tool</em> voor MIND.</h2>
       </div>
       <div>
-        <p data-i18n="intro.body">We zijn drie AI-founders uit Amsterdam. Deze zomer lopen we 115 km van Tui naar Santiago en bouwen onderweg een AI-tool die we gratis overdragen aan stichting MIND. Geen bureau, geen vergaderzaal — beweging maakt creativiteit, lopen is denken, denken is bouwen.</p>
+        <p data-i18n="intro.body">Drie AI-nerds uit Amsterdam lopen deze zomer de Camino van Tui naar Santiago en bouwen onderweg live aan één AI-tool voor mentale gezondheid. Daarna dragen we die gratis over aan MIND. Sponsors maken reis, productie en overdracht mogelijk.</p>
         <div class="intro-actions">
-          <button class="btn"         data-i18n="intro.cta1" onclick="showPage('verhaal')"    type="button">Ons verhaal →</button>
-          <button class="btn btn-outline" data-i18n="intro.cta2" onclick="showPage('sponsoring')" type="button">Sponsoring →</button>
+          <button class="btn"         data-i18n="intro.cta1" onclick="showPage('verhaal')"    type="button">Ons verhaal &rarr;</button>
+          <button class="btn btn-outline" data-i18n="intro.cta2" onclick="showPage('sponsoring')" type="button">Sponsoring &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOME — partners credibility strip -->
+    <section class="partners-strip" aria-label="Partners">
+      <div class="partners-strip-inner">
+        <div class="section-label" data-i18n="partners.home.label">Met steun van</div>
+        <div class="partners-grid">
+          <div class="partner-logo is-light"><img src="techleap.webp" alt="Techleap" loading="lazy" /></div>
+          <div class="partner-logo"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></div>
+          <div class="partner-logo"><img src="Lerai.webp" alt="LerAI" loading="lazy" /></div>
+          <div class="partner-logo"><img src="TAG_black.svg" alt="TAG" loading="lazy" /></div>
         </div>
       </div>
     </section>
@@ -1344,7 +1334,7 @@
       <div class="stats-inner">
         <div class="stat">
           <div class="stat-number">115</div>
-          <div class="stat-label" data-i18n="stats.km">kilometer<br>Tui → Santiago</div>
+          <div class="stat-label" data-i18n="stats.km">kilometer<br>Tui &rarr; Santiago</div>
         </div>
         <div class="stat">
           <div class="stat-number">6</div>
@@ -1352,7 +1342,7 @@
         </div>
         <div class="stat">
           <div class="stat-number">3</div>
-          <div class="stat-label" data-i18n="stats.founders">AI-founders<br>Amsterdam</div>
+          <div class="stat-label" data-i18n="stats.founders">AI-nerds<br>Amsterdam</div>
         </div>
         <div class="stat">
           <div class="stat-number">1</div>
@@ -1374,7 +1364,7 @@
         <h2 data-i18n="home.tease.h">Een rit die we zelf<br><em>nodig hadden.</em></h2>
         <p data-i18n="home.tease.p">We werken in tech, maar we voelden dat het kantoor steeds meer een kooi werd. Back to Being is ons antwoord: drie founders, één route, één AI-tool voor mentale gezondheid.</p>
         <div class="actions">
-          <button class="btn" data-i18n="home.tease.cta" onclick="showPage('verhaal')" type="button">Lees het hele verhaal →</button>
+          <button class="btn" data-i18n="home.tease.cta" onclick="showPage('verhaal')" type="button">Lees het hele verhaal &rarr;</button>
         </div>
       </div>
     </section>
@@ -1385,7 +1375,7 @@
         <div>
           <div class="section-label" data-i18n="home.journey.label">De route</div>
           <h2 data-i18n="home.journey.h">115 km van Tui<br>naar <em>Santiago.</em></h2>
-          <p data-i18n="home.journey.p">Zes dagen lopen op de Camino Portugués. Geen vergaderzaal, geen bureau — alleen het pad, drie founders, smart glasses en de tijd om iets te bouwen dat ertoe doet.</p>
+          <p data-i18n="home.journey.p">Zes dagen lopen op de Camino Portugués. Geen vergaderzaal, geen bureau. Alleen het pad, drie founders, smart glasses en de tijd om iets te bouwen dat ertoe doet.</p>
           <div class="home-journey-stats">
             <div class="home-journey-stat">
               <span class="v" data-i18n="home.journey.stat.km.v">115</span>
@@ -1408,7 +1398,7 @@
         <svg class="home-journey-map" viewBox="0 0 620 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Route van Tui naar Santiago de Compostela">
           <defs>
             <marker id="homeRouteArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
-              <path d="M1 1 L9 5 L1 9 Z" fill="#a8c98c"/>
+              <path d="M1 1 L9 5 L1 9 Z" fill="#97a081"/>
             </marker>
           </defs>
           <path class="route-base" d="M54 206 C 96 178, 126 154, 178 142 C 226 130, 252 160, 304 136 C 356 112, 374 86, 430 82 C 482 78, 520 54, 568 34"/>
@@ -1437,20 +1427,20 @@
           <line x1="0" y1="60"  x2="560" y2="60"  stroke="rgba(247,245,240,0.04)" stroke-width="1"/>
           <!-- route -->
           <path d="M28 180 C 70 165, 110 130, 168 104 C 226 78, 268 132, 336 96 C 404 60, 448 76, 532 32"
-            stroke="#3d5a3d" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            stroke="#97a081" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
           <!-- glow -->
           <path d="M28 180 C 70 165, 110 130, 168 104 C 226 78, 268 132, 336 96 C 404 60, 448 76, 532 32"
-            stroke="rgba(168,201,140,0.18)" stroke-width="8" fill="none" stroke-linecap="round"/>
+            stroke="rgba(151,160,129,0.2)" stroke-width="8" fill="none" stroke-linecap="round"/>
           <!-- tussenstops -->
-          <circle cx="168" cy="104" r="5"   fill="rgba(168,201,140,0.5)"/>
-          <circle cx="336" cy="96"  r="5"   fill="rgba(168,201,140,0.5)"/>
+          <circle cx="168" cy="104" r="5"   fill="rgba(151,160,129,0.55)"/>
+          <circle cx="336" cy="96"  r="5"   fill="rgba(151,160,129,0.55)"/>
           <!-- start / einde -->
-          <circle cx="28"  cy="180" r="7.5" fill="#a8c98c"/>
-          <circle cx="532" cy="32"  r="7.5" fill="#a8c98c"/>
+          <circle cx="28"  cy="180" r="7.5" fill="#97a081"/>
+          <circle cx="532" cy="32"  r="7.5" fill="#97a081"/>
           <!-- labels -->
-          <text x="28"  y="200" fill="rgba(247,245,240,0.5)" font-family="Inter,sans-serif" font-size="11" letter-spacing="2" text-anchor="middle">TUI</text>
-          <text x="532" y="20"  fill="rgba(247,245,240,0.5)" font-family="Inter,sans-serif" font-size="11" letter-spacing="2" text-anchor="middle">SANTIAGO</text>
-          <text x="290" y="200" fill="rgba(247,245,240,0.28)" font-family="Inter,sans-serif" font-size="9.5" letter-spacing="1.5" text-anchor="middle" data-i18n="route.map">115 KM · 6 DAGEN</text>
+          <text x="28"  y="200" fill="rgba(247,245,240,0.5)" font-family="Inter Tight,Inter,sans-serif" font-size="11" letter-spacing="2" text-anchor="middle">TUI</text>
+          <text x="532" y="20"  fill="rgba(247,245,240,0.5)" font-family="Inter Tight,Inter,sans-serif" font-size="11" letter-spacing="2" text-anchor="middle">SANTIAGO</text>
+          <text x="290" y="200" fill="rgba(247,245,240,0.28)" font-family="Inter Tight,Inter,sans-serif" font-size="9.5" letter-spacing="1.5" text-anchor="middle" data-i18n="route.map">115 KM · 6 DAGEN</text>
         </svg>
       </div>
     </div>
@@ -1458,15 +1448,18 @@
     <!-- HOME — closing CTA -->
     <div class="home-closing">
       <h2 data-i18n="home.closing.h">Loop je<br><em>mee?</em></h2>
-      <p data-i18n="home.closing.p">Of je nu partner wordt, hardware levert, of gewoon het verhaal volgt — er is plek.</p>
+      <p data-i18n="home.closing.p">Of je nu partner wordt, hardware levert, of gewoon het verhaal volgt. Er is plek.</p>
       <div class="actions">
-        <button class="btn" data-i18n="home.closing.cta1" onclick="showPage('sponsoring')" type="button">Word partner →</button>
-        <button class="btn btn-outline" data-i18n="home.closing.cta2" onclick="showPage('verhaal')" type="button">Ons verhaal →</button>
+        <button class="btn" data-i18n="home.closing.cta1" onclick="showPage('sponsoring')" type="button">Word partner &rarr;</button>
+        <button class="btn btn-outline" data-i18n="home.closing.cta2" onclick="showPage('verhaal')" type="button">Ons verhaal &rarr;</button>
       </div>
     </div>
 
     <footer class="site-footer">
-      <div class="footer-logo">Back to Being</div>
+      <div class="footer-logo">
+        <img class="footer-logo-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+        <span>Back to Being</span>
+      </div>
       <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
     </footer>
   </div>
@@ -1475,52 +1468,14 @@
   <div class="page" id="page-verhaal">
 
     <section class="story-hero">
-      <h1 data-i18n="verhaal.h1">Drie founders.<br>E&eacute;n route.<br><em>E&eacute;n missie.</em></h1>
+      <h1 data-i18n="verhaal.h1">De wereld<br>als <em>ons kantoor.</em></h1>
       <div class="story-hero-foot">
-        <p data-i18n="verhaal.intro1">We werken in tech. We bouwen tools die mensen helpen. Maar ergens vroegen we ons af: wie helpt de mensen die de tools bouwen? En waarom voelt "het kantoor" zo steeds meer als een kooi?</p>
-        <p data-i18n="verhaal.intro2">Back to Being is ons antwoord. Een rit die we zelf nodig hadden — en waarvan we denken dat anderen het verhaal nodig hebben.</p>
+        <p data-i18n="verhaal.intro1">Met AI kun je ongelooflijk veel versnellen. En toch zitten veel kenniswerkers nog steeds veertig uur per week achter een bureau, alsof er niets fundamenteels verandert. De werkweek voelt sneller digitaal dan menselijk.</p>
+        <p data-i18n="verhaal.intro2">Back to Being is ons antwoord. Wij trekken het door naar het extreme: de Camino als kantoor, live bouwen onderweg en een mini-docu die laat zien hoe zweet en software samenkomen.</p>
       </div>
     </section>
 
-    <!-- FOTO 1 — vervang door <img src="camino1.jpg" alt="Camino dag 1"> -->
-    <div class="story-photo-full">
-      <div class="photo-ph">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        <span data-i18n="verhaal.photo">Foto — vervang door jouw Camino-video of -foto</span>
-      </div>
-    </div>
-
     <div class="story-body">
-
-      <!-- Hoofdstuk 01: tekst links, foto rechts -->
-      <div class="story-chapter">
-        <div class="ch-content">
-          <div class="ch-meta">
-            <span class="ch-num-big">01</span>
-            <span class="ch-label" data-i18n="verhaal.ch1.label">Hoofdstuk</span>
-          </div>
-          <h3 data-i18n="verhaal.ch1.h">We nemen het kantoor<br><em>naar buiten.</em></h3>
-          <p class="ch-lead" data-i18n="verhaal.ch1.lead">Productief zijn terwijl je beweegt. Een gesprek op een bergpad. Bouwen met je handen vrij.</p>
-          <p data-i18n="verhaal.ch1.p1">Tech-founders zijn de eersten om te zeggen dat AI de wereld beter maakt. Maar in de praktijk: we staren langer dan ooit in schermen, vergaderen meer dan ooit, en noemen het "deep work" als we de hele dag bezig zijn met e-mail.</p>
-          <p data-i18n="verhaal.ch1.p2">Wij denken dat het anders kan. Dat je productief kunt zijn terwijl je beweegt. Dat een gesprek op een bergpad meer oplevert dan een dag vol standups. En dat je een AI-tool kunt bouwen met je handen vrij — spraak, glasses, frisse lucht.</p>
-        </div>
-        <div class="ch-visual">
-          <div class="photo-ph">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <span data-i18n="photo.1">Foto 1</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Pull-quote 1 -->
-    <div class="story-pullquote">
-      <blockquote data-i18n="verhaal.quote1">Lopen is denken.<br><em>Denken is bouwen.</em></blockquote>
-      <p class="cite" data-i18n="verhaal.quote1.cite">Back to Being · Camino 2026</p>
-    </div>
-
-    <div class="story-body" style="padding-top:0;">
 
       <!-- Hoofdstuk 02: foto links, tekst rechts (even) -->
       <div class="story-chapter">
@@ -1530,9 +1485,9 @@
             <span class="ch-label" data-i18n="verhaal.ch2.label">Hoofdstuk</span>
           </div>
           <h3 data-i18n="verhaal.ch2.h">Een tool voor<br><em>mentale gezondheid.</em></h3>
-          <p class="ch-lead" data-i18n="verhaal.ch2.lead">Wat het wordt, bepalen we samen met MIND. Het gaat om wat zij nodig hebben.</p>
-          <p data-i18n="verhaal.ch2.p1">Stichting MIND zet zich in voor mentale gezondheid in Nederland — jaarlijks bereiken ze miljoenen mensen met informatie, tools en ondersteuning.</p>
-          <p data-i18n="verhaal.ch2.p2">De AI-tool die we bouwen dragen we gratis over. Wat het precies wordt — intern, extern, voor hun gebruikers — bepalen we samen met MIND. Het gaat om wat zij nodig hebben, niet wat wij cool vinden.</p>
+          <p class="ch-lead" data-i18n="verhaal.ch2.lead">Hun behoefte leidt, wij leveren iets bruikbaars.</p>
+          <p data-i18n="verhaal.ch2.p1">Stichting MIND zet zich in voor mentale gezondheid in Nederland. Jaarlijks bereiken ze miljoenen mensen met informatie, tools en ondersteuning.</p>
+          <p data-i18n="verhaal.ch2.p2">De AI-tool die we bouwen dragen we gratis over. Samen met MIND bepalen we wat we bouwen: intern, extern, voor hun gebruikers. Het gaat om wat zij nodig hebben, niet wat wij cool vinden.</p>
         </div>
         <div class="ch-visual ch-visual-mind">
           <img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" />
@@ -1548,8 +1503,8 @@
           </div>
           <h3 data-i18n="verhaal.ch3.h">De Camino als<br><em>metafoor.</em></h3>
           <p class="ch-lead" data-i18n="verhaal.ch3.lead">Elke dag lopen. Elke dag bouwen. Elke avond reflecteren.</p>
-          <p data-i18n="verhaal.ch3.p1">115 kilometer van Tui naar Santiago. De Camino Portugués — een route die je dwingt aanwezig te zijn. Elke dag lopen we, elke dag bouwen we, elke avond reflecteren we.</p>
-          <p data-i18n="verhaal.ch3.p2">Een mini-docu legt het vast — niet als marketing, maar als eerlijk verslag van wat er gebeurt als je tech en natuur combineert. Het eindproduct gaat naar MIND, het verhaal delen we met de wereld.</p>
+          <p data-i18n="verhaal.ch3.p1">115 kilometer van Tui naar Santiago. De Camino Portugués, een route die je dwingt aanwezig te zijn. Elke dag lopen we, elke dag bouwen we, elke avond reflecteren we.</p>
+          <p data-i18n="verhaal.ch3.p2">Een mini-docu legt vast hoe zweet en software samenkomen. Niet als marketing, maar als eerlijk verslag van wat er gebeurt als je tech en natuur combineert. Het eindproduct gaat naar MIND, het verhaal delen we met de wereld.</p>
         </div>
         <div class="ch-visual camino-map-wrap" aria-label="Kaart van de Camino-route van Tui naar Santiago de Compostela">
           <div id="caminoMap" class="camino-map"></div>
@@ -1569,68 +1524,6 @@
 
     </div>
 
-    <!-- Pull-quote 2 — dark -->
-    <div class="story-pullquote story-pullquote-dark">
-      <blockquote data-i18n="verhaal.quote2">Tech maakt ons mensélijker —<br><em>als je 'm goed inzet.</em></blockquote>
-      <p class="cite" data-i18n="verhaal.quote2.cite">Tui → Santiago · 115 km</p>
-    </div>
-
-    <!-- FILOSOFIE — feature grid redesign -->
-    <section class="philosophy-section">
-      <div class="philosophy-inner">
-        <div class="philosophy-header">
-          <div>
-            <div class="section-label" data-i18n="philo.label">De filosofie</div>
-            <h2 data-i18n="philo.h">Niet bouwen vanachter een bureau,<br>maar <em>lopend.</em></h2>
-          </div>
-          <p data-i18n="philo.intro">Vier dingen die we geloven — en die we bewijzen door ze gewoon te doen.</p>
-        </div>
-        <div class="philosophy-grid">
-          <div class="philo-card">
-            <span class="num">01</span>
-            <span class="text" data-i18n="philo.1">We werken steeds robotachtiger, terwijl AI dat zou moeten oplossen, niet versterken.</span>
-          </div>
-          <div class="philo-card">
-            <span class="num">02</span>
-            <span class="text" data-i18n="philo.2">Mentale gezondheid staat onder druk. Hoog tijd voor een ander gesprek.</span>
-          </div>
-          <div class="philo-card">
-            <span class="num">03</span>
-            <span class="text" data-i18n="philo.3">Beweging maakt creativiteit. Lopen is denken, denken is bouwen.</span>
-          </div>
-          <div class="philo-card">
-            <span class="num">04</span>
-            <span class="text" data-i18n="philo.4">De mini-docu maakt het verhaal blijvend — voor onszelf, voor MIND, voor onze partners.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Story closing — brug naar founders / CTA -->
-    <div class="story-closing">
-      <div>
-        <div class="section-label" data-i18n="verhaal.closing.label">Doe mee</div>
-        <h2 data-i18n="verhaal.closing.h">Een verhaal is leuker<br>met <em>partners.</em></h2>
-      </div>
-      <div>
-        <p data-i18n="verhaal.closing.p">We doen dit niet alleen. Hardware, cash, expertise, een dak boven het hoofd — er is plek voor partners die hetzelfde voelen.</p>
-        <div class="actions">
-          <button class="btn" data-i18n="verhaal.closing.cta1" onclick="showPage('sponsoring')" type="button">Sponsoring →</button>
-          <button class="btn btn-outline" data-i18n="verhaal.closing.cta2" onclick="showPage('contact')" type="button">Contact →</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- FOTO GRID — vervang .photo-ph door <img src="…"> -->
-    <div class="photo-grid">
-      <div class="pg-item"><div class="photo-ph"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span data-i18n="photo.1">Foto 1</span></div></div>
-      <div class="pg-item"><div class="photo-ph"><span data-i18n="photo.2">Foto 2</span></div></div>
-      <div class="pg-item"><div class="photo-ph"><span data-i18n="photo.3">Foto 3</span></div></div>
-      <div class="pg-item"><div class="photo-ph"><span data-i18n="photo.4">Foto 4</span></div></div>
-      <div class="pg-item"><div class="photo-ph"><span data-i18n="photo.5">Foto 5</span></div></div>
-      <div class="pg-item"><div class="photo-ph"><span data-i18n="photo.6">Foto 6</span></div></div>
-    </div>
-
     <!-- FOUNDERS -->
     <div class="founders-section">
       <div class="founders-inner">
@@ -1645,7 +1538,7 @@
             <div class="founder-name">Caesar Schoorl</div>
             <div class="founder-role" data-i18n="founders.role1">AI-founder · Amsterdam</div>
             <p class="founder-bio" data-i18n="founders.bio1">Caesar bouwt AI-producten en brengt het verhaal, de partners en de energie bij elkaar. Op de Camino wil hij laten zien dat technologie menselijker wordt als je het buiten het kantoor brengt.</p>
-            <a href="https://www.linkedin.com/in/caesar-schoorl-ai/" target="_blank" rel="noopener" class="founder-li">LinkedIn →</a>
+            <a href="https://www.linkedin.com/in/caesar-schoorl-ai/" target="_blank" rel="noopener" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
           <div class="founder-card">
@@ -1653,15 +1546,15 @@
             <div class="founder-name" data-i18n="founders.name2">Stijn Smit</div>
             <div class="founder-role" data-i18n="founders.role2">AI-founder · Amsterdam</div>
             <p class="founder-bio" data-i18n="founders.bio2">Stijn werkt op het snijvlak van AI, product en storytelling. Hij loopt mee om te bouwen aan een tool die concreet helpt, en om werken weer minder scherm en meer aandacht te maken.</p>
-            <a href="https://www.linkedin.com/in/stijn-smit-ai/" target="_blank" rel="noopener" class="founder-li">LinkedIn →</a>
+            <a href="https://www.linkedin.com/in/stijn-smit-ai/" target="_blank" rel="noopener" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
           <div class="founder-card">
-            <div class="founder-photo"><img src="max-helmantel.webp" alt="Max Helmantel" loading="lazy" /></div>
+            <div class="founder-photo"><img src="Max.jpeg" alt="Max Helmantel" loading="lazy" /></div>
             <div class="founder-name" data-i18n="founders.name3">Max Helmantel</div>
             <div class="founder-role" data-i18n="founders.role3">AI-founder · Amsterdam</div>
-            <p class="founder-bio" data-i18n="founders.bio3">Max brengt technische scherpte en ondernemersenergie mee in het team. Zijn persoonlijke bio en foto volgen nog, maar zijn rol is helder: meebouwen aan de tool die straks naar MIND gaat.</p>
-            <a href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener" class="founder-li">LinkedIn →</a>
+            <p class="founder-bio" data-i18n="founders.bio3">Max brengt technische scherpte en ondernemersenergie mee in het team. Zijn persoonlijke bio volgt nog, maar zijn rol is helder: meebouwen aan de tool die straks naar MIND gaat.</p>
+            <a href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
         </div>
@@ -1676,14 +1569,17 @@
       <div>
         <p data-i18n="verhaal.closing.p">We zoeken partners die willen bijdragen met budget, hardware, expertise of bereik. Niet als logo op een shirt, maar als onderdeel van het verhaal.</p>
         <div class="actions">
-          <button class="btn" data-i18n="verhaal.closing.cta1" onclick="showPage('sponsoring')" type="button">Sponsoring â†’</button>
-          <button class="btn btn-outline" data-i18n="verhaal.closing.cta2" onclick="showPage('contact')" type="button">Contact â†’</button>
+          <button class="btn" data-i18n="verhaal.closing.cta1" onclick="showPage('sponsoring')" type="button">Sponsoring &rarr;</button>
+          <button class="btn btn-outline" data-i18n="verhaal.closing.cta2" onclick="showPage('contact')" type="button">Contact &rarr;</button>
         </div>
       </div>
     </section>
 
     <footer class="site-footer">
-      <div class="footer-logo">Back to Being</div>
+      <div class="footer-logo">
+        <img class="footer-logo-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+        <span>Back to Being</span>
+      </div>
       <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
     </footer>
   </div>
@@ -1693,10 +1589,23 @@
 
     <section class="story-hero">
       <span class="pill" data-i18n="sponsor.pill">Partners</span>
-      <h1 data-i18n="sponsor.h1">Word jij onze<br><em>partner in dit verhaal?</em></h1>
+      <h1 data-i18n="sponsor.h1">Word jij partner<br><em>in dit verhaal?</em></h1>
       <div class="story-hero-foot">
-        <p data-i18n="sponsor.intro">We zoeken partners die dit verhaal groter willen maken — met budget, hardware, expertise of bereik. De AI-tool die we bouwen gaat gratis naar stichting MIND. Geen standaard pakket, we kijken samen wat logisch is.</p>
-        <p data-i18n="sponsor.mind">Niet één gesprek om een pakket te verkopen — maar om te horen waar jij staat. Of je nu hardware inbrengt, je team naar buiten wil of gewoon het verhaal wil dragen.</p>
+        <p data-i18n="sponsor.intro">Sponsoring zet dit verhaal op de kaart. We zoeken partners die het groter willen maken: met budget, hardware, expertise of bereik. De AI-tool gaat gratis naar stichting MIND.</p>
+        <p data-i18n="sponsor.mind">Geen standaard pakket. Eén gesprek om te horen waar jij staat, of je nu hardware inbrengt, je team naar buiten wil, of gewoon het verhaal wil dragen.</p>
+      </div>
+    </section>
+
+    <!-- SPONSORING — partners credibility strip -->
+    <section class="partners-strip" aria-label="Partners">
+      <div class="partners-strip-inner">
+        <div class="section-label" data-i18n="partners.sponsor.label">Eerste partners aan boord</div>
+        <div class="partners-grid">
+          <div class="partner-logo is-light"><img src="techleap.webp" alt="Techleap" loading="lazy" /></div>
+          <div class="partner-logo"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></div>
+          <div class="partner-logo"><img src="Lerai.webp" alt="LerAI" loading="lazy" /></div>
+          <div class="partner-logo"><img src="TAG_black.svg" alt="TAG" loading="lazy" /></div>
+        </div>
       </div>
     </section>
 
@@ -1707,7 +1616,7 @@
           <div class="section-label" data-i18n="plan.label">Het plan</div>
           <h2 data-i18n="plan.h">Lopen. Bouwen.<br><em>Overdragen.</em></h2>
         </div>
-        <p data-i18n="plan.body">Drie simpele stappen. Geen kantoor, geen vergaderzaal. Wel ritme, reflectie en zichtbaar bouwen — alles vastgelegd in een mini-docu.</p>
+        <p data-i18n="plan.body">Drie simpele stappen. Geen kantoor, geen vergaderzaal. Wel ritme, reflectie en zichtbaar bouwen. Alles vastgelegd in een mini-docu.</p>
       </div>
       <div class="plan-rows">
         <div class="plan-row">
@@ -1718,7 +1627,7 @@
         <div class="plan-row">
           <span class="num">02</span>
           <span class="title"  data-i18n="plan.row2.t">We bouwen onderweg.</span>
-          <span class="detail" data-i18n="plan.row2.d">Live aan de AI-tool werken — handsfree via spraak en smart glasses, camera's leggen het proces vast.</span>
+          <span class="detail" data-i18n="plan.row2.d">Live aan de AI-tool werken. Handsfree via spraak en smart glasses, camera's leggen het proces vast.</span>
         </div>
         <div class="plan-row">
           <span class="num">03</span>
@@ -1730,7 +1639,7 @@
 
     <!-- PULL-QUOTE — editorial break -->
     <div class="story-pullquote story-pullquote-dark">
-      <blockquote data-i18n="sponsor.quote">We zoeken geen logo op een shirt —<br>we zoeken <em>een partner in het verhaal.</em></blockquote>
+      <blockquote data-i18n="sponsor.quote">We zoeken geen logo op een shirt.<br>We zoeken <em>een partner in het verhaal.</em></blockquote>
       <p class="cite" data-i18n="sponsor.quote.cite">Back to Being · Zomer 2026</p>
     </div>
 
@@ -1756,7 +1665,7 @@
           <div class="return-row">
             <span class="num">03</span>
             <span class="title" data-i18n="return.row3.t">Maatwerk per partner <span class="title-tag">persoonlijk</span></span>
-            <span class="detail" data-i18n="return.row3.d">Hardware, AI-credits, earned media of iets heel anders — we kijken in één gesprek wat voor jou het meeste waarde heeft.</span>
+            <span class="detail" data-i18n="return.row3.d">Hardware, AI-credits, earned media of iets heel anders. We kijken in één gesprek wat voor jou het meeste waarde heeft.</span>
           </div>
         </div>
       </div>
@@ -1767,16 +1676,19 @@
       <div class="sponsor-cta-inner">
         <div class="section-label sponsor-cta-label" data-i18n="sponsor.cta.label">Plekken zijn beperkt</div>
         <h2 data-i18n="sponsor.cta.h">Eén gesprek is<br><em>genoeg.</em></h2>
-        <p data-i18n="sponsor.cta.body">Plan 20 minuten en we weten samen of dit past — en hoe het eruit ziet als het dat doet.</p>
+        <p data-i18n="sponsor.cta.body">Plan 20 minuten en we weten samen of dit past, en hoe het eruit ziet als het dat doet.</p>
         <div class="sponsor-cta-actions">
-          <a class="btn sponsor-cta-btn" href="https://cal.com/caesar-schoorl/back-to-being" data-i18n="sponsor.cta.btn1" target="_blank" rel="noopener">Plan een gesprek →</a>
-          <a class="btn btn-outline sponsor-cta-outline" href="mailto:Caesar.schoorl@gmail.com?subject=Back%20to%20Being%3A%20partnerschap&body=Hi%2C%0A%0AIk%20wil%20graag%20een%20kort%20gesprek%20over%20een%20samenwerking.%0A%0AHartelijke%20groet" data-i18n="sponsor.cta.btn2">Mail ons →</a>
+          <a class="btn sponsor-cta-btn" href="https://cal.com/caesar-schoorl/back-to-being" data-i18n="sponsor.cta.btn1" target="_blank" rel="noopener">Plan een gesprek &rarr;</a>
+          <a class="btn btn-outline sponsor-cta-outline" href="mailto:Caesar.schoorl@gmail.com?subject=Back%20to%20Being%3A%20partnerschap&body=Hi%2C%0A%0AIk%20wil%20graag%20een%20kort%20gesprek%20over%20een%20samenwerking.%0A%0AHartelijke%20groet" data-i18n="sponsor.cta.btn2">Mail ons &rarr;</a>
         </div>
       </div>
     </section>
 
     <footer class="site-footer">
-      <div class="footer-logo">Back to Being</div>
+      <div class="footer-logo">
+        <img class="footer-logo-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+        <span>Back to Being</span>
+      </div>
       <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
     </footer>
   </div>
@@ -1788,7 +1700,7 @@
       <h1 data-i18n="contact.h1">Laten we kijken<br><em>of dit past.</em></h1>
       <div class="story-hero-foot">
         <p data-i18n="contact.lead">Wil je partner worden, meebouwen of even sparren? Plan een gesprek, stuur een mail of bel Caesar direct.</p>
-        <p data-i18n="contact.note">We reageren binnen een dag. Geen verkooppraatje — gewoon een gesprek.</p>
+        <p data-i18n="contact.note">We reageren binnen een dag. Geen verkooppraatje, gewoon een gesprek.</p>
       </div>
     </section>
 
@@ -1802,7 +1714,7 @@
           </div>
           <div class="contact-grid-body">
             <span class="contact-grid-value" data-i18n="contact.cal.value">20 minuten.<br><em>Genoeg om te weten of het past.</em></span>
-            <a class="btn" href="https://cal.com/caesar-schoorl/back-to-being" target="_blank" rel="noopener" data-i18n="contact.cal.btn">Plan een gesprek →</a>
+            <a class="btn" href="https://cal.com/caesar-schoorl/back-to-being" target="_blank" rel="noopener" data-i18n="contact.cal.btn">Plan een gesprek &rarr;</a>
           </div>
           <div class="contact-grid-foot" data-i18n="contact.cal.desc">Plan direct via cal.eu. We kijken samen of en hoe het past.</div>
         </div>
@@ -1857,7 +1769,10 @@
     </div>
 
     <footer class="site-footer">
-      <div class="footer-logo">Back to Being</div>
+      <div class="footer-logo">
+        <img class="footer-logo-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+        <span>Back to Being</span>
+      </div>
       <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
     </footer>
   </div>
@@ -1872,8 +1787,8 @@
     const I18N = {
       nl: {
         // meta
-        'meta.desc':        'Drie AI-founders lopen 115 km over de Camino en bouwen onderweg een AI-tool voor mentale gezondheid — voor stichting MIND.',
-        'meta.descShort':   'Drie AI-founders lopen 115 km over de Camino en bouwen onderweg een AI-tool voor mentale gezondheid.',
+        'meta.desc':        'Drie AI-nerds maken van de Camino hun kantoor: 115 km, live bouwen in beeld, daarna een echte overdracht aan stichting MIND.',
+        'meta.descShort':   'Drie AI-nerds maken van de Camino hun kantoor: 115 km, live bouwen in beeld, daarna een echte overdracht aan MIND.',
         'meta.locale':      'nl_NL',
 
         // nav
@@ -1882,65 +1797,65 @@
         'nav.contact':      'Contact',
 
         // hero
-        'hero.tagline':     'Drie AI-founders lopen 115 km over de Camino en bouwen onderweg een AI-tool voor mentale gezondheid.',
+        'hero.tagline':     'Drie AI-nerds maken van de Camino hun kantoor: 115 km, live bouwen in beeld, daarna een echte overdracht aan MIND.',
         'hero.meta':        '115 km &nbsp;·&nbsp; 6 dagen<br>Back to Being<br>Camino de Santiago',
 
         // intro
-        'intro.heading':    'Drie founders. Eén route.<br><em>Eén AI-tool</em> voor MIND.',
-        'intro.body':       'We zijn drie AI-founders uit Amsterdam. Deze zomer lopen we 115 km van Tui naar Santiago en bouwen onderweg een AI-tool die we gratis overdragen aan stichting MIND. Geen bureau, geen vergaderzaal — beweging maakt creativiteit, lopen is denken, denken is bouwen.',
-        'intro.cta1':       'Ons verhaal →',
-        'intro.cta2':       'Sponsoring →',
+        'intro.heading':    'Drie nerds. Eén route.<br><em>Eén AI-tool</em> voor MIND.',
+        'intro.body':       'Drie AI-nerds uit Amsterdam lopen deze zomer de Camino van Tui naar Santiago en bouwen onderweg live aan één AI-tool voor mentale gezondheid. Daarna dragen we die gratis over aan MIND. Sponsors maken reis, productie en overdracht mogelijk.',
+        'intro.cta1':       'Ons verhaal &rarr;',
+        'intro.cta2':       'Sponsoring &rarr;',
 
         // stats
-        'stats.km':         'kilometer<br>Tui → Santiago',
+        'stats.km':         'kilometer<br>Tui &rarr; Santiago',
         'stats.days':       'dagen<br>on the road',
-        'stats.founders':   'AI-founders<br>Amsterdam',
+        'stats.founders':   'AI-nerds<br>Amsterdam',
         'stats.tool':       'AI-tool<br>voor MIND',
 
         // footer
         'footer.right':     'backtobeing.tech &nbsp;·&nbsp; Zomer 2026',
 
         // verhaal
-        'verhaal.h1':       'Drie founders.<br>E&eacute;n route.<br><em>E&eacute;n missie.</em>',
-        'verhaal.intro1':   'We werken in tech. We bouwen tools die mensen helpen. Maar ergens vroegen we ons af: wie helpt de mensen die de tools bouwen? En waarom voelt "het kantoor" zo steeds meer als een kooi?',
-        'verhaal.intro2':   'Back to Being is ons antwoord. Een rit die we zelf nodig hadden — en waarvan we denken dat anderen het verhaal nodig hebben.',
-        'verhaal.photo':    'Foto — vervang door jouw Camino-video of -foto',
+        'verhaal.h1':       'De wereld<br>als <em>ons kantoor.</em>',
+        'verhaal.intro1':   'Met AI kun je ongelooflijk veel versnellen. En toch zitten veel kenniswerkers nog steeds veertig uur per week achter een bureau, alsof er niets fundamenteels verandert. De werkweek voelt sneller digitaal dan menselijk.',
+        'verhaal.intro2':   'Back to Being is ons antwoord. Wij trekken het door naar het extreme: de Camino als kantoor, live bouwen onderweg en een mini-docu die laat zien hoe zweet en software samenkomen.',
+        'verhaal.photo':    'Foto. Vervang door jouw Camino-video of -foto.',
         'verhaal.ch1.label':'Hoofdstuk',
         'verhaal.ch1.h':    'We nemen het kantoor<br><em>naar buiten.</em>',
         'verhaal.ch1.lead': 'Productief zijn terwijl je beweegt. Een gesprek op een bergpad. Bouwen met je handen vrij.',
         'verhaal.ch1.p1':   'Tech-founders zijn de eersten om te zeggen dat AI de wereld beter maakt. Maar in de praktijk: we staren langer dan ooit in schermen, vergaderen meer dan ooit, en noemen het "deep work" als we de hele dag bezig zijn met e-mail.',
-        'verhaal.ch1.p2':   'Wij denken dat het anders kan. Dat je productief kunt zijn terwijl je beweegt. Dat een gesprek op een bergpad meer oplevert dan een dag vol standups. En dat je een AI-tool kunt bouwen met je handen vrij — spraak, glasses, frisse lucht.',
+        'verhaal.ch1.p2':   'Wij denken dat het anders kan. Dat je productief kunt zijn terwijl je beweegt. Dat een gesprek op een bergpad meer oplevert dan een dag vol standups. En dat je een AI-tool kunt bouwen met je handen vrij: spraak, glasses, frisse lucht.',
         'verhaal.ch2.label':'Hoofdstuk',
         'verhaal.ch2.h':    'Een tool voor<br><em>mentale gezondheid.</em>',
-        'verhaal.ch2.lead': 'Wat het wordt, bepalen we samen met MIND. Het gaat om wat zij nodig hebben.',
-        'verhaal.ch2.p1':   'Stichting MIND zet zich in voor mentale gezondheid in Nederland — jaarlijks bereiken ze miljoenen mensen met informatie, tools en ondersteuning.',
-        'verhaal.ch2.p2':   'De AI-tool die we bouwen dragen we gratis over. Wat het precies wordt — intern, extern, voor hun gebruikers — bepalen we samen met MIND. Het gaat om wat zij nodig hebben, niet wat wij cool vinden.',
+        'verhaal.ch2.lead': 'Hun behoefte leidt, wij leveren iets bruikbaars.',
+        'verhaal.ch2.p1':   'Stichting MIND zet zich in voor mentale gezondheid in Nederland. Jaarlijks bereiken ze miljoenen mensen met informatie, tools en ondersteuning.',
+        'verhaal.ch2.p2':   'De AI-tool die we bouwen dragen we gratis over. Samen met MIND bepalen we wat we bouwen: intern, extern, voor hun gebruikers. Het gaat om wat zij nodig hebben, niet wat wij cool vinden.',
         'verhaal.ch3.label':'Hoofdstuk',
         'verhaal.ch3.h':    'De Camino als<br><em>metafoor.</em>',
         'verhaal.ch3.lead': 'Elke dag lopen. Elke dag bouwen. Elke avond reflecteren.',
-        'verhaal.ch3.p1':   '115 kilometer van Tui naar Santiago. De Camino Portugués — een route die je dwingt aanwezig te zijn. Elke dag lopen we, elke dag bouwen we, elke avond reflecteren we.',
-        'verhaal.ch3.p2':   'Een mini-docu legt het vast — niet als marketing, maar als eerlijk verslag van wat er gebeurt als je tech en natuur combineert. Het eindproduct gaat naar MIND, het verhaal delen we met de wereld.',
+        'verhaal.ch3.p1':   '115 kilometer van Tui naar Santiago. De Camino Portugués, een route die je dwingt aanwezig te zijn. Elke dag lopen we, elke dag bouwen we, elke avond reflecteren we.',
+        'verhaal.ch3.p2':   'Een mini-docu legt vast hoe zweet en software samenkomen. Niet als marketing, maar als eerlijk verslag van wat er gebeurt als je tech en natuur combineert. Het eindproduct gaat naar MIND, het verhaal delen we met de wereld.',
         'verhaal.map.label':'De route',
         'verhaal.map.title':'Tui naar Santiago de Compostela',
         'verhaal.map.distance':'115 km / 6 dagen',
         'verhaal.quote1':     'Lopen is denken.<br><em>Denken is bouwen.</em>',
         'verhaal.quote1.cite':'Back to Being · Camino 2026',
-        'verhaal.quote2':     'Tech maakt ons mensélijker —<br><em>als je \'m goed inzet.</em>',
-        'verhaal.quote2.cite':'Tui → Santiago · 115 km',
+        'verhaal.quote2':     'Tech maakt ons menselijker,<br><em>als je \'m goed inzet.</em>',
+        'verhaal.quote2.cite':'Tui &rarr; Santiago · 115 km',
         'verhaal.closing.label': 'Doe mee',
-        'verhaal.closing.h':     'Een verhaal is leuker<br>met <em>partners.</em>',
-        'verhaal.closing.p':     'We doen dit niet alleen. Hardware, cash, expertise, een dak boven het hoofd — er is plek voor partners die hetzelfde voelen.',
-        'verhaal.closing.cta1':  'Sponsoring →',
-        'verhaal.closing.cta2':  'Contact →',
+        'verhaal.closing.h':     'Partner worden<br>in dit <em>verhaal?</em>',
+        'verhaal.closing.p':     'We zoeken partners die willen bijdragen met budget, hardware, expertise of bereik. Niet als logo op een shirt, maar als onderdeel van het verhaal.',
+        'verhaal.closing.cta1':  'Sponsoring &rarr;',
+        'verhaal.closing.cta2':  'Contact &rarr;',
 
         // home additions
         'home.tease.label':   'Het verhaal',
         'home.tease.h':       'Een rit die we zelf<br><em>nodig hadden.</em>',
         'home.tease.p':       'We werken in tech, maar we voelden dat het kantoor steeds meer een kooi werd. Back to Being is ons antwoord: drie founders, één route, één AI-tool voor mentale gezondheid.',
-        'home.tease.cta':     'Lees het hele verhaal →',
+        'home.tease.cta':     'Lees het hele verhaal &rarr;',
         'home.journey.label': 'De route',
         'home.journey.h':     '115 km van Tui<br>naar <em>Santiago.</em>',
-        'home.journey.p':     'Zes dagen lopen op de Camino Portugués. Geen vergaderzaal, geen bureau — alleen het pad, drie founders, smart glasses en de tijd om iets te bouwen dat ertoe doet.',
+        'home.journey.p':     'Zes dagen lopen op de Camino Portugués. Geen vergaderzaal, geen bureau. Alleen het pad, drie founders, smart glasses en de tijd om iets te bouwen dat ertoe doet.',
         'home.journey.stat.km.v':    '115',
         'home.journey.stat.km.l':    'kilometer',
         'home.journey.stat.days.v':  '6',
@@ -1950,18 +1865,22 @@
         'home.journey.stat.end.v':   'Santiago',
         'home.journey.stat.end.l':   'finish',
         'home.closing.h':    'Loop je<br><em>mee?</em>',
-        'home.closing.p':    'Of je nu partner wordt, hardware levert, of gewoon het verhaal volgt — er is plek.',
-        'home.closing.cta1': 'Word partner →',
-        'home.closing.cta2': 'Ons verhaal →',
+        'home.closing.p':    'Of je nu partner wordt, hardware levert, of gewoon het verhaal volgt. Er is plek.',
+        'home.closing.cta1': 'Word partner &rarr;',
+        'home.closing.cta2': 'Ons verhaal &rarr;',
+
+        // partners
+        'partners.home.label':    'Met steun van',
+        'partners.sponsor.label': 'Eerste partners aan boord',
 
         // philosophy
         'philo.label':      'De filosofie',
         'philo.h':          'Niet bouwen vanachter een bureau,<br>maar <em>lopend.</em>',
-        'philo.intro':      'Vier dingen die we geloven — en die we bewijzen door ze gewoon te doen.',
+        'philo.intro':      'Vier dingen die we geloven, en die we bewijzen door ze gewoon te doen.',
         'philo.1':          'We werken steeds robotachtiger, terwijl AI dat zou moeten oplossen, niet versterken.',
         'philo.2':          'Mentale gezondheid staat onder druk. Hoog tijd voor een ander gesprek.',
         'philo.3':          'Beweging maakt creativiteit. Lopen is denken, denken is bouwen.',
-        'philo.4':          'De mini-docu maakt het verhaal blijvend — voor onszelf, voor MIND, voor onze partners.',
+        'philo.4':          'De mini-docu maakt het verhaal blijvend: voor onszelf, voor MIND, voor onze partners.',
 
         // photos placeholder
         'photo.1':          'Foto 1',
@@ -1981,29 +1900,29 @@
         'founders.bio2':    'Stijn werkt op het snijvlak van AI, product en storytelling. Hij loopt mee om te bouwen aan een tool die concreet helpt, en om werken weer minder scherm en meer aandacht te maken.',
         'founders.name3':   'Max Helmantel',
         'founders.role3':   'AI-founder · Amsterdam',
-        'founders.bio3':    'Max brengt technische scherpte en ondernemersenergie mee in het team. Zijn persoonlijke bio en foto volgen nog, maar zijn rol is helder: meebouwen aan de tool die straks naar MIND gaat.',
+        'founders.bio3':    'Max brengt technische scherpte en ondernemersenergie mee in het team. Zijn persoonlijke bio volgt nog, maar zijn rol is helder: meebouwen aan de tool die straks naar MIND gaat.',
 
         // sponsor
         'sponsor.pill':          'Partners',
-        'sponsor.h1':            'Word jij onze<br><em>partner in dit verhaal?</em>',
-        'sponsor.intro':         'We zoeken partners die dit verhaal groter willen maken — met budget, hardware, expertise of bereik. De AI-tool die we bouwen gaat gratis naar stichting MIND. Geen standaard pakket, we kijken samen wat logisch is.',
-        'sponsor.mind':          'Niet één gesprek om een pakket te verkopen — maar om te horen waar jij staat. Of je nu hardware inbrengt, je team naar buiten wil of gewoon het verhaal wil dragen.',
-        'sponsor.quote':         'We zoeken geen logo op een shirt —<br>we zoeken <em>een partner in het verhaal.</em>',
+        'sponsor.h1':            'Word jij partner<br><em>in dit verhaal?</em>',
+        'sponsor.intro':         'Sponsoring zet dit verhaal op de kaart. We zoeken partners die het groter willen maken: met budget, hardware, expertise of bereik. De AI-tool gaat gratis naar stichting MIND.',
+        'sponsor.mind':          'Geen standaard pakket. Eén gesprek om te horen waar jij staat, of je nu hardware inbrengt, je team naar buiten wil, of gewoon het verhaal wil dragen.',
+        'sponsor.quote':         'We zoeken geen logo op een shirt.<br>We zoeken <em>een partner in het verhaal.</em>',
         'sponsor.quote.cite':    'Back to Being · Zomer 2026',
         'sponsor.cta.label':     'Plekken zijn beperkt',
         'sponsor.cta.h':         'Eén gesprek is<br><em>genoeg.</em>',
-        'sponsor.cta.body':      'Plan 20 minuten en we weten samen of dit past — en hoe het eruit ziet als het dat doet.',
-        'sponsor.cta.btn1':      'Plan een gesprek →',
-        'sponsor.cta.btn2':      'Mail ons →',
+        'sponsor.cta.body':      'Plan 20 minuten en we weten samen of dit past, en hoe het eruit ziet als het dat doet.',
+        'sponsor.cta.btn1':      'Plan een gesprek &rarr;',
+        'sponsor.cta.btn2':      'Mail ons &rarr;',
 
         // plan
         'plan.label':       'Het plan',
         'plan.h':           'Lopen. Bouwen.<br><em>Overdragen.</em>',
-        'plan.body':        'Drie simpele stappen. Geen kantoor, geen vergaderzaal. Wel ritme, reflectie en zichtbaar bouwen — alles vastgelegd in een mini-docu.',
+        'plan.body':        'Drie simpele stappen. Geen kantoor, geen vergaderzaal. Wel ritme, reflectie en zichtbaar bouwen. Alles vastgelegd in een mini-docu.',
         'plan.row1.t':      'We lopen.',
         'plan.row1.d':      '115 km in 6 dagen, Tui naar Santiago, 3 rugzakken.',
         'plan.row2.t':      'We bouwen onderweg.',
-        'plan.row2.d':      "Live aan de AI-tool werken — handsfree via spraak en smart glasses, camera's leggen het proces vast.",
+        'plan.row2.d':      "Live aan de AI-tool werken. Handsfree via spraak en smart glasses, camera's leggen het proces vast.",
         'plan.row3.t':      'We dragen het over.',
         'plan.row3.d':      'Tool gratis naar stichting MIND, plus een mini-docu.',
 
@@ -2016,17 +1935,17 @@
         'return.row2.t':    'Het kantoor naar buiten <span class="title-tag">uniek</span>',
         'return.row2.d':    'Walking workshop + AI session bij jouw team. Wij brengen Back to Being naar je bedrijf.',
         'return.row3.t':    'Maatwerk per partner <span class="title-tag">persoonlijk</span>',
-        'return.row3.d':    'Hardware, AI-credits, earned media of iets heel anders — we kijken in één gesprek wat voor jou het meeste waarde heeft.',
+        'return.row3.d':    'Hardware, AI-credits, earned media of iets heel anders. We kijken in één gesprek wat voor jou het meeste waarde heeft.',
 
         // contact
         'contact.pill':         'Contact',
         'contact.h1':           'Laten we kijken<br><em>of dit past.</em>',
         'contact.lead':         'Wil je partner worden, meebouwen of even sparren? Plan een gesprek of stuur een mail.',
-        'contact.note':         'We reageren binnen een dag. Geen verkooppraatje — gewoon een gesprek.',
+        'contact.note':         'We reageren binnen een dag. Geen verkooppraatje, gewoon een gesprek.',
         'contact.cal.head':     'Gesprek',
         'contact.cal.value':    '20 minuten.<br><em>Genoeg om te weten of het past.</em>',
         'contact.cal.desc':     'Plan direct via cal.eu. We kijken samen of en hoe het past.',
-        'contact.cal.btn':      'Plan een gesprek →',
+        'contact.cal.btn':      'Plan een gesprek &rarr;',
         'contact.email.head':   'Mail',
         'contact.email.desc':   'Voor partners, pers, meebouwers en iedereen die even wil sparren.',
         'contact.office.head':  'Kantoor',
@@ -2040,8 +1959,8 @@
 
       en: {
         // meta
-        'meta.desc':        'Three AI founders walk 115 km of the Camino and build an AI tool for mental health along the way — for the MIND foundation.',
-        'meta.descShort':   'Three AI founders walk 115 km of the Camino and build an AI tool for mental health along the way.',
+        'meta.desc':        'Three AI nerds turn the Camino into their office: 115 km, building live on camera, then a real handover to the MIND foundation.',
+        'meta.descShort':   'Three AI nerds turn the Camino into their office: 115 km, building live on camera, then a real handover to MIND.',
         'meta.locale':      'en_US',
 
         // nav
@@ -2050,65 +1969,65 @@
         'nav.contact':      'Contact',
 
         // hero (tagline + meta)
-        'hero.tagline':     'Three AI founders walking 115 km of the Camino — building an AI tool for mental health along the way.',
+        'hero.tagline':     'Three AI nerds turn the Camino into their office: 115 km, building live on camera, then a real handover to MIND.',
         'hero.meta':        '115 km &nbsp;·&nbsp; 6 days<br>Back to Being<br>Camino de Santiago',
 
         // intro
-        'intro.heading':    'Three founders. One route.<br><em>One AI tool</em> for MIND.',
-        'intro.body':       "We're three AI founders from Amsterdam. This summer we're walking 115 km from Tui to Santiago while building an AI tool along the way, which we'll hand over to the MIND foundation for free. The route becomes our workspace. Movement sparks creativity. Walking is thinking, thinking is building.",
-        'intro.cta1':       'Our story →',
-        'intro.cta2':       'Sponsorship →',
+        'intro.heading':    'Three nerds. One route.<br><em>One AI tool</em> for MIND.',
+        'intro.body':       'Three AI nerds from Amsterdam are walking the Camino from Tui to Santiago this summer, building one AI tool for mental health live along the way. We hand it over to MIND for free. Sponsors make the journey, production, and handover possible.',
+        'intro.cta1':       'Our story &rarr;',
+        'intro.cta2':       'Sponsorship &rarr;',
 
         // stats
-        'stats.km':         'kilometers<br>Tui → Santiago',
+        'stats.km':         'kilometers<br>Tui &rarr; Santiago',
         'stats.days':       'days<br>on the road',
-        'stats.founders':   'AI founders<br>Amsterdam',
+        'stats.founders':   'AI nerds<br>Amsterdam',
         'stats.tool':       'AI tool<br>for MIND',
 
         // footer
         'footer.right':     'backtobeing.tech &nbsp;·&nbsp; Summer 2026',
 
         // verhaal
-        'verhaal.h1':       'Three founders.<br>One route.<br><em>One mission.</em>',
-        'verhaal.intro1':   'We work in tech. We build tools that help people. But somewhere along the way we started wondering: who helps the people building the tools? And why does "the office" feel more and more like a cage?',
-        'verhaal.intro2':   'Back to Being is our answer. A trip we needed ourselves — and a story we think others need to hear.',
-        'verhaal.photo':    'Photo — replace with your Camino video or photo',
+        'verhaal.h1':       'The world<br>as <em>our office.</em>',
+        'verhaal.intro1':   'AI can speed up an incredible amount. And yet, many knowledge workers still spend forty hours a week behind a desk, as if nothing has fundamentally changed. The work week feels more digital than human.',
+        'verhaal.intro2':   "Back to Being is our answer. We take it to the extreme: the Camino as office, building live along the way, and a mini-doc showing how sweat and software come together.",
+        'verhaal.photo':    'Photo. Replace with your Camino video or photo.',
         'verhaal.ch1.label':'Chapter',
         'verhaal.ch1.h':    "We're taking the office<br><em>outside.</em>",
         'verhaal.ch1.lead': 'Productive while moving. A conversation on a mountain trail. Building hands-free.',
         'verhaal.ch1.p1':   'Tech founders are the first to say AI is making the world better. In reality: we stare at screens longer than ever, meet more than ever, and call it "deep work" when we spend the whole day on email.',
-        'verhaal.ch1.p2':   "We think it can be different. That you can be productive while moving. That a conversation on a mountain trail beats a day full of standups. And that you can build an AI tool hands-free — voice, smart glasses, fresh air.",
+        'verhaal.ch1.p2':   "We think it can be different. That you can be productive while moving. That a conversation on a mountain trail beats a day full of standups. And that you can build an AI tool hands-free: voice, smart glasses, fresh air.",
         'verhaal.ch2.label':'Chapter',
         'verhaal.ch2.h':    'A tool for<br><em>mental health.</em>',
-        'verhaal.ch2.lead': "What it becomes, we figure out together with MIND. It's about what they need.",
-        'verhaal.ch2.p1':   'The MIND foundation works on mental health in the Netherlands — every year, they reach millions of people with information, tools and support.',
-        'verhaal.ch2.p2':   "The AI tool we're building, we hand over for free. What it becomes exactly — internal, external, for their users — we figure out together with MIND. It's about what they need, not what we think is cool.",
+        'verhaal.ch2.lead': 'Their need leads, we deliver something useful.',
+        'verhaal.ch2.p1':   'The MIND foundation works on mental health in the Netherlands. Every year, they reach millions of people with information, tools and support.',
+        'verhaal.ch2.p2':   "The AI tool we're building, we hand over for free. Together with MIND we decide what we build: internal, external, for their users. It's about what they need, not what we think is cool.",
         'verhaal.ch3.label':'Chapter',
         'verhaal.ch3.h':    'The Camino as<br><em>metaphor.</em>',
         'verhaal.ch3.lead': 'Every day we walk. Every day we build. Every evening we reflect.',
-        'verhaal.ch3.p1':   '115 kilometers from Tui to Santiago. The Camino Portugués — a route that forces you to be present. Every day we walk, every day we build, every evening we reflect.',
-        'verhaal.ch3.p2':   'A mini-doc captures it — not as marketing, but as an honest record of what happens when you combine tech and nature. The end product goes to MIND. The story, we share with the world.',
+        'verhaal.ch3.p1':   '115 kilometers from Tui to Santiago. The Camino Portugués, a route that forces you to be present. Every day we walk, every day we build, every evening we reflect.',
+        'verhaal.ch3.p2':   'A mini-doc captures how sweat and software come together. Not as marketing, but as an honest record of what happens when you combine tech and nature. The end product goes to MIND, the story we share with the world.',
         'verhaal.map.label':'The route',
         'verhaal.map.title':'Tui to Santiago de Compostela',
         'verhaal.map.distance':'115 km / 6 days',
         'verhaal.quote1':     'Walking is thinking.<br><em>Thinking is building.</em>',
         'verhaal.quote1.cite':'Back to Being · Camino 2026',
-        'verhaal.quote2':     'Tech can make us more human —<br><em>if you use it right.</em>',
-        'verhaal.quote2.cite':'Tui → Santiago · 115 km',
+        'verhaal.quote2':     'Tech can make us more human,<br><em>if you use it right.</em>',
+        'verhaal.quote2.cite':'Tui &rarr; Santiago · 115 km',
         'verhaal.closing.label': 'Join us',
-        'verhaal.closing.h':     'A story is better<br>with <em>partners.</em>',
-        'verhaal.closing.p':     "We don't do this alone. Hardware, cash, expertise, a place to sleep — there's room for partners who feel the same way.",
-        'verhaal.closing.cta1':  'Sponsorship →',
-        'verhaal.closing.cta2':  'Contact →',
+        'verhaal.closing.h':     'Become a partner<br>in this <em>story?</em>',
+        'verhaal.closing.p':     "We're looking for partners who want to contribute with budget, hardware, expertise or reach. Not as a logo on a shirt, but as part of the story.",
+        'verhaal.closing.cta1':  'Sponsorship &rarr;',
+        'verhaal.closing.cta2':  'Contact &rarr;',
 
         // home additions
         'home.tease.label':   'The story',
         'home.tease.h':       'A trip we<br><em>needed ourselves.</em>',
         'home.tease.p':       "We work in tech, but we felt the office becoming more of a cage. Back to Being is our answer: three founders, one route, one AI tool for mental health.",
-        'home.tease.cta':     'Read the whole story →',
+        'home.tease.cta':     'Read the whole story &rarr;',
         'home.journey.label': 'The route',
         'home.journey.h':     '115 km from Tui<br>to <em>Santiago.</em>',
-        'home.journey.p':     "Six days on the Camino Portugués. No meeting room, no desk — just the path, three founders, smart glasses and time to build something that matters.",
+        'home.journey.p':     "Six days on the Camino Portugués. No meeting room, no desk. Just the path, three founders, smart glasses and time to build something that matters.",
         'home.journey.stat.km.v':    '115',
         'home.journey.stat.km.l':    'kilometers',
         'home.journey.stat.days.v':  '6',
@@ -2119,17 +2038,21 @@
         'home.journey.stat.end.l':   'finish',
         'home.closing.h':    'Will you<br><em>walk with us?</em>',
         'home.closing.p':    "Whether you become a partner, ship hardware, or just follow the story, there's a spot.",
-        'home.closing.cta1': 'Become a partner →',
-        'home.closing.cta2': 'Our story →',
+        'home.closing.cta1': 'Become a partner &rarr;',
+        'home.closing.cta2': 'Our story &rarr;',
+
+        // partners
+        'partners.home.label':    'Backed by',
+        'partners.sponsor.label': 'First partners on board',
 
         // philosophy
         'philo.label':      'The philosophy',
-        'philo.h':          'Not building behind a desk —<br>but <em>on foot.</em>',
-        'philo.intro':      'Four things we believe — and prove by simply doing them.',
+        'philo.h':          'Not building behind a desk,<br>but <em>on foot.</em>',
+        'philo.intro':      'Four things we believe, and prove by simply doing them.',
         'philo.1':          'We work more robotically every year. AI was supposed to fix that, not amplify it.',
         'philo.2':          'Mental health is under pressure. Time for a different conversation.',
         'philo.3':          'Movement sparks creativity. Walking is thinking, thinking is building.',
-        'philo.4':          'The mini-doc makes the story last — for us, for MIND, for our partners.',
+        'philo.4':          'The mini-doc makes the story last: for us, for MIND, for our partners.',
 
         // photos
         'photo.1':          'Photo 1',
@@ -2149,29 +2072,29 @@
         'founders.bio2':    'Stijn works across AI, product, and storytelling. He is walking to build something useful for MIND, and to make work feel less screen-led and more intentional.',
         'founders.name3':   'Max Helmantel',
         'founders.role3':   'AI founder · Amsterdam',
-        'founders.bio3':    'Max brings technical sharpness and founder energy to the team. His personal bio and photo are still coming, but his role is clear: help build the tool that will go to MIND.',
+        'founders.bio3':    'Max brings technical sharpness and founder energy to the team. His personal bio is still coming, but his role is clear: help build the tool that will go to MIND.',
 
         // sponsor
         'sponsor.pill':          'Partners',
-        'sponsor.h1':            'Want to be part<br>of the <em>story?</em>',
-        'sponsor.intro':         "We're looking for partners who want to make this story bigger — through budget, hardware, expertise or reach. The AI tool we build will go to the MIND foundation for free. No standard package — we figure out together what makes sense.",
-        'sponsor.mind':          "Not a conversation to sell you a package — but to hear where you're at. Whether you bring hardware, want to get your team outside, or simply want to carry the story.",
-        'sponsor.quote':         'We are not looking for a logo on a shirt —<br>we are looking for <em>a partner in the story.</em>',
+        'sponsor.h1':            'Want to partner<br><em>in this story?</em>',
+        'sponsor.intro':         'Sponsorship puts this story on the map. We are looking for partners who want to make it bigger: with budget, hardware, expertise or reach. The AI tool goes to the MIND foundation for free.',
+        'sponsor.mind':          "No standard package. One conversation to hear where you're at, whether you bring hardware, want to get your team outside, or simply want to carry the story.",
+        'sponsor.quote':         "We're not looking for a logo on a shirt.<br>We're looking for <em>a partner in the story.</em>",
         'sponsor.quote.cite':    'Back to Being · Summer 2026',
         'sponsor.cta.label':     'Spots are limited',
         'sponsor.cta.h':         'One conversation<br><em>is enough.</em>',
-        'sponsor.cta.body':      'Book 20 minutes and we will both know if this fits — and what it looks like when it does.',
-        'sponsor.cta.btn1':      'Book a call →',
-        'sponsor.cta.btn2':      'Email us →',
+        'sponsor.cta.body':      'Book 20 minutes and we will both know if this fits, and what it looks like when it does.',
+        'sponsor.cta.btn1':      'Book a call &rarr;',
+        'sponsor.cta.btn2':      'Email us &rarr;',
 
         // plan
         'plan.label':       'The plan',
         'plan.h':           'Walk. Build.<br><em>Hand it over.</em>',
-        'plan.body':        "Three simple steps. No office, no meeting room. Just rhythm, reflection and building in plain sight — all captured in a mini-doc.",
+        'plan.body':        'Three simple steps. No office, no meeting room. Just rhythm, reflection and building in plain sight. All captured in a mini-doc.',
         'plan.row1.t':      'We walk.',
         'plan.row1.d':      '115 km in 6 days, Tui to Santiago, 3 backpacks.',
         'plan.row2.t':      'We build along the way.',
-        'plan.row2.d':      'Working on the AI tool live — hands-free via voice and smart glasses. Cameras capture the process.',
+        'plan.row2.d':      'Working on the AI tool live. Hands-free via voice and smart glasses, cameras capture the process.',
         'plan.row3.t':      'We hand it over.',
         'plan.row3.d':      'The tool goes to the MIND foundation for free, plus a mini-doc.',
 
@@ -2184,17 +2107,17 @@
         'return.row2.t':    'The office outside <span class="title-tag">unique</span>',
         'return.row2.d':    'Walking workshop + AI session at your company. We bring Back to Being to your team.',
         'return.row3.t':    'Custom per partner <span class="title-tag">personal</span>',
-        'return.row3.d':    'Hardware, AI credits, press coverage or something else entirely — one conversation is all it takes to figure out what creates the most value for you.',
+        'return.row3.d':    'Hardware, AI credits, press coverage or something else entirely. One conversation is all it takes to figure out what creates the most value for you.',
 
         // contact
         'contact.pill':         'Contact',
         'contact.h1':           "Let's see<br><em>if it fits.</em>",
         'contact.lead':         'Want to partner, contribute, or talk it through? Schedule a call or send us an email.',
-        'contact.note':         'We respond within a day. No sales pitch — just a conversation.',
+        'contact.note':         'We respond within a day. No sales pitch, just a conversation.',
         'contact.cal.head':     'Meeting',
         'contact.cal.value':    '20 minutes.<br><em>Enough to know if it fits.</em>',
         'contact.cal.desc':     'Book directly via cal.eu. We figure out together if and how it works.',
-        'contact.cal.btn':      'Schedule a call →',
+        'contact.cal.btn':      'Schedule a call &rarr;',
         'contact.email.head':   'Email',
         'contact.email.desc':   'For partners, press, builders, and anyone who wants to talk it through.',
         'contact.office.head':  'Office',
@@ -2227,7 +2150,7 @@
       'founders.role2': 'AI-founder · Amsterdam',
       'founders.bio2': 'Stijn werkt op het snijvlak van AI, product en storytelling. Hij loopt mee om te bouwen aan een tool die concreet helpt, en om werken weer minder scherm en meer aandacht te maken.',
       'founders.role3': 'AI-founder · Amsterdam',
-      'founders.bio3': 'Max brengt technische scherpte en ondernemersenergie mee in het team. Zijn persoonlijke bio en foto volgen nog, maar zijn rol is helder: meebouwen aan de tool die straks naar MIND gaat.',
+      'founders.bio3': 'Max brengt technische scherpte en ondernemersenergie mee in het team. Zijn persoonlijke bio volgt nog, maar zijn rol is helder: meebouwen aan de tool die straks naar MIND gaat.',
     });
 
     Object.assign(I18N.en, {
@@ -2250,7 +2173,7 @@
       'founders.role2': 'AI founder · Amsterdam',
       'founders.bio2': 'Stijn works across AI, product, and storytelling. He is walking to build something useful for MIND, and to make work feel less screen-led and more intentional.',
       'founders.role3': 'AI founder · Amsterdam',
-      'founders.bio3': 'Max brings technical sharpness and founder energy to the team. His personal bio and photo are still coming, but his role is clear: help build the tool that will go to MIND.',
+      'founders.bio3': 'Max brings technical sharpness and founder energy to the team. His personal bio is still coming, but his role is clear: help build the tool that will go to MIND.',
     });
 
     let caminoMapInstance = null;
@@ -2479,9 +2402,9 @@
           source: 'camino-route',
           layout: { 'line-cap': 'round', 'line-join': 'round' },
           paint: {
-            'line-color': '#a8c98c',
+            'line-color': '#97a081',
             'line-width': 10,
-            'line-opacity': 0.24,
+            'line-opacity': 0.26,
           },
         });
 
@@ -2491,7 +2414,7 @@
           source: 'camino-route',
           layout: { 'line-cap': 'round', 'line-join': 'round' },
           paint: {
-            'line-color': '#3d5a3d',
+            'line-color': '#2a3723',
             'line-width': 4,
             'line-opacity': 0.94,
           },
@@ -2503,7 +2426,7 @@
           source: 'camino-stage',
           layout: { 'line-cap': 'round', 'line-join': 'round' },
           paint: {
-            'line-color': '#a8c98c',
+            'line-color': '#97a081',
             'line-width': 6,
             'line-opacity': 0.92,
           },
@@ -2523,8 +2446,8 @@
             'text-ignore-placement': true,
           },
           paint: {
-            'text-color': '#1f3b20',
-            'text-halo-color': '#f7f5f0',
+            'text-color': '#2a3723',
+            'text-halo-color': '#fffef1',
             'text-halo-width': 1.5,
           },
         });
