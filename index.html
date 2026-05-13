@@ -261,14 +261,24 @@
       max-width: 1200px; margin: 0 auto;
       display: grid; grid-template-columns: repeat(4, 1fr);
     }
-    .stat { padding: 3.5rem 2rem 3.5rem 6vw; border-right: 1px solid var(--line); }
+    .stat {
+      padding: 3.4rem 2rem;
+      border-right: 1px solid var(--line);
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+    }
     .stat:last-child { border-right: none; }
     .stat-number {
       font-family: var(--serif); font-style: italic; font-weight: 400;
       font-size: clamp(2.5rem, 3.5vw, 3.5rem); color: var(--green);
-      line-height: 1; letter-spacing: -0.02em; margin-bottom: 0.6rem;
+      line-height: 1; letter-spacing: -0.02em; margin-bottom: 0.75rem;
     }
-    .stat-label { font-size: 0.8rem; letter-spacing: 0.06em; color: var(--ink-soft); line-height: 1.55; }
+    .stat-label {
+      max-width: 16ch;
+      font-family: var(--subhead);
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.08em; color: var(--ink-soft); line-height: 1.55;
+    }
 
     /* PARTNERS — credibility strip (homepage + sponsoring) */
     .partners-strip {
@@ -436,13 +446,13 @@
       margin-bottom: 2.25rem;
     }
     #page-contact .story-hero {
-      padding-top: calc(var(--nav-h) + 2.5rem);
-      padding-bottom: 2.5rem;
+      padding-top: calc(var(--nav-h) + 4rem);
+      padding-bottom: 3.5rem;
     }
     #page-contact .story-hero h1 {
-      font-size: clamp(2.25rem, 5vw, 5rem);
-      margin: 1rem 0 2rem;
-      max-width: 16ch;
+      font-size: clamp(2.75rem, 7vw, 7.5rem);
+      margin: 1.25rem 0 2.5rem;
+      max-width: 13ch;
     }
     #page-verhaal .story-body {
       padding-top: 2rem;
@@ -1047,116 +1057,176 @@
 
     /* ========= CONTACT ========= */
     .contact-grid-section {
-      padding: 2rem max(1.5rem, 5vw) 5rem;
-      max-width: 1200px;
+      padding: 0 max(1.5rem, 5vw) 5.5rem;
+      max-width: 1440px;
       margin: 0 auto;
     }
     .contact-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      border: 1px solid var(--line);
+      border-top: 1px solid var(--line-dark);
+      border-bottom: 1px solid var(--line-dark);
+      background: var(--charcoal);
+      color: var(--cream);
     }
     .contact-grid-col {
       display: flex;
       flex-direction: column;
-      border-right: 1px solid var(--line);
+      min-height: 360px;
+      border-right: 1px solid var(--line-dark);
     }
     .contact-grid-col:last-child { border-right: none; }
     .contact-grid-head {
       display: flex;
       align-items: center;
       gap: 0.65rem;
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--line);
-      background: rgba(61,90,61,0.03);
+      padding: 1.15rem clamp(1.25rem, 2vw, 2rem);
+      border-bottom: 1px solid var(--line-dark);
+      background: rgba(255,254,241,0.03);
     }
     .contact-grid-icon {
-      width: 17px; height: 17px;
+      width: 18px; height: 18px;
       color: var(--green);
       flex-shrink: 0;
     }
     .contact-grid-head-label {
       font-family: var(--subhead);
-      font-size: 0.82rem;
-      font-weight: 500;
-      color: var(--ink);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,254,241,0.62);
     }
     .contact-grid-body {
       flex: 1;
-      padding: 1.75rem 1.5rem;
-      border-bottom: 1px solid var(--line);
+      padding: clamp(2rem, 3vw, 3rem) clamp(1.25rem, 2vw, 2rem);
+      border-bottom: 1px solid var(--line-dark);
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      justify-content: flex-start;
+      gap: 2rem;
     }
     .contact-grid-value {
       font-family: var(--serif);
-      font-size: clamp(1.05rem, 1.6vw, 1.4rem);
-      line-height: 1.35;
-      color: var(--ink);
+      font-size: clamp(1.65rem, 2.6vw, 2.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--cream);
       text-decoration: none;
       display: block;
+      overflow-wrap: anywhere;
     }
-    a.contact-grid-value:hover { color: var(--tree); text-decoration: underline; text-decoration-color: var(--green); text-underline-offset: 0.18em; }
+    .contact-grid-value em { font-style: italic; color: var(--green); }
+    a.contact-grid-value:hover { color: var(--green); text-decoration: underline; text-decoration-color: var(--green); text-underline-offset: 0.18em; }
     .contact-grid-value-row {
       display: flex;
-      align-items: center;
-      gap: 0.4rem;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .contact-grid-value-row .contact-grid-value {
+      font-size: clamp(1.45rem, 1.6vw, 1.95rem);
+      line-height: 1.18;
+      white-space: nowrap;
+      overflow-wrap: normal;
     }
     .contact-grid-body .btn {
       align-self: flex-start;
-      padding: 0.55rem 1.15rem;
-      font-size: 0.82rem;
+      background: var(--green);
+      color: var(--charcoal);
+      border-color: var(--green);
+      padding: 0.7rem 1.35rem;
+      font-size: 0.84rem;
+    }
+    .contact-grid-body .btn:hover {
+      background: var(--canvas);
+      border-color: var(--canvas);
+      color: var(--charcoal);
     }
     .contact-grid-foot {
-      padding: 1rem 1.5rem;
-      color: var(--ink-soft);
-      font-size: 0.84rem;
-      line-height: 1.55;
+      padding: 1.25rem clamp(1.25rem, 2vw, 2rem);
+      min-height: 7rem;
+      display: flex;
+      align-items: center;
+      color: rgba(255,254,241,0.56);
+      font-size: 0.88rem;
+      line-height: 1.6;
     }
     .contact-online-strip {
-      border-top: 1px solid var(--line);
-      padding: 3rem max(1.5rem, 5vw) 5rem;
-      max-width: 1200px;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--line-dark);
+      padding: 4rem max(1.5rem, 5vw) 5rem;
+      max-width: 1440px;
       margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      background: var(--charcoal);
+      color: var(--cream);
     }
-    .contact-online-strip .section-label { margin-bottom: 1.5rem; }
+    .contact-online-strip::before {
+      content: '';
+      position: absolute;
+      inset: -20%;
+      background-image: url("LOGOMARK_B2B.svg");
+      background-repeat: repeat;
+      background-size: clamp(130px, 12vw, 190px) auto;
+      opacity: 0.07;
+      transform: rotate(-8deg);
+      pointer-events: none;
+    }
+    .contact-online-strip .section-label,
+    .contact-links {
+      position: relative;
+      z-index: 1;
+    }
+    .contact-online-strip .section-label {
+      margin-bottom: 0;
+      color: var(--green-light);
+    }
     .contact-copy-btn {
-      width: 32px; height: 32px;
+      width: 36px; height: 36px;
       display: inline-flex; align-items: center; justify-content: center;
-      border: 1px solid transparent; border-radius: 999px;
-      background: transparent; color: var(--ink-soft);
+      border: 1px solid rgba(255,254,241,0.18); border-radius: 999px;
+      background: rgba(255,254,241,0.04); color: rgba(255,254,241,0.62);
       cursor: pointer; flex-shrink: 0;
       transition: color 0.2s, background 0.2s, border-color 0.2s;
     }
     .contact-copy-btn:hover {
-      color: var(--tree);
-      background: rgba(151,160,129,0.14);
-      border-color: rgba(151,160,129,0.38);
+      color: var(--canvas);
+      background: rgba(151,160,129,0.2);
+      border-color: rgba(151,160,129,0.5);
     }
     .contact-copy-btn svg { width: 15px; height: 15px; }
     .contact-copy-btn .check-icon { display: none; color: #2f7d46; }
     .contact-copy-btn.copied .copy-icon { display: none; }
     .contact-copy-btn.copied .check-icon { display: block; }
-    .contact-links { display: flex; flex-wrap: wrap; gap: 0.85rem; }
+    .contact-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.85rem; }
     .contact-social {
       display: inline-flex; align-items: center; gap: 0.55rem;
       min-height: 42px; padding: 0.7rem 1rem;
-      border: 1px solid var(--line); border-radius: 999px;
-      background: rgba(247,245,240,0.7); color: var(--ink);
+      border: 1px solid rgba(255,254,241,0.18); border-radius: 999px;
+      background: rgba(255,254,241,0.05); color: var(--cream);
       text-decoration: none; font-family: var(--subhead); font-size: 0.82rem; font-weight: 500;
       transition: color 0.2s, border-color 0.2s, background 0.2s;
     }
     .contact-social:hover {
-      color: var(--tree);
-      border-color: rgba(151,160,129,0.42);
-      background: rgba(151,160,129,0.14);
+      color: var(--charcoal);
+      border-color: var(--green);
+      background: var(--green);
     }
     .contact-social svg { width: 17px; height: 17px; }
     @media (max-width: 680px) {
       .contact-grid { grid-template-columns: 1fr; }
-      .contact-grid-col { border-right: none; border-bottom: 1px solid var(--line); }
+      .contact-grid-col { min-height: 0; border-right: none; border-bottom: 1px solid var(--line-dark); }
       .contact-grid-col:last-child { border-bottom: none; }
+      .contact-grid-value-row .contact-grid-value {
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
+      .contact-online-strip { align-items: flex-start; flex-direction: column; }
+      .contact-links { justify-content: flex-start; }
     }
 
     /* FOOTER */
@@ -1310,7 +1380,7 @@
         </div>
         <div class="stat">
           <div class="stat-number">3</div>
-          <div class="stat-label" data-i18n="stats.founders">AI-nerds<br>Amsterdam</div>
+          <div class="stat-label" data-i18n="stats.founders">AI-nerds<br>uit Amsterdam</div>
         </div>
         <div class="stat">
           <div class="stat-number">1</div>
@@ -1506,7 +1576,7 @@
             <div class="founder-photo"><img src="caesar-schoorl.jpg" alt="Caesar Schoorl" loading="lazy" /></div>
             <div class="founder-name">Caesar Schoorl</div>
             <div class="founder-role" data-i18n="founders.role1">AI-founder · Amsterdam</div>
-            <p class="founder-bio" data-i18n="founders.bio1">Caesar bouwt AI-producten en brengt het verhaal, de partners en de energie bij elkaar. Op de Camino wil hij laten zien dat technologie menselijker wordt als je het buiten het kantoor brengt.</p>
+            <p class="founder-bio" data-i18n="founders.bio1">Caesar bouwt AI-producten en brengt verhaal, partners en energie bij elkaar. Op de Camino laat hij zien dat technologie menselijker wordt buiten het kantoor.</p>
             <a href="https://www.linkedin.com/in/caesar-schoorl-ai/" target="_blank" rel="noopener" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
@@ -1522,7 +1592,7 @@
             <div class="founder-photo"><img src="Max.jpeg" alt="Max Helmantel" loading="lazy" /></div>
             <div class="founder-name" data-i18n="founders.name3">Max Helmantel</div>
             <div class="founder-role" data-i18n="founders.role3">AI-founder · Amsterdam</div>
-            <p class="founder-bio" data-i18n="founders.bio3">Max brengt technische scherpte en ondernemersenergie mee in het team. Zijn persoonlijke bio volgt nog, maar zijn rol is helder: meebouwen aan de tool die straks naar MIND gaat.</p>
+            <p class="founder-bio" data-i18n="founders.bio3">Max brengt technische scherpte en ondernemersenergie mee in het team. Op de Camino zet hij ideeën snel om in producten die praktisch, bruikbaar en menselijk voelen.</p>
             <a href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
@@ -1664,9 +1734,9 @@
   <div class="page" id="page-contact">
     <section class="story-hero">
       <span class="pill" data-i18n="contact.pill">Contact</span>
-      <h1 data-i18n="contact.h1">Laten we kijken<br><em>of dit past.</em></h1>
+      <h1 data-i18n="contact.h1">Begin het<br><em>gesprek.</em></h1>
       <div class="story-hero-foot">
-        <p data-i18n="contact.lead">Wil je partner worden, meebouwen of even sparren? Plan een gesprek, stuur een mail of bel Caesar direct.</p>
+        <p data-i18n="contact.lead">Wil je partner worden, bijdragen of meebouwen? Plan een kort gesprek of stuur ons een bericht.</p>
         <p data-i18n="contact.note">We reageren binnen een dag. Geen verkooppraatje, gewoon een gesprek.</p>
       </div>
     </section>
@@ -1775,7 +1845,7 @@
         // stats
         'stats.km':         'kilometer<br>Tui &rarr; Santiago',
         'stats.days':       'dagen<br>on the road',
-        'stats.founders':   'AI-nerds<br>Amsterdam',
+        'stats.founders':   'AI-nerds<br>uit Amsterdam',
         'stats.tool':       'AI-tool<br>voor MIND',
 
         // footer
@@ -1860,13 +1930,13 @@
         'founders.label':   'De founders',
         'founders.h':       'De mensen achter<br><em>Back to Being.</em>',
         'founders.role1':   'AI-founder · Amsterdam',
-        'founders.bio1':    'Caesar bouwt AI-producten en brengt het verhaal, de partners en de energie bij elkaar. Op de Camino wil hij laten zien dat technologie menselijker wordt als je het buiten het kantoor brengt.',
+        'founders.bio1':    'Caesar bouwt AI-producten en brengt verhaal, partners en energie bij elkaar. Op de Camino laat hij zien dat technologie menselijker wordt buiten het kantoor.',
         'founders.name2':   'Stijn Smit',
         'founders.role2':   'AI-founder · Amsterdam',
         'founders.bio2':    'Stijn werkt op het snijvlak van AI, product en storytelling. Hij loopt mee om te bouwen aan een tool die concreet helpt, en om werken weer minder scherm en meer aandacht te maken.',
         'founders.name3':   'Max Helmantel',
         'founders.role3':   'AI-founder · Amsterdam',
-        'founders.bio3':    'Max brengt technische scherpte en ondernemersenergie mee in het team. Zijn persoonlijke bio volgt nog, maar zijn rol is helder: meebouwen aan de tool die straks naar MIND gaat.',
+        'founders.bio3':    'Max brengt technische scherpte en ondernemersenergie mee in het team. Op de Camino zet hij ideeën snel om in producten die praktisch, bruikbaar en menselijk voelen.',
 
         // sponsor
         'sponsor.pill':          'Partners',
@@ -1905,8 +1975,8 @@
 
         // contact
         'contact.pill':         'Contact',
-        'contact.h1':           'Laten we kijken<br><em>of dit past.</em>',
-        'contact.lead':         'Wil je partner worden, meebouwen of even sparren? Plan een gesprek of stuur een mail.',
+        'contact.h1':           'Begin het<br><em>gesprek.</em>',
+        'contact.lead':         'Wil je partner worden, bijdragen of meebouwen? Plan een kort gesprek of stuur ons een bericht.',
         'contact.note':         'We reageren binnen een dag. Geen verkooppraatje, gewoon een gesprek.',
         'contact.cal.head':     'Gesprek',
         'contact.cal.value':    '20 minuten.<br><em>Genoeg om te weten of het past.</em>',
@@ -1947,7 +2017,7 @@
         // stats
         'stats.km':         'kilometers<br>Tui &rarr; Santiago',
         'stats.days':       'days<br>on the road',
-        'stats.founders':   'AI nerds<br>Amsterdam',
+        'stats.founders':   'AI nerds<br>from Amsterdam',
         'stats.tool':       'AI tool<br>for MIND',
 
         // footer
@@ -2032,13 +2102,13 @@
         'founders.label':   'The founders',
         'founders.h':       'The people behind<br><em>Back to Being.</em>',
         'founders.role1':   'AI founder · Amsterdam',
-        'founders.bio1':    'Caesar builds AI products and brings the story, partners, and energy together. On the Camino, he wants to show that technology becomes more human when it leaves the office.',
+        'founders.bio1':    'Caesar builds AI products and brings story, partners, and energy together. On the Camino, he shows how technology becomes more human outside the office.',
         'founders.name2':   'Stijn Smit',
         'founders.role2':   'AI founder · Amsterdam',
         'founders.bio2':    'Stijn works across AI, product, and storytelling. He is walking to build something useful for MIND, and to make work feel less screen-led and more intentional.',
         'founders.name3':   'Max Helmantel',
         'founders.role3':   'AI founder · Amsterdam',
-        'founders.bio3':    'Max brings technical sharpness and founder energy to the team. His personal bio is still coming, but his role is clear: help build the tool that will go to MIND.',
+        'founders.bio3':    'Max brings technical sharpness and founder energy to the team. On the Camino, he turns ideas into products that feel practical, useful, and human.',
 
         // sponsor
         'sponsor.pill':          'Partners',
@@ -2077,8 +2147,8 @@
 
         // contact
         'contact.pill':         'Contact',
-        'contact.h1':           "Let's see<br><em>if it fits.</em>",
-        'contact.lead':         'Want to partner, contribute, or talk it through? Schedule a call or send us an email.',
+        'contact.h1':           'Start the<br><em>conversation.</em>',
+        'contact.lead':         'Want to partner, contribute, or build with us? Book a short call or send us a message.',
         'contact.note':         'We respond within a day. No sales pitch, just a conversation.',
         'contact.cal.head':     'Meeting',
         'contact.cal.value':    '20 minutes.<br><em>Enough to know if it fits.</em>',
@@ -2112,11 +2182,11 @@
       'verhaal.closing.h': 'Partner worden<br>in dit <em>verhaal?</em>',
       'verhaal.closing.p': 'We zoeken partners die willen bijdragen met budget, hardware, expertise of bereik. Niet als logo op een shirt, maar als onderdeel van het verhaal.',
       'founders.role1': 'AI-founder · Amsterdam',
-      'founders.bio1': 'Caesar bouwt AI-producten en brengt het verhaal, de partners en de energie bij elkaar. Op de Camino wil hij laten zien dat technologie menselijker wordt als je het buiten het kantoor brengt.',
+      'founders.bio1': 'Caesar bouwt AI-producten en brengt verhaal, partners en energie bij elkaar. Op de Camino laat hij zien dat technologie menselijker wordt buiten het kantoor.',
       'founders.role2': 'AI-founder · Amsterdam',
       'founders.bio2': 'Stijn werkt op het snijvlak van AI, product en storytelling. Hij loopt mee om te bouwen aan een tool die concreet helpt, en om werken weer minder scherm en meer aandacht te maken.',
       'founders.role3': 'AI-founder · Amsterdam',
-      'founders.bio3': 'Max brengt technische scherpte en ondernemersenergie mee in het team. Zijn persoonlijke bio volgt nog, maar zijn rol is helder: meebouwen aan de tool die straks naar MIND gaat.',
+      'founders.bio3': 'Max brengt technische scherpte en ondernemersenergie mee in het team. Op de Camino zet hij ideeën snel om in producten die praktisch, bruikbaar en menselijk voelen.',
     });
 
     Object.assign(I18N.en, {
@@ -2135,11 +2205,11 @@
       'verhaal.closing.h': 'Become a partner<br>in this <em>story?</em>',
       'verhaal.closing.p': 'We are looking for partners who can contribute budget, hardware, expertise, or reach. Not as a logo on a shirt, but as part of the story.',
       'founders.role1': 'AI founder · Amsterdam',
-      'founders.bio1': 'Caesar builds AI products and brings the story, partners, and energy together. On the Camino, he wants to show that technology becomes more human when it leaves the office.',
+      'founders.bio1': 'Caesar builds AI products and brings story, partners, and energy together. On the Camino, he shows how technology becomes more human outside the office.',
       'founders.role2': 'AI founder · Amsterdam',
       'founders.bio2': 'Stijn works across AI, product, and storytelling. He is walking to build something useful for MIND, and to make work feel less screen-led and more intentional.',
       'founders.role3': 'AI founder · Amsterdam',
-      'founders.bio3': 'Max brings technical sharpness and founder energy to the team. His personal bio is still coming, but his role is clear: help build the tool that will go to MIND.',
+      'founders.bio3': 'Max brings technical sharpness and founder energy to the team. On the Camino, he turns ideas into products that feel practical, useful, and human.',
     });
 
     let caminoMapInstance = null;
