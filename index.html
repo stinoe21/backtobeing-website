@@ -1599,9 +1599,45 @@
         letter-spacing: 0.1em;
       }
     }
+
+    /* PRELOADER */
+    #b2bPreloader {
+      position: fixed; inset: 0;
+      z-index: 9999;
+      align-items: center; justify-content: center;
+      background: var(--canvas);
+      display: none;
+    }
+    html.b2b-preloading #b2bPreloader { display: flex; }
+    html.b2b-preloading,
+    html.b2b-preloading body { overflow: hidden; }
+    #b2bPreloader .lottie-stage {
+      width: min(100vw, 720px);
+      height: min(100vh, 720px);
+    }
+    #b2bPreloader.is-fading {
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
   </style>
+  <script>
+    // Decide BEFORE first paint: skip preloader entirely for returning visitors.
+    (function () {
+      try {
+        if (!sessionStorage.getItem('b2b_preloader_seen')) {
+          document.documentElement.classList.add('b2b-preloading');
+        }
+      } catch (e) { /* private mode / disabled storage — show preloader anyway */ }
+    })();
+  </script>
 </head>
 <body>
+
+  <!-- PRELOADER (first session only) -->
+  <div id="b2bPreloader" role="status" aria-live="polite" aria-label="Loading">
+    <div class="lottie-stage" id="b2bLottieStage"></div>
+  </div>
 
   <!-- NAV -->
   <nav class="site-nav on-hero" id="siteNav">
@@ -2128,6 +2164,58 @@
   </div>
 
   <script src="https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.js"></script>
+  <script>
+    /* ============================================================
+       FIRST-SESSION PRELOADER
+       Plays b2b_loading_animation_screen_v14.json once per browser
+       session, then fades out. sessionStorage key: b2b_preloader_seen
+       ============================================================ */
+    (function () {
+      if (!document.documentElement.classList.contains('b2b-preloading')) return;
+
+      var overlay = document.getElementById('b2bPreloader');
+      var stage = document.getElementById('b2bLottieStage');
+      if (!overlay || !stage) return;
+
+      var dismissed = false;
+      function dismiss() {
+        if (dismissed) return;
+        dismissed = true;
+        try { sessionStorage.setItem('b2b_preloader_seen', '1'); } catch (e) {}
+        overlay.classList.add('is-fading');
+        setTimeout(function () {
+          document.documentElement.classList.remove('b2b-preloading');
+          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        }, 380);
+      }
+
+      // Safety net: never strand the user behind the overlay.
+      var safetyTimer = setTimeout(dismiss, 8000);
+
+      var s = document.createElement('script');
+      s.src = 'https://unpkg.com/lottie-web@5.12.2/build/player/lottie_light.min.js';
+      s.async = true;
+      s.onload = function () {
+        if (dismissed || !window.lottie) return;
+        try {
+          var anim = window.lottie.loadAnimation({
+            container: stage,
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            path: '/animations/b2b_loading_animation_screen_v14.json'
+          });
+          anim.addEventListener('complete', function () { clearTimeout(safetyTimer); dismiss(); });
+          anim.addEventListener('data_failed', function () { clearTimeout(safetyTimer); dismiss(); });
+        } catch (e) {
+          clearTimeout(safetyTimer);
+          dismiss();
+        }
+      };
+      s.onerror = function () { clearTimeout(safetyTimer); dismiss(); };
+      document.head.appendChild(s);
+    })();
+  </script>
   <script>
     /* ============================================================
        i18n DICTIONARY
