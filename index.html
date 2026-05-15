@@ -22,7 +22,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link href="https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <!-- maplibre-gl CSS is lazy-loaded with its JS on the Verhaal page -->
+  <link rel="preconnect" href="https://unpkg.com" />
   <style>
     :root {
       --tree:        #2a3723;
@@ -252,8 +253,18 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
       opacity: 0.5;
     }
-    .hero-video { position: absolute; inset: 0; z-index: 0; background: var(--charcoal); }
-    .hero-video video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-video {
+      position: absolute; inset: 0; z-index: 0;
+      background: var(--charcoal);
+      transform: translateZ(0);
+    }
+    .hero-video video {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+    .hero-overlay { transform: translateZ(0); }
     .hero-overlay {
       position: absolute; inset: 0; z-index: 1;
       background: linear-gradient(to bottom,
@@ -2163,7 +2174,10 @@
     </footer>
   </div>
 
-  <script src="https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.js"></script>
+  <script>
+    /* maplibre-gl is lazy-loaded on demand by ensureMaplibre() below,
+       so the home page never pays for its ~700 KB parse cost. */
+  </script>
   <script>
     /* ============================================================
        FIRST-SESSION PRELOADER
@@ -2615,6 +2629,30 @@
     });
 
     let caminoMapInstance = null;
+
+    /* Lazy-load maplibre-gl only when the Verhaal page actually needs it.
+       Returns a promise that resolves when window.maplibregl is available. */
+    let maplibreLoadPromise = null;
+    function ensureMaplibre() {
+      if (typeof window.maplibregl !== 'undefined') return Promise.resolve();
+      if (maplibreLoadPromise) return maplibreLoadPromise;
+      maplibreLoadPromise = new Promise((resolve, reject) => {
+        if (!document.querySelector('link[data-maplibre-css]')) {
+          const css = document.createElement('link');
+          css.rel = 'stylesheet';
+          css.href = 'https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.css';
+          css.setAttribute('data-maplibre-css', '1');
+          document.head.appendChild(css);
+        }
+        const s = document.createElement('script');
+        s.src = 'https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.js';
+        s.async = true;
+        s.onload = () => resolve();
+        s.onerror = () => { maplibreLoadPromise = null; reject(new Error('maplibre load failed')); };
+        document.head.appendChild(s);
+      });
+      return maplibreLoadPromise;
+    }
     const caminoRoute = [
       [-8.6440, 42.0471], // Tui
       [-8.6226, 42.0958], // A Madalena
@@ -3019,23 +3057,40 @@
       }
 
       if (name === 'verhaal') {
-        requestAnimationFrame(() => {
-          placeStoryRouteAtBottom();
-          initCaminoMap();
-          if (caminoMapInstance) {
-            caminoMapInstance.resize();
-            if (!activeCaminoStage) {
-              fitCaminoBounds(caminoRoute, routeMapPadding(null), 0, 8.7);
+        ensureMaplibre().then(() => {
+          requestAnimationFrame(() => {
+            placeStoryRouteAtBottom();
+            initCaminoMap();
+            if (caminoMapInstance) {
+              caminoMapInstance.resize();
+              if (!activeCaminoStage) {
+                fitCaminoBounds(caminoRoute, routeMapPadding(null), 0, 8.7);
+              }
             }
-          }
-        });
+          });
+        }).catch(() => { /* swallow — the map just won't render */ });
       }
     }
 
-    window.addEventListener('scroll', () => {
+    // Coalesce scroll-driven nav state changes to one per frame so the
+    // backdrop-filter on .site-nav.scrolled doesn't recalc on every event.
+    (function () {
       const nav = document.getElementById('siteNav');
-      nav.classList.toggle('scrolled', window.scrollY > 20);
-    }, { passive: true });
+      let scrollTicking = false;
+      let lastScrolled = false;
+      function updateNavOnScroll() {
+        scrollTicking = false;
+        const shouldBeScrolled = window.scrollY > 20;
+        if (shouldBeScrolled === lastScrolled) return;
+        lastScrolled = shouldBeScrolled;
+        nav.classList.toggle('scrolled', shouldBeScrolled);
+      }
+      window.addEventListener('scroll', () => {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        requestAnimationFrame(updateNavOnScroll);
+      }, { passive: true });
+    })();
 
     /* ============================================================
        INIT
