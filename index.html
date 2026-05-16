@@ -659,7 +659,12 @@
       border-top: 0;
       padding-top: 2rem;
     }
-    .camino-map {
+    /* Descendant selector raises specificity above MapLibre's
+       `.maplibregl-map { position: relative }` rule, which is loaded
+       after our inline CSS and otherwise wins on source order. With
+       position:relative the inset:0 below stops sizing the element and
+       the container collapses to 0×0. */
+    .camino-map-wrap > .camino-map {
       position: absolute;
       inset: 0;
     }
