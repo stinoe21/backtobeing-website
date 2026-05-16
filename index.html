@@ -2943,6 +2943,7 @@
           },
         });
 
+        caminoMapInstance.resize();
         fitCaminoBounds(caminoRoute, routeMapPadding(null), 0, 8.7);
         buildCaminoControls();
       });
@@ -3073,8 +3074,11 @@
 
       if (name === 'verhaal') {
         ensureMaplibre().then(() => {
-          requestAnimationFrame(() => {
-            placeStoryRouteAtBottom();
+          // Place the route block first, then wait two frames so the
+          // .story-route-bottom layout (aspect-ratio: 4/3) is fully settled
+          // before MapLibre measures the container.
+          placeStoryRouteAtBottom();
+          requestAnimationFrame(() => requestAnimationFrame(() => {
             initCaminoMap();
             if (caminoMapInstance) {
               caminoMapInstance.resize();
@@ -3082,7 +3086,7 @@
                 fitCaminoBounds(caminoRoute, routeMapPadding(null), 0, 8.7);
               }
             }
-          });
+          }));
         }).catch(() => { /* swallow — the map just won't render */ });
       }
     }
