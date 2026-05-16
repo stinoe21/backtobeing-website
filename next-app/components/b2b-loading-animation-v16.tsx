@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react"
 import type { AnimationItem } from "lottie-web"
 
 const STORAGE_KEY = "b2b_preloader_seen"
-const ANIMATION_PATH = "/animations/b2b_loading_animation_screen_v14.json"
+const ANIMATION_PATH = "/animations/b2b_loading_animation_screen_v16_optimized.json"
 
-export default function B2BLoadingAnimationV14() {
+export default function B2BLoadingAnimationV16() {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [active, setActive] = useState(false)
 
