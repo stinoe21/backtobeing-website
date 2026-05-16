@@ -1680,7 +1680,7 @@
 
     <section class="hero">
       <div class="hero-video">
-        <video autoplay muted loop playsinline preload="auto">
+        <video muted loop playsinline preload="auto">
           <source src="hero-video.mp4" type="video/mp4" />
         </video>
       </div>
@@ -2184,18 +2184,33 @@
        Plays b2b_loading_animation_screen_v14.json once per browser
        session, then fades out. sessionStorage key: b2b_preloader_seen
        ============================================================ */
+    function startHeroVideo() {
+      var v = document.querySelector('.hero-video video');
+      if (!v) return;
+      try { v.currentTime = 0; } catch (e) {}
+      var p = v.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(function () { /* iOS low-power / autoplay block — laat gepauzeerd */ });
+      }
+    }
+
     (function () {
-      if (!document.documentElement.classList.contains('b2b-preloading')) return;
+      if (!document.documentElement.classList.contains('b2b-preloading')) {
+        // Returning visitor: geen preloader → video meteen starten.
+        startHeroVideo();
+        return;
+      }
 
       var overlay = document.getElementById('b2bPreloader');
       var stage = document.getElementById('b2bLottieStage');
-      if (!overlay || !stage) return;
+      if (!overlay || !stage) { startHeroVideo(); return; }
 
       var dismissed = false;
       function dismiss() {
         if (dismissed) return;
         dismissed = true;
         try { sessionStorage.setItem('b2b_preloader_seen', '1'); } catch (e) {}
+        startHeroVideo();
         overlay.classList.add('is-fading');
         setTimeout(function () {
           document.documentElement.classList.remove('b2b-preloading');
