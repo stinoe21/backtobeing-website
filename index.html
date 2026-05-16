@@ -2684,8 +2684,14 @@
             document.head.appendChild(s);
           });
 
-      maplibreLoadPromise = Promise.all([cssPromise, jsPromise]).then(() => {})
-        .catch(err => { maplibreLoadPromise = null; throw err; });
+      caminoDbg('ensureMaplibre: start');
+      cssPromise.then(() => caminoDbg('ensureMaplibre: CSS loaded'),
+                      err => caminoDbg('ensureMaplibre: CSS FAILED ' + err.message));
+      jsPromise.then(() => caminoDbg('ensureMaplibre: JS loaded (typeof maplibregl=' + typeof window.maplibregl + ')'),
+                     err => caminoDbg('ensureMaplibre: JS FAILED ' + err.message));
+      maplibreLoadPromise = Promise.all([cssPromise, jsPromise]).then(() => {
+        caminoDbg('ensureMaplibre: both done');
+      }).catch(err => { caminoDbg('ensureMaplibre: REJECT ' + err.message); maplibreLoadPromise = null; throw err; });
       return maplibreLoadPromise;
     }
     const caminoRoute = [
@@ -2859,6 +2865,32 @@
       cta.parentNode.insertBefore(routeChapter, cta);
     }
 
+    /* === TEMP DEBUG OVERLAY — REMOVE WHEN MAP RENDERS =====================
+       Prints map-init state inside the wrap itself so we can diagnose the
+       black-box bug without DevTools. Lines accumulate; latest at the
+       bottom. Disable by appending ?nodebug to the URL. */
+    const CAMINO_DEBUG = !/[?&]nodebug\b/.test(location.search);
+    let caminoDbgEl = null;
+    function caminoDbg(msg) {
+      if (!CAMINO_DEBUG) return;
+      try { console.log('[camino]', msg); } catch (_) {}
+      const wrap = document.querySelector('#page-verhaal .camino-map-wrap');
+      if (!wrap) return;
+      if (!caminoDbgEl) {
+        caminoDbgEl = document.createElement('pre');
+        caminoDbgEl.id = 'caminoDbg';
+        caminoDbgEl.style.cssText =
+          'position:absolute;inset:0;z-index:50;margin:0;padding:14px;' +
+          'background:rgba(255,254,241,0.94);color:#161616;' +
+          'font:11px/1.45 ui-monospace,Menlo,Consolas,monospace;' +
+          'white-space:pre-wrap;overflow:auto;pointer-events:none;';
+        wrap.appendChild(caminoDbgEl);
+      }
+      const ts = (performance.now() / 1000).toFixed(2).padStart(6);
+      caminoDbgEl.textContent += `${ts}s  ${msg}\n`;
+    }
+    /* === END TEMP DEBUG OVERLAY ============================================ */
+
     /* Wait until the map container actually has non-zero dimensions before
        resolving. MapLibre sizes its canvas at construction time from
        container.clientWidth/clientHeight — if either is 0 (page just
@@ -2869,21 +2901,39 @@
        failure rather than nothing). */
     function waitForLayout(el, timeout = 1500) {
       return new Promise(resolve => {
-        if (el.clientWidth > 0 && el.clientHeight > 0) { resolve(); return; }
+        caminoDbg('waitForLayout: start (' + el.clientWidth + '×' + el.clientHeight + ')');
+        if (el.clientWidth > 0 && el.clientHeight > 0) {
+          caminoDbg('waitForLayout: already sized, resolve immediately');
+          resolve();
+          return;
+        }
         let done = false;
-        const finish = () => { if (done) return; done = true; ro.disconnect(); clearTimeout(t); resolve(); };
+        const finish = (reason) => {
+          if (done) return;
+          done = true;
+          ro.disconnect();
+          clearTimeout(t);
+          caminoDbg('waitForLayout: resolved via ' + reason + ' (' + el.clientWidth + '×' + el.clientHeight + ')');
+          resolve();
+        };
         const ro = new ResizeObserver(() => {
-          if (el.clientWidth > 0 && el.clientHeight > 0) finish();
+          if (el.clientWidth > 0 && el.clientHeight > 0) finish('ResizeObserver');
         });
         ro.observe(el);
-        const t = setTimeout(finish, timeout);
+        const t = setTimeout(() => finish('TIMEOUT'), timeout);
       });
     }
 
     function initCaminoMap() {
       placeStoryRouteAtBottom();
       const mapEl = document.getElementById('caminoMap');
-      if (!mapEl || caminoMapInstance || typeof maplibregl === 'undefined') return;
+      caminoDbg('initCaminoMap: enter (mapEl=' + !!mapEl
+        + ', instance=' + !!caminoMapInstance
+        + ', typeof maplibregl=' + typeof maplibregl
+        + ', mapEl size=' + (mapEl ? mapEl.clientWidth + '×' + mapEl.clientHeight : 'n/a') + ')');
+      if (!mapEl) { caminoDbg('initCaminoMap: ABORT — no mapEl'); return; }
+      if (caminoMapInstance) { caminoDbg('initCaminoMap: ABORT — already initialized'); return; }
+      if (typeof maplibregl === 'undefined') { caminoDbg('initCaminoMap: ABORT — maplibregl undefined'); return; }
 
       const stops = [
         { name: 'Tui', coord: caminoRoute[0], end: false },
@@ -2896,14 +2946,26 @@
         { name: 'Santiago de Compostela', coord: caminoRoute[17], end: true },
       ];
 
-      caminoMapInstance = new maplibregl.Map({
-        container: mapEl,
-        style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-        center: [-8.61, 42.46],
-        zoom: 8.15,
-        interactive: true,
-        attributionControl: false,
+      try {
+        caminoMapInstance = new maplibregl.Map({
+          container: mapEl,
+          style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+          center: [-8.61, 42.46],
+          zoom: 8.15,
+          interactive: true,
+          attributionControl: false,
+        });
+        caminoDbg('new maplibregl.Map() OK');
+      } catch (err) {
+        caminoDbg('new maplibregl.Map() THREW: ' + (err && err.message ? err.message : err));
+        return;
+      }
+      caminoMapInstance.on('error', e => {
+        const m = e && e.error && e.error.message ? e.error.message : 'unknown';
+        caminoDbg('map.on(error): ' + m);
       });
+      caminoMapInstance.on('styledata', () => caminoDbg('map.on(styledata)'));
+      caminoMapInstance.on('load', () => caminoDbg('map.on(load) fired'));
       disableCaminoInteractions();
 
       caminoMapInstance.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
@@ -3129,6 +3191,7 @@
       }
 
       if (name === 'verhaal') {
+        caminoDbg('showPage(verhaal): begin');
         // Place the route block first so the .story-route-bottom layout
         // (aspect-ratio: 4/3) is in the DOM, then wait until the wrap
         // actually has dimensions before MapLibre measures the container.
@@ -3139,14 +3202,17 @@
           ensureMaplibre(),
           mapEl ? waitForLayout(mapEl) : Promise.resolve(),
         ]).then(() => {
+          caminoDbg('showPage(verhaal): gates passed → initCaminoMap');
           initCaminoMap();
           if (caminoMapInstance) {
             caminoMapInstance.resize();
             if (!activeCaminoStage) {
               fitCaminoBounds(caminoRoute, routeMapPadding(null), 0, 8.7);
             }
+          } else {
+            caminoDbg('showPage(verhaal): no caminoMapInstance after init');
           }
-        }).catch(() => { /* swallow — the map just won't render */ });
+        }).catch(err => { caminoDbg('showPage(verhaal): chain rejected ' + (err && err.message)); });
       }
     }
 
