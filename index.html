@@ -2646,26 +2646,46 @@
     let caminoMapInstance = null;
 
     /* Lazy-load maplibre-gl only when the Verhaal page actually needs it.
-       Returns a promise that resolves when window.maplibregl is available. */
+       Awaits BOTH the CSS and the JS — if the JS resolves before the CSS,
+       MapLibre never gets the `.maplibregl-canvas { position: absolute }`
+       rule, and the canvas ends up in normal flow at 2x its container
+       size (canvas width/height attrs in CSS pixels). With overflow:hidden
+       on the wrap that's clipped to a black box. */
     let maplibreLoadPromise = null;
     function ensureMaplibre() {
-      if (typeof window.maplibregl !== 'undefined') return Promise.resolve();
+      if (typeof window.maplibregl !== 'undefined'
+          && document.querySelector('link[data-maplibre-css]')) {
+        return Promise.resolve();
+      }
       if (maplibreLoadPromise) return maplibreLoadPromise;
-      maplibreLoadPromise = new Promise((resolve, reject) => {
-        if (!document.querySelector('link[data-maplibre-css]')) {
-          const css = document.createElement('link');
+
+      const cssPromise = new Promise((resolve, reject) => {
+        let css = document.querySelector('link[data-maplibre-css]');
+        if (css && css.sheet) { resolve(); return; }
+        if (!css) {
+          css = document.createElement('link');
           css.rel = 'stylesheet';
           css.href = 'https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.css';
           css.setAttribute('data-maplibre-css', '1');
           document.head.appendChild(css);
         }
-        const s = document.createElement('script');
-        s.src = 'https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.js';
-        s.async = true;
-        s.onload = () => resolve();
-        s.onerror = () => { maplibreLoadPromise = null; reject(new Error('maplibre load failed')); };
-        document.head.appendChild(s);
+        css.addEventListener('load', () => resolve(), { once: true });
+        css.addEventListener('error', () => reject(new Error('maplibre css load failed')), { once: true });
       });
+
+      const jsPromise = typeof window.maplibregl !== 'undefined'
+        ? Promise.resolve()
+        : new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = 'https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.js';
+            s.async = true;
+            s.onload = () => resolve();
+            s.onerror = () => reject(new Error('maplibre js load failed'));
+            document.head.appendChild(s);
+          });
+
+      maplibreLoadPromise = Promise.all([cssPromise, jsPromise]).then(() => {})
+        .catch(err => { maplibreLoadPromise = null; throw err; });
       return maplibreLoadPromise;
     }
     const caminoRoute = [
@@ -2839,6 +2859,27 @@
       cta.parentNode.insertBefore(routeChapter, cta);
     }
 
+    /* Wait until the map container actually has non-zero dimensions before
+       resolving. MapLibre sizes its canvas at construction time from
+       container.clientWidth/clientHeight — if either is 0 (page just
+       toggled from display:none → block, aspect-ratio not yet computed,
+       etc.) the canvas starts at 0×0 and never repaints tiles, even after
+       a later resize(). Resolves once both dimensions are > 0, or after a
+       short timeout (so we still attempt to render and the user sees the
+       failure rather than nothing). */
+    function waitForLayout(el, timeout = 1500) {
+      return new Promise(resolve => {
+        if (el.clientWidth > 0 && el.clientHeight > 0) { resolve(); return; }
+        let done = false;
+        const finish = () => { if (done) return; done = true; ro.disconnect(); clearTimeout(t); resolve(); };
+        const ro = new ResizeObserver(() => {
+          if (el.clientWidth > 0 && el.clientHeight > 0) finish();
+        });
+        ro.observe(el);
+        const t = setTimeout(finish, timeout);
+      });
+    }
+
     function initCaminoMap() {
       placeStoryRouteAtBottom();
       const mapEl = document.getElementById('caminoMap');
@@ -2962,6 +3003,21 @@
           )
           .addTo(caminoMapInstance);
       });
+
+      /* Keep the canvas in sync with the wrap: a debounced ResizeObserver
+         calls map.resize() whenever the container changes size — covers
+         tab visibility, font load, viewport changes, etc. */
+      try {
+        let resizeFrame = 0;
+        const ro = new ResizeObserver(() => {
+          if (resizeFrame) cancelAnimationFrame(resizeFrame);
+          resizeFrame = requestAnimationFrame(() => {
+            resizeFrame = 0;
+            if (caminoMapInstance) caminoMapInstance.resize();
+          });
+        });
+        ro.observe(mapEl);
+      } catch (_) { /* ResizeObserver not available — skip */ }
     }
 
     /* ============================================================
@@ -3073,20 +3129,23 @@
       }
 
       if (name === 'verhaal') {
-        ensureMaplibre().then(() => {
-          // Place the route block first, then wait two frames so the
-          // .story-route-bottom layout (aspect-ratio: 4/3) is fully settled
-          // before MapLibre measures the container.
-          placeStoryRouteAtBottom();
-          requestAnimationFrame(() => requestAnimationFrame(() => {
-            initCaminoMap();
-            if (caminoMapInstance) {
-              caminoMapInstance.resize();
-              if (!activeCaminoStage) {
-                fitCaminoBounds(caminoRoute, routeMapPadding(null), 0, 8.7);
-              }
+        // Place the route block first so the .story-route-bottom layout
+        // (aspect-ratio: 4/3) is in the DOM, then wait until the wrap
+        // actually has dimensions before MapLibre measures the container.
+        // Without that wait the canvas starts at 0×0 and no tiles paint.
+        placeStoryRouteAtBottom();
+        const mapEl = document.getElementById('caminoMap');
+        Promise.all([
+          ensureMaplibre(),
+          mapEl ? waitForLayout(mapEl) : Promise.resolve(),
+        ]).then(() => {
+          initCaminoMap();
+          if (caminoMapInstance) {
+            caminoMapInstance.resize();
+            if (!activeCaminoStage) {
+              fitCaminoBounds(caminoRoute, routeMapPadding(null), 0, 8.7);
             }
-          }));
+          }
         }).catch(() => { /* swallow — the map just won't render */ });
       }
     }
