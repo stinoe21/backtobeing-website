@@ -2866,9 +2866,8 @@
     }
 
     /* === TEMP DEBUG OVERLAY — REMOVE WHEN MAP RENDERS =====================
-       Prints map-init state inside the wrap itself so we can diagnose the
-       black-box bug without DevTools. Lines accumulate; latest at the
-       bottom. Disable by appending ?nodebug to the URL. */
+       Compact overlay in top-right corner. Map stays visible underneath.
+       Disable by appending ?nodebug. */
     const CAMINO_DEBUG = !/[?&]nodebug\b/.test(location.search);
     let caminoDbgEl = null;
     function caminoDbg(msg) {
@@ -2880,14 +2879,34 @@
         caminoDbgEl = document.createElement('pre');
         caminoDbgEl.id = 'caminoDbg';
         caminoDbgEl.style.cssText =
-          'position:absolute;inset:0;z-index:50;margin:0;padding:14px;' +
-          'background:rgba(255,254,241,0.94);color:#161616;' +
-          'font:11px/1.45 ui-monospace,Menlo,Consolas,monospace;' +
-          'white-space:pre-wrap;overflow:auto;pointer-events:none;';
+          'position:absolute;left:8px;bottom:90px;z-index:50;max-width:60%;max-height:55%;' +
+          'margin:0;padding:8px 10px;border-radius:6px;' +
+          'background:rgba(20,20,20,0.86);color:#fffef1;' +
+          'font:10px/1.4 ui-monospace,Menlo,Consolas,monospace;' +
+          'white-space:pre-wrap;overflow:auto;pointer-events:auto;';
         wrap.appendChild(caminoDbgEl);
       }
       const ts = (performance.now() / 1000).toFixed(2).padStart(6);
       caminoDbgEl.textContent += `${ts}s  ${msg}\n`;
+      caminoDbgEl.scrollTop = caminoDbgEl.scrollHeight;
+    }
+    function caminoDbgInspect() {
+      if (!CAMINO_DEBUG || !caminoMapInstance) return;
+      try {
+        const canvas = caminoMapInstance.getCanvas();
+        const cs = getComputedStyle(canvas);
+        const rect = canvas.getBoundingClientRect();
+        const gl = canvas.getContext('webgl2') || canvas.getContext('webgl') || null;
+        caminoDbg('canvas: attr=' + canvas.width + '×' + canvas.height
+          + ', client=' + canvas.clientWidth + '×' + canvas.clientHeight
+          + ', rect=' + Math.round(rect.width) + '×' + Math.round(rect.height)
+          + ', display=' + cs.display + ', visibility=' + cs.visibility
+          + ', opacity=' + cs.opacity);
+        caminoDbg('webgl ctx: ' + (gl ? 'OK' : 'NULL') + ', dpr=' + window.devicePixelRatio);
+        const container = caminoMapInstance.getContainer();
+        const cRect = container.getBoundingClientRect();
+        caminoDbg('container rect: ' + Math.round(cRect.width) + '×' + Math.round(cRect.height));
+      } catch (e) { caminoDbg('inspect threw: ' + e.message); }
     }
     /* === END TEMP DEBUG OVERLAY ============================================ */
 
@@ -2965,7 +2984,23 @@
         caminoDbg('map.on(error): ' + m);
       });
       caminoMapInstance.on('styledata', () => caminoDbg('map.on(styledata)'));
-      caminoMapInstance.on('load', () => caminoDbg('map.on(load) fired'));
+      caminoMapInstance.on('load', () => {
+        caminoDbg('map.on(load) fired');
+        caminoDbgInspect();
+      });
+      caminoMapInstance.on('sourcedata', e => {
+        if (e.isSourceLoaded && e.sourceId) caminoDbg('source loaded: ' + e.sourceId);
+      });
+      caminoMapInstance.on('dataloading', e => {
+        if (e.tile) caminoDbg('tile loading: ' + (e.sourceId || '?'));
+      });
+      caminoMapInstance.on('render', () => {
+        if (!caminoMapInstance._sawRender) {
+          caminoMapInstance._sawRender = true;
+          caminoDbg('map.on(render) FIRST');
+          caminoDbgInspect();
+        }
+      });
       disableCaminoInteractions();
 
       caminoMapInstance.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
