@@ -320,32 +320,7 @@
     .intro-strip p:last-of-type { margin-bottom: 0; }
     .intro-actions { display: flex; gap: 0.85rem; flex-wrap: wrap; margin-top: 2rem; }
 
-    /* STATS */
-    .stats { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-    .stats-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: grid; grid-template-columns: repeat(4, 1fr);
-    }
-    .stat {
-      padding: 3.4rem 2rem;
-      border-right: 1px solid var(--line);
-      display: flex; flex-direction: column; align-items: center;
-      text-align: center;
-    }
-    .stat:last-child { border-right: none; }
-    .stat-number {
-      font-family: var(--serif); font-style: italic; font-weight: 400;
-      font-size: clamp(2.5rem, 3.5vw, 3.5rem); color: var(--green);
-      line-height: 1; letter-spacing: 0; margin-bottom: 0.75rem;
-    }
-    .stat-label {
-      max-width: 16ch;
-      font-family: var(--subhead);
-      font-size: 0.82rem; font-weight: 500;
-      letter-spacing: 0.08em; color: var(--ink-soft); line-height: 1.55;
-    }
-
-    /* PARTNERS — credibility strip (homepage + sponsoring) */
+/* PARTNERS — credibility strip (homepage + sponsoring) */
     .partners-strip {
       border-bottom: 1px solid var(--line);
       padding: 4.5rem 6vw;
@@ -1323,9 +1298,6 @@
     /* RESPONSIVE */
     @media (max-width: 960px) {
       .intro-strip { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 6vw; }
-      .stats-inner { grid-template-columns: repeat(2, 1fr); }
-      .stat:nth-child(2) { border-right: none; }
-      .stat:nth-child(3) { border-right: 1px solid var(--line); }
       .partners-grid { grid-template-columns: repeat(2, 1fr); gap: 1.75rem 2rem; }
       .partner-logo img { max-height: 32px; }
       .plan-header { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -1514,13 +1486,6 @@
         flex-direction: column;
         align-items: stretch;
       }
-      .stats-inner { grid-template-columns: 1fr; }
-      .stat {
-        padding: 2.25rem 1.25rem;
-        border-right: none !important;
-        border-bottom: 1px solid var(--line);
-      }
-      .stat:last-child { border-bottom: none; }
       .partners-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -1734,28 +1699,7 @@
       </div>
     </section>
 
-    <div class="stats">
-      <div class="stats-inner">
-        <div class="stat">
-          <div class="stat-number">115</div>
-          <div class="stat-label" data-i18n="stats.km">kilometer<br>Tui &rarr; Santiago</div>
-        </div>
-        <div class="stat">
-          <div class="stat-number">6</div>
-          <div class="stat-label" data-i18n="stats.days">dagen<br>on the road</div>
-        </div>
-        <div class="stat">
-          <div class="stat-number">3</div>
-          <div class="stat-label" data-i18n="stats.founders">AI-nerds<br>uit Amsterdam</div>
-        </div>
-        <div class="stat">
-          <div class="stat-number">1</div>
-          <div class="stat-label" data-i18n="stats.tool">AI-tool<br>voor MIND</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- HOME — story tease -->
+<!-- HOME — story tease -->
     <section class="home-story-tease" hidden>
       <div class="visual">
         <div class="photo-ph">
@@ -2278,12 +2222,6 @@
         'intro.cta1':       'Ons verhaal &rarr;',
         'intro.cta2':       'Sponsoring &rarr;',
 
-        // stats
-        'stats.km':         'kilometer<br>Tui &rarr; Santiago',
-        'stats.days':       'dagen<br>on the road',
-        'stats.founders':   'AI-nerds<br>uit Amsterdam',
-        'stats.tool':       'AI-tool<br>voor MIND',
-
         // footer
         'footer.right':     'backtobeing.tech &nbsp;·&nbsp; Zomer 2026',
 
@@ -2449,12 +2387,6 @@
         'intro.body':       'Three AI nerds from Amsterdam are walking the Camino from Tui to Santiago this summer, building one AI tool for mental health live along the way. We hand it over to MIND for free. Sponsors make the journey, production, and handover possible.',
         'intro.cta1':       'Our story &rarr;',
         'intro.cta2':       'Sponsorship &rarr;',
-
-        // stats
-        'stats.km':         'kilometers<br>Tui &rarr; Santiago',
-        'stats.days':       'days<br>on the road',
-        'stats.founders':   'AI nerds<br>from Amsterdam',
-        'stats.tool':       'AI tool<br>for MIND',
 
         // footer
         'footer.right':     'backtobeing.tech &nbsp;·&nbsp; Summer 2026',
