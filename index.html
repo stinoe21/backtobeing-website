@@ -374,11 +374,17 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 2.5rem;
-      align-items: stretch;
+      align-items: start;
     }
     @media (min-width: 900px) {
       .press-feature-grid {
-        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.85fr);
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 2.5rem;
+      }
+    }
+    @media (min-width: 1100px) {
+      .press-feature-grid {
+        grid-template-columns: minmax(0, 1fr) 320px;
         gap: 3rem;
       }
     }
@@ -391,6 +397,8 @@
       background: var(--bg-dark);
       box-shadow: 0 24px 60px rgba(22, 22, 22, 0.08);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      aspect-ratio: 4/5;
+      width: 100%;
     }
     .press-feature-photo:hover {
       transform: translateY(-3px);
