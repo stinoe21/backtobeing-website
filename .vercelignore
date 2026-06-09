@@ -1,0 +1,10 @@
+next-app/
+.claude/
+.git/
+.gitignore
+*.md
+.prettierrc
+.prettierignore
+eslint.config.mjs
+postcss.config.mjs
+tsconfig*
