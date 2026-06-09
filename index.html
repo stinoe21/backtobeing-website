@@ -345,6 +345,18 @@
     /* witte logo's omzetten naar zwart op cream-achtergrond */
     .partner-logo.is-light img { filter: invert(1); }
 
+    /* PRESS — "in de pers" strip (één logo, gecentreerd, klikbaar) */
+    .press-strip { padding-top: 2.5rem; padding-bottom: 4.5rem; }
+    .press-grid {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%;
+    }
+    a.partner-logo {
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    a.partner-logo:hover { opacity: 0.7; transform: translateY(-1px); }
+    .press-grid .partner-logo img { max-height: 46px; }
+
     /* PLAN — drie stappen (rows-stijl uit pitchdeck) */
     .plan-section { padding: 7rem 6vw; max-width: 1200px; margin: 0 auto; }
     .plan-header {
@@ -1699,6 +1711,22 @@
       </div>
     </section>
 
+    <!-- HOME — in de pers -->
+    <section class="partners-strip press-strip" aria-label="In de pers">
+      <div class="partners-strip-inner">
+        <div class="section-label" data-i18n="press.home.label">In de pers</div>
+        <div class="press-grid">
+          <a class="partner-logo press-logo"
+             href="https://www.noordhollandsdagblad.nl/regio/ijmond/caesar-21-stijn-24-en-max-26-gaan-de-camino-lopen-en-onderweg-met-ai-een-app-ontwikkelen-voor-mentale-gezondheid-de-wereld-wordt-ons-kantoor/152592259.html"
+             target="_blank"
+             rel="noopener"
+             aria-label="Artikel in Noord-Hollands Dagblad (opent in nieuw tabblad)">
+            <img src="noordhollands-dagblad-logo.webp" alt="Noord-Hollands Dagblad" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    </section>
+
 <!-- HOME — story tease -->
     <section class="home-story-tease" hidden>
       <div class="visual">
@@ -1887,7 +1915,7 @@
             <div class="founder-name">Caesar Schoorl</div>
             <div class="founder-role" data-i18n="founders.role1">AI-founder · Amsterdam</div>
             <p class="founder-bio" data-i18n="founders.bio1">Caesar bouwt AI-producten en brengt verhaal, partners en energie bij elkaar. Op de Camino laat hij zien dat technologie menselijker wordt buiten het kantoor.</p>
-            <a href="https://www.linkedin.com/in/caesar-schoorl-ai/" target="_blank" rel="noopener" class="founder-li">LinkedIn &rarr;</a>
+            <a href="https://www.linkedin.com/in/caesar-schoorl-ai/" target="_blank" rel="noopener noreferrer" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
           <div class="founder-card">
@@ -1895,7 +1923,7 @@
             <div class="founder-name" data-i18n="founders.name2">Stijn Smit</div>
             <div class="founder-role" data-i18n="founders.role2">AI-founder · Amsterdam</div>
             <p class="founder-bio" data-i18n="founders.bio2">Stijn werkt op het snijvlak van AI, product en storytelling. Hij loopt mee om te bouwen aan een tool die concreet helpt, en om werken weer minder scherm en meer aandacht te maken.</p>
-            <a href="https://www.linkedin.com/in/stijn-smit-ai/" target="_blank" rel="noopener" class="founder-li">LinkedIn &rarr;</a>
+            <a href="https://www.linkedin.com/in/stijn-smit-ai/" target="_blank" rel="noopener noreferrer" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
           <div class="founder-card">
@@ -1903,7 +1931,7 @@
             <div class="founder-name" data-i18n="founders.name3">Max Helmantel</div>
             <div class="founder-role" data-i18n="founders.role3">AI-founder · Amsterdam</div>
             <p class="founder-bio" data-i18n="founders.bio3">Max brengt technische scherpte en ondernemersenergie mee in het team. Op de Camino zet hij ideeën snel om in producten die praktisch, bruikbaar en menselijk voelen.</p>
-            <a href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener" class="founder-li">LinkedIn &rarr;</a>
+            <a href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener noreferrer" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
         </div>
@@ -2026,7 +2054,7 @@
         <h2 data-i18n="sponsor.cta.h">Eén gesprek is<br><em>genoeg.</em></h2>
         <p data-i18n="sponsor.cta.body">Plan 20 minuten en we weten samen of dit past, en hoe het eruit ziet als het dat doet.</p>
         <div class="sponsor-cta-actions">
-          <a class="btn sponsor-cta-btn" href="https://cal.com/caesar-schoorl/back-to-being" data-i18n="sponsor.cta.btn1" target="_blank" rel="noopener">Plan een gesprek &rarr;</a>
+          <a class="btn sponsor-cta-btn" href="https://cal.com/caesar-schoorl/back-to-being" data-i18n="sponsor.cta.btn1" target="_blank" rel="noopener noreferrer">Plan een gesprek &rarr;</a>
           <a class="btn btn-outline sponsor-cta-outline" href="mailto:Caesar.schoorl@gmail.com?subject=Back%20to%20Being%3A%20partnerschap&body=Hi%2C%0A%0AIk%20wil%20graag%20een%20kort%20gesprek%20over%20een%20samenwerking.%0A%0AHartelijke%20groet" data-i18n="sponsor.cta.btn2">Mail ons &rarr;</a>
         </div>
       </div>
@@ -2061,7 +2089,7 @@
           </div>
           <div class="contact-grid-body">
             <span class="contact-grid-value" data-i18n="contact.cal.value">20 minuten.<br><em>Genoeg om te weten of het past.</em></span>
-            <a class="btn" href="https://cal.com/caesar-schoorl/back-to-being" target="_blank" rel="noopener" data-i18n="contact.cal.btn">Plan een gesprek &rarr;</a>
+            <a class="btn" href="https://cal.com/caesar-schoorl/back-to-being" target="_blank" rel="noopener noreferrer" data-i18n="contact.cal.btn">Plan een gesprek &rarr;</a>
           </div>
           <div class="contact-grid-foot" data-i18n="contact.cal.desc">Plan direct via cal.eu. We kijken samen of en hoe het past.</div>
         </div>
@@ -2100,15 +2128,15 @@
     <div class="contact-online-strip">
       <div class="section-label" data-i18n="contact.online.label">Vind ons online</div>
       <div class="contact-links">
-        <a class="contact-social" href="https://www.linkedin.com/in/caesar-schoorl-ai/" target="_blank" rel="noopener">
+        <a class="contact-social" href="https://www.linkedin.com/in/caesar-schoorl-ai/" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.42 8.03h4.15V23H.42V8.03ZM8.1 8.03h3.98v2.05h.06c.55-1.05 1.91-2.16 3.94-2.16 4.22 0 5 2.78 5 6.39V23h-4.15v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.07V23H8.1V8.03Z"/></svg>
           Caesar
         </a>
-        <a class="contact-social" href="https://www.linkedin.com/in/stijn-smit-ai/" target="_blank" rel="noopener">
+        <a class="contact-social" href="https://www.linkedin.com/in/stijn-smit-ai/" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.42 8.03h4.15V23H.42V8.03ZM8.1 8.03h3.98v2.05h.06c.55-1.05 1.91-2.16 3.94-2.16 4.22 0 5 2.78 5 6.39V23h-4.15v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.07V23H8.1V8.03Z"/></svg>
           Stijn
         </a>
-        <a class="contact-social" href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener">
+        <a class="contact-social" href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.42 8.03h4.15V23H.42V8.03ZM8.1 8.03h3.98v2.05h.06c.55-1.05 1.91-2.16 3.94-2.16 4.22 0 5 2.78 5 6.39V23h-4.15v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.07V23H8.1V8.03Z"/></svg>
           Max
         </a>
@@ -2172,6 +2200,8 @@
 
       var s = document.createElement('script');
       s.src = 'https://unpkg.com/lottie-web@5.12.2/build/player/lottie_light.min.js';
+      s.integrity = 'sha384-Vtbz3QbtSBqleuQry6kQy5smig1gPZCXUoTFN7RmN9QW47xpEDsV/J1w0Pw0rDJu';
+      s.crossOrigin = 'anonymous';
       s.async = true;
       s.onload = function () {
         if (dismissed || !window.lottie) return;
@@ -2282,6 +2312,7 @@
         // partners
         'partners.home.label':    'Met steun van',
         'partners.sponsor.label': 'Eerste partners aan boord',
+        'press.home.label':       'In de pers',
 
         // philosophy
         'philo.label':      'De filosofie',
@@ -2448,6 +2479,7 @@
         // partners
         'partners.home.label':    'Backed by',
         'partners.sponsor.label': 'First partners on board',
+        'press.home.label':       'Featured in',
 
         // philosophy
         'philo.label':      'The philosophy',
@@ -2603,6 +2635,8 @@
           css = document.createElement('link');
           css.rel = 'stylesheet';
           css.href = 'https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.css';
+          css.integrity = 'sha384-gNYNsUmuZqDYiT3gbirWTV5K7rt71RoveS/yXAaU09d4ZUmeDVTD3XoqB6uJAIFR';
+          css.crossOrigin = 'anonymous';
           css.setAttribute('data-maplibre-css', '1');
           document.head.appendChild(css);
         }
@@ -2615,6 +2649,8 @@
         : new Promise((resolve, reject) => {
             const s = document.createElement('script');
             s.src = 'https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.js';
+            s.integrity = 'sha384-81ppUWZZO+pveTPk4qU9cZuScEFULHfuOMHVJHFZ7xVBlWQTG1zsPrVIMGAl1WMb';
+            s.crossOrigin = 'anonymous';
             s.async = true;
             s.onload = () => resolve();
             s.onerror = () => reject(new Error('maplibre js load failed'));
@@ -2972,6 +3008,9 @@
       const dict = I18N[lang];
 
       // text content via data-i18n (innerHTML to allow <br>, <em>, <strong>)
+      // SECURITY: dict comes from the static I18N literal in this file. If
+      // translations ever move to a remote/CMS/JSON source, switch to
+      // textContent or sanitize before assignment — this is a broad XSS sink.
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (dict[key] !== undefined) {
