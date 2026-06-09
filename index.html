@@ -363,12 +363,64 @@
       border-top: 1px solid var(--line);
     }
     .press-feature-inner {
-      max-width: 920px;
+      max-width: 1180px;
       margin: 0 auto;
     }
     .press-feature-eyebrow {
       text-align: center;
       margin-bottom: 2.5rem;
+    }
+    .press-feature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      align-items: stretch;
+    }
+    @media (min-width: 900px) {
+      .press-feature-grid {
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.85fr);
+        gap: 3rem;
+      }
+    }
+    .press-feature-photo {
+      position: relative;
+      display: block;
+      overflow: hidden;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: var(--bg-dark);
+      box-shadow: 0 24px 60px rgba(22, 22, 22, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .press-feature-photo:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 28px 70px rgba(22, 22, 22, 0.14);
+    }
+    .press-feature-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+    }
+    .press-feature-photo-caption {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 0.95rem 1.1rem;
+      background: linear-gradient(to top, rgba(22,22,22,0.85) 0%, rgba(22,22,22,0.55) 60%, rgba(22,22,22,0) 100%);
+      color: var(--cream);
+      font-family: var(--subhead);
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .press-feature-photo-caption span:last-child { opacity: 0.7; }
+    @media (max-width: 899px) {
+      .press-feature-photo {
+        aspect-ratio: 4/5;
+        max-height: 560px;
+        margin: 0 auto;
+        width: 100%; max-width: 420px;
+      }
     }
     .press-feature-card {
       position: relative;
@@ -2062,6 +2114,7 @@
         <div class="press-feature-eyebrow">
           <span class="section-label" data-i18n="press.feature.label">Caesar op LinkedIn</span>
         </div>
+        <div class="press-feature-grid">
         <article class="press-feature-card">
           <div class="press-feature-meta">
             <div class="press-feature-author">
@@ -2094,6 +2147,18 @@
                data-i18n="press.feature.cta">Lees de volledige post op LinkedIn &rarr;</a>
           </div>
         </article>
+
+        <a class="press-feature-photo"
+           href="https://www.noordhollandsdagblad.nl/regio/ijmond/caesar-21-stijn-24-en-max-26-gaan-de-camino-lopen-en-onderweg-met-ai-een-app-ontwikkelen-voor-mentale-gezondheid-de-wereld-wordt-ons-kantoor/152592259.html"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Artikel in Noord-Hollands Dagblad (opent in nieuw tabblad)">
+          <img src="nhd-post-photo.webp" alt="Interview in het Noord-Hollands Dagblad met Caesar, Stijn en Max" loading="lazy" />
+          <div class="press-feature-photo-caption">
+            <span data-i18n="press.feature.photo.tag">Noord-Hollands Dagblad</span>
+            <span aria-hidden="true">&rarr;</span>
+          </div>
+        </a>
+        </div>
       </div>
     </section>
 
@@ -2475,6 +2540,7 @@
         'press.feature.label':    'Caesar op LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
         'press.feature.cta':      'Lees de volledige post op LinkedIn &rarr;',
+        'press.feature.photo.tag': 'Noord-Hollands Dagblad',
 
         // philosophy
         'philo.label':      'De filosofie',
@@ -2645,6 +2711,7 @@
         'press.feature.label':    'Caesar on LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
         'press.feature.cta':      'Read the full post on LinkedIn (Dutch) &rarr;',
+        'press.feature.photo.tag': 'Noord-Hollands Dagblad',
 
         // philosophy
         'philo.label':      'The philosophy',
