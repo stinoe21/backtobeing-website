@@ -356,6 +356,125 @@
     }
     a.partner-logo:hover { opacity: 0.7; transform: translateY(-1px); }
 
+    /* PRESS FEATURE — LinkedIn-post als styled quote card */
+    .press-feature {
+      padding: 6rem max(1.5rem, 5vw);
+      background: var(--bg);
+      border-top: 1px solid var(--line);
+    }
+    .press-feature-inner {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+    .press-feature-eyebrow {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .press-feature-card {
+      position: relative;
+      padding: clamp(2rem, 5vw, 3.5rem);
+      background: var(--canvas);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      box-shadow: 0 24px 60px rgba(22, 22, 22, 0.06);
+      overflow: hidden;
+    }
+    .press-feature-card::before {
+      content: '\201D';
+      position: absolute;
+      top: clamp(0.5rem, 2vw, 1rem);
+      right: clamp(1.5rem, 4vw, 2.5rem);
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(6rem, 12vw, 10rem);
+      line-height: 0.8;
+      color: rgba(151, 160, 129, 0.22);
+      pointer-events: none;
+      user-select: none;
+    }
+    .press-feature-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--line);
+      position: relative; z-index: 1;
+    }
+    .press-feature-author {
+      display: flex; align-items: center; gap: 0.95rem;
+    }
+    .press-feature-avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      filter: grayscale(10%);
+      border: 1px solid var(--line);
+      flex: 0 0 auto;
+    }
+    .press-feature-name {
+      font-family: var(--serif); font-weight: 500;
+      font-size: 1.05rem; color: var(--ink); line-height: 1.2;
+    }
+    .press-feature-role {
+      font-family: var(--subhead);
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--ink-soft); margin-top: 0.3rem;
+    }
+    .press-feature-link {
+      font-family: var(--subhead);
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--green);
+      border-bottom: 1px solid rgba(151,160,129,0.4);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .press-feature-link:hover { color: var(--tree); border-color: var(--tree); }
+    .press-feature-lead {
+      font-family: var(--serif); font-style: italic; font-weight: 400;
+      font-size: clamp(1.55rem, 3.2vw, 2.5rem);
+      line-height: 1.18; color: var(--ink);
+      margin-bottom: 2rem; max-width: 26ch;
+      position: relative; z-index: 1;
+    }
+    .press-feature-lead em { color: var(--green); }
+    .press-feature-body {
+      display: flex; flex-direction: column; gap: 1.15rem;
+      font-size: clamp(0.95rem, 1.05vw, 1.075rem);
+      line-height: 1.75; color: var(--ink-soft);
+      max-width: 64ch;
+      position: relative; z-index: 1;
+    }
+    .press-feature-body em {
+      font-family: var(--serif); font-style: italic; font-weight: 400;
+      color: var(--ink);
+    }
+    .press-feature-foot {
+      margin-top: 2.5rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid var(--line);
+      position: relative; z-index: 1;
+    }
+    .press-feature-cta {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      font-family: var(--subhead);
+      font-size: 0.85rem; font-weight: 500;
+      color: var(--green); letter-spacing: 0.02em;
+      border-bottom: 1.5px solid rgba(151,160,129,0.5);
+      padding-bottom: 3px;
+      transition: color 0.2s, border-color 0.2s, gap 0.2s;
+    }
+    .press-feature-cta:hover {
+      color: var(--tree); border-color: var(--tree);
+      gap: 0.85rem;
+    }
+    @media (max-width: 600px) {
+      .press-feature { padding: 4rem max(1rem, 4vw); }
+      .press-feature-card::before { display: none; }
+      .press-feature-meta { padding-bottom: 1.25rem; }
+    }
+
     /* PLAN — drie stappen (rows-stijl uit pitchdeck) */
     .plan-section { padding: 7rem 6vw; max-width: 1200px; margin: 0 auto; }
     .plan-header {
@@ -1937,6 +2056,47 @@
       </div>
     </div>
 
+    <!-- VERHAAL — Caesar's virale LinkedIn-post als styled quote card -->
+    <section class="press-feature" aria-label="Caesar op LinkedIn">
+      <div class="press-feature-inner">
+        <div class="press-feature-eyebrow">
+          <span class="section-label" data-i18n="press.feature.label">Caesar op LinkedIn</span>
+        </div>
+        <article class="press-feature-card">
+          <div class="press-feature-meta">
+            <div class="press-feature-author">
+              <img class="press-feature-avatar" src="caesar-schoorl.jpg" alt="Caesar Schoorl" loading="lazy" />
+              <div>
+                <div class="press-feature-name">Caesar Schoorl</div>
+                <div class="press-feature-role" data-i18n="press.feature.role">AI-founder · Back to Being</div>
+              </div>
+            </div>
+            <a class="press-feature-link"
+               href="https://www.linkedin.com/feed/update/urn:li:share:7469766485381603328/"
+               target="_blank" rel="noopener noreferrer">LinkedIn &rarr;</a>
+          </div>
+
+          <p class="press-feature-lead">Deze zomer zit ons kantoor in <em>een rugzak.</em></p>
+
+          <div class="press-feature-body">
+            <p>Niet om te bewijzen dat je overal kunt werken. Maar om te testen of AI ons werk niet alleen sneller, maar ook menselijker kan maken.</p>
+            <p>Deze zomer lopen Max Helmantel, Stijn Smit en ik 120 kilometer van Tui (Portugal) naar Santiago de Compostela (Spanje). Met een laptop in onze rugzak, smartglasses als scherm, Starlink voor internet en AirPods om AI-agents aan te sturen. Zo kunnen we werken terwijl we lopen.</p>
+            <p>De Camino staat al eeuwen voor vertraging en bezinning, AI staat nu vooral voor snelheid, schaal en productiviteit. <em>Wij brengen die twee werelden samen in één live-experiment.</em></p>
+            <p>Want misschien is de echte winst van AI niet dat we meer produceren, maar dat we onze aandacht terugkrijgen. Voor denken, voor bewegen, voor gesprekken en voor het werk dat je niet kunt automatiseren.</p>
+            <p>Onderweg bouwen we met AI aan software voor stichting MIND, rondom mentale gezondheid. Ook leggen we alles vast in een mini-docu — van de hitte en de vermoeidheid tot de falende techniek en de gesprekken onderweg.</p>
+            <p>Bob Rietveld (Techleap), Ron Simpson en Samuel Hodenpijl hebben ons al geholpen waar ze konden. Nu zoeken we nog partners die geloven dat AI niet alleen meer output moet opleveren, maar ook ruimte moet teruggeven.</p>
+          </div>
+
+          <div class="press-feature-foot">
+            <a class="press-feature-cta"
+               href="https://www.linkedin.com/feed/update/urn:li:share:7469766485381603328/"
+               target="_blank" rel="noopener noreferrer"
+               data-i18n="press.feature.cta">Lees de volledige post op LinkedIn &rarr;</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="story-final-cta">
       <div>
         <div class="section-label" data-i18n="verhaal.closing.label">Doe mee</div>
@@ -2312,6 +2472,9 @@
         'partners.home.label':    'Met steun van',
         'partners.sponsor.label': 'Eerste partners aan boord',
         'press.home.label':       'In de pers',
+        'press.feature.label':    'Caesar op LinkedIn',
+        'press.feature.role':     'AI-founder · Back to Being',
+        'press.feature.cta':      'Lees de volledige post op LinkedIn &rarr;',
 
         // philosophy
         'philo.label':      'De filosofie',
@@ -2479,6 +2642,9 @@
         'partners.home.label':    'Backed by',
         'partners.sponsor.label': 'First partners on board',
         'press.home.label':       'Featured in',
+        'press.feature.label':    'Caesar on LinkedIn',
+        'press.feature.role':     'AI-founder · Back to Being',
+        'press.feature.cta':      'Read the full post on LinkedIn (Dutch) &rarr;',
 
         // philosophy
         'philo.label':      'The philosophy',
