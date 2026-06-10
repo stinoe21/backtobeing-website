@@ -17,6 +17,12 @@ next-app/out/
 .env.*
 !.env.example
 
+# MCP / Google credentials (machine-specifiek, nooit committen)
+.mcp.json
+*.google-credentials.json
+service-account*.json
+camino-sheets*.json
+
 # OS/editor files
 .DS_Store
 Thumbs.db
