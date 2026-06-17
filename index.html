@@ -323,17 +323,17 @@
 /* PARTNERS — credibility strip (homepage + sponsoring) */
     .partners-strip {
       border-bottom: 1px solid var(--line);
-      padding: 4.5rem 6vw;
+      padding: 5.5rem 6vw;
     }
     .partners-strip-inner {
       max-width: 1200px; margin: 0 auto;
-      display: flex; flex-direction: column; align-items: center; gap: 2.25rem;
+      display: flex; flex-direction: column; align-items: center; gap: 3.5rem;
     }
     .partners-strip .section-label { margin-bottom: 0; text-align: center; }
     .partners-grid {
       width: 100%;
       display: grid; grid-template-columns: repeat(4, 1fr);
-      align-items: center; gap: 2rem;
+      align-items: center; gap: 2.5rem 3rem;
     }
     .partner-logo {
       display: flex; align-items: center; justify-content: center;
@@ -344,6 +344,41 @@
     }
     /* witte logo's omzetten naar zwart op cream-achtergrond */
     .partner-logo.is-light img { filter: invert(1); }
+
+    /* LEAD SPONSOR (Remote) — uitgelicht, groter, boven de rest */
+    /* Leidende partner: geen box — hiërarchie uit grootte + witruimte (verhaal blijft open) */
+    .partners-lead {
+      display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .partner-lead { min-height: 104px; }
+    /* SVG heeft intrinsieke hoogte 40px; expliciete height forceert opschalen (max-height alleen capt niet) */
+    .partner-lead img { height: 96px; max-height: 96px; width: auto; }
+    /* "Nieuw sinds vandaag" — recency/momentum-signaal */
+    .partners-lead-new {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border: 1.5px solid rgba(151, 160, 129, 0.55);
+      background: rgba(151, 160, 129, 0.12);
+      color: var(--tree);
+      font-family: var(--subhead);
+      border-radius: 100px;
+      font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+    }
+    .partners-lead-new .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green); flex-shrink: 0;
+      animation: leadPulse 2.2s ease-out infinite;
+    }
+    @keyframes leadPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(151, 160, 129, 0.55); }
+      70%  { box-shadow: 0 0 0 8px rgba(151, 160, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(151, 160, 129, 0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .partners-lead-new .dot { animation: none; }
+    }
 
     /* PRESS — "in de pers" strip (één logo, gecentreerd, klikbaar) */
     .press-strip { padding-top: 2.5rem; padding-bottom: 4.5rem; }
@@ -1490,6 +1525,8 @@
       .intro-strip { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 6vw; }
       .partners-grid { grid-template-columns: repeat(2, 1fr); gap: 1.75rem 2rem; }
       .partner-logo img { max-height: 32px; }
+      .partner-lead img { height: 64px; max-height: 64px; }
+      .partners-lead { margin-bottom: 2.25rem; }
       .plan-header { grid-template-columns: 1fr; gap: 1.5rem; }
       .plan-row, .return-row { grid-template-columns: 40px 1fr; }
       .plan-row .detail, .return-row .detail { grid-column: 2; text-align: left; }
@@ -1880,6 +1917,10 @@
     <section class="partners-strip" aria-label="Partners">
       <div class="partners-strip-inner">
         <div class="section-label" data-i18n="partners.home.label">Met steun van</div>
+        <div class="partners-lead">
+          <div class="partner-logo partner-lead"><img src="remote.svg" alt="Remote" loading="lazy" /></div>
+          <span class="partners-lead-new" data-i18n="partners.lead.new"><span class="dot"></span>Net aangesloten &middot; 17 juni 2026</span>
+        </div>
         <div class="partners-grid">
           <div class="partner-logo is-light"><img src="techleap.webp" alt="Techleap" loading="lazy" /></div>
           <div class="partner-logo"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></div>
@@ -2208,6 +2249,10 @@
     <section class="partners-strip" aria-label="Partners">
       <div class="partners-strip-inner">
         <div class="section-label" data-i18n="partners.sponsor.label">Eerste partners aan boord</div>
+        <div class="partners-lead">
+          <div class="partner-logo partner-lead"><img src="remote.svg" alt="Remote" loading="lazy" /></div>
+          <span class="partners-lead-new" data-i18n="partners.lead.new"><span class="dot"></span>Net aangesloten &middot; 17 juni 2026</span>
+        </div>
         <div class="partners-grid">
           <div class="partner-logo is-light"><img src="techleap.webp" alt="Techleap" loading="lazy" /></div>
           <div class="partner-logo"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></div>
@@ -2544,6 +2589,7 @@
         // partners
         'partners.home.label':    'Met steun van',
         'partners.sponsor.label': 'Eerste partners aan boord',
+        'partners.lead.new':      '<span class="dot"></span>Net aangesloten &middot; 17 juni 2026',
         'press.home.label':       'In de pers',
         'press.feature.label':    'Caesar op LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
@@ -2715,6 +2761,7 @@
         // partners
         'partners.home.label':    'Backed by',
         'partners.sponsor.label': 'First partners on board',
+        'partners.lead.new':      '<span class="dot"></span>Just joined &middot; 17 June 2026',
         'press.home.label':       'Featured in',
         'press.feature.label':    'Caesar on LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
