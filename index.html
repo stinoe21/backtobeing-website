@@ -358,6 +358,8 @@
     .partner-lead { min-height: 104px; }
     /* SVG heeft intrinsieke hoogte 40px; expliciete height forceert opschalen (max-height alleen capt niet) */
     .partner-lead img { height: 96px; max-height: 96px; width: auto; }
+    /* Helloprint is veel breder dan Remote; lagere hoogte = visueel even groot (gelijke breedte) */
+    .partner-lead img[src="helloprint.webp"] { height: 70px; max-height: 70px; }
     /* "Nieuw sinds vandaag" — recency/momentum-signaal */
     .partners-lead-new {
       display: inline-flex; align-items: center; gap: 0.5rem;
@@ -1530,6 +1532,7 @@
       .partners-grid { grid-template-columns: repeat(2, 1fr); gap: 1.75rem 2rem; }
       .partner-logo img { max-height: 32px; }
       .partner-lead img { height: 64px; max-height: 64px; }
+      .partner-lead img[src="helloprint.webp"] { height: 47px; max-height: 47px; }
       .partners-lead { margin-bottom: 2.25rem; }
       .plan-header { grid-template-columns: 1fr; gap: 1.5rem; }
       .plan-row, .return-row { grid-template-columns: 40px 1fr; }
