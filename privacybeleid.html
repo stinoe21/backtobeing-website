@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacybeleid · Back to Being</title>
+  <meta name="description" content="Privacybeleid van Back to Being (backtobeing.tech): welke gegevens we verwerken, waarom, en welke rechten je hebt." />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --tree:        #2a3723;
+      --grass:       #97a081;
+      --charcoal:    #161616;
+      --canvas:      #fffef1;
+      --ink:         var(--charcoal);
+      --ink-soft:    rgba(22, 22, 22, 0.62);
+      --line:        rgba(42, 55, 35, 0.18);
+      --green:       var(--grass);
+      --serif:       "Instrument Serif", Georgia, serif;
+      --subhead:     "Inter Tight", Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      --sans:        Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--canvas);
+      font-family: var(--sans);
+      color: var(--ink);
+      font-weight: 300;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--tree); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    a:hover { color: var(--green); }
+
+    /* TOP BAR */
+    .legal-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem;
+      padding: 1.5rem max(1.5rem, 5vw);
+      border-bottom: 1px solid var(--line);
+    }
+    .legal-nav img { height: 26px; width: auto; }
+    .legal-back {
+      font-family: var(--subhead);
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; color: var(--ink-soft);
+      display: inline-flex; align-items: center; gap: 0.45rem;
+    }
+    .legal-back:hover { color: var(--tree); }
+    .legal-back svg { width: 15px; height: 15px; }
+
+    /* DOCUMENT */
+    .legal-doc {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: clamp(3rem, 7vw, 5.5rem) max(1.5rem, 5vw) 5rem;
+    }
+    .legal-eyebrow {
+      font-family: var(--subhead);
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 1.1rem;
+    }
+    .legal-doc h1 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.5rem, 6vw, 3.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--tree);
+      margin-bottom: 1rem;
+    }
+    .legal-meta {
+      font-family: var(--subhead);
+      font-size: 0.78rem; letter-spacing: 0.04em;
+      color: var(--ink-soft);
+      padding-bottom: 2.25rem;
+      margin-bottom: 2.75rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .legal-intro { font-size: 1.06rem; color: rgba(22, 22, 22, 0.8); margin-bottom: 2.75rem; }
+
+    .legal-doc h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(1.5rem, 3.4vw, 1.95rem);
+      line-height: 1.15;
+      color: var(--tree);
+      margin: 2.75rem 0 0.9rem;
+    }
+    .legal-doc h3 {
+      font-family: var(--subhead);
+      font-weight: 600;
+      font-size: 1.02rem;
+      color: var(--ink);
+      margin: 1.6rem 0 0.5rem;
+    }
+    .legal-doc p { margin-bottom: 1.1rem; }
+    .legal-doc ul { margin: 0 0 1.1rem 1.1rem; padding-left: 0.6rem; }
+    .legal-doc li { margin-bottom: 0.5rem; padding-left: 0.25rem; }
+    .legal-doc strong { font-weight: 600; }
+
+    .legal-callout {
+      background: rgba(151, 160, 129, 0.1);
+      border: 1px solid rgba(151, 160, 129, 0.32);
+      border-radius: 14px;
+      padding: 1.4rem 1.6rem;
+      margin: 1.5rem 0 2rem;
+      font-size: 0.97rem;
+    }
+    .legal-callout p:last-child { margin-bottom: 0; }
+
+    /* FOOTER */
+    .legal-footer {
+      border-top: 1px solid var(--line);
+      padding: 2.25rem max(1.5rem, 5vw);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .legal-footer a {
+      font-family: var(--subhead);
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; color: var(--ink-soft);
+    }
+    .legal-footer a:hover { color: var(--tree); }
+    .legal-footer .legal-footer-note { font-family: var(--subhead); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+    .legal-footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <header class="legal-nav">
+    <a href="index.html" aria-label="Back to Being — terug naar de homepage">
+      <img src="b2b_horizontal banner.svg" alt="Back to Being" />
+    </a>
+    <a class="legal-back" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      Terug naar de site
+    </a>
+  </header>
+
+  <main class="legal-doc">
+    <div class="legal-eyebrow">Juridisch</div>
+    <h1>Privacybeleid</h1>
+    <div class="legal-meta">Laatst bijgewerkt: 22 juni 2026</div>
+
+    <p class="legal-intro">Dit privacybeleid legt uit welke persoonsgegevens we verwerken wanneer je onze website <strong>backtobeing.tech</strong> bezoekt of contact met ons opneemt, waarom we dat doen en welke rechten je hebt. We houden het bewust kort, want we verzamelen zo min mogelijk gegevens.</p>
+
+    <h2>1. Wie zijn wij</h2>
+    <p><strong>Back to Being</strong> is een initiatief van Caesar Schoorl, Stijn Smit en Max Helmantel. Back to Being is (nog) geen ingeschreven rechtspersoon; de oprichters zijn gezamenlijk verantwoordelijk voor de verwerking van persoonsgegevens via deze website (de "verwerkingsverantwoordelijke").</p>
+    <p>Je bereikt ons via:</p>
+    <ul>
+      <li><strong>E-mail:</strong> <a href="mailto:stijn@backtobeing.tech">stijn@backtobeing.tech</a></li>
+      <li><strong>Adres:</strong> Jacob Bontiusplaats 9, 1018 LL Amsterdam</li>
+    </ul>
+
+    <h2>2. Waar dit beleid over gaat</h2>
+    <p>Dit beleid geldt voor de website backtobeing.tech en het contact dat daaruit voortvloeit (e-mail en het inplannen van een gesprek). Het geldt niet voor websites van derden waarnaar we linken (zoals LinkedIn, Instagram of partners) — daarop is hun eigen privacybeleid van toepassing.</p>
+
+    <h2>3. Welke gegevens we verwerken</h2>
+
+    <h3>Contact en het plannen van een gesprek</h3>
+    <p>Neem je contact met ons op per e-mail of plan je een gesprek via onze planningslink (cal.com), dan verwerken we de gegevens die je zelf verstrekt: bijvoorbeeld je naam, e-mailadres, (bedrijfs)gegevens en de inhoud van je bericht. We gebruiken deze gegevens uitsluitend om je vraag te beantwoorden en de samenwerking of het gesprek voor te bereiden.</p>
+    <p><strong>Grondslag:</strong> de uitvoering van of voorbereidende handelingen voor een overeenkomst, en ons gerechtvaardigd belang om op je bericht te reageren.</p>
+
+    <h3>Technische gegevens (serverlogs)</h3>
+    <p>Onze website wordt gehost bij Vercel. Net als bij vrijwel elke website legt de server automatisch beperkte technische gegevens vast, zoals je IP-adres, het type browser en het tijdstip van je bezoek. Deze gegevens gebruiken we om de website te laten werken, te beveiligen en storingen op te lossen.</p>
+    <p><strong>Grondslag:</strong> ons gerechtvaardigd belang bij een veilige en goed werkende website.</p>
+
+    <h3>Lokale opslag in je browser</h3>
+    <p>De website slaat een kleine hoeveelheid technische informatie op in je eigen browser om goed te functioneren: je taalkeuze (Nederlands of Engels) en of je de openingsanimatie in deze sessie al hebt gezien. Dit zijn geen tracking-cookies, deze gegevens worden niet met ons of met derden gedeeld en blijven op je eigen apparaat.</p>
+
+    <h2>4. Cookies</h2>
+    <p>We gebruiken <strong>geen</strong> analytische cookies of trackingcookies en we volgen je gedrag niet. We gebruiken alleen de hierboven beschreven functionele lokale opslag, die noodzakelijk is voor de werking van de site. Daarvoor is geen toestemming vereist.</p>
+
+    <h2>5. Diensten van derden</h2>
+    <p>Om de website te laten werken maken we gebruik van een aantal externe diensten. Daarbij kunnen deze partijen technische gegevens (zoals je IP-adres) ontvangen:</p>
+    <ul>
+      <li><strong>Vercel</strong> — hosting van de website.</li>
+      <li><strong>cal.com</strong> — het inplannen van gesprekken via onze planningslink.</li>
+      <li><strong>Google Fonts</strong> — het laden van lettertypes; hierbij wordt je IP-adres naar Google gestuurd.</li>
+      <li><strong>unpkg (CDN)</strong> — het laden van scripts voor de animatie en de kaart.</li>
+      <li><strong>CARTO / MapLibre</strong> — kaartmateriaal voor de routekaart.</li>
+    </ul>
+    <p>Sommige van deze partijen kunnen gegevens verwerken op servers buiten de Europese Economische Ruimte (EER). In dat geval steunen zij op passende waarborgen, zoals de modelcontractbepalingen van de Europese Commissie.</p>
+
+    <h2>6. Hoe lang we gegevens bewaren</h2>
+    <p>We bewaren persoonsgegevens niet langer dan nodig. Contactgegevens en correspondentie bewaren we zolang dat nodig is om je vraag af te handelen en, indien er een samenwerking ontstaat, voor de duur daarvan en een redelijke periode erna. Technische serverlogs worden voor een beperkte periode bewaard.</p>
+
+    <h2>7. Hoe we je gegevens beveiligen</h2>
+    <p>We nemen passende technische en organisatorische maatregelen om je gegevens te beschermen tegen verlies of ongeoorloofde toegang. De verbinding met de website verloopt versleuteld (HTTPS).</p>
+
+    <h2>8. Jouw rechten</h2>
+    <p>Je hebt op grond van de privacywetgeving (AVG) het recht om:</p>
+    <ul>
+      <li>je gegevens in te zien;</li>
+      <li>onjuiste gegevens te laten corrigeren;</li>
+      <li>je gegevens te laten verwijderen;</li>
+      <li>de verwerking te laten beperken;</li>
+      <li>bezwaar te maken tegen de verwerking;</li>
+      <li>je gegevens over te laten dragen;</li>
+      <li>een eerder gegeven toestemming in te trekken.</li>
+    </ul>
+    <p>Wil je hiervan gebruikmaken? Mail ons via <a href="mailto:stijn@backtobeing.tech">stijn@backtobeing.tech</a>. Je hebt daarnaast het recht om een klacht in te dienen bij de <a href="https://www.autoriteitpersoonsgegevens.nl" target="_blank" rel="noopener noreferrer">Autoriteit Persoonsgegevens</a>.</p>
+
+    <h2>9. Wijzigingen</h2>
+    <p>We kunnen dit privacybeleid van tijd tot tijd aanpassen, bijvoorbeeld als de website of de gebruikte diensten veranderen. De meest actuele versie vind je altijd op deze pagina, met de datum van de laatste wijziging bovenaan.</p>
+
+    <div class="legal-callout">
+      <p><strong>Vragen over je privacy?</strong> Neem gerust contact op via <a href="mailto:stijn@backtobeing.tech">stijn@backtobeing.tech</a>. We helpen je graag verder.</p>
+    </div>
+  </main>
+
+  <footer class="legal-footer">
+    <span class="legal-footer-note">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</span>
+    <div class="legal-footer-links">
+      <a href="index.html">Home</a>
+      <a href="algemene-voorwaarden.html">Algemene voorwaarden</a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algemene voorwaarden · Back to Being</title>
+  <meta name="description" content="Algemene voorwaarden voor het gebruik van de website backtobeing.tech van Back to Being." />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --tree:        #2a3723;
+      --grass:       #97a081;
+      --charcoal:    #161616;
+      --canvas:      #fffef1;
+      --ink:         var(--charcoal);
+      --ink-soft:    rgba(22, 22, 22, 0.62);
+      --line:        rgba(42, 55, 35, 0.18);
+      --green:       var(--grass);
+      --serif:       "Instrument Serif", Georgia, serif;
+      --subhead:     "Inter Tight", Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      --sans:        Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--canvas);
+      font-family: var(--sans);
+      color: var(--ink);
+      font-weight: 300;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--tree); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    a:hover { color: var(--green); }
+
+    /* TOP BAR */
+    .legal-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem;
+      padding: 1.5rem max(1.5rem, 5vw);
+      border-bottom: 1px solid var(--line);
+    }
+    .legal-nav img { height: 26px; width: auto; }
+    .legal-back {
+      font-family: var(--subhead);
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; color: var(--ink-soft);
+      display: inline-flex; align-items: center; gap: 0.45rem;
+    }
+    .legal-back:hover { color: var(--tree); }
+    .legal-back svg { width: 15px; height: 15px; }
+
+    /* DOCUMENT */
+    .legal-doc {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: clamp(3rem, 7vw, 5.5rem) max(1.5rem, 5vw) 5rem;
+    }
+    .legal-eyebrow {
+      font-family: var(--subhead);
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 1.1rem;
+    }
+    .legal-doc h1 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.5rem, 6vw, 3.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--tree);
+      margin-bottom: 1rem;
+    }
+    .legal-meta {
+      font-family: var(--subhead);
+      font-size: 0.78rem; letter-spacing: 0.04em;
+      color: var(--ink-soft);
+      padding-bottom: 2.25rem;
+      margin-bottom: 2.75rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .legal-intro { font-size: 1.06rem; color: rgba(22, 22, 22, 0.8); margin-bottom: 2.75rem; }
+
+    .legal-doc h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(1.5rem, 3.4vw, 1.95rem);
+      line-height: 1.15;
+      color: var(--tree);
+      margin: 2.75rem 0 0.9rem;
+    }
+    .legal-doc h3 {
+      font-family: var(--subhead);
+      font-weight: 600;
+      font-size: 1.02rem;
+      color: var(--ink);
+      margin: 1.6rem 0 0.5rem;
+    }
+    .legal-doc p { margin-bottom: 1.1rem; }
+    .legal-doc ul { margin: 0 0 1.1rem 1.1rem; padding-left: 0.6rem; }
+    .legal-doc li { margin-bottom: 0.5rem; padding-left: 0.25rem; }
+    .legal-doc strong { font-weight: 600; }
+
+    .legal-callout {
+      background: rgba(151, 160, 129, 0.1);
+      border: 1px solid rgba(151, 160, 129, 0.32);
+      border-radius: 14px;
+      padding: 1.4rem 1.6rem;
+      margin: 1.5rem 0 2rem;
+      font-size: 0.97rem;
+    }
+    .legal-callout p:last-child { margin-bottom: 0; }
+
+    /* FOOTER */
+    .legal-footer {
+      border-top: 1px solid var(--line);
+      padding: 2.25rem max(1.5rem, 5vw);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .legal-footer a {
+      font-family: var(--subhead);
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; color: var(--ink-soft);
+    }
+    .legal-footer a:hover { color: var(--tree); }
+    .legal-footer .legal-footer-note { font-family: var(--subhead); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+    .legal-footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <header class="legal-nav">
+    <a href="index.html" aria-label="Back to Being — terug naar de homepage">
+      <img src="b2b_horizontal banner.svg" alt="Back to Being" />
+    </a>
+    <a class="legal-back" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      Terug naar de site
+    </a>
+  </header>
+
+  <main class="legal-doc">
+    <div class="legal-eyebrow">Juridisch</div>
+    <h1>Algemene voorwaarden</h1>
+    <div class="legal-meta">Laatst bijgewerkt: 22 juni 2026</div>
+
+    <p class="legal-intro">Deze algemene voorwaarden gelden voor het gebruik van de website <strong>backtobeing.tech</strong>. Door de website te bezoeken en te gebruiken, ga je akkoord met deze voorwaarden. Lees ze daarom goed door.</p>
+
+    <h2>1. Wie zijn wij</h2>
+    <p>De website backtobeing.tech is een initiatief van <strong>Back to Being</strong>: Caesar Schoorl, Stijn Smit en Max Helmantel. Back to Being is (nog) geen ingeschreven rechtspersoon. Je bereikt ons via <a href="mailto:stijn@backtobeing.tech">stijn@backtobeing.tech</a> of op Jacob Bontiusplaats 9, 1018 LL Amsterdam.</p>
+
+    <h2>2. Over de website</h2>
+    <p>Back to Being is een project waarbij we de Camino lopen, onderweg live een AI-tool voor mentale gezondheid bouwen en deze daarna kosteloos overdragen aan stichting MIND. De website geeft informatie over dit project en de mogelijkheid om als partner of sponsor met ons in contact te komen.</p>
+    <p>De informatie op de website is bedoeld als algemene informatie. Het is uitdrukkelijk geen aanbod en er ontstaat geen overeenkomst door enkel gebruik van de website.</p>
+
+    <h2>3. Gebruik van de website</h2>
+    <p>Je mag de website gebruiken voor persoonlijke, informatieve doeleinden. Het is niet toegestaan om:</p>
+    <ul>
+      <li>de website te gebruiken op een manier die in strijd is met de wet of met de rechten van anderen;</li>
+      <li>de werking, beschikbaarheid of beveiliging van de website te verstoren of te misbruiken;</li>
+      <li>geautomatiseerde middelen in te zetten om grote hoeveelheden gegevens van de website te verzamelen, behalve voor normale indexering door zoekmachines.</li>
+    </ul>
+
+    <h2>4. Intellectueel eigendom</h2>
+    <p>Alle inhoud op de website — waaronder teksten, vormgeving, beeldmateriaal, video, animaties en het Back to Being-logo — is eigendom van Back to Being of van haar makers, en is beschermd door intellectuele-eigendomsrechten. Je mag deze inhoud niet zonder onze voorafgaande schriftelijke toestemming kopiëren, verspreiden of voor commerciële doeleinden gebruiken.</p>
+    <p>Logo's en merknamen van partners en sponsors zijn eigendom van de betreffende organisaties en worden met hun toestemming getoond.</p>
+
+    <h2>5. Links naar websites van derden</h2>
+    <p>De website bevat links naar websites en diensten van derden (zoals LinkedIn, Instagram, de planningstool en de websites van partners). Wij hebben geen invloed op en zijn niet verantwoordelijk voor de inhoud, het beleid of de werking van die websites.</p>
+
+    <h2>6. Geen garanties</h2>
+    <p>We stellen de inhoud van de website met zorg samen. Toch kunnen we niet garanderen dat alle informatie altijd juist, volledig en actueel is, en dat de website foutloos en zonder onderbreking beschikbaar is. De inhoud kan op elk moment worden gewijzigd of verwijderd.</p>
+
+    <h2>7. Aansprakelijkheid</h2>
+    <p>Voor zover wettelijk toegestaan zijn wij niet aansprakelijk voor schade die voortvloeit uit het gebruik van of het vertrouwen op de website, of uit de (tijdelijke) onbeschikbaarheid ervan. Niets in deze voorwaarden sluit aansprakelijkheid uit die op grond van dwingend recht niet kan worden uitgesloten.</p>
+
+    <h2>8. Sponsoring en partnerschappen</h2>
+    <p>Aan de informatie op de website kunnen geen rechten worden ontleend met betrekking tot sponsoring of partnerschappen. Concrete afspraken over een samenwerking leggen we altijd afzonderlijk en op maat vast in een aparte overeenkomst tussen jou en Back to Being.</p>
+
+    <h2>9. Privacy</h2>
+    <p>Op het gebruik van de website is ook ons <a href="privacybeleid.html">privacybeleid</a> van toepassing. Daarin lees je hoe we met persoonsgegevens omgaan.</p>
+
+    <h2>10. Wijzigingen</h2>
+    <p>We kunnen deze algemene voorwaarden van tijd tot tijd aanpassen. De meest actuele versie vind je altijd op deze pagina, met de datum van de laatste wijziging bovenaan. Bij belangrijke wijzigingen geldt de nieuwe versie zodra deze op de website is gepubliceerd.</p>
+
+    <h2>11. Toepasselijk recht</h2>
+    <p>Op deze algemene voorwaarden en op het gebruik van de website is Nederlands recht van toepassing. Geschillen leggen we voor aan de bevoegde rechter in het arrondissement Amsterdam, tenzij dwingend recht een andere rechter aanwijst.</p>
+
+    <div class="legal-callout">
+      <p><strong>Een vraag over deze voorwaarden?</strong> Mail ons via <a href="mailto:stijn@backtobeing.tech">stijn@backtobeing.tech</a>.</p>
+    </div>
+  </main>
+
+  <footer class="legal-footer">
+    <span class="legal-footer-note">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</span>
+    <div class="legal-footer-links">
+      <a href="index.html">Home</a>
+      <a href="privacybeleid.html">Privacybeleid</a>
+    </div>
+  </footer>
+</body>
+</html>
