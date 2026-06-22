@@ -332,7 +332,7 @@
     .partners-strip .section-label { margin-bottom: 0; text-align: center; }
     .partners-grid {
       width: 100%;
-      display: grid; grid-template-columns: repeat(5, 1fr);
+      display: grid; grid-template-columns: repeat(4, 1fr);
       align-items: center; gap: 2.5rem 3rem;
     }
     .partner-logo {
@@ -346,10 +346,14 @@
     .partner-logo.is-light img { filter: invert(1); }
 
     /* LEAD SPONSOR (Remote) — uitgelicht, groter, boven de rest */
-    /* Leidende partner: geen box — hiërarchie uit grootte + witruimte (verhaal blijft open) */
+    /* Net-aangesloten partners: featured rij boven de rest (verhaal blijft open) */
     .partners-lead {
-      display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+      display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+      gap: 2.75rem 4.5rem;
       margin-bottom: 4rem;
+    }
+    .partners-lead-item {
+      display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
     }
     .partner-lead { min-height: 104px; }
     /* SVG heeft intrinsieke hoogte 40px; expliciete height forceert opschalen (max-height alleen capt niet) */
@@ -1918,15 +1922,20 @@
       <div class="partners-strip-inner">
         <div class="section-label" data-i18n="partners.home.label">Met steun van</div>
         <div class="partners-lead">
-          <a class="partner-logo partner-lead" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
-          <span class="partners-lead-new" data-i18n="partners.lead.new"><span class="dot"></span>Net aangesloten &middot; 17 juni 2026</span>
+          <div class="partners-lead-item">
+            <a class="partner-logo partner-lead" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
+            <span class="partners-lead-new" data-i18n="partners.lead.new"><span class="dot"></span>Net aangesloten &middot; 17 juni 2026</span>
+          </div>
+          <div class="partners-lead-item">
+            <a class="partner-logo partner-lead is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" loading="lazy" /></a>
+            <span class="partners-lead-new" data-i18n="partners.lead.new2"><span class="dot"></span>Net aangesloten &middot; 22 juni 2026</span>
+          </div>
         </div>
         <div class="partners-grid">
           <a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer"><img src="techleap.webp" alt="Techleap" loading="lazy" /></a>
           <a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></a>
           <a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer"><img src="Lerai.webp" alt="LerAI" loading="lazy" /></a>
           <a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer"><img src="TAG_black.svg" alt="TAG" loading="lazy" /></a>
-          <a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" loading="lazy" /></a>
         </div>
       </div>
     </section>
@@ -2251,15 +2260,20 @@
       <div class="partners-strip-inner">
         <div class="section-label" data-i18n="partners.sponsor.label">Eerste partners aan boord</div>
         <div class="partners-lead">
-          <a class="partner-logo partner-lead" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
-          <span class="partners-lead-new" data-i18n="partners.lead.new"><span class="dot"></span>Net aangesloten &middot; 17 juni 2026</span>
+          <div class="partners-lead-item">
+            <a class="partner-logo partner-lead" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
+            <span class="partners-lead-new" data-i18n="partners.lead.new"><span class="dot"></span>Net aangesloten &middot; 17 juni 2026</span>
+          </div>
+          <div class="partners-lead-item">
+            <a class="partner-logo partner-lead is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" loading="lazy" /></a>
+            <span class="partners-lead-new" data-i18n="partners.lead.new2"><span class="dot"></span>Net aangesloten &middot; 22 juni 2026</span>
+          </div>
         </div>
         <div class="partners-grid">
           <a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer"><img src="techleap.webp" alt="Techleap" loading="lazy" /></a>
           <a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></a>
           <a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer"><img src="Lerai.webp" alt="LerAI" loading="lazy" /></a>
           <a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer"><img src="TAG_black.svg" alt="TAG" loading="lazy" /></a>
-          <a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" loading="lazy" /></a>
         </div>
       </div>
     </section>
@@ -2592,6 +2606,7 @@
         'partners.home.label':    'Met steun van',
         'partners.sponsor.label': 'Eerste partners aan boord',
         'partners.lead.new':      '<span class="dot"></span>Net aangesloten &middot; 17 juni 2026',
+        'partners.lead.new2':     '<span class="dot"></span>Net aangesloten &middot; 22 juni 2026',
         'press.home.label':       'In de pers',
         'press.feature.label':    'Caesar op LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
@@ -2764,6 +2779,7 @@
         'partners.home.label':    'Backed by',
         'partners.sponsor.label': 'First partners on board',
         'partners.lead.new':      '<span class="dot"></span>Just joined &middot; 17 June 2026',
+        'partners.lead.new2':     '<span class="dot"></span>Just joined &middot; 22 June 2026',
         'press.home.label':       'Featured in',
         'press.feature.label':    'Caesar on LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
