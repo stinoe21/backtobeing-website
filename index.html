@@ -340,6 +340,7 @@
       width: 100%;
       display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
     }
+    .partners-tier-lead { gap: 2.5rem 4rem; }
     .partners-tier-sponsors { gap: 2.5rem 4rem; }
     .partners-tier-partners { gap: 2rem 3.25rem; }
     .partner-logo {
@@ -352,7 +353,9 @@
     .press-logo img { max-height: 32px; }
 
     /* "Even groot" binnen een niveau = gelijke visuele oppervlakte (de vormen verschillen sterk).
-       Sponsors op geldbedrag; bij Partners zit Techleap qua grootte tussen de sponsors en de rest in. */
+       Hoofdpartner (Wispr) bovenaan en grootst; sponsors op geldbedrag; bij "Met steun van"
+       zit Techleap qua grootte tussen de sponsors en de rest in. */
+    .partner-logo img[src="wispr.webp"]      { height: 84px; } /* Hoofdpartner 7k (breedste massa) */
     .partner-logo img[src="remote.svg"]      { height: 84px; } /* Sponsor 6k */
     .partner-logo img[src="helloprint.webp"] { height: 47px; } /* Sponsor 2,5k */
     .partner-logo img[src="watermelon.svg"]  { height: 37px; } /* Sponsor 2,5k */
@@ -364,6 +367,8 @@
     /* Sponsors met aansluitdatum: logo in vaste band zodat de datums uitlijnen */
     .partner-item { display: flex; flex-direction: column; align-items: center; gap: 0.95rem; }
     .partner-item .partner-logo { min-height: 84px; }
+    /* Hoofdpartner krijgt wat meer adem boven het logo */
+    .partners-group-lead .partner-item .partner-logo { min-height: 96px; }
     .partner-since {
       font-family: var(--subhead);
       font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
@@ -1520,6 +1525,7 @@
       .partners-group { gap: 1.6rem; }
       .partners-tier-sponsors { gap: 1.5rem 2.5rem; }
       .partners-tier-partners { gap: 1.25rem 2rem; }
+      .partner-logo img[src="wispr.webp"]      { height: 52px; }
       .partner-logo img[src="remote.svg"]      { height: 60px; }
       .partner-logo img[src="helloprint.webp"] { height: 34px; }
       .partner-logo img[src="watermelon.svg"]  { height: 27px; }
@@ -1528,6 +1534,7 @@
       .partner-logo img[src="Lerai.webp"]      { height: 26px; }
       .partner-logo img[src="TAG_black.svg"]   { height: 20px; }
       .partner-item .partner-logo { min-height: 60px; }
+      .partners-group-lead .partner-item .partner-logo { min-height: 68px; }
       .partner-item { gap: 0.7rem; }
       .plan-header { grid-template-columns: 1fr; gap: 1.5rem; }
       .plan-row, .return-row { grid-template-columns: 40px 1fr; }
@@ -1914,6 +1921,15 @@
     <!-- HOME — partners credibility strip -->
     <section class="partners-strip" aria-label="Partners">
       <div class="partners-strip-inner">
+        <div class="partners-group partners-group-lead">
+          <div class="section-label partners-group-label" data-i18n="partners.group.lead">Hoofdpartner</div>
+          <div class="partners-tier partners-tier-lead">
+            <div class="partner-item">
+              <a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a>
+              <span class="partner-since" data-i18n="partners.since.wispr">Sinds 25 juni 2026</span>
+            </div>
+          </div>
+        </div>
         <div class="partners-group">
           <div class="section-label partners-group-label" data-i18n="partners.group.sponsors">Sponsors</div>
           <div class="partners-tier partners-tier-sponsors">
@@ -1932,7 +1948,7 @@
           </div>
         </div>
         <div class="partners-group">
-          <div class="section-label partners-group-label" data-i18n="partners.group.partners">Partners</div>
+          <div class="section-label partners-group-label" data-i18n="partners.group.partners">Met steun van</div>
           <div class="partners-tier partners-tier-partners">
             <a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer"><img src="techleap.webp" alt="Techleap" loading="lazy" /></a>
             <a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></a>
@@ -2269,6 +2285,15 @@
     <!-- SPONSORING — partners credibility strip -->
     <section class="partners-strip" aria-label="Partners">
       <div class="partners-strip-inner">
+        <div class="partners-group partners-group-lead">
+          <div class="section-label partners-group-label" data-i18n="partners.group.lead">Hoofdpartner</div>
+          <div class="partners-tier partners-tier-lead">
+            <div class="partner-item">
+              <a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a>
+              <span class="partner-since" data-i18n="partners.since.wispr">Sinds 25 juni 2026</span>
+            </div>
+          </div>
+        </div>
         <div class="partners-group">
           <div class="section-label partners-group-label" data-i18n="partners.group.sponsors">Sponsors</div>
           <div class="partners-tier partners-tier-sponsors">
@@ -2287,7 +2312,7 @@
           </div>
         </div>
         <div class="partners-group">
-          <div class="section-label partners-group-label" data-i18n="partners.group.partners">Partners</div>
+          <div class="section-label partners-group-label" data-i18n="partners.group.partners">Met steun van</div>
           <div class="partners-tier partners-tier-partners">
             <a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer"><img src="techleap.webp" alt="Techleap" loading="lazy" /></a>
             <a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></a>
@@ -2639,8 +2664,10 @@
         // partners
         'partners.home.label':    'Met steun van',
         'partners.sponsor.label': 'Eerste partners aan boord',
+        'partners.group.lead':     'Hoofdpartner',
         'partners.group.sponsors': 'Sponsors',
-        'partners.group.partners': 'Partners',
+        'partners.group.partners': 'Met steun van',
+        'partners.since.wispr':      'Sinds 25 juni 2026',
         'partners.since.remote':     'Sinds 17 juni 2026',
         'partners.since.helloprint': 'Sinds 19 juni 2026',
         'partners.since.watermelon': 'Sinds 22 juni 2026',
@@ -2820,8 +2847,10 @@
         // partners
         'partners.home.label':    'Backed by',
         'partners.sponsor.label': 'First partners on board',
+        'partners.group.lead':     'Lead partner',
         'partners.group.sponsors': 'Sponsors',
-        'partners.group.partners': 'Partners',
+        'partners.group.partners': 'Supported by',
+        'partners.since.wispr':      'Since 25 June 2026',
         'partners.since.remote':     'Since 17 June 2026',
         'partners.since.helloprint': 'Since 19 June 2026',
         'partners.since.watermelon': 'Since 22 June 2026',
