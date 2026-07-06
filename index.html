@@ -360,9 +360,10 @@
     .press-logo img { max-height: 32px; }
 
     /* "Even groot" binnen een niveau = gelijke visuele oppervlakte (de vormen verschillen sterk).
-       Wispr is de grootste sponsor: bovenaan, op een eigen rij en het grootst.
-       Verder sponsors op geldbedrag; bij Partners zit Techleap qua grootte tussen de sponsors en de rest in. */
-    .partner-logo img[src="wispr.webp"]      { height: 90px; } /* Grootste sponsor 7k */
+       Wispr is de grootste sponsor: bovenaan op een eigen rij, maar door de brede wordmark
+       maar een tikje groter dan de rest. Verder sponsors op geldbedrag; bij Partners zit
+       Techleap qua grootte tussen de sponsors en de rest in. */
+    .partner-logo img[src="wispr.webp"]      { height: 68px; } /* Grootste sponsor 7k (brede wordmark) */
     .partner-logo img[src="remote.svg"]      { height: 84px; } /* Sponsor 6k */
     .partner-logo img[src="helloprint.webp"] { height: 47px; } /* Sponsor 2,5k */
     .partner-logo img[src="watermelon.svg"]  { height: 37px; } /* Sponsor 2,5k */
@@ -374,9 +375,8 @@
     /* Sponsors met aansluitdatum: logo in vaste band zodat de datums uitlijnen */
     .partner-item { display: flex; flex-direction: column; align-items: center; gap: 0.95rem; }
     .partner-item .partner-logo { min-height: 84px; }
-    /* Grootste sponsor krijgt een eigen volle rij bovenaan de sponsors + wat meer lucht boven het logo */
+    /* Grootste sponsor krijgt een eigen volle rij bovenaan de sponsors */
     .partner-item-lead { flex-basis: 100%; }
-    .partner-item-lead .partner-logo { min-height: 96px; }
     .partner-since {
       font-family: var(--subhead);
       font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
@@ -1533,7 +1533,7 @@
       .partners-group { gap: 1.6rem; }
       .partners-tier-sponsors { gap: 1.5rem 2.5rem; }
       .partners-tier-partners { gap: 1.25rem 2rem; }
-      .partner-logo img[src="wispr.webp"]      { height: 56px; }
+      .partner-logo img[src="wispr.webp"]      { height: 44px; }
       .partner-logo img[src="remote.svg"]      { height: 60px; }
       .partner-logo img[src="helloprint.webp"] { height: 34px; }
       .partner-logo img[src="watermelon.svg"]  { height: 27px; }
@@ -1542,7 +1542,6 @@
       .partner-logo img[src="Lerai.webp"]      { height: 26px; }
       .partner-logo img[src="TAG_black.svg"]   { height: 20px; }
       .partner-item .partner-logo { min-height: 60px; }
-      .partner-item-lead .partner-logo { min-height: 68px; }
       .partner-item { gap: 0.7rem; }
       .plan-header { grid-template-columns: 1fr; gap: 1.5rem; }
       .plan-row, .return-row { grid-template-columns: 40px 1fr; }
