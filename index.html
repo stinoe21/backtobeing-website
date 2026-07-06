@@ -360,7 +360,9 @@
     .press-logo img { max-height: 32px; }
 
     /* "Even groot" binnen een niveau = gelijke visuele oppervlakte (de vormen verschillen sterk).
-       Sponsors op geldbedrag; bij Partners zit Techleap qua grootte tussen de sponsors en de rest in. */
+       Wispr is de grootste sponsor: bovenaan, op een eigen rij en het grootst.
+       Verder sponsors op geldbedrag; bij Partners zit Techleap qua grootte tussen de sponsors en de rest in. */
+    .partner-logo img[src="wispr.webp"]      { height: 90px; } /* Grootste sponsor 7k */
     .partner-logo img[src="remote.svg"]      { height: 84px; } /* Sponsor 6k */
     .partner-logo img[src="helloprint.webp"] { height: 47px; } /* Sponsor 2,5k */
     .partner-logo img[src="watermelon.svg"]  { height: 37px; } /* Sponsor 2,5k */
@@ -372,6 +374,9 @@
     /* Sponsors met aansluitdatum: logo in vaste band zodat de datums uitlijnen */
     .partner-item { display: flex; flex-direction: column; align-items: center; gap: 0.95rem; }
     .partner-item .partner-logo { min-height: 84px; }
+    /* Grootste sponsor krijgt een eigen volle rij bovenaan de sponsors + wat meer lucht boven het logo */
+    .partner-item-lead { flex-basis: 100%; }
+    .partner-item-lead .partner-logo { min-height: 96px; }
     .partner-since {
       font-family: var(--subhead);
       font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
@@ -1528,6 +1533,7 @@
       .partners-group { gap: 1.6rem; }
       .partners-tier-sponsors { gap: 1.5rem 2.5rem; }
       .partners-tier-partners { gap: 1.25rem 2rem; }
+      .partner-logo img[src="wispr.webp"]      { height: 56px; }
       .partner-logo img[src="remote.svg"]      { height: 60px; }
       .partner-logo img[src="helloprint.webp"] { height: 34px; }
       .partner-logo img[src="watermelon.svg"]  { height: 27px; }
@@ -1536,6 +1542,7 @@
       .partner-logo img[src="Lerai.webp"]      { height: 26px; }
       .partner-logo img[src="TAG_black.svg"]   { height: 20px; }
       .partner-item .partner-logo { min-height: 60px; }
+      .partner-item-lead .partner-logo { min-height: 68px; }
       .partner-item { gap: 0.7rem; }
       .plan-header { grid-template-columns: 1fr; gap: 1.5rem; }
       .plan-row, .return-row { grid-template-columns: 40px 1fr; }
@@ -1925,6 +1932,10 @@
         <div class="partners-group">
           <div class="section-label partners-group-label" data-i18n="partners.group.sponsors">Sponsors</div>
           <div class="partners-tier partners-tier-sponsors">
+            <div class="partner-item partner-item-lead">
+              <a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a>
+              <span class="partner-since" data-i18n="partners.since.wispr">Sinds 6 juli 2026</span>
+            </div>
             <div class="partner-item">
               <a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
               <span class="partner-since" data-i18n="partners.since.remote">Sinds 17 juni 2026</span>
@@ -2280,6 +2291,10 @@
         <div class="partners-group">
           <div class="section-label partners-group-label" data-i18n="partners.group.sponsors">Sponsors</div>
           <div class="partners-tier partners-tier-sponsors">
+            <div class="partner-item partner-item-lead">
+              <a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a>
+              <span class="partner-since" data-i18n="partners.since.wispr">Sinds 6 juli 2026</span>
+            </div>
             <div class="partner-item">
               <a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
               <span class="partner-since" data-i18n="partners.since.remote">Sinds 17 juni 2026</span>
@@ -2649,6 +2664,7 @@
         'partners.sponsor.label': 'Eerste partners aan boord',
         'partners.group.sponsors': 'Sponsors',
         'partners.group.partners': 'Partners',
+        'partners.since.wispr':      'Sinds 6 juli 2026',
         'partners.since.remote':     'Sinds 17 juni 2026',
         'partners.since.helloprint': 'Sinds 19 juni 2026',
         'partners.since.watermelon': 'Sinds 3 juli 2026',
@@ -2830,6 +2846,7 @@
         'partners.sponsor.label': 'First partners on board',
         'partners.group.sponsors': 'Sponsors',
         'partners.group.partners': 'Partners',
+        'partners.since.wispr':      'Since 6 July 2026',
         'partners.since.remote':     'Since 17 June 2026',
         'partners.since.helloprint': 'Since 19 June 2026',
         'partners.since.watermelon': 'Since 3 July 2026',
