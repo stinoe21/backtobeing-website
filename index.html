@@ -12,6 +12,7 @@
           data-watermelon-settings-id="17335"></script>
 
   <title>Back to Being: The World as our Office</title>
+  <link rel="icon" href="LOGOMARK_B2B.svg" type="image/svg+xml">
   <meta name="description" id="metaDesc" content="Drie AI-nerds maken van de Camino hun kantoor: 120 km, live bouwen in beeld, daarna een echte overdracht aan stichting MIND." />
 
   <!-- Open Graph / sociale previews -->
@@ -113,7 +114,7 @@
     }
     .nav-menu-btn {
       display: none;
-      width: 42px; height: 42px;
+      width: 44px; height: 44px;
       align-items: center; justify-content: center;
       border: 1px solid rgba(22,22,22,0.14);
       border-radius: 999px;
@@ -363,7 +364,8 @@
        Wispr is de grootste sponsor: bovenaan op een eigen rij, maar door de brede wordmark
        maar een tikje groter dan de rest. Verder sponsors op geldbedrag; bij Partners zit
        Techleap qua grootte tussen de sponsors en de rest in. */
-    .partner-logo img[src="wispr.webp"]      { height: 68px; } /* Grootste sponsor 7k (brede wordmark) */
+    .partner-logo img[src="wispr.webp"]      { height: 68px; } /* Hoofdsponsor (brede wordmark) */
+    .partner-logo img[src="n8n-logo.svg"]    { height: 40px; } /* Sponsor (viewBox strak gecropt) */
     .partner-logo img[src="remote.svg"]      { height: 84px; } /* Sponsor 6k */
     .partner-logo img[src="helloprint.webp"] { height: 47px; } /* Sponsor 2,5k */
     .partner-logo img[src="watermelon.svg"]  { height: 37px; } /* Sponsor 2,5k */
@@ -375,8 +377,13 @@
     /* Sponsors met aansluitdatum: logo in vaste band zodat de datums uitlijnen */
     .partner-item { display: flex; flex-direction: column; align-items: center; gap: 0.95rem; }
     .partner-item .partner-logo { min-height: 84px; }
-    /* Grootste sponsor krijgt een eigen volle rij bovenaan de sponsors */
-    .partner-item-lead { flex-basis: 100%; }
+    /* Wispr + n8n zijn de twee hoofdsponsors: samen op een eigen volle rij bovenaan */
+    .partners-lead {
+      flex-basis: 100%;
+      display: flex; flex-wrap: wrap;
+      align-items: flex-end; justify-content: center;
+      gap: 2.25rem 4rem;
+    }
     .partner-since {
       font-family: var(--subhead);
       font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
@@ -1533,7 +1540,9 @@
       .partners-group { gap: 1.6rem; }
       .partners-tier-sponsors { gap: 1.5rem 2.5rem; }
       .partners-tier-partners { gap: 1.25rem 2rem; }
+      .partners-lead { gap: 1.5rem 2.5rem; }
       .partner-logo img[src="wispr.webp"]      { height: 44px; }
+      .partner-logo img[src="n8n-logo.svg"]    { height: 28px; }
       .partner-logo img[src="remote.svg"]      { height: 60px; }
       .partner-logo img[src="helloprint.webp"] { height: 34px; }
       .partner-logo img[src="watermelon.svg"]  { height: 27px; }
@@ -1820,6 +1829,564 @@
       }
     }
 
+    /* HOME — announcement film */
+    .announcement-section {
+      padding: clamp(5rem, 10vw, 9rem) max(1.25rem, 6vw);
+      background: var(--canvas);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .announcement-inner {
+      width: min(100%, 1320px);
+      margin-inline: auto;
+    }
+    .announcement-header {
+      display: grid;
+      gap: 1.5rem;
+      align-items: end;
+      margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    }
+    .announcement-heading {
+      max-width: 11ch;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.7rem, 6vw, 5.8rem);
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: -0.015em;
+      text-wrap: balance;
+    }
+    .announcement-heading em {
+      color: var(--green);
+      font-style: italic;
+    }
+    .announcement-copy {
+      max-width: 52ch;
+      font-size: clamp(0.98rem, 1.15vw, 1.1rem);
+      line-height: 1.72;
+      color: var(--ink-soft);
+    }
+    .announcement-frame {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      background: var(--charcoal);
+      border-radius: 0.25rem;
+      box-shadow: 0 2rem 5rem -3rem rgba(22,22,22,0.52);
+    }
+    .announcement-frame video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    .announcement-play {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-content: center;
+      justify-items: center;
+      gap: 1rem;
+      width: 100%;
+      border: 0;
+      background: linear-gradient(180deg, rgba(22,22,22,0.05), rgba(22,22,22,0.42));
+      color: var(--canvas);
+      cursor: pointer;
+      transition: background 0.25s ease, opacity 0.25s ease;
+    }
+    .announcement-play:hover {
+      background: linear-gradient(180deg, rgba(22,22,22,0), rgba(22,22,22,0.28));
+    }
+    .announcement-frame.is-playing .announcement-play {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .announcement-play-icon {
+      width: clamp(4.25rem, 7vw, 6.5rem);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,254,241,0.72);
+      border-radius: 50%;
+      background: rgba(22,22,22,0.24);
+      backdrop-filter: blur(10px);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+    .announcement-play:hover .announcement-play-icon {
+      transform: scale(1.06);
+      background: var(--green);
+    }
+    .announcement-play-icon svg {
+      width: 1.35rem;
+      height: 1.35rem;
+      transform: translateX(0.1rem);
+    }
+    .announcement-play-label {
+      font-family: var(--subhead);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-shadow: 0 1px 14px rgba(0,0,0,0.35);
+    }
+    .announcement-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 1rem;
+      font-family: var(--subhead);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    @media (min-width: 800px) {
+      .announcement-header {
+        grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.65fr);
+        gap: clamp(3rem, 8vw, 8rem);
+      }
+    }
+    @media (max-width: 600px) {
+      .announcement-section { padding-inline: 1rem; }
+      .announcement-frame { aspect-ratio: 4 / 3; }
+      .announcement-frame video { object-position: center; }
+      .announcement-meta { flex-direction: column; }
+      .announcement-meta span:last-child { color: var(--green); }
+    }
+
+    /* ========= VERHAAL — redactionele scrollpagina 2026 ========= */
+    #page-verhaal {
+      background: var(--canvas);
+    }
+
+    .story-editorial-hero {
+      position: relative;
+      min-height: 100svh;
+      overflow: clip;
+      display: grid;
+      align-content: end;
+      padding: calc(var(--nav-h) + clamp(4rem, 9vw, 8rem)) max(1.25rem, 6vw) clamp(3rem, 6vw, 5.5rem);
+      background: var(--tree);
+      color: var(--canvas);
+      isolation: isolate;
+    }
+    .story-editorial-hero::before {
+      content: '';
+      position: absolute;
+      inset: -12%;
+      z-index: -2;
+      background-image: url("LOGOMARK_B2B.svg");
+      background-repeat: repeat;
+      background-size: clamp(130px, 14vw, 220px) auto;
+      opacity: 0.055;
+      transform: rotate(-8deg);
+    }
+    .story-editorial-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(70% 65% at 90% 10%, rgba(167,189,213,0.2), transparent 70%),
+        linear-gradient(180deg, rgba(22,22,22,0.05), rgba(22,22,22,0.42));
+    }
+    .story-editorial-inner {
+      width: min(100%, 1440px);
+      margin-inline: auto;
+    }
+    .story-editorial-kicker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: clamp(2rem, 5vw, 4rem);
+      font-family: var(--subhead);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,254,241,0.64);
+    }
+    .story-editorial-kicker span:first-child {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      color: var(--green-light);
+    }
+    .story-editorial-kicker span:first-child::before {
+      content: '';
+      width: 2.25rem;
+      height: 1px;
+      background: currentColor;
+    }
+    .story-editorial-hero h1 {
+      max-width: 12ch;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(3.7rem, 10.3vw, 9.5rem);
+      font-weight: 400;
+      font-variation-settings: "opsz" 144;
+      line-height: 0.87;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+    .story-editorial-hero h1 em {
+      color: var(--green-light);
+      font-style: italic;
+    }
+    .story-editorial-foot {
+      display: grid;
+      gap: 2rem;
+      align-items: end;
+      margin-top: clamp(3rem, 6vw, 5rem);
+      padding-top: clamp(1.5rem, 3vw, 2.25rem);
+      border-top: 1px solid rgba(255,254,241,0.2);
+    }
+    .story-editorial-lead {
+      max-width: 58ch;
+      font-size: clamp(1rem, 1.25vw, 1.2rem);
+      line-height: 1.65;
+      color: rgba(255,254,241,0.78);
+    }
+    .story-editorial-lead strong {
+      color: var(--canvas);
+      font-weight: 500;
+    }
+    .story-hero-facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 1px solid rgba(255,254,241,0.18);
+    }
+    .story-hero-fact {
+      padding: 0.85rem 0.65rem 0 0;
+    }
+    .story-hero-fact + .story-hero-fact {
+      padding-left: 0.85rem;
+      border-left: 1px solid rgba(255,254,241,0.18);
+    }
+    .story-hero-fact strong {
+      display: block;
+      font-family: var(--serif);
+      font-size: clamp(1.7rem, 3vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1;
+      color: var(--canvas);
+    }
+    .story-hero-fact span {
+      display: block;
+      margin-top: 0.4rem;
+      font-family: var(--subhead);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      line-height: 1.35;
+      text-transform: uppercase;
+      color: rgba(255,254,241,0.48);
+    }
+
+    .story-section-index {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+      font-family: var(--subhead);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+    .story-section-index::after {
+      content: '';
+      width: 2.25rem;
+      height: 1px;
+      background: currentColor;
+    }
+    .story-mind-heading,
+    .story-route-heading {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.7rem, 6vw, 6.25rem);
+      font-weight: 400;
+      line-height: 0.94;
+      letter-spacing: -0.015em;
+      text-wrap: balance;
+    }
+    .story-route-heading em {
+      color: var(--green);
+      font-style: italic;
+    }
+    .story-mind-explainer {
+      position: relative;
+      overflow: clip;
+      padding: clamp(5rem, 10vw, 9rem) max(1.25rem, 6vw);
+      background: var(--charcoal);
+      color: var(--canvas);
+      isolation: isolate;
+    }
+    .story-mind-explainer::before {
+      content: '';
+      position: absolute;
+      width: clamp(24rem, 55vw, 58rem);
+      aspect-ratio: 1;
+      top: 5%;
+      left: -22%;
+      z-index: -1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(66,77,105,0.58), transparent 68%);
+      filter: blur(4px);
+    }
+    .story-mind-inner {
+      display: grid;
+      gap: clamp(3.5rem, 8vw, 8rem);
+      width: min(100%, 1440px);
+      margin-inline: auto;
+      align-items: start;
+    }
+    .story-mind-lockup {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.65rem 0.85rem;
+      border-radius: 999px;
+      background: var(--canvas);
+    }
+    .story-mind-lockup img {
+      width: 4.7rem;
+      height: auto;
+    }
+    .story-mind-lockup span {
+      padding-left: 0.85rem;
+      border-left: 1px solid var(--line);
+      font-family: var(--subhead);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .story-mind-heading {
+      max-width: 9ch;
+      color: var(--canvas);
+    }
+    .story-mind-heading em {
+      color: var(--green-light);
+      font-style: italic;
+    }
+    .story-mind-summary {
+      max-width: 53ch;
+      font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+      line-height: 1.75;
+      color: rgba(255,254,241,0.68);
+    }
+    .story-goals {
+      display: grid;
+      gap: clamp(1rem, 3vw, 1.5rem);
+    }
+    .story-goals-intro {
+      margin-bottom: 0.5rem;
+      font-family: var(--subhead);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,254,241,0.48);
+    }
+    .story-goal {
+      position: relative;
+      min-height: clamp(18rem, 42vh, 25rem);
+      display: grid;
+      align-content: end;
+      padding: clamp(1.4rem, 3vw, 2.25rem);
+      border: 1px solid rgba(255,254,241,0.14);
+      border-radius: 0.25rem;
+      background: rgba(255,254,241,0.04);
+      cursor: default;
+      transition: color 0.4s ease, background 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+    }
+    .story-goal::before {
+      content: attr(data-number);
+      position: absolute;
+      top: clamp(1.25rem, 3vw, 2rem);
+      left: clamp(1.4rem, 3vw, 2.25rem);
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-style: italic;
+      line-height: 1;
+      color: rgba(255,254,241,0.12);
+      transition: color 0.4s ease;
+    }
+    .story-goal .story-goal-mark {
+      width: 2.1rem;
+      height: auto;
+      margin-bottom: 1.4rem;
+      opacity: 0.72;
+    }
+    .story-goal h3 {
+      max-width: 15ch;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 400;
+      line-height: 0.98;
+    }
+    .story-goal p {
+      max-width: 47ch;
+      margin-top: 1rem;
+      font-size: clamp(0.94rem, 1.05vw, 1.05rem);
+      line-height: 1.7;
+      color: rgba(255,254,241,0.58);
+      transition: color 0.4s ease;
+    }
+    .story-goal.is-active {
+      border-color: var(--canvas);
+      background: var(--canvas);
+      color: var(--ink);
+      transform: translateX(-0.65rem);
+    }
+    .story-goal.is-active::before {
+      color: rgba(151,160,129,0.24);
+    }
+    .story-goal.is-active p {
+      color: var(--ink-soft);
+    }
+
+    .story-route-article {
+      padding: clamp(5rem, 10vw, 9rem) max(1.25rem, 6vw);
+      background: rgba(167,189,213,0.12);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .story-route-inner {
+      width: min(100%, 1180px);
+      margin-inline: auto;
+    }
+    .story-route-copy {
+      display: grid;
+      gap: 2rem;
+      align-items: end;
+      margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    }
+    .story-route-copy p {
+      max-width: 52ch;
+      font-size: clamp(0.98rem, 1.15vw, 1.1rem);
+      line-height: 1.75;
+      color: var(--ink-soft);
+    }
+    #page-verhaal .story-route-article .camino-map-wrap {
+      width: 100%;
+      max-width: 960px;
+      margin-inline: auto;
+      aspect-ratio: 16 / 10;
+      max-height: 76vh;
+      min-height: 0;
+    }
+
+    [data-story-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.75s ease, transform 0.85s cubic-bezier(.2,.75,.2,1);
+    }
+    .story-motion-ready [data-story-reveal]:not(.is-visible) {
+      /* Content must never depend on JavaScript to remain readable. */
+      opacity: 1;
+      transform: translateY(1rem);
+    }
+    .story-motion-ready [data-story-reveal].is-visible {
+      opacity: 1;
+      transform: none;
+    }
+    .story-motion-ready .story-goal[data-story-reveal] {
+      opacity: 1;
+      transform: none;
+    }
+    .story-motion-ready .story-goal.is-active[data-story-reveal] {
+      transform: translateX(-0.65rem);
+    }
+
+    @media (min-width: 800px) {
+      .story-editorial-foot {
+        grid-template-columns: minmax(0, 1fr) minmax(25rem, 0.7fr);
+        gap: clamp(3rem, 7vw, 7rem);
+      }
+      .story-route-copy {
+        grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.75fr);
+      }
+    }
+    @media (max-width: 799px) {
+      .story-editorial-kicker span:last-child { display: none; }
+      .story-editorial-hero h1 {
+        font-size: clamp(2.45rem, 13vw, 4.8rem);
+        line-height: 0.92;
+      }
+      .story-hero-facts { grid-template-columns: 1fr; }
+      .story-hero-fact,
+      .story-hero-fact + .story-hero-fact {
+        display: grid;
+        grid-template-columns: 5rem 1fr;
+        align-items: baseline;
+        gap: 0.75rem;
+        padding: 0.85rem 0;
+        border-left: 0;
+        border-bottom: 1px solid rgba(255,254,241,0.14);
+      }
+      .story-hero-fact strong { font-size: 1.8rem; }
+      .story-goal {
+        min-height: 18rem;
+      }
+      .story-goal.is-active { transform: none; }
+      #page-verhaal .story-route-article .camino-map-wrap {
+        aspect-ratio: 1 / 1.18;
+      }
+    }
+    @media (max-width: 420px) {
+      .story-editorial-hero { padding-inline: 1rem; }
+      .story-mind-explainer,
+      .story-route-article { padding-inline: 1rem; }
+    }
+
+    /* Compact story structure: one app chapter with three animated principles. */
+    .story-mind-inner {
+      grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+      gap: clamp(3rem, 7vw, 7rem);
+    }
+    .story-mind-copy {
+      display: grid;
+      align-content: start;
+      gap: 1.5rem;
+    }
+    .story-goals {
+      grid-column: 1 / -1;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(0.85rem, 1.5vw, 1.4rem);
+      padding: 0;
+    }
+    .story-goals-intro { grid-column: 1 / -1; }
+    .story-goal {
+      min-height: clamp(16rem, 27vw, 22rem);
+    }
+    .story-goal h3 {
+      font-size: clamp(1.8rem, 2.8vw, 3rem);
+    }
+    @media (max-width: 799px) {
+      .story-mind-inner { grid-template-columns: 1fr; }
+      .story-goals {
+        grid-column: auto;
+        grid-template-columns: 1fr;
+      }
+      .story-goal { min-height: 14rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      [data-story-reveal] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .story-goal { transition: none; }
+    }
+
     /* PRELOADER */
     #b2bPreloader {
       position: fixed; inset: 0;
@@ -1925,19 +2492,54 @@
       </div>
     </section>
 
+    <!-- HOME — announcement film, intentionally lazy-loaded -->
+    <section class="announcement-section" aria-labelledby="announcementTitle">
+      <div class="announcement-inner">
+        <div class="announcement-header">
+          <div>
+            <div class="section-label" data-i18n="announcement.label">De announcement</div>
+            <h2 class="announcement-heading" id="announcementTitle" data-i18n="announcement.heading">Waarom we ons kantoor <em>120 kilometer verplaatsen.</em></h2>
+          </div>
+          <p class="announcement-copy" data-i18n="announcement.copy">In 66 seconden zie je het idee achter Back to Being: technologie meenemen naar buiten, onderweg bouwen en iets werkends achterlaten voor MIND.</p>
+        </div>
+        <div class="announcement-frame" id="announcementFrame">
+          <video id="announcementVideo" preload="none" playsinline poster="announcement-poster.jpg">
+            <source src="Official Artsy vid.mp4" type="video/mp4" />
+            <span data-i18n="announcement.fallback">Je browser ondersteunt deze video niet.</span>
+          </video>
+          <button class="announcement-play" id="announcementPlay" type="button" aria-controls="announcementVideo" aria-label="Speel de announcement-video af">
+            <span class="announcement-play-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.7v12.6c0 .8.9 1.3 1.6.8l9-6.3c.6-.4.6-1.2 0-1.6l-9-6.3C8.9 4.4 8 4.9 8 5.7Z"/></svg>
+            </span>
+            <span class="announcement-play-label" data-i18n="announcement.play">Bekijk de film · 01:06</span>
+          </button>
+        </div>
+        <div class="announcement-meta">
+          <span data-i18n="announcement.meta1">Back to Being · announcement film</span>
+          <span data-i18n="announcement.meta2">The world as our office</span>
+        </div>
+      </div>
+    </section>
+
     <!-- HOME — partners credibility strip -->
     <section class="partners-strip" aria-label="Partners">
       <div class="partners-strip-inner">
         <div class="partners-group">
           <div class="section-label partners-group-label" data-i18n="partners.group.sponsors">Sponsors</div>
           <div class="partners-tier partners-tier-sponsors">
-            <div class="partner-item partner-item-lead">
-              <a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a>
-              <span class="partner-since" data-i18n="partners.since.wispr">Sinds 6 juli 2026</span>
+            <div class="partners-lead">
+              <div class="partner-item partner-item-lead">
+                <a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a>
+                <span class="partner-since" data-i18n="partners.since.wispr">Sinds 6 juli 2026</span>
+              </div>
+              <div class="partner-item partner-item-lead">
+                <a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
+                <span class="partner-since" data-i18n="partners.since.remote">Sinds 17 juni 2026</span>
+              </div>
             </div>
             <div class="partner-item">
-              <a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
-              <span class="partner-since" data-i18n="partners.since.remote">Sinds 17 juni 2026</span>
+              <a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer"><img src="n8n-logo.svg" alt="n8n" loading="lazy" /></a>
+              <span class="partner-since" data-i18n="partners.since.n8n">Sinds 15 juli 2026</span>
             </div>
             <div class="partner-item">
               <a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" loading="lazy" /></a>
@@ -2098,62 +2700,84 @@
   <!-- ======== PAGE: VERHAAL ======== -->
   <div class="page" id="page-verhaal">
 
-    <section class="story-hero">
-      <h1 data-i18n="verhaal.h1">De wereld<br>als <em>ons kantoor.</em></h1>
-      <div class="story-hero-foot">
-        <p data-i18n="verhaal.intro1">Met AI kun je ongelooflijk veel versnellen. En toch zitten veel kenniswerkers nog steeds veertig uur per week achter een bureau, alsof er niets fundamenteels verandert. De werkweek voelt sneller digitaal dan menselijk.</p>
-        <p data-i18n="verhaal.intro2">Back to Being is ons antwoord. Wij trekken het door naar het extreme: de Camino als kantoor, live bouwen onderweg en een mini-docu die laat zien hoe zweet en software samenkomen.</p>
+    <section class="story-editorial-hero">
+      <div class="story-editorial-inner">
+        <div class="story-editorial-kicker" data-story-reveal>
+          <span data-i18n="story.kicker">Ons verhaal</span>
+          <span data-i18n="story.season">Tui → Santiago · zomer 2026</span>
+        </div>
+        <h1 data-i18n="verhaal.h1" data-story-reveal>120 kilometer lopen.<br><em>Eén app bouwen.</em></h1>
+        <div class="story-editorial-foot" data-story-reveal>
+          <p class="story-editorial-lead" data-i18n="story.hero.lead">We verplaatsen ons kantoor naar de Camino. Zes dagen lang lopen, bouwen en documenteren we. Het resultaat: een werkende app die we kosteloos aan stichting MIND overdragen.</p>
+          <div class="story-hero-facts" aria-label="Project in cijfers">
+            <div class="story-hero-fact"><strong>120</strong><span data-i18n="story.fact.km">kilometer lopen</span></div>
+            <div class="story-hero-fact"><strong>6</strong><span data-i18n="story.fact.days">dagen bouwen</span></div>
+            <div class="story-hero-fact"><strong>1</strong><span data-i18n="story.fact.product">product voor MIND</span></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <div class="story-body">
-
-      <!-- Hoofdstuk 02: foto links, tekst rechts (even) -->
-      <div class="story-chapter">
-        <div class="ch-content">
-          <div class="ch-meta">
-            <span class="ch-num-big">02</span>
-            <span class="ch-label" data-i18n="verhaal.ch2.label">Hoofdstuk</span>
-          </div>
-          <h3 data-i18n="verhaal.ch2.h">Een tool voor<br><em>mentale gezondheid.</em></h3>
-          <p class="ch-lead" data-i18n="verhaal.ch2.lead">Hun behoefte leidt, wij leveren iets bruikbaars.</p>
-          <p data-i18n="verhaal.ch2.p1">Stichting MIND zet zich in voor mentale gezondheid in Nederland. Jaarlijks bereiken ze miljoenen mensen met informatie, tools en ondersteuning.</p>
-          <p data-i18n="verhaal.ch2.p2">De AI-tool die we bouwen dragen we gratis over. Samen met MIND bepalen we wat we bouwen: intern, extern, voor hun gebruikers. Het gaat om wat zij nodig hebben, niet wat wij cool vinden.</p>
-        </div>
-        <div class="ch-visual ch-visual-mind">
-          <img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" />
-        </div>
-      </div>
-
-      <!-- Hoofdstuk 03: tekst links, foto rechts (odd) -->
-      <div class="story-chapter">
-        <div class="ch-content">
-          <div class="ch-meta">
-            <span class="ch-num-big">03</span>
-            <span class="ch-label" data-i18n="verhaal.ch3.label">Hoofdstuk</span>
-          </div>
-          <h3 data-i18n="verhaal.ch3.h">De Camino als<br><em>metafoor.</em></h3>
-          <p class="ch-lead" data-i18n="verhaal.ch3.lead">Elke dag lopen. Elke dag bouwen. Elke avond reflecteren.</p>
-          <p data-i18n="verhaal.ch3.p1">120 kilometer van Tui naar Santiago. De Camino Portugués, een route die je dwingt aanwezig te zijn. Elke dag lopen we, elke dag bouwen we, elke avond reflecteren we.</p>
-          <p data-i18n="verhaal.ch3.p2">Een mini-docu legt vast hoe zweet en software samenkomen. Niet als marketing, maar als eerlijk verslag van wat er gebeurt als je tech en natuur combineert. Het eindproduct gaat naar MIND, het verhaal delen we met de wereld.</p>
-        </div>
-        <div class="ch-visual camino-map-wrap" aria-label="Kaart van de Camino-route van Tui naar Santiago de Compostela">
-          <div id="caminoMap" class="camino-map"></div>
-          <div id="caminoDayControls" class="camino-day-controls" aria-label="Bekijk de Camino-route per dag"></div>
-          <button id="caminoActivate" class="camino-activate" type="button" aria-label="Activeer de kaart">
-            <span data-i18n="verhaal.map.activate">Klik om kaart te gebruiken</span>
-          </button>
-          <div class="camino-map-card">
-            <div>
-              <span id="caminoMapLabel" class="eyebrow" data-i18n="verhaal.map.label">De route</span>
-              <strong id="caminoMapTitle" data-i18n="verhaal.map.title">Tui naar Santiago de Compostela</strong>
+    <main class="story-article">
+      <section class="story-mind-explainer">
+        <div class="story-mind-inner">
+          <div class="story-mind-copy" data-story-reveal>
+            <div class="story-mind-lockup">
+              <img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" />
+              <span data-i18n="story.mind.lockup">Project voor MIND</span>
             </div>
-            <span id="caminoMapDistance" class="distance" data-i18n="verhaal.map.distance">120 km / 6 dagen</span>
+            <div class="story-section-index" data-i18n="story.mind.index">01 · Wat we bouwen</div>
+            <h2 class="story-mind-heading" data-i18n="story.mind.heading">Eén app.<br><em>Gebouwd om te blijven.</em></h2>
+            <p class="story-mind-summary" data-i18n="story.mind.summary">We ontwerpen en bouwen onderweg een app voor stichting MIND. Wat de app precies doet, werken we samen met MIND uit. Op de Camino maken we er werkende software van en daarna dragen we alles kosteloos over.</p>
+          </div>
+
+          <div class="story-goals">
+            <div class="story-goals-intro" data-i18n="story.goals.intro">Drie uitgangspunten</div>
+            <article class="story-goal is-active" data-number="01" data-story-reveal tabindex="0">
+              <img class="story-goal-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+              <h3 data-i18n="story.goal1.h">Bruikbaar voor MIND.</h3>
+              <p data-i18n="story.goal1.p">Hun vraag is het vertrekpunt. Wij leveren een werkende app op waar MIND echt mee verder kan.</p>
+            </article>
+            <article class="story-goal" data-number="02" data-story-reveal tabindex="0">
+              <img class="story-goal-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+              <h3 data-i18n="story.goal2.h">Eenvoudig voor mensen.</h3>
+              <p data-i18n="story.goal2.p">Technologie hoort ondersteuning toegankelijker te maken, zonder meer ruis of gedoe toe te voegen.</p>
+            </article>
+            <article class="story-goal" data-number="03" data-story-reveal tabindex="0">
+              <img class="story-goal-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+              <h3 data-i18n="story.goal3.h">Gemaakt om door te gaan.</h3>
+              <p data-i18n="story.goal3.p">Na de laatste etappe blijft de app bij MIND en kan hun team het product verder ontwikkelen.</p>
+            </article>
           </div>
         </div>
-      </div>
+      </section>
 
-    </div>
+      <section class="story-route-article">
+        <div class="story-route-inner">
+          <div class="story-route-copy">
+            <div data-story-reveal>
+              <div class="story-section-index" data-i18n="story.route.index">04 · Het bouwritme</div>
+              <h2 class="story-route-heading" data-i18n="story.route.heading">Zes dagen. Zes etappes. <em>Elke dag verder.</em></h2>
+            </div>
+            <p data-i18n="story.route.p" data-story-reveal>De kaart laat niet alleen zien waar we lopen. Elke etappe wordt ook een bouwsprint: luisteren onderweg, keuzes maken bij aankomst en zichtbaar delen wat er die dag is veranderd.</p>
+          </div>
+          <div class="camino-map-wrap" aria-label="Kaart van de Camino-route van Tui naar Santiago de Compostela" data-story-reveal>
+            <div id="caminoMap" class="camino-map"></div>
+            <div id="caminoDayControls" class="camino-day-controls" aria-label="Bekijk de Camino-route per dag"></div>
+            <button id="caminoActivate" class="camino-activate" type="button" aria-label="Activeer de kaart">
+              <span data-i18n="verhaal.map.activate">Klik om kaart te gebruiken</span>
+            </button>
+            <div class="camino-map-card">
+              <div>
+                <span id="caminoMapLabel" class="eyebrow" data-i18n="verhaal.map.label">De route</span>
+                <strong id="caminoMapTitle" data-i18n="verhaal.map.title">Tui naar Santiago de Compostela</strong>
+              </div>
+              <span id="caminoMapDistance" class="distance" data-i18n="verhaal.map.distance">120 km / 6 dagen</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
 
     <!-- FOUNDERS -->
     <div class="founders-section">
@@ -2213,15 +2837,11 @@
                target="_blank" rel="noopener noreferrer">LinkedIn &rarr;</a>
           </div>
 
-          <p class="press-feature-lead">Deze zomer zit ons kantoor in <em>een rugzak.</em></p>
+          <p class="press-feature-lead" data-i18n="press.feature.lead">Deze zomer zit ons kantoor in <em>een rugzak.</em></p>
 
           <div class="press-feature-body">
-            <p>Niet om te bewijzen dat je overal kunt werken. Maar om te testen of AI ons werk niet alleen sneller, maar ook menselijker kan maken.</p>
-            <p>Deze zomer lopen Max Helmantel, Stijn Smit en ik 120 kilometer van Tui (Portugal) naar Santiago de Compostela (Spanje). Met een laptop in onze rugzak, smartglasses als scherm, Starlink voor internet en AirPods om AI-agents aan te sturen. Zo kunnen we werken terwijl we lopen.</p>
-            <p>De Camino staat al eeuwen voor vertraging en bezinning, AI staat nu vooral voor snelheid, schaal en productiviteit. <em>Wij brengen die twee werelden samen in één live-experiment.</em></p>
-            <p>Want misschien is de echte winst van AI niet dat we meer produceren, maar dat we onze aandacht terugkrijgen. Voor denken, voor bewegen, voor gesprekken en voor het werk dat je niet kunt automatiseren.</p>
-            <p>Onderweg bouwen we met AI aan software voor stichting MIND, rondom mentale gezondheid. Ook leggen we alles vast in een mini-docu — van de hitte en de vermoeidheid tot de falende techniek en de gesprekken onderweg.</p>
-            <p>Bob Rietveld (Techleap), Ron Simpson en Samuel Hodenpijl hebben ons al geholpen waar ze konden. Nu zoeken we nog partners die geloven dat AI niet alleen meer output moet opleveren, maar ook ruimte moet teruggeven.</p>
+            <p data-i18n="press.feature.summary1">De Camino staat voor vertraging en bezinning, AI voor snelheid en productiviteit. Wij brengen die werelden samen in één live-experiment.</p>
+            <p data-i18n="press.feature.summary2">Onderweg bouwen we een app voor stichting MIND en leggen we het eerlijke proces vast: de hitte, de techniek, de gesprekken en alles wat anders loopt dan gepland.</p>
           </div>
 
           <div class="press-feature-foot">
@@ -2290,13 +2910,19 @@
         <div class="partners-group">
           <div class="section-label partners-group-label" data-i18n="partners.group.sponsors">Sponsors</div>
           <div class="partners-tier partners-tier-sponsors">
-            <div class="partner-item partner-item-lead">
-              <a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a>
-              <span class="partner-since" data-i18n="partners.since.wispr">Sinds 6 juli 2026</span>
+            <div class="partners-lead">
+              <div class="partner-item partner-item-lead">
+                <a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a>
+                <span class="partner-since" data-i18n="partners.since.wispr">Sinds 6 juli 2026</span>
+              </div>
+              <div class="partner-item partner-item-lead">
+                <a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
+                <span class="partner-since" data-i18n="partners.since.remote">Sinds 17 juni 2026</span>
+              </div>
             </div>
             <div class="partner-item">
-              <a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
-              <span class="partner-since" data-i18n="partners.since.remote">Sinds 17 juni 2026</span>
+              <a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer"><img src="n8n-logo.svg" alt="n8n" loading="lazy" /></a>
+              <span class="partner-since" data-i18n="partners.since.n8n">Sinds 15 juli 2026</span>
             </div>
             <div class="partner-item">
               <a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" loading="lazy" /></a>
@@ -2664,6 +3290,7 @@
         'partners.group.sponsors': 'Sponsors',
         'partners.group.partners': 'Partners',
         'partners.since.wispr':      'Sinds 6 juli 2026',
+        'partners.since.n8n':        'Sinds 15 juli 2026',
         'partners.since.remote':     'Sinds 17 juni 2026',
         'partners.since.helloprint': 'Sinds 19 juni 2026',
         'partners.since.watermelon': 'Sinds 3 juli 2026',
@@ -2732,22 +3359,22 @@
         // return
         'return.label':     'Waarom partner worden',
         'return.h':         'Een verhaal dat mensen<br><em>willen volgen.</em>',
-        'return.body':      'Wat je precies terugkrijgt bespreken we samen. Wat we je alvast kunnen vertellen:',
-        'return.row1.t':    'Mini-docu met jouw naam <span class="title-tag">zichtbaar</span>',
-        'return.row1.d':    'Distributie via TikTok, Instagram en YouTube. Jouw merk verbonden aan een verhaal dat blijft hangen.',
-        'return.row2.t':    'Het kantoor naar buiten <span class="title-tag">uniek</span>',
-        'return.row2.d':    'Walking workshop + AI session bij jouw team. Wij brengen Back to Being naar je bedrijf.',
-        'return.row3.t':    'Maatwerk per partner <span class="title-tag">persoonlijk</span>',
-        'return.row3.d':    'Hardware, AI-credits, earned media of iets heel anders. We kijken in één gesprek wat voor jou het meeste waarde heeft.',
+        'return.body':      'Geen vast pakket. Wat je terugkrijgt hangt af van wat je inbrengt, en dat bouwen we samen op in één gesprek. Een paar richtingen:',
+        'return.row1.t':    'Zichtbaar in de mini-docu <span class="title-tag">bereik</span>',
+        'return.row1.d':    'Van een vermelding tot je merk verbonden aan zes dagen bouwen, lopen en eerlijk vastleggen. Distributie via TikTok, Instagram en YouTube.',
+        'return.row2.t':    'Je team even naar buiten <span class="title-tag">uniek</span>',
+        'return.row2.d':    'Een walking workshop + AI-sessie bij jouw team, als dat bij jullie past. Wij brengen Back to Being naar je bedrijf.',
+        'return.row3.t':    'Of iets heel anders <span class="title-tag">op maat</span>',
+        'return.row3.d':    'Hardware, AI-credits, bereik of een eigen invulling. In één gesprek kijken we wat voor jou het meeste waarde heeft.',
 
         // contact
         'contact.pill':         'Contact',
         'contact.h1':           'Begin het<br><em>gesprek.</em>',
-        'contact.lead':         'Wil je partner worden, bijdragen of meebouwen? Plan een kort gesprek of stuur ons een bericht.',
+        'contact.lead':         'Partner worden, iets bijdragen of gewoon sparren over het idee? Plan een kort gesprek of stuur een bericht.',
         'contact.note':         'We reageren binnen een dag. Geen verkooppraatje, gewoon een gesprek.',
         'contact.cal.head':     'Gesprek',
         'contact.cal.value':    '20 minuten.<br><em>Genoeg om te weten of het past.</em>',
-        'contact.cal.desc':     'Plan direct via cal.eu. We kijken samen of en hoe het past.',
+        'contact.cal.desc':     'Plan direct in onze agenda. We kijken samen of en hoe het past.',
         'contact.cal.btn':      'Plan een gesprek &rarr;',
         'contact.email.head':   'Mail',
         'contact.email.desc':   'Voor partners, pers, meebouwers en iedereen die even wil sparren.',
@@ -2846,6 +3473,7 @@
         'partners.group.sponsors': 'Sponsors',
         'partners.group.partners': 'Partners',
         'partners.since.wispr':      'Since 6 July 2026',
+        'partners.since.n8n':        'Since 15 July 2026',
         'partners.since.remote':     'Since 17 June 2026',
         'partners.since.helloprint': 'Since 19 June 2026',
         'partners.since.watermelon': 'Since 3 July 2026',
@@ -2914,22 +3542,22 @@
         // return
         'return.label':     'Why partner',
         'return.h':         'A story people<br><em>want to follow.</em>',
-        'return.body':      'What you get back is something we work out together. Here is what we can tell you now:',
-        'return.row1.t':    'Your name in the mini-doc <span class="title-tag">visible</span>',
-        'return.row1.d':    'Distributed via TikTok, Instagram and YouTube. Your brand tied to a story that sticks.',
-        'return.row2.t':    'The office outside <span class="title-tag">unique</span>',
-        'return.row2.d':    'Walking workshop + AI session at your company. We bring Back to Being to your team.',
-        'return.row3.t':    'Custom per partner <span class="title-tag">personal</span>',
-        'return.row3.d':    'Hardware, AI credits, press coverage or something else entirely. One conversation is all it takes to figure out what creates the most value for you.',
+        'return.body':      'No fixed package. What you get back depends on what you bring, and we shape it together in one conversation. A few directions:',
+        'return.row1.t':    'Visible in the mini-doc <span class="title-tag">reach</span>',
+        'return.row1.d':    'From a mention to your brand tied to six days of building, walking and capturing it honestly. Distributed via TikTok, Instagram and YouTube.',
+        'return.row2.t':    'Your team, briefly outside <span class="title-tag">unique</span>',
+        'return.row2.d':    'A walking workshop + AI session with your team, if that fits you. We bring Back to Being to your company.',
+        'return.row3.t':    'Or something else entirely <span class="title-tag">tailored</span>',
+        'return.row3.d':    'Hardware, AI credits, reach or your own idea. In one conversation we figure out what creates the most value for you.',
 
         // contact
         'contact.pill':         'Contact',
         'contact.h1':           'Start the<br><em>conversation.</em>',
-        'contact.lead':         'Want to partner, contribute, or build with us? Book a short call or send us a message.',
+        'contact.lead':         'Want to partner, contribute, or just talk the idea through? Book a short call or send a message.',
         'contact.note':         'We respond within a day. No sales pitch, just a conversation.',
         'contact.cal.head':     'Meeting',
         'contact.cal.value':    '20 minutes.<br><em>Enough to know if it fits.</em>',
-        'contact.cal.desc':     'Book directly via cal.eu. We figure out together if and how it works.',
+        'contact.cal.desc':     'Book directly in our calendar. We figure out together if and how it fits.',
         'contact.cal.btn':      'Schedule a call &rarr;',
         'contact.email.head':   'Email',
         'contact.email.desc':   'For partners, press, builders, and anyone who wants to talk it through.',
@@ -2956,7 +3584,7 @@
       'verhaal.ch3.p1': 'De kaart laat de volledige Camino Portugues zien en zoomt per dag in op de etappe die we lopen.',
       'verhaal.ch3.p2': 'Zo wordt het verhaal makkelijk te volgen: waar starten we, waar eindigen we, en welk stuk lopen we vandaag?',
       'verhaal.map.activate': 'Klik om kaart te gebruiken',
-      'verhaal.closing.h': 'Partner worden<br>in dit <em>verhaal?</em>',
+      'verhaal.closing.h': 'Wil je dit<br><em>groter maken?</em>',
       'verhaal.closing.p': 'We zoeken partners die willen bijdragen met budget, hardware, expertise of bereik. Niet als logo op een shirt, maar als onderdeel van het verhaal.',
       'founders.role1': 'AI-founder · Amsterdam',
       'founders.bio1': 'Caesar bouwt AI-producten en brengt verhaal, partners en energie bij elkaar. Op de Camino laat hij zien dat technologie menselijker wordt buiten het kantoor.',
@@ -2979,7 +3607,7 @@
       'verhaal.ch3.p1': 'The map shows the full Camino Portugues and zooms into the stage we walk each day.',
       'verhaal.ch3.p2': 'That makes the story easy to follow: where we start, where we end, and which section we walk today.',
       'verhaal.map.activate': 'Click to use map',
-      'verhaal.closing.h': 'Become a partner<br>in this <em>story?</em>',
+      'verhaal.closing.h': 'Want to make<br>this <em>bigger?</em>',
       'verhaal.closing.p': 'We are looking for partners who can contribute budget, hardware, expertise, or reach. Not as a logo on a shirt, but as part of the story.',
       'founders.role1': 'AI founder · Amsterdam',
       'founders.bio1': 'Caesar builds AI products and brings story, partners, and energy together. On the Camino, he shows how technology becomes more human outside the office.',
@@ -2987,6 +3615,106 @@
       'founders.bio2': 'Stijn works across AI, product, and storytelling. He is walking to build something useful for MIND, and to make work feel less screen-led and more intentional.',
       'founders.role3': 'AI founder · Amsterdam',
       'founders.bio3': 'Max brings technical sharpness and founder energy to the team. On the Camino, he turns ideas into products that feel practical, useful, and human.',
+    });
+
+    /* Concrete 2026 storytelling: describe the app clearly without treating
+       a working concept name as the final product name. */
+    Object.assign(I18N.nl, {
+      'meta.desc': 'Drie AI-founders lopen 120 kilometer en bouwen onderweg een app die de kennis en hulp van MIND persoonlijk bereikbaar maakt.',
+      'meta.descShort': '120 kilometer lopen. Een app voor MIND bouwen. Kosteloos overdragen.',
+      'hero.tagline': 'Drie AI-founders maken van de Camino hun kantoor en bouwen onderweg een app voor MIND.',
+      'intro.heading': 'Snelle tech,<br><em>langzame route.</em>',
+      'intro.body': 'We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: laagdrempelige challenges die je even uit je hoofd halen, met de hulp van MIND op jouw maat. Op de Camino maken we er werkende software van.',
+      'sponsor.intro': 'Sponsoring maakt de Camino, de mini-docu en de bouw van de app voor MIND mogelijk. De app wordt samen met MIND aangescherpt en kosteloos overgedragen.',
+      'plan.row2.d': 'Elke etappe is een bouwsprint voor de MIND-app: onderweg luisteren en inspreken, bij aankomst ontwerpen en testen.',
+      'plan.row3.d': 'De werkende app gaat kosteloos naar stichting MIND, samen met het verhaal van de bouw.',
+      'announcement.label': 'De announcement',
+      'announcement.heading': 'Waarom we ons kantoor <em>120 kilometer verplaatsen.</em>',
+      'announcement.copy': 'In 66 seconden zie je het idee achter Back to Being: technologie meenemen naar buiten, onderweg bouwen en iets werkends achterlaten voor MIND.',
+      'announcement.play': 'Bekijk de film &middot; 01:06',
+      'announcement.fallback': 'Je browser ondersteunt deze video niet.',
+      'announcement.meta1': 'Back to Being &middot; announcement film',
+      'announcement.meta2': 'The world as our office',
+      'verhaal.h1': 'Werken terwijl <em>we lopen.</em>',
+      'story.kicker': 'Ons verhaal',
+      'story.season': 'Tui &rarr; Santiago &middot; zomer 2026',
+      'story.hero.lead': 'We verplaatsen ons kantoor naar de Camino. Zes dagen lang lopen, bouwen en documenteren we. Het resultaat: een werkende app die we kosteloos aan stichting MIND overdragen.',
+      'story.fact.km': 'kilometer lopen',
+      'story.fact.days': 'dagen bouwen',
+      'story.fact.product': 'app voor MIND',
+      'story.mind.lockup': 'Project voor MIND',
+      'story.mind.index': '01 &middot; Wat we bouwen',
+      'story.mind.heading': 'Even <em>uit je hoofd.</em>',
+      'story.mind.summary': 'Samen met MIND bouwen we een app die je helpt om even uit je hoofd te stappen. Geen zoveelste zoekmachine, maar kleine, laagdrempelige challenges, een paar rake woorden op het juiste moment, en de hulp van MIND afgestemd op waar jij mee zit.',
+      'story.goals.intro': 'Wat de app doet',
+      'story.goal1.h': 'Het weer in je hoofd.',
+      'story.goal1.p': 'Stem hoe je je voelt: zonnig, bewolkt, of ergens ertussenin. Zo zie je je eigen weer over de dagen heen, en voor MIND wordt het een landelijk middel om te peilen hoe het echt met jongeren gaat.',
+      'story.goal2.h': 'Challenges, geen to-do&rsquo;s.',
+      'story.goal2.p': 'Kleine opdrachten die je even uit je hoofd halen, plus quotes die blijven hangen. Laagdrempelig genoeg om ze &eacute;cht te doen.',
+      'story.goal3.h': 'MIND, op jouw maat.',
+      'story.goal3.p': 'De kennis en hulp die MIND al biedt, maar gefilterd op jouw interesses. Wat past komt naar je toe, in plaats van dat jij het moet zoeken.',
+      'story.route.index': '02 &middot; Werken onderweg',
+      'story.route.heading': 'Zes dagen. Zes etappes. <em>Elke dag verder.</em>',
+      'story.route.p': 'De kaart laat niet alleen zien waar we lopen. Elke etappe wordt ook een bouwsprint: luisteren onderweg, keuzes maken bij aankomst en zichtbaar delen wat er die dag is veranderd.',
+      'press.feature.lead': 'Deze zomer zit ons kantoor in <em>een rugzak.</em>',
+      'press.feature.summary1': 'De Camino staat voor vertraging en bezinning, AI voor snelheid en productiviteit. Wij brengen die werelden samen in &eacute;&eacute;n live-experiment.',
+      'press.feature.summary2': 'Onderweg bouwen we een app voor stichting MIND en leggen we het eerlijke proces vast: de hitte, de techniek, de gesprekken en alles wat anders loopt dan gepland.',
+      'verhaal.closing.p': 'We zoeken partners die willen bijdragen aan de bouw, productie en veilige overdracht van de app voor MIND. Met budget, expertise, hardware of bereik.',
+      'founders.role1': 'Partnerships & storytelling',
+      'founders.bio1': 'Caesar bouwt AI-producten en merkte hoe makkelijk je in een constante versnelling terechtkomt: dagenlang achter zijn bureau terwijl de zon buiten schijnt. De Camino is voor hem een bewuste tegenbeweging, en het verhaal dat mensen en partners in beweging brengt.',
+      'founders.role2': 'Product & AI',
+      'founders.bio2': 'Stijn merkte dat hij steeds meer in een prestatieleven terechtkwam en wil bewust stilstaan bij wat hij heeft. Op de Camino vertaalt hij de vraag van MIND naar heldere productkeuzes en combineert hij waar hij het gelukkigst van wordt: met AI bezig zijn en met vrienden weg.',
+      'founders.role3': 'Technology & build',
+      'founders.bio3': 'Max leidt de technische bouw van de app. Wandelen gaf hem rust in de coronatijd en zijn vader fietste ooit de pelgrimsroute naar Santiago. Zijn sneeuwbol-idee: pas als je stilstaat, valt alles langzaam op zijn plek.',
+    });
+
+    Object.assign(I18N.en, {
+      'meta.desc': 'Three AI founders walk 120 kilometres while building an app that makes MIND&rsquo;s knowledge and support personally accessible.',
+      'meta.descShort': 'Walk 120 kilometres. Build an app for MIND. Hand it over for free.',
+      'hero.tagline': 'Three AI founders turn the Camino into their office and build an app for MIND along the way.',
+      'intro.heading': 'Fast tech,<br><em>slow route.</em>',
+      'intro.body': 'We walk 120 kilometres from Tui to Santiago while building an app for the MIND foundation: low-threshold challenges to get you out of your head, with MIND&rsquo;s support tailored to you. On the Camino, we turn it into working software.',
+      'sponsor.intro': 'Sponsorship makes the Camino, the mini-doc and the build of the app for MIND possible. The app is refined with MIND and handed over for free.',
+      'plan.row2.d': 'Every stage is a build sprint for the MIND app: listening and dictating on the trail, designing and testing on arrival.',
+      'plan.row3.d': 'The working app goes to the MIND foundation for free, together with the story of how it was built.',
+      'announcement.label': 'The announcement',
+      'announcement.heading': 'Why we are moving our office <em>120 kilometres.</em>',
+      'announcement.copy': 'In 66 seconds, see the idea behind Back to Being: taking technology outside, building on the trail and leaving something useful with MIND.',
+      'announcement.play': 'Watch the film &middot; 01:06',
+      'announcement.fallback': 'Your browser does not support this video.',
+      'announcement.meta1': 'Back to Being &middot; announcement film',
+      'announcement.meta2': 'The world as our office',
+      'verhaal.h1': 'Working while <em>we walk.</em>',
+      'story.kicker': 'Our story',
+      'story.season': 'Tui &rarr; Santiago &middot; summer 2026',
+      'story.hero.lead': 'We are moving our office to the Camino. For six days we walk, build and document the process. The result: a working app that we hand over to the MIND foundation for free.',
+      'story.fact.km': 'kilometres walking',
+      'story.fact.days': 'days building',
+      'story.fact.product': 'app for MIND',
+      'story.mind.lockup': 'Project for MIND',
+      'story.mind.index': '01 &middot; What we build',
+      'story.mind.heading': 'A moment <em>out of your head.</em>',
+      'story.mind.summary': 'Together with MIND we build an app that helps you step out of your head for a moment. Not yet another search engine, but small, low-threshold challenges, a few words that land at the right time, and MIND&rsquo;s support tuned to whatever you&rsquo;re dealing with.',
+      'story.goals.intro': 'What the app does',
+      'story.goal1.h': 'The weather in your head.',
+      'story.goal1.p': 'Rate how you feel: sunny, cloudy, or somewhere in between. You watch your own weather across the days, and for MIND it becomes a nationwide way to gauge how young people are really doing.',
+      'story.goal2.h': 'Challenges, not to-dos.',
+      'story.goal2.p': 'Small prompts that pull you out of your head, plus quotes that stick. Low-threshold enough to actually do them.',
+      'story.goal3.h': 'MIND, tailored to you.',
+      'story.goal3.p': 'The knowledge and support MIND already offers, filtered to your interests. What fits comes to you, instead of you having to search for it.',
+      'story.route.index': '02 &middot; Working on the trail',
+      'story.route.heading': 'Six days. Six stages. <em>Moving forward every day.</em>',
+      'story.route.p': 'The map shows more than where we walk. Every stage is also a build sprint: listening on the trail, making decisions on arrival and sharing what changed that day.',
+      'press.feature.lead': 'This summer, our office fits in <em>a backpack.</em>',
+      'press.feature.summary1': 'The Camino stands for slowing down and reflection; AI for speed and productivity. We bring those worlds together in one live experiment.',
+      'press.feature.summary2': 'On the trail, we build an app for the MIND foundation and capture the honest process: the heat, the technology, the conversations and everything that goes differently than planned.',
+      'verhaal.closing.p': 'We are looking for partners who want to support the build, production and safe handover of the app for MIND with budget, expertise, hardware or reach.',
+      'founders.role1': 'Partnerships & storytelling',
+      'founders.bio1': 'Caesar builds AI products and noticed how easily you end up in constant acceleration: days behind a desk while the sun shines outside. For him the Camino is a deliberate counter-movement, and the story that gets people and partners moving.',
+      'founders.role2': 'Product & AI',
+      'founders.bio2': 'Stijn caught himself sliding into a life of pure performance and wants to deliberately pause to value what he has. On the Camino he turns MIND&rsquo;s question into clear product decisions, combining the two things he loves most: working with AI and being away with friends.',
+      'founders.role3': 'Technology & build',
+      'founders.bio3': 'Max leads the technical build of the app. Walking gave him calm during the pandemic, and his father once cycled the pilgrim route to Santiago. His snow-globe idea: only when you stand still does everything slowly settle into place.',
     });
 
     let caminoMapInstance = null;
@@ -3371,6 +4099,81 @@
     }
 
     /* ============================================================
+       STORY + ANNOUNCEMENT INTERACTIONS
+       ============================================================ */
+    let storyExperienceReady = false;
+
+    function setActiveStoryGoal(goal) {
+      const root = document.getElementById('page-verhaal');
+      if (!root || !goal) return;
+
+      root.querySelectorAll('.story-goal').forEach(item => {
+        item.classList.toggle('is-active', item === goal);
+      });
+    }
+
+    function initStoryExperience() {
+      if (storyExperienceReady) return;
+      const root = document.getElementById('page-verhaal');
+      if (!root) return;
+      storyExperienceReady = true;
+
+      const revealItems = root.querySelectorAll('[data-story-reveal]');
+      const goals = root.querySelectorAll('.story-goal');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reducedMotion || typeof IntersectionObserver === 'undefined') {
+        revealItems.forEach(item => item.classList.add('is-visible'));
+      } else {
+        root.classList.add('story-motion-ready');
+        const revealObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            revealObserver.unobserve(entry.target);
+          });
+        }, { threshold: 0.14, rootMargin: '0px 0px -7% 0px' });
+        revealItems.forEach(item => revealObserver.observe(item));
+
+        const goalObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) setActiveStoryGoal(entry.target);
+          });
+        }, { threshold: 0.2, rootMargin: '-34% 0px -42% 0px' });
+        goals.forEach(goal => goalObserver.observe(goal));
+      }
+
+      goals.forEach(goal => {
+        goal.addEventListener('mouseenter', () => setActiveStoryGoal(goal));
+        goal.addEventListener('focus', () => setActiveStoryGoal(goal));
+        goal.addEventListener('click', () => setActiveStoryGoal(goal));
+      });
+    }
+
+    function initAnnouncementVideo() {
+      const video = document.getElementById('announcementVideo');
+      const playButton = document.getElementById('announcementPlay');
+      const frame = document.getElementById('announcementFrame');
+      if (!video || !playButton || !frame || video.dataset.initialized) return;
+      video.dataset.initialized = 'true';
+
+      playButton.addEventListener('click', () => {
+        video.setAttribute('controls', '');
+        frame.classList.add('is-playing');
+        const playback = video.play();
+        if (playback && typeof playback.catch === 'function') {
+          playback.catch(() => frame.classList.remove('is-playing'));
+        }
+      });
+
+      video.addEventListener('ended', () => {
+        frame.classList.remove('is-playing');
+        video.removeAttribute('controls');
+        video.currentTime = 0;
+      });
+    }
+
+    /* ============================================================
        LANGUAGE SWITCHING
        ============================================================ */
     function detectInitialLang() {
@@ -3482,6 +4285,7 @@
       }
 
       if (name === 'verhaal') {
+        initStoryExperience();
         // Place the route block first so the .story-route-bottom layout
         // (aspect-ratio: 4/3) is in the DOM, then wait until the wrap
         // actually has dimensions before MapLibre measures the container.
@@ -3551,6 +4355,7 @@
       btn.addEventListener('click', () => copyContactValue(btn));
     });
 
+    initAnnouncementVideo();
     setLanguage(detectInitialLang());
     showPage('home');
   </script>
