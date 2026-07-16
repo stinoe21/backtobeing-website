@@ -349,15 +349,20 @@
       width: 100%;
       display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
     }
-    .partners-tier-sponsors { gap: 2.5rem 4rem; }
+    .partners-tier-sponsors {
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 3rem 4rem;
+    }
     .partners-tier-partners { gap: 2rem 3.25rem; }
     .partner-logo {
       display: flex; align-items: center; justify-content: center;
       min-height: 44px;
     }
     .partner-logo img { width: auto; max-width: 100%; }
-    /* witte logo's omzetten naar zwart op cream-achtergrond */
-    .partner-logo.is-light img { filter: invert(1); }
+    /* Alle sponsor- en partnerlogo's als zwart beeldmerk tonen */
+    .partners-group .partner-logo img { filter: brightness(0); }
     .press-logo img { max-height: 32px; }
 
     /* "Even groot" binnen een niveau = gelijke visuele oppervlakte (de vormen verschillen sterk).
@@ -374,15 +379,17 @@
     .partner-logo img[src="Lerai.webp"]      { height: 35px; } /* Partner */
     .partner-logo img[src="TAG_black.svg"]   { height: 26px; } /* Partner */
 
-    /* Sponsors met aansluitdatum: logo in vaste band zodat de datums uitlijnen */
     .partner-item { display: flex; flex-direction: column; align-items: center; gap: 0.95rem; }
     .partner-item .partner-logo { min-height: 84px; }
-    /* Wispr + n8n zijn de twee hoofdsponsors: samen op een eigen volle rij bovenaan */
+    /* Zelfde 2-boven-3-onder compositie als de sponsor-endcard */
     .partners-lead {
-      flex-basis: 100%;
-      display: flex; flex-wrap: wrap;
-      align-items: flex-end; justify-content: center;
-      gap: 2.25rem 4rem;
+      grid-column: 1 / -1;
+      width: min(760px, 76%);
+      margin-inline: auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: center;
+      gap: 4rem;
     }
     .partner-since {
       font-family: var(--subhead);
@@ -1540,7 +1547,7 @@
       .partners-group { gap: 1.6rem; }
       .partners-tier-sponsors { gap: 1.5rem 2.5rem; }
       .partners-tier-partners { gap: 1.25rem 2rem; }
-      .partners-lead { gap: 1.5rem 2.5rem; }
+      .partners-lead { width: min(520px, 78%); gap: 2.5rem; }
       .partner-logo img[src="wispr.webp"]      { height: 44px; }
       .partner-logo img[src="n8n-logo.svg"]    { height: 28px; }
       .partner-logo img[src="remote.svg"]      { height: 60px; }
@@ -1831,7 +1838,7 @@
 
     /* HOME — announcement film */
     .announcement-section {
-      padding: clamp(5rem, 10vw, 9rem) max(1.25rem, 6vw);
+      padding: clamp(5rem, 10vw, 9rem) 0;
       background: var(--canvas);
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
@@ -1839,6 +1846,7 @@
     .announcement-inner {
       width: min(100%, 1320px);
       margin-inline: auto;
+      padding-inline: max(1.25rem, 6vw);
     }
     .announcement-header {
       display: grid;
@@ -1866,12 +1874,17 @@
       line-height: 1.72;
       color: var(--ink-soft);
     }
+    /* Stage: default = simple framed video (ook de no-JS / reduced-motion staat) */
+    .announcement-stage { position: relative; }
+    .announcement-sticky { padding-inline: max(1.25rem, 6vw); }
     .announcement-frame {
       position: relative;
       overflow: hidden;
+      width: min(1180px, 100%);
+      margin-inline: auto;
       aspect-ratio: 16 / 9;
       background: var(--charcoal);
-      border-radius: 0.25rem;
+      border-radius: 0.5rem;
       box-shadow: 0 2rem 5rem -3rem rgba(22,22,22,0.52);
     }
     .announcement-frame video {
@@ -1879,6 +1892,34 @@
       height: 100%;
       display: block;
       object-fit: cover;
+    }
+    /* Takeover: JS voegt .is-takeover toe -> lange track, sticky pin, frame vouwt uit naar volledig beeld */
+    .announcement-stage.is-takeover { height: 200vh; }
+    .announcement-stage.is-takeover .announcement-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding-inline: 0;
+    }
+    .announcement-stage.is-takeover .announcement-frame {
+      width: min(1180px, 90vw);
+      margin-inline: 0;
+      will-change: width, height, border-radius;
+    }
+    .announcement-frame.is-full { box-shadow: none; }
+    /* Verberg de nav tijdens het fullscreen-moment van de film */
+    .site-nav {
+      transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease, transform 0.4s ease, opacity 0.4s ease;
+    }
+    html.announcement-immersive .site-nav {
+      opacity: 0;
+      transform: translateY(-105%);
+      pointer-events: none;
     }
     .announcement-play {
       position: absolute;
@@ -1901,6 +1942,7 @@
       opacity: 0;
       pointer-events: none;
     }
+    .announcement-stage.is-takeover .announcement-play { display: none; }
     .announcement-play-icon {
       width: clamp(4.25rem, 7vw, 6.5rem);
       aspect-ratio: 1;
@@ -1929,6 +1971,38 @@
       text-transform: uppercase;
       text-shadow: 0 1px 14px rgba(0,0,0,0.35);
     }
+    /* Geluid-knop (alleen in takeover) */
+    .announcement-sound {
+      position: absolute;
+      left: clamp(0.9rem, 2vw, 1.5rem);
+      bottom: clamp(0.9rem, 2vw, 1.5rem);
+      z-index: 3;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid rgba(255,254,241,0.28);
+      border-radius: 999px;
+      background: rgba(22,22,22,0.5);
+      backdrop-filter: blur(10px);
+      color: var(--canvas);
+      cursor: pointer;
+      font-family: var(--subhead);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.3s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    .announcement-stage.is-takeover .announcement-sound { display: inline-flex; }
+    .announcement-stage.is-takeover .announcement-frame.is-live .announcement-sound { opacity: 1; }
+    .announcement-sound:hover { background: rgba(22,22,22,0.72); border-color: rgba(255,254,241,0.55); }
+    .announcement-sound svg { width: 1rem; height: 1rem; flex: 0 0 auto; }
+    .announcement-sound .icon-sound { display: none; }
+    .announcement-frame.is-unmuted .announcement-sound .icon-muted { display: none; }
+    .announcement-frame.is-unmuted .announcement-sound .icon-sound { display: inline; }
+
     .announcement-meta {
       display: flex;
       justify-content: space-between;
@@ -1948,11 +2022,10 @@
       }
     }
     @media (max-width: 600px) {
-      .announcement-section { padding-inline: 1rem; }
-      .announcement-frame { aspect-ratio: 4 / 3; }
       .announcement-frame video { object-position: center; }
       .announcement-meta { flex-direction: column; }
       .announcement-meta span:last-child { color: var(--green); }
+      .announcement-stage.is-takeover { height: 180vh; }
     }
 
     /* ========= VERHAAL — redactionele scrollpagina 2026 ========= */
@@ -2492,7 +2565,7 @@
       </div>
     </section>
 
-    <!-- HOME — announcement film, intentionally lazy-loaded -->
+    <!-- HOME — announcement film (scroll-driven takeover) -->
     <section class="announcement-section" aria-labelledby="announcementTitle">
       <div class="announcement-inner">
         <div class="announcement-header">
@@ -2502,18 +2575,31 @@
           </div>
           <p class="announcement-copy" data-i18n="announcement.copy">In 66 seconden zie je het idee achter Back to Being: technologie meenemen naar buiten, onderweg bouwen en iets werkends achterlaten voor MIND.</p>
         </div>
-        <div class="announcement-frame" id="announcementFrame">
-          <video id="announcementVideo" preload="none" playsinline poster="announcement-poster.jpg">
-            <source src="Official Artsy vid.mp4" type="video/mp4" />
-            <span data-i18n="announcement.fallback">Je browser ondersteunt deze video niet.</span>
-          </video>
-          <button class="announcement-play" id="announcementPlay" type="button" aria-controls="announcementVideo" aria-label="Speel de announcement-video af">
-            <span class="announcement-play-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.7v12.6c0 .8.9 1.3 1.6.8l9-6.3c.6-.4.6-1.2 0-1.6l-9-6.3C8.9 4.4 8 4.9 8 5.7Z"/></svg>
-            </span>
-            <span class="announcement-play-label" data-i18n="announcement.play">Bekijk de film · 01:06</span>
-          </button>
+      </div>
+
+      <div class="announcement-stage" id="announcementStage">
+        <div class="announcement-sticky">
+          <div class="announcement-frame" id="announcementFrame">
+            <video id="announcementVideo" preload="none" playsinline muted poster="announcement-poster.jpg">
+              <source src="Official Artsy vid.mp4" type="video/mp4" />
+              <span data-i18n="announcement.fallback">Je browser ondersteunt deze video niet.</span>
+            </video>
+            <button class="announcement-play" id="announcementPlay" type="button" aria-controls="announcementVideo" aria-label="Speel de announcement-video af">
+              <span class="announcement-play-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.7v12.6c0 .8.9 1.3 1.6.8l9-6.3c.6-.4.6-1.2 0-1.6l-9-6.3C8.9 4.4 8 4.9 8 5.7Z"/></svg>
+              </span>
+              <span class="announcement-play-label" data-i18n="announcement.play">Bekijk de film · 01:06</span>
+            </button>
+            <button class="announcement-sound" id="announcementSound" type="button" aria-pressed="false" aria-label="Zet geluid aan">
+              <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="m23 9-6 6M17 9l6 6"/></svg>
+              <svg class="icon-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg>
+              <span class="announcement-sound-label" data-i18n="announcement.sound">Geluid</span>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <div class="announcement-inner">
         <div class="announcement-meta">
           <span data-i18n="announcement.meta1">Back to Being · announcement film</span>
           <span data-i18n="announcement.meta2">The world as our office</span>
@@ -2530,24 +2616,19 @@
             <div class="partners-lead">
               <div class="partner-item partner-item-lead">
                 <a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a>
-                <span class="partner-since" data-i18n="partners.since.wispr">Sinds 6 juli 2026</span>
               </div>
               <div class="partner-item partner-item-lead">
                 <a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
-                <span class="partner-since" data-i18n="partners.since.remote">Sinds 17 juni 2026</span>
               </div>
             </div>
             <div class="partner-item">
-              <a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer"><img src="n8n-logo.svg" alt="n8n" loading="lazy" /></a>
-              <span class="partner-since" data-i18n="partners.since.n8n">Sinds 15 juli 2026</span>
-            </div>
-            <div class="partner-item">
               <a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" loading="lazy" /></a>
-              <span class="partner-since" data-i18n="partners.since.helloprint">Sinds 19 juni 2026</span>
             </div>
             <div class="partner-item">
               <a class="partner-logo" href="https://watermelon.ai/" target="_blank" rel="noopener noreferrer"><img src="watermelon.svg" alt="Watermelon AI" loading="lazy" /></a>
-              <span class="partner-since" data-i18n="partners.since.watermelon">Sinds 3 juli 2026</span>
+            </div>
+            <div class="partner-item">
+              <a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer"><img src="n8n-logo.svg" alt="n8n" loading="lazy" /></a>
             </div>
           </div>
         </div>
@@ -2913,24 +2994,19 @@
             <div class="partners-lead">
               <div class="partner-item partner-item-lead">
                 <a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a>
-                <span class="partner-since" data-i18n="partners.since.wispr">Sinds 6 juli 2026</span>
               </div>
               <div class="partner-item partner-item-lead">
                 <a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
-                <span class="partner-since" data-i18n="partners.since.remote">Sinds 17 juni 2026</span>
               </div>
             </div>
             <div class="partner-item">
-              <a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer"><img src="n8n-logo.svg" alt="n8n" loading="lazy" /></a>
-              <span class="partner-since" data-i18n="partners.since.n8n">Sinds 15 juli 2026</span>
-            </div>
-            <div class="partner-item">
               <a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" loading="lazy" /></a>
-              <span class="partner-since" data-i18n="partners.since.helloprint">Sinds 19 juni 2026</span>
             </div>
             <div class="partner-item">
               <a class="partner-logo" href="https://watermelon.ai/" target="_blank" rel="noopener noreferrer"><img src="watermelon.svg" alt="Watermelon AI" loading="lazy" /></a>
-              <span class="partner-since" data-i18n="partners.since.watermelon">Sinds 3 juli 2026</span>
+            </div>
+            <div class="partner-item">
+              <a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer"><img src="n8n-logo.svg" alt="n8n" loading="lazy" /></a>
             </div>
           </div>
         </div>
@@ -3350,7 +3426,7 @@
         'plan.h':           'Lopen. Bouwen.<br><em>Overdragen.</em>',
         'plan.body':        'Drie simpele stappen. Geen kantoor, geen vergaderzaal. Wel ritme, reflectie en zichtbaar bouwen. Alles vastgelegd in een mini-docu.',
         'plan.row1.t':      'We lopen.',
-        'plan.row1.d':      '120 km in 6 dagen, Tui naar Santiago, 3 rugzakken.',
+        'plan.row1.d':      '120 km in 6 dagen, Tui naar Santiago, ons kantoor in drie rugzakken.',
         'plan.row2.t':      'We bouwen onderweg.',
         'plan.row2.d':      "Live aan de AI-tool werken. Handsfree via spraak en smart glasses, camera's leggen het proces vast.",
         'plan.row3.t':      'We dragen het over.',
@@ -3362,10 +3438,10 @@
         'return.body':      'Geen vast pakket. Wat je terugkrijgt hangt af van wat je inbrengt, en dat bouwen we samen op in één gesprek. Een paar richtingen:',
         'return.row1.t':    'Zichtbaar in de mini-docu <span class="title-tag">bereik</span>',
         'return.row1.d':    'Van een vermelding tot je merk verbonden aan zes dagen bouwen, lopen en eerlijk vastleggen. Distributie via TikTok, Instagram en YouTube.',
-        'return.row2.t':    'Je team even naar buiten <span class="title-tag">uniek</span>',
-        'return.row2.d':    'Een walking workshop + AI-sessie bij jouw team, als dat bij jullie past. Wij brengen Back to Being naar je bedrijf.',
+        'return.row2.t':    'Content voor je eigen kanalen <span class="title-tag">content</span>',
+        'return.row2.d':    'Beelden, quotes en updates uit de reis, klaar om op je eigen socials te delen.',
         'return.row3.t':    'Of iets heel anders <span class="title-tag">op maat</span>',
-        'return.row3.d':    'Hardware, AI-credits, bereik of een eigen invulling. In één gesprek kijken we wat voor jou het meeste waarde heeft.',
+        'return.row3.d':    'Hardware, AI-credits of een eigen invulling. In één gesprek kijken we wat voor jou het meeste waarde heeft.',
 
         // contact
         'contact.pill':         'Contact',
@@ -3533,7 +3609,7 @@
         'plan.h':           'Walk. Build.<br><em>Hand it over.</em>',
         'plan.body':        'Three simple steps. No office, no meeting room. Just rhythm, reflection and building in plain sight. All captured in a mini-doc.',
         'plan.row1.t':      'We walk.',
-        'plan.row1.d':      '120 km in 6 days, Tui to Santiago, 3 backpacks.',
+        'plan.row1.d':      '120 km in 6 days, Tui to Santiago, our office in three backpacks.',
         'plan.row2.t':      'We build along the way.',
         'plan.row2.d':      'Working on the AI tool live. Hands-free via voice and smart glasses, cameras capture the process.',
         'plan.row3.t':      'We hand it over.',
@@ -3545,10 +3621,10 @@
         'return.body':      'No fixed package. What you get back depends on what you bring, and we shape it together in one conversation. A few directions:',
         'return.row1.t':    'Visible in the mini-doc <span class="title-tag">reach</span>',
         'return.row1.d':    'From a mention to your brand tied to six days of building, walking and capturing it honestly. Distributed via TikTok, Instagram and YouTube.',
-        'return.row2.t':    'Your team, briefly outside <span class="title-tag">unique</span>',
-        'return.row2.d':    'A walking workshop + AI session with your team, if that fits you. We bring Back to Being to your company.',
+        'return.row2.t':    'Content for your own channels <span class="title-tag">content</span>',
+        'return.row2.d':    'Images, quotes and updates from the journey, ready to post on your own channels.',
         'return.row3.t':    'Or something else entirely <span class="title-tag">tailored</span>',
-        'return.row3.d':    'Hardware, AI credits, reach or your own idea. In one conversation we figure out what creates the most value for you.',
+        'return.row3.d':    'Hardware, AI credits or your own idea. In one conversation we figure out what creates the most value for you.',
 
         // contact
         'contact.pill':         'Contact',
@@ -3632,6 +3708,7 @@
       'announcement.heading': 'Waarom we ons kantoor <em>120 kilometer verplaatsen.</em>',
       'announcement.copy': 'In 66 seconden zie je het idee achter Back to Being: technologie meenemen naar buiten, onderweg bouwen en iets werkends achterlaten voor MIND.',
       'announcement.play': 'Bekijk de film &middot; 01:06',
+      'announcement.sound': 'Geluid',
       'announcement.fallback': 'Je browser ondersteunt deze video niet.',
       'announcement.meta1': 'Back to Being &middot; announcement film',
       'announcement.meta2': 'The world as our office',
@@ -3681,6 +3758,7 @@
       'announcement.heading': 'Why we are moving our office <em>120 kilometres.</em>',
       'announcement.copy': 'In 66 seconds, see the idea behind Back to Being: taking technology outside, building on the trail and leaving something useful with MIND.',
       'announcement.play': 'Watch the film &middot; 01:06',
+      'announcement.sound': 'Sound',
       'announcement.fallback': 'Your browser does not support this video.',
       'announcement.meta1': 'Back to Being &middot; announcement film',
       'announcement.meta2': 'The world as our office',
@@ -4154,10 +4232,15 @@
       const video = document.getElementById('announcementVideo');
       const playButton = document.getElementById('announcementPlay');
       const frame = document.getElementById('announcementFrame');
+      const stage = document.getElementById('announcementStage');
+      const sticky = frame ? frame.closest('.announcement-sticky') : null;
+      const soundBtn = document.getElementById('announcementSound');
       if (!video || !playButton || !frame || video.dataset.initialized) return;
       video.dataset.initialized = 'true';
 
+      // Klik-om-af-te-spelen: fallback en de reduced-motion / no-JS-modus
       playButton.addEventListener('click', () => {
+        video.muted = false;
         video.setAttribute('controls', '');
         frame.classList.add('is-playing');
         const playback = video.play();
@@ -4165,12 +4248,79 @@
           playback.catch(() => frame.classList.remove('is-playing'));
         }
       });
-
       video.addEventListener('ended', () => {
+        if (stage && stage.classList.contains('is-takeover')) return;
         frame.classList.remove('is-playing');
         video.removeAttribute('controls');
         video.currentTime = 0;
       });
+
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !stage || !sticky || !('IntersectionObserver' in window)) return;
+
+      // ---- Scroll-takeover ----
+      stage.classList.add('is-takeover');
+      video.loop = true;
+      video.muted = true;
+
+      // Automatisch (muted) afspelen zolang de film in beeld is
+      let started = false;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            frame.classList.add('is-live');
+            const p = video.play();
+            if (p && typeof p.catch === 'function') p.catch(() => {});
+            started = true;
+          } else if (started) {
+            video.pause();
+          }
+        });
+      }, { threshold: 0.15 });
+      io.observe(frame);
+
+      // Geluid-knop
+      if (soundBtn) {
+        soundBtn.addEventListener('click', () => {
+          video.muted = !video.muted;
+          const on = !video.muted;
+          frame.classList.toggle('is-unmuted', on);
+          soundBtn.setAttribute('aria-pressed', String(on));
+          soundBtn.setAttribute('aria-label', on ? 'Zet geluid uit' : 'Zet geluid aan');
+          if (on) { const p = video.play(); if (p && typeof p.catch === 'function') p.catch(() => {}); }
+        });
+      }
+
+      // Scroll-scrub: frame vouwt uit van gekaderd naar volledig beeld
+      const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+      const root = document.documentElement;
+      const setImmersive = (on) => root.classList.toggle('announcement-immersive', on);
+      let ticking = false;
+      function apply() {
+        ticking = false;
+        if (!stage.offsetParent) { setImmersive(false); return; } // home-pagina niet zichtbaar
+        const vh = sticky.clientHeight || window.innerHeight;
+        const vw = sticky.clientWidth || window.innerWidth;
+        const rect = stage.getBoundingClientRect();
+        if (rect.top > vh || rect.bottom < 0) { setImmersive(false); return; }
+        const pinned = Math.max(1, stage.offsetHeight - vh);
+        const scrolled = Math.min(Math.max(-rect.top, 0), pinned);
+        const p = Math.min(scrolled / (pinned * 0.6), 1);
+        const e = easeInOut(p);
+        const restW = Math.min(1180, vw * 0.9, vh * 0.82 * (16 / 9));
+        const restH = restW * 9 / 16;
+        frame.style.width = (restW + (vw - restW) * e) + 'px';
+        frame.style.height = (restH + (vh - restH) * e) + 'px';
+        frame.style.borderRadius = (10 * (1 - e)) + 'px';
+        frame.classList.toggle('is-full', e > 0.985);
+        setImmersive(e > 0.55);
+      }
+      function onScroll() {
+        if (!ticking) { ticking = true; requestAnimationFrame(apply); }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      apply();
     }
 
     /* ============================================================
