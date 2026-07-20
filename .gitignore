@@ -27,3 +27,9 @@ camino-sheets*.json
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Lokale werk-/temp-output (screenshots, chrome-profielen, render-frames)
+.tmp/
+
+# Grote video-masters (te groot voor GitHub; alleen de gecomprimeerde web-versie committen)
+back_to_being_intro_video_v5.mp4

@@ -360,7 +360,7 @@
       display: flex; align-items: center; justify-content: center;
       min-height: 44px;
     }
-    .partner-logo img { width: auto; max-width: 100%; }
+    .partner-logo img { width: auto; max-width: 100%; object-fit: contain; }
     /* Alle sponsor- en partnerlogo's als zwart beeldmerk tonen */
     .partners-group .partner-logo img { filter: brightness(0); }
     .press-logo img { max-height: 32px; }
@@ -390,11 +390,6 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       align-items: center;
       gap: 4rem;
-    }
-    .partner-since {
-      font-family: var(--subhead);
-      font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--ink-soft);
     }
 
     /* PRESS — "in de pers" strip (één logo, gecentreerd, klikbaar) */
@@ -2581,7 +2576,7 @@
         <div class="announcement-sticky">
           <div class="announcement-frame" id="announcementFrame">
             <video id="announcementVideo" preload="none" playsinline muted poster="announcement-poster.jpg">
-              <source src="Official Artsy vid.mp4" type="video/mp4" />
+              <source src="back-to-being-intro-1080p.mp4" type="video/mp4" />
               <span data-i18n="announcement.fallback">Je browser ondersteunt deze video niet.</span>
             </video>
             <button class="announcement-play" id="announcementPlay" type="button" aria-controls="announcementVideo" aria-label="Speel de announcement-video af">
@@ -3365,11 +3360,6 @@
         'partners.sponsor.label': 'Eerste partners aan boord',
         'partners.group.sponsors': 'Sponsors',
         'partners.group.partners': 'Partners',
-        'partners.since.wispr':      'Sinds 6 juli 2026',
-        'partners.since.n8n':        'Sinds 15 juli 2026',
-        'partners.since.remote':     'Sinds 17 juni 2026',
-        'partners.since.helloprint': 'Sinds 19 juni 2026',
-        'partners.since.watermelon': 'Sinds 3 juli 2026',
         'partners.lead.new':      '<span class="dot"></span>Net aangesloten &middot; 17 juni 2026',
         'partners.lead.new2':     '<span class="dot"></span>Net aangesloten &middot; 19 juni 2026',
         'partners.lead.new3':     '<span class="dot"></span>Net aangesloten &middot; 22 juni 2026',
@@ -3548,11 +3538,6 @@
         'partners.sponsor.label': 'First partners on board',
         'partners.group.sponsors': 'Sponsors',
         'partners.group.partners': 'Partners',
-        'partners.since.wispr':      'Since 6 July 2026',
-        'partners.since.n8n':        'Since 15 July 2026',
-        'partners.since.remote':     'Since 17 June 2026',
-        'partners.since.helloprint': 'Since 19 June 2026',
-        'partners.since.watermelon': 'Since 3 July 2026',
         'partners.lead.new':      '<span class="dot"></span>Just joined &middot; 17 June 2026',
         'partners.lead.new2':     '<span class="dot"></span>Just joined &middot; 19 June 2026',
         'partners.lead.new3':     '<span class="dot"></span>Just joined &middot; 22 June 2026',
