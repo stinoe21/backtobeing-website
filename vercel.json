@@ -10,7 +10,7 @@
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
-        { "key": "Content-Security-Policy-Report-Only", "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data: blob: https://*.basemaps.cartocdn.com https://basemaps.cartocdn.com; media-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; script-src 'self' 'unsafe-inline' https://unpkg.com; connect-src 'self' https://*.basemaps.cartocdn.com https://basemaps.cartocdn.com; worker-src 'self' blob:; upgrade-insecure-requests" }
+        { "key": "Content-Security-Policy-Report-Only", "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data: blob: https://*.basemaps.cartocdn.com https://basemaps.cartocdn.com; media-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; script-src 'self' 'unsafe-inline' https://unpkg.com https://embed.typeform.com; connect-src 'self' https://*.basemaps.cartocdn.com https://basemaps.cartocdn.com https://*.typeform.com; frame-src https://*.typeform.com; worker-src 'self' blob:; upgrade-insecure-requests" }
       ]
     }
   ]

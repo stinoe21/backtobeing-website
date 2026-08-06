@@ -2432,22 +2432,12 @@
     .beta-field input:focus { outline: none; border-color: var(--tree); }
     .beta-field input:focus-visible { outline: 2px solid var(--tree); outline-offset: 2px; }
     .beta-submit { justify-content: center; width: 100%; }
-    .beta-consent {
-      display: flex; align-items: flex-start; gap: 0.7rem;
-      font-size: 0.88rem; line-height: 1.55; color: var(--ink);
-      cursor: pointer;
-    }
-    .beta-consent input {
-      width: 1.15rem; height: 1.15rem; margin-top: 0.15rem; flex: 0 0 auto;
-      accent-color: var(--tree);
-    }
-    .beta-consent a { color: inherit; border-bottom: 1px solid rgba(22,22,22,0.35); }
     .beta-note { font-size: 0.82rem; line-height: 1.55; color: var(--ink-soft); }
+    .beta-note a { color: inherit; border-bottom: 1px solid rgba(22,22,22,0.35); }
     .beta-status { font-size: 0.9rem; line-height: 1.55; min-height: 1.2em; }
     .beta-status.is-error { color: #8A2A1F; }
     .beta-form.is-done .beta-field,
     .beta-form.is-done .beta-submit,
-    .beta-form.is-done .beta-consent,
     .beta-form.is-done .beta-note { display: none; }
 
     .story-route-article {
@@ -2984,16 +2974,8 @@
               <label for="betaEmail" data-i18n="beta.email.label">E-mailadres*</label>
               <input type="email" id="betaEmail" name="email" required autocomplete="email" placeholder="jouw@email.nl" />
             </div>
-            <div class="beta-field">
-              <label for="betaName" data-i18n="beta.name.label">Naam (optioneel)</label>
-              <input type="text" id="betaName" name="name" autocomplete="name" placeholder="Je naam" />
-            </div>
             <button class="btn beta-submit" type="submit" data-i18n="beta.cta">Aanmelden</button>
-            <label class="beta-consent" for="betaConsent">
-              <input type="checkbox" id="betaConsent" name="consent" required />
-              <span data-i18n="beta.consent">Ik ga akkoord met de verwerking van mijn gegevens volgens de <a href="privacybeleid.html">privacyverklaring</a>.</span>
-            </label>
-            <p class="beta-note" data-i18n="beta.note">We gebruiken je gegevens alleen voor contact over de beta. Uitschrijven kan altijd.</p>
+            <p class="beta-note" data-i18n="beta.note">Je maakt het aanmelden af in twee vragen. We gebruiken je gegevens alleen voor contact over de beta en je kunt je altijd uitschrijven. Zie de <a href="privacybeleid.html">privacyverklaring</a>.</p>
             <p class="beta-status" id="betaStatus" role="status" aria-live="polite"></p>
           </form>
         </div>
@@ -3633,10 +3615,8 @@
       'beta.point1': 'Vroege toegang tot het mentale weerbericht.',
       'beta.point2': 'E&eacute;n mail als we live gaan, verder niets.',
       'beta.email.label': 'E-mailadres*',
-      'beta.name.label': 'Naam (optioneel)',
       'beta.cta': 'Aanmelden',
-      'beta.consent': 'Ik ga akkoord met de verwerking van mijn gegevens volgens de <a href="privacybeleid.html">privacyverklaring</a>.',
-      'beta.note': 'We gebruiken je gegevens alleen voor contact over de beta. Uitschrijven kan altijd.',
+      'beta.note': 'Je maakt het aanmelden af in twee vragen. We gebruiken je gegevens alleen voor contact over de beta en je kunt je altijd uitschrijven. Zie de <a href="privacybeleid.html">privacyverklaring</a>.',
       'intro.heading': "Ons kantoor past deze zomer<br><em>in een rugzak.</em>",
       'intro.body': "We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype.",
       'plan.row2.d': 'Elke etappe is een bouwsprint voor de MIND-app: onderweg luisteren en inspreken, bij aankomst ontwerpen en testen.',
@@ -3685,10 +3665,8 @@
       'beta.point1': 'Early access to the mental weather report.',
       'beta.point2': 'One email when we go live, nothing else.',
       'beta.email.label': 'Email address*',
-      'beta.name.label': 'Name (optional)',
       'beta.cta': 'Sign up',
-      'beta.consent': 'I agree to my data being processed as described in the <a href="privacybeleid.html">privacy statement</a>.',
-      'beta.note': 'We only use your details to contact you about the beta. You can unsubscribe at any time.',
+      'beta.note': 'You finish signing up in two questions. We only use your details to contact you about the beta, and you can unsubscribe at any time. See the <a href="privacybeleid.html">privacy statement</a>.',
       'intro.heading': "This summer our office fits<br><em>in a backpack.</em>",
       'intro.body': "We walk 120 kilometres from Tui to Santiago and build an app for the MIND foundation along the way: one question a day about how you are doing, answered with a weather type.",
       'plan.row2.d': 'Every stage is a build sprint for the MIND app: listening and dictating on the trail, designing and testing on arrival.',
@@ -4360,10 +4338,12 @@
     tickCountdown();
     setInterval(tickCountdown, 1000);
 
-    /* ---------- Aanmelden voor de beta ---------- */
-    // Zet hier het endpoint van het formulier (Formspree, Tally, eigen API).
-    // Zolang dit leeg is opent het formulier een vooringevulde mail als terugval.
-    const BETA_ENDPOINT = '';
+    /* ---------- Aanmelden voor de beta (Typeform) ---------- */
+    // Vul hier het Typeform-id in: het stuk achter /to/ in de deel-URL.
+    // Bijvoorbeeld https://form.typeform.com/to/AbC12dEf  ->  'AbC12dEf'
+    // Zolang dit leeg is valt het formulier terug op een vooringevulde mail.
+    const TYPEFORM_ID = '';
+    const TYPEFORM_EMBED = 'https://embed.typeform.com/next/embed.js';
     const BETA_FALLBACK_MAIL = 'Caesar.schoorl@gmail.com';
 
     (function initBetaForm() {
@@ -4374,19 +4354,15 @@
       const COPY = {
         nl: {
           email:   'Vul een geldig e-mailadres in.',
-          consent: 'Zet even een vinkje bij de privacyverklaring.',
-          sending: 'Bezig met versturen...',
-          done:    'Gelukt. Je hoort van ons zodra de beta klaarstaat.',
-          mail:    'Je mailprogramma opent met een vooringevuld bericht. Versturen en je staat op de lijst.',
-          error:   'Dat ging mis. Probeer het later nog eens of mail ons.'
+          opening: 'Formulier openen...',
+          opened:  'Het formulier staat open. Nog twee vragen en je staat op de lijst.',
+          mail:    'Je mailprogramma opent met een vooringevuld bericht. Versturen en je staat op de lijst.'
         },
         en: {
           email:   'Please enter a valid email address.',
-          consent: 'Please tick the privacy statement box.',
-          sending: 'Sending...',
-          done:    'Done. We will be in touch when the beta is ready.',
-          mail:    'Your mail app opens with a prefilled message. Send it and you are on the list.',
-          error:   'That did not work. Please try again later or email us.'
+          opening: 'Opening the form...',
+          opened:  'The form is open. Two more questions and you are on the list.',
+          mail:    'Your mail app opens with a prefilled message. Send it and you are on the list.'
         }
       };
       const t = key => COPY[currentLang()][key];
@@ -4396,37 +4372,62 @@
         status.classList.toggle('is-error', !!isError);
       }
 
+      // De embed-SDK laden we pas bij de eerste klik: wie zich niet aanmeldt,
+      // haalt ook geen script van typeform.com binnen.
+      let sdkPromise = null;
+      function loadTypeform() {
+        if (window.tf) return Promise.resolve(window.tf);
+        if (sdkPromise) return sdkPromise;
+        sdkPromise = new Promise((resolve, reject) => {
+          const tag = document.createElement('script');
+          tag.src = TYPEFORM_EMBED;
+          tag.async = true;
+          tag.onload  = () => (window.tf ? resolve(window.tf) : reject(new Error('geen window.tf')));
+          tag.onerror = () => reject(new Error('script kon niet laden'));
+          document.head.appendChild(tag);
+        });
+        return sdkPromise;
+      }
+
+      // Terugval als de SDK niet laadt of de API anders blijkt: gewoon een nieuw tabblad.
+      function openInTab(email) {
+        const url = 'https://form.typeform.com/to/' + TYPEFORM_ID +
+                    '#email=' + encodeURIComponent(email) +
+                    '&lang=' + encodeURIComponent(currentLang());
+        window.open(url, '_blank', 'noopener');
+      }
+
       form.addEventListener('submit', async event => {
         event.preventDefault();
-        const email   = form.email.value.trim();
-        const name    = form.name.value.trim();
-        const consent = form.consent.checked;
+        const email = form.email.value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          say(t('email'), true);
+          form.email.focus();
+          return;
+        }
 
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { say(t('email'), true); form.email.focus(); return; }
-        if (!consent) { say(t('consent'), true); form.consent.focus(); return; }
-
-        if (!BETA_ENDPOINT) {
+        if (!TYPEFORM_ID) {
           const subject = encodeURIComponent('Aanmelding beta Back to Being');
-          const body    = encodeURIComponent('E-mail: ' + email + '\nNaam: ' + (name || '-'));
+          const body    = encodeURIComponent('E-mail: ' + email);
           window.location.href = 'mailto:' + BETA_FALLBACK_MAIL + '?subject=' + subject + '&body=' + body;
           form.classList.add('is-done');
           say(t('mail'), false);
           return;
         }
 
-        say(t('sending'), false);
+        say(t('opening'), false);
         try {
-          const response = await fetch(BETA_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ email, name })
-          });
-          if (!response.ok) throw new Error('HTTP ' + response.status);
-          form.classList.add('is-done');
-          say(t('done'), false);
+          const tf = await loadTypeform();
+          tf.createSlider(TYPEFORM_ID, {
+            hidden: { email: email, lang: currentLang() },
+            position: 'right',
+            autoClose: 3000
+          }).open();
         } catch (err) {
-          say(t('error'), true);
+          openInTab(email);
         }
+        form.classList.add('is-done');
+        say(t('opened'), false);
       });
     })();
 
