@@ -514,6 +514,7 @@
       width: 52px; height: 52px;
       border-radius: 50%;
       object-fit: cover;
+      object-position: center 22%;
       filter: grayscale(10%);
       border: 1px solid var(--line);
       flex: 0 0 auto;
@@ -1254,7 +1255,7 @@
     .founder-card:not(:first-child) { padding-left: 2.5rem; }
     .founder-photo {
       width: 100%;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 2 / 3;
       overflow: hidden;
       border-radius: 3px;
       margin-bottom: 1.5rem;
@@ -1560,6 +1561,7 @@
       .founders-grid { grid-template-columns: 1fr; }
       .founder-card { padding: 2rem 0; border-right: none; border-bottom: 1px solid var(--line-dark); }
       .founder-card:not(:first-child) { padding-left: 0; }
+      .founder-photo { max-width: 320px; }
       .contact-hero { grid-template-columns: 1fr; align-items: start; }
       .contact-methods { grid-template-columns: 1fr; }
       .contact-box { min-height: 0; border-right: none; border-bottom: 1px solid var(--line); }
