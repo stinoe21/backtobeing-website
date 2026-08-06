@@ -125,7 +125,7 @@
       border-bottom: 1px solid transparent;
     }
     .site-nav.scrolled {
-      background: rgba(235,235,232,0.93);
+      background: rgba(255,254,241,0.93);
       backdrop-filter: blur(16px);
       border-bottom-color: var(--line);
     }
@@ -146,7 +146,7 @@
       width: 44px; height: 44px;
       align-items: center; justify-content: center;
       border: 1px solid rgba(22,22,22,0.14);
-      border-radius: 999px;
+      border-radius: var(--radius-ctrl);
       background: rgba(255,254,241,0.1);
       color: var(--ink);
       cursor: pointer;
@@ -198,20 +198,20 @@
     .nav-links { display: flex; align-items: center; gap: 2.5rem; }
     .nav-link {
       font-family: var(--subhead);
-      font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+      font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--ink-soft); cursor: pointer; transition: color 0.2s;
       background: none; border: none;
     }
-    .nav-link:hover, .nav-link.active { color: var(--green); }
+    .nav-link:hover, .nav-link.active { color: var(--ink); }
     .nav-cta-btn {
       display: inline-flex; align-items: center; gap: 0.4rem;
       padding: 0.6rem 1.25rem;
-      background: var(--green); color: var(--charcoal) !important;
-      border-radius: 100px; font-size: 0.75rem !important; font-weight: 500;
+      background: var(--tree); color: var(--canvas) !important;
+      border-radius: var(--radius-ctrl); font-size: 0.75rem !important; font-weight: 500;
       letter-spacing: 0.04em !important; text-transform: none !important;
       transition: background 0.2s, color 0.2s, transform 0.2s !important;
     }
-    .nav-cta-btn:hover { background: var(--tree) !important; color: var(--canvas) !important; transform: translateY(-1px); }
+    .nav-cta-btn:hover { background: #1F2A19 !important; color: var(--canvas) !important; transform: translateY(-1px); }
 
     /* LANG TOGGLE */
     .lang-toggle {
@@ -222,13 +222,13 @@
       background: none; border: none; cursor: pointer;
       font-family: var(--subhead);
       font-size: 0.72rem; font-weight: 500;
-      letter-spacing: 0.16em; text-transform: uppercase;
+      letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--ink-soft);
       padding: 0.25rem 0.1rem;
       transition: color 0.2s;
     }
-    .lang-btn:hover { color: var(--green); }
-    .lang-btn.active { color: var(--green); }
+    .lang-btn:hover { color: var(--ink); }
+    .lang-btn.active { color: var(--ink); }
     .lang-sep {
       color: var(--ink-soft); opacity: 0.35;
       font-size: 0.7rem; user-select: none;
@@ -239,7 +239,7 @@
     .site-nav.on-hero .lang-sep { color: rgba(247,245,240,0.35); }
     .site-nav.scrolled.on-hero .lang-btn { color: var(--ink-soft); }
     .site-nav.scrolled.on-hero .lang-btn:hover,
-    .site-nav.scrolled.on-hero .lang-btn.active { color: var(--green); }
+    .site-nav.scrolled.on-hero .lang-btn.active { color: var(--ink); }
     .site-nav.scrolled.on-hero .lang-sep { color: var(--ink-soft); }
 
     /* SHARED */
@@ -250,7 +250,7 @@
       background: rgba(151, 160, 129, 0.12);
       color: var(--tree);
       font-family: var(--subhead);
-      border-radius: 100px; font-size: 0.7rem; font-weight: 500;
+      border-radius: var(--radius-ctrl); font-size: 0.7rem; font-weight: 500;
       letter-spacing: 0.18em; text-transform: uppercase;
     }
     .section-label {
@@ -261,17 +261,17 @@
     .btn {
       display: inline-flex; align-items: center; gap: 0.6rem;
       padding: 0.95rem 1.8rem;
-      background: var(--green); color: var(--charcoal);
-      border-radius: 100px; font-family: var(--subhead);
+      background: var(--tree); color: var(--canvas);
+      border-radius: var(--radius-ctrl); font-family: var(--subhead);
       font-size: 0.92rem; font-weight: 500; letter-spacing: 0.01em;
       border: none; cursor: pointer;
       transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s; text-decoration: none;
     }
-    .btn:hover { background: var(--tree); color: var(--canvas); transform: translateY(-1px); }
+    .btn:hover { background: #1F2A19; color: var(--canvas); transform: translateY(-1px); }
     .btn-outline {
-      background: transparent; border: 1.5px solid var(--green); color: var(--tree);
+      background: transparent; border: 1px solid rgba(22,22,22,0.32); color: var(--ink);
     }
-    .btn-outline:hover { background: var(--green); color: var(--charcoal); border-color: var(--green); }
+    .btn-outline:hover { background: rgba(22,22,22,0.06); color: var(--ink); border-color: var(--ink); }
 
     /* ========= HOME ========= */
 
@@ -360,7 +360,6 @@
 
 /* PARTNERS — credibility strip (homepage + sponsoring) */
     .partners-strip {
-      border-bottom: 1px solid var(--line);
       padding: 5.5rem 6vw;
     }
     .partners-strip-inner {
@@ -436,7 +435,6 @@
     .press-feature {
       padding: 6rem var(--gutter-x);
       background: var(--bg);
-      border-top: 1px solid var(--line);
     }
     .press-feature-inner {
       max-width: 1180px;
@@ -468,7 +466,7 @@
       position: relative;
       display: block;
       overflow: hidden;
-      border-radius: 6px;
+      border-radius: var(--radius);
       border: 1px solid var(--line);
       background: var(--bg-dark);
       box-shadow: 0 24px 60px rgba(22, 22, 22, 0.08);
@@ -511,7 +509,7 @@
       padding: clamp(2rem, 5vw, 3.5rem);
       background: var(--canvas);
       border: 1px solid var(--line);
-      border-radius: 6px;
+      border-radius: var(--radius);
       box-shadow: 0 24px 60px rgba(22, 22, 22, 0.06);
       overflow: hidden;
     }
@@ -533,7 +531,6 @@
       gap: 1rem; flex-wrap: wrap;
       margin-bottom: 2rem;
       padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--line);
       position: relative; z-index: 1;
     }
     .press-feature-author {
@@ -590,7 +587,6 @@
     .press-feature-foot {
       margin-top: 2.5rem;
       padding-top: 1.75rem;
-      border-top: 1px solid var(--line);
       position: relative; z-index: 1;
     }
     .press-feature-cta {
@@ -679,7 +675,7 @@
       border: 1px solid rgba(151, 160, 129, 0.55);
       background: rgba(151, 160, 129, 0.12);
       color: var(--tree);
-      border-radius: 100px; font-family: var(--subhead);
+      border-radius: var(--radius-ctrl); font-family: var(--subhead);
       font-size: 0.6rem; font-weight: 500; letter-spacing: 0.18em;
       text-transform: uppercase; vertical-align: middle; transform: translateY(-2px);
     }
@@ -689,12 +685,12 @@
     }
 
     /* SPONSOR CTA SECTION */
-    .sponsor-cta-section {
+    .closing-cta-section {
       position: relative; overflow: hidden;
       background: var(--bg-dark); padding: 8rem var(--gutter-x);
       color: var(--cream); text-align: center;
     }
-    .sponsor-cta-section::before {
+    .closing-cta-section::before {
       content: '';
       position: absolute;
       inset: -10%;
@@ -705,28 +701,28 @@
       transform: rotate(-8deg);
       pointer-events: none;
     }
-    .sponsor-cta-inner { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; }
-    .sponsor-cta-label { color: var(--green-light) !important; margin-bottom: 2rem; }
-    .sponsor-cta-section h2 {
+    .closing-cta-inner { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; }
+    .closing-cta-label { color: var(--green-light) !important; margin-bottom: 2rem; }
+    .closing-cta-section h2 {
       font-family: var(--serif); font-weight: 400;
       font-size: clamp(2.75rem, 6vw, 5.5rem);
       line-height: 0.96; letter-spacing: 0; color: var(--cream); margin-bottom: 1.75rem;
     }
-    .sponsor-cta-section h2 em { font-style: italic; color: var(--display-accent); }
-    .sponsor-cta-section p {
+    .closing-cta-section h2 em { font-style: italic; color: var(--display-accent); }
+    .closing-cta-section p {
       font-size: clamp(1rem, 1.2vw, 1.15rem); line-height: 1.7;
       color: rgba(247,245,240,0.68); max-width: 44ch; margin: 0 auto 2.75rem;
     }
-    .sponsor-cta-actions {
+    .closing-cta-actions {
       display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
     }
-    .sponsor-cta-btn { background: var(--green) !important; color: var(--charcoal) !important; }
-    .sponsor-cta-btn:hover { background: var(--canvas) !important; color: var(--charcoal) !important; transform: translateY(-1px); }
-    .sponsor-cta-outline {
+    .closing-cta-btn { background: var(--green) !important; color: var(--charcoal) !important; }
+    .closing-cta-btn:hover { background: var(--canvas) !important; color: var(--charcoal) !important; transform: translateY(-1px); }
+    .closing-cta-outline {
       border-color: rgba(247,245,240,0.32) !important; color: rgba(247,245,240,0.82) !important;
       background: transparent !important;
     }
-    .sponsor-cta-outline:hover {
+    .closing-cta-outline:hover {
       background: var(--green) !important;
       border-color: var(--green) !important; color: var(--charcoal) !important;
     }
@@ -767,7 +763,6 @@
     }
     #page-verhaal .story-chapter {
       padding: 4rem 0;
-      border-top: 1px solid var(--line);
     }
     #page-verhaal .story-chapter:last-of-type {
       border-bottom: 0;
@@ -813,7 +808,7 @@
       padding: 5rem 0; border-top: 1px solid var(--line);
       align-items: center;
     }
-    .story-chapter:last-of-type { border-bottom: 1px solid var(--line); }
+    .story-chapter:last-of-type { }
     @media (min-width: 900px) {
       .story-chapter {
         grid-template-columns: 1.1fr 0.9fr;
@@ -857,7 +852,7 @@
 
     /* Chapter visuals (photo placeholders, alternating sides) */
     .ch-visual {
-      position: relative; overflow: hidden; border-radius: 4px;
+      position: relative; overflow: hidden; border-radius: var(--radius);
       aspect-ratio: 4/5;
       background: linear-gradient(135deg, #0f1f0f 0%, #182a18 60%, #0a1208 100%);
     }
@@ -870,7 +865,7 @@
       min-height: 420px;
       overflow: hidden;
       border: 1px solid rgba(151,160,129,0.28);
-      border-radius: 4px;
+      border-radius: var(--radius);
       background: var(--charcoal);
       box-shadow: inset 0 0 0 1px rgba(255,254,241,0.08);
     }
@@ -885,7 +880,6 @@
       max-width: 1040px;
       margin: 0 auto;
       padding: 4.25rem var(--gutter-x);
-      border-top: 1px solid var(--line);
     }
     #page-verhaal .story-route-bottom .ch-content {
       max-width: 760px;
@@ -922,7 +916,7 @@
       gap: 1rem;
       padding: 1rem;
       border: 1px solid rgba(255,254,241,0.14);
-      border-radius: 4px;
+      border-radius: var(--radius);
       background: rgba(22,22,22,0.78);
       color: var(--cream);
       backdrop-filter: blur(14px);
@@ -969,7 +963,7 @@
       min-height: 32px;
       padding: 0.45rem 0.62rem;
       border: 1px solid rgba(22,22,22,0.12);
-      border-radius: 999px;
+      border-radius: var(--radius-ctrl);
       background: rgba(255,254,241,0.88);
       color: var(--ink);
       cursor: pointer;
@@ -1015,7 +1009,7 @@
       min-height: 34px;
       padding: 0.5rem 0.75rem;
       border: 1px solid rgba(255,254,241,0.18);
-      border-radius: 999px;
+      border-radius: var(--radius-ctrl);
       background: rgba(22,22,22,0.76);
       backdrop-filter: blur(12px);
       font-family: var(--subhead);
@@ -1041,7 +1035,7 @@
     }
     .camino-popup .maplibregl-popup-content {
       border: 1px solid rgba(151,160,129,0.28);
-      border-radius: 4px;
+      border-radius: var(--radius-ctrl);
       background: var(--cream);
       color: var(--ink);
       font-family: var(--sans);
@@ -1098,7 +1092,6 @@
       padding: 5rem var(--gutter-x);
       max-width: 1440px; margin: 0 auto;
       text-align: center;
-      border-top: 1px solid var(--line);
     }
     .story-pullquote-dark {
       background: var(--bg-dark);
@@ -1142,7 +1135,7 @@
       }
     }
     .home-story-tease .visual {
-      aspect-ratio: 4/5; overflow: hidden; border-radius: 4px;
+      aspect-ratio: 4/5; overflow: hidden; border-radius: var(--radius);
       background: linear-gradient(135deg, #0f1f0f 0%, #182a18 60%, #0a1208 100%);
       position: relative;
     }
@@ -1192,7 +1185,6 @@
     .home-journey-stats {
       display: flex; gap: clamp(1.5rem, 3vw, 2.5rem);
       margin-top: 2.25rem; padding-top: 2rem;
-      border-top: 1px solid var(--line-dark);
       flex-wrap: wrap;
     }
     .home-journey-stat .v {
@@ -1293,7 +1285,7 @@
     }
 
     .founders-header {
-      margin-bottom: 4rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line-dark);
+      margin-bottom: 4rem; padding-bottom: 2.5rem;
     }
     .founders-header .section-label { color: inherit; opacity: 0.66; }
     .founders-header h2 {
@@ -1304,7 +1296,6 @@
     .founders-header h2 em { font-style: italic; color: var(--display-accent); }
     .founders-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
-      border-top: 1px solid var(--line-dark);
     }
     .founder-card { padding: 2.5rem 2.5rem 2.5rem 0; border-right: 1px solid var(--line-dark); }
     .founder-card:last-child { border-right: none; padding-right: 0; }
@@ -1313,7 +1304,7 @@
       width: 100%;
       aspect-ratio: 2 / 3;
       overflow: hidden;
-      border-radius: 3px;
+      border-radius: var(--radius);
       margin-bottom: 1.5rem;
       background: linear-gradient(135deg, #0f1f0f 0%, #182a18 60%, #0a1208 100%);
     }
@@ -1347,7 +1338,6 @@
     }
     #page-verhaal .founders-grid {
       gap: clamp(2rem, 4vw, 4rem);
-      border-top: 1px solid var(--line-dark);
     }
     #page-verhaal .founder-photo {
       margin-bottom: 1.25rem;
@@ -1364,7 +1354,6 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 2rem;
-      border-top: 1px solid var(--line);
     }
     @media (min-width: 900px) {
       .story-final-cta {
@@ -1493,7 +1482,6 @@
     .contact-online-strip {
       position: relative;
       overflow: hidden;
-      border-top: 1px solid var(--line-dark);
       padding: 4rem var(--gutter-x) 5rem;
       max-width: 1440px;
       margin: 0 auto;
@@ -1653,7 +1641,7 @@
         gap: 0;
         padding: 0.45rem;
         border: 1px solid rgba(42,55,35,0.14);
-        border-radius: 8px;
+        border-radius: var(--radius);
         background: rgba(255,254,241,0.96);
         box-shadow: 0 18px 48px rgba(13,13,13,0.16);
         backdrop-filter: blur(18px);
@@ -1674,7 +1662,7 @@
         align-items: center;
         justify-content: flex-start;
         padding: 0 0.85rem;
-        border-radius: 6px;
+        border-radius: var(--radius-ctrl);
         color: var(--ink) !important;
         font-size: 0.72rem;
         letter-spacing: 0.1em;
@@ -1702,8 +1690,8 @@
       .nav-cta-btn {
         margin-top: 0.25rem;
         justify-content: center;
-        background: var(--green) !important;
-        color: var(--charcoal) !important;
+        background: var(--tree) !important;
+        color: var(--canvas) !important;
       }
       .hero {
         min-height: 620px;
@@ -1747,7 +1735,7 @@
         display: table;
         transform: none;
       }
-      .sponsor-cta-section { padding: 5rem max(1.25rem, 5vw); }
+      .closing-cta-section { padding: 5rem max(1.25rem, 5vw); }
       .story-chapter { padding: 3.5rem 0; gap: 2rem; }
       .story-pullquote { padding: 4rem max(1.25rem, 5vw); }
       .story-hero {
@@ -1792,7 +1780,7 @@
         text-align: center;
       }
       .intro-actions,
-      .sponsor-cta-actions,
+      .closing-cta-actions,
       .home-story-tease .actions,
       .story-final-cta .actions {
         flex-direction: column;
@@ -1893,8 +1881,6 @@
     .announcement-section {
       padding: var(--section-y) 0;
       background: var(--canvas);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
     }
     .announcement-inner {
       width: min(100%, 1320px);
@@ -1937,7 +1923,7 @@
       margin-inline: auto;
       aspect-ratio: 16 / 9;
       background: var(--charcoal);
-      border-radius: 0.5rem;
+      border-radius: var(--radius);
       box-shadow: 0 2rem 5rem -3rem rgba(22,22,22,0.52);
     }
     .announcement-frame video {
@@ -2276,7 +2262,7 @@
       align-items: center;
       gap: 0.85rem;
       padding: 0.65rem 0.85rem;
-      border-radius: 999px;
+      border-radius: var(--radius-ctrl);
       background: var(--canvas);
     }
     .story-mind-lockup img {
@@ -2327,7 +2313,7 @@
       align-content: end;
       padding: clamp(1.4rem, 3vw, 2.25rem);
       border: 1px solid rgba(255,254,241,0.14);
-      border-radius: 0.25rem;
+      border-radius: var(--radius-ctrl);
       background: rgba(255,254,241,0.04);
       cursor: default;
       transition: color 0.4s ease, background 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
@@ -2565,7 +2551,6 @@
     </button>
     <div class="nav-links" id="navLinks">
       <button class="nav-link" data-page="verhaal"    data-i18n="nav.story"      onclick="showPage('verhaal')"    type="button">Ons verhaal</button>
-      <button class="nav-link" data-page="sponsoring" data-i18n="nav.sponsorship" onclick="showPage('sponsoring')" type="button">Sponsoring</button>
       <div class="lang-toggle" role="group" aria-label="Language">
         <button class="lang-btn" data-lang="nl" type="button" aria-label="Nederlands">NL</button>
         <span class="lang-sep" aria-hidden="true">·</span>
@@ -2611,7 +2596,6 @@
         <p data-i18n="intro.body">Drie AI-nerds uit Amsterdam lopen deze zomer de Camino van Tui naar Santiago en bouwen onderweg live aan één AI-tool voor mentale gezondheid. Daarna dragen we die gratis over aan MIND. Sponsors maken reis, productie en overdracht mogelijk.</p>
         <div class="intro-actions">
           <button class="btn"         data-i18n="intro.cta1" onclick="showPage('verhaal')"    type="button">Ons verhaal &rarr;</button>
-          <button class="btn btn-outline" data-i18n="intro.cta2" onclick="showPage('sponsoring')" type="button">Sponsoring &rarr;</button>
         </div>
       </div>
     </section>
@@ -2815,13 +2799,13 @@
     </div>
 
     <!-- HOME — closing CTA -->
-    <section class="sponsor-cta-section">
-      <div class="sponsor-cta-inner">
+    <section class="closing-cta-section">
+      <div class="closing-cta-inner">
         <h2 data-i18n="home.closing.h">Loop je<br><em>mee?</em></h2>
-        <p data-i18n="home.closing.p">Of je nu partner wordt, hardware levert, of gewoon het verhaal volgt. Er is plek.</p>
-        <div class="sponsor-cta-actions">
-          <button class="btn sponsor-cta-btn" data-i18n="home.closing.cta1" onclick="showPage('sponsoring')" type="button">Word partner &rarr;</button>
-          <button class="btn btn-outline sponsor-cta-outline" data-i18n="home.closing.cta2" onclick="showPage('verhaal')" type="button">Ons verhaal &rarr;</button>
+        <p data-i18n="home.closing.p">Volg de tocht vanaf dag &eacute;&eacute;n, lees het hele verhaal, of stuur ons gewoon een bericht.</p>
+        <div class="closing-cta-actions">
+          <button class="btn closing-cta-btn" data-i18n="home.closing.cta1" onclick="showPage('verhaal')" type="button">Ons verhaal &rarr;</button>
+          <button class="btn btn-outline closing-cta-outline" data-i18n="home.closing.cta2" onclick="showPage('contact')" type="button">Contact &rarr;</button>
         </div>
       </div>
     </section>
@@ -3009,14 +2993,13 @@
 
     <section class="story-final-cta">
       <div>
-        <div class="section-label" data-i18n="verhaal.closing.label">Doe mee</div>
-        <h2 data-i18n="verhaal.closing.h">Partner worden<br>in dit <em>verhaal?</em></h2>
+        <div class="section-label" data-i18n="verhaal.closing.label">Contact</div>
+        <h2 data-i18n="verhaal.closing.h">E&eacute;n gesprek<br>is <em>genoeg.</em></h2>
       </div>
       <div>
-        <p data-i18n="verhaal.closing.p">We zoeken partners die willen bijdragen met budget, hardware, expertise of bereik. Niet als logo op een shirt, maar als onderdeel van het verhaal.</p>
+        <p data-i18n="verhaal.closing.p">Vertel ons waar je nu staat en we kijken samen wat er kan.</p>
         <div class="actions">
-          <button class="btn" data-i18n="verhaal.closing.cta1" onclick="showPage('sponsoring')" type="button">Sponsoring &rarr;</button>
-          <button class="btn btn-outline" data-i18n="verhaal.closing.cta2" onclick="showPage('contact')" type="button">Contact &rarr;</button>
+          <button class="btn" data-i18n="verhaal.closing.cta1" onclick="showPage('contact')" type="button">Contact &rarr;</button>
         </div>
       </div>
     </section>
@@ -3034,141 +3017,6 @@
   </div>
 
   <!-- ======== PAGE: SPONSORING ======== -->
-  <div class="page" id="page-sponsoring">
-
-    <section class="story-hero">
-      <span class="pill" data-i18n="sponsor.pill">Partners</span>
-      <h1 data-i18n="sponsor.h1">Word jij partner<br><em>in dit verhaal?</em></h1>
-      <div class="story-hero-foot">
-        <p data-i18n="sponsor.intro">Sponsoring zet dit verhaal op de kaart. We zoeken partners die het groter willen maken: met budget, hardware, expertise of bereik. De AI-tool gaat gratis naar stichting MIND.</p>
-        <p data-i18n="sponsor.mind">Geen standaard pakket. Eén gesprek om te horen waar jij staat, of je nu hardware inbrengt, je team naar buiten wil, of gewoon het verhaal wil dragen.</p>
-      </div>
-    </section>
-
-    <!-- SPONSORING — partners credibility strip -->
-    <section class="partners-strip" aria-label="Partners">
-      <div class="partners-strip-inner">
-        <div class="partners-group">
-          <div class="section-label partners-group-label" data-i18n="partners.group.sponsors">Sponsors</div>
-          <div class="partners-tier partners-tier-sponsors">
-            <div class="partners-lead">
-              <div class="partner-item partner-item-lead">
-                <a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a>
-              </div>
-              <div class="partner-item partner-item-lead">
-                <a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
-              </div>
-            </div>
-            <div class="partner-item">
-              <a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" loading="lazy" /></a>
-            </div>
-            <div class="partner-item">
-              <a class="partner-logo" href="https://watermelon.ai/" target="_blank" rel="noopener noreferrer"><img src="watermelon.svg" alt="Watermelon AI" loading="lazy" /></a>
-            </div>
-            <div class="partner-item">
-              <a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer"><img src="n8n-logo.svg" alt="n8n" loading="lazy" /></a>
-            </div>
-          </div>
-        </div>
-        <div class="partners-group">
-          <div class="section-label partners-group-label" data-i18n="partners.group.partners">Partners</div>
-          <div class="partners-tier partners-tier-partners">
-            <a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer"><img src="techleap.webp" alt="Techleap" loading="lazy" /></a>
-            <a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></a>
-            <a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer"><img src="Lerai.webp" alt="LerAI" loading="lazy" /></a>
-            <a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer"><img src="TAG_black.svg" alt="TAG" loading="lazy" /></a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- HET PLAN -->
-    <section class="plan-section">
-      <div class="plan-header">
-        <div>
-          <div class="section-label" data-i18n="plan.label">Het plan</div>
-          <h2 data-i18n="plan.h">Lopen. Bouwen.<br><em>Overdragen.</em></h2>
-        </div>
-        <p data-i18n="plan.body">Drie simpele stappen. Geen kantoor, geen vergaderzaal. Wel ritme, reflectie en zichtbaar bouwen. Alles vastgelegd in een mini-docu.</p>
-      </div>
-      <div class="plan-rows">
-        <div class="plan-row">
-          <span class="num">01</span>
-          <span class="title"  data-i18n="plan.row1.t">We lopen.</span>
-          <span class="detail" data-i18n="plan.row1.d">120 km in 6 dagen, Tui naar Santiago, 3 rugzakken.</span>
-        </div>
-        <div class="plan-row">
-          <span class="num">02</span>
-          <span class="title"  data-i18n="plan.row2.t">We bouwen onderweg.</span>
-          <span class="detail" data-i18n="plan.row2.d">Live aan de AI-tool werken. Handsfree via spraak en smart glasses, camera's leggen het proces vast.</span>
-        </div>
-        <div class="plan-row">
-          <span class="num">03</span>
-          <span class="title"  data-i18n="plan.row3.t">We dragen het over.</span>
-          <span class="detail" data-i18n="plan.row3.d">Tool gratis naar stichting MIND, plus een mini-docu.</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- PULL-QUOTE — editorial break -->
-    <div class="story-pullquote story-pullquote-dark">
-      <blockquote data-i18n="sponsor.quote">We zoeken geen logo op een shirt.<br>We zoeken <em>een partner in het verhaal.</em></blockquote>
-      <p class="cite" data-i18n="sponsor.quote.cite">Back to Being · Zomer 2026</p>
-    </div>
-
-    <!-- WAAROM PARTNER WORDEN — vereenvoudigd, 3 rijen -->
-    <section class="return-section">
-      <div class="return-inner">
-        <div class="return-header">
-          <div class="section-label" data-i18n="return.label">Waarom partner worden</div>
-          <h2 data-i18n="return.h">Een verhaal dat mensen<br><em>willen volgen.</em></h2>
-          <p data-i18n="return.body">Wat je precies terugkrijgt bespreken we samen. Wat we je alvast kunnen vertellen:</p>
-        </div>
-        <div class="return-rows">
-          <div class="return-row">
-            <span class="num">01</span>
-            <span class="title" data-i18n="return.row1.t">Mini-docu met jouw naam <span class="title-tag">zichtbaar</span></span>
-            <span class="detail" data-i18n="return.row1.d">Distributie via TikTok, Instagram en YouTube. Jouw merk verbonden aan een verhaal dat blijft hangen.</span>
-          </div>
-          <div class="return-row">
-            <span class="num">02</span>
-            <span class="title" data-i18n="return.row2.t">Het kantoor naar buiten <span class="title-tag">uniek</span></span>
-            <span class="detail" data-i18n="return.row2.d">Walking workshop + AI session bij jouw team. Wij brengen Back to Being naar je bedrijf.</span>
-          </div>
-          <div class="return-row">
-            <span class="num">03</span>
-            <span class="title" data-i18n="return.row3.t">Maatwerk per partner <span class="title-tag">persoonlijk</span></span>
-            <span class="detail" data-i18n="return.row3.d">Hardware, AI-credits, earned media of iets heel anders. We kijken in één gesprek wat voor jou het meeste waarde heeft.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PARTNER CTA — dark, enthousiast, cal.eu -->
-    <section class="sponsor-cta-section">
-      <div class="sponsor-cta-inner">
-        <div class="section-label sponsor-cta-label" data-i18n="sponsor.cta.label">Plekken zijn beperkt</div>
-        <h2 data-i18n="sponsor.cta.h">Eén gesprek is<br><em>genoeg.</em></h2>
-        <p data-i18n="sponsor.cta.body">Plan 20 minuten en we weten samen of dit past, en hoe het eruit ziet als het dat doet.</p>
-        <div class="sponsor-cta-actions">
-          <a class="btn sponsor-cta-btn" href="https://cal.com/caesar-schoorl/back-to-being" data-i18n="sponsor.cta.btn1" target="_blank" rel="noopener noreferrer">Plan een gesprek &rarr;</a>
-          <a class="btn btn-outline sponsor-cta-outline" href="mailto:Caesar.schoorl@gmail.com?subject=Back%20to%20Being%3A%20partnerschap&body=Hi%2C%0A%0AIk%20wil%20graag%20een%20kort%20gesprek%20over%20een%20samenwerking.%0A%0AHartelijke%20groet" data-i18n="sponsor.cta.btn2">Mail ons &rarr;</a>
-        </div>
-      </div>
-    </section>
-
-    <footer class="site-footer">
-      <div class="footer-logo">
-        <img class="footer-logo-mark" src="b2b_horizontal banner.svg" alt="Back to Being" />
-      </div>
-      <nav class="footer-legal">
-        <a href="privacybeleid.html" data-i18n="footer.privacy">Privacybeleid</a>
-        <a href="algemene-voorwaarden.html" data-i18n="footer.terms">Algemene voorwaarden</a>
-      </nav>
-      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
-    </footer>
-  </div>
-
   <!-- ======== PAGE: CONTACT ======== -->
   <div class="page" id="page-contact">
     <section class="story-hero">
@@ -3348,7 +3196,6 @@
 
         // nav
         'nav.story':        'Ons verhaal',
-        'nav.sponsorship':  'Sponsoring',
         'nav.contact':      'Contact',
 
         // hero
@@ -3359,7 +3206,6 @@
         'intro.heading':    'Drie nerds. Eén route.<br><em>Eén AI-tool</em> voor MIND.',
         'intro.body':       'Drie AI-nerds uit Amsterdam lopen deze zomer de Camino van Tui naar Santiago en bouwen onderweg live aan één AI-tool voor mentale gezondheid. Daarna dragen we die gratis over aan MIND. Sponsors maken reis, productie en overdracht mogelijk.',
         'intro.cta1':       'Ons verhaal &rarr;',
-        'intro.cta2':       'Sponsoring &rarr;',
 
         // footer
         'footer.right':     'backtobeing.tech &nbsp;·&nbsp; Zomer 2026',
@@ -3393,11 +3239,10 @@
         'verhaal.quote1.cite':'Back to Being · Camino 2026',
         'verhaal.quote2':     'Tech maakt ons menselijker,<br><em>als je \'m goed inzet.</em>',
         'verhaal.quote2.cite':'Tui &rarr; Santiago · 120 km',
-        'verhaal.closing.label': 'Doe mee',
-        'verhaal.closing.h':     'Partner worden<br>in dit <em>verhaal?</em>',
-        'verhaal.closing.p':     'We zoeken partners die willen bijdragen met budget, hardware, expertise of bereik. Niet als logo op een shirt, maar als onderdeel van het verhaal.',
-        'verhaal.closing.cta1':  'Sponsoring &rarr;',
-        'verhaal.closing.cta2':  'Contact &rarr;',
+        'verhaal.closing.label': 'Contact',
+        'verhaal.closing.h':     'E&eacute;n gesprek<br>is <em>genoeg.</em>',
+        'verhaal.closing.p':     'Vertel ons waar je nu staat en we kijken samen wat er kan.',
+        'verhaal.closing.cta1':  'Contact &rarr;',
 
         // home additions
         'home.tease.label':   'Het verhaal',
@@ -3416,13 +3261,12 @@
         'home.journey.stat.end.v':   'Santiago',
         'home.journey.stat.end.l':   'finish',
         'home.closing.h':    'Loop je<br><em>mee?</em>',
-        'home.closing.p':    'Of je nu partner wordt, hardware levert, of gewoon het verhaal volgt. Er is plek.',
-        'home.closing.cta1': 'Word partner &rarr;',
-        'home.closing.cta2': 'Ons verhaal &rarr;',
+        'home.closing.p':    'Volg de tocht vanaf dag &eacute;&eacute;n, lees het hele verhaal, of stuur ons gewoon een bericht.',
+        'home.closing.cta1': 'Ons verhaal &rarr;',
+        'home.closing.cta2': 'Contact &rarr;',
 
         // partners
         'partners.home.label':    'Met steun van',
-        'partners.sponsor.label': 'Eerste partners aan boord',
         'partners.group.sponsors': 'Sponsors',
         'partners.group.partners': 'Partners',
         'partners.lead.new':      '<span class="dot"></span>Net aangesloten &middot; 17 juni 2026',
@@ -3464,17 +3308,6 @@
         'founders.bio3':    'Max brengt technische scherpte en ondernemersenergie mee in het team. Op de Camino zet hij ideeën snel om in producten die praktisch, bruikbaar en menselijk voelen.',
 
         // sponsor
-        'sponsor.pill':          'Partners',
-        'sponsor.h1':            'Word jij partner<br><em>in dit verhaal?</em>',
-        'sponsor.intro':         'Sponsoring zet dit verhaal op de kaart. We zoeken partners die het groter willen maken: met budget, hardware, expertise of bereik. De AI-tool gaat gratis naar stichting MIND.',
-        'sponsor.mind':          'Geen standaard pakket. Eén gesprek om te horen waar jij staat, of je nu hardware inbrengt, je team naar buiten wil, of gewoon het verhaal wil dragen.',
-        'sponsor.quote':         'We zoeken geen logo op een shirt.<br>We zoeken <em>een partner in het verhaal.</em>',
-        'sponsor.quote.cite':    'Back to Being · Zomer 2026',
-        'sponsor.cta.label':     'Plekken zijn beperkt',
-        'sponsor.cta.h':         'Eén gesprek is<br><em>genoeg.</em>',
-        'sponsor.cta.body':      'Plan 20 minuten en we weten samen of dit past, en hoe het eruit ziet als het dat doet.',
-        'sponsor.cta.btn1':      'Plan een gesprek &rarr;',
-        'sponsor.cta.btn2':      'Mail ons &rarr;',
 
         // plan
         'plan.label':       'Het plan',
@@ -3526,7 +3359,6 @@
 
         // nav
         'nav.story':        'Our story',
-        'nav.sponsorship':  'Sponsorship',
         'nav.contact':      'Contact',
 
         // hero (tagline + meta)
@@ -3537,7 +3369,6 @@
         'intro.heading':    'Three nerds. One route.<br><em>One AI tool</em> for MIND.',
         'intro.body':       'Three AI nerds from Amsterdam are walking the Camino from Tui to Santiago this summer, building one AI tool for mental health live along the way. We hand it over to MIND for free. Sponsors make the journey, production, and handover possible.',
         'intro.cta1':       'Our story &rarr;',
-        'intro.cta2':       'Sponsorship &rarr;',
 
         // footer
         'footer.right':     'backtobeing.tech &nbsp;·&nbsp; Summer 2026',
@@ -3571,11 +3402,10 @@
         'verhaal.quote1.cite':'Back to Being · Camino 2026',
         'verhaal.quote2':     'Tech can make us more human,<br><em>if you use it right.</em>',
         'verhaal.quote2.cite':'Tui &rarr; Santiago · 120 km',
-        'verhaal.closing.label': 'Join us',
-        'verhaal.closing.h':     'Become a partner<br>in this <em>story?</em>',
-        'verhaal.closing.p':     "We're looking for partners who want to contribute with budget, hardware, expertise or reach. Not as a logo on a shirt, but as part of the story.",
-        'verhaal.closing.cta1':  'Sponsorship &rarr;',
-        'verhaal.closing.cta2':  'Contact &rarr;',
+        'verhaal.closing.label': 'Contact',
+        'verhaal.closing.h':     'One conversation<br>is <em>enough.</em>',
+        'verhaal.closing.p':     'Tell us where you are now and we will look at what is possible together.',
+        'verhaal.closing.cta1':  'Contact &rarr;',
 
         // home additions
         'home.tease.label':   'The story',
@@ -3594,13 +3424,12 @@
         'home.journey.stat.end.v':   'Santiago',
         'home.journey.stat.end.l':   'finish',
         'home.closing.h':    'Will you<br><em>walk with us?</em>',
-        'home.closing.p':    "Whether you become a partner, ship hardware, or just follow the story, there's a spot.",
-        'home.closing.cta1': 'Become a partner &rarr;',
-        'home.closing.cta2': 'Our story &rarr;',
+        'home.closing.p':    'Follow the walk from day one, read the whole story, or just send us a message.',
+        'home.closing.cta1': 'Our story &rarr;',
+        'home.closing.cta2': 'Contact &rarr;',
 
         // partners
         'partners.home.label':    'Backed by',
-        'partners.sponsor.label': 'First partners on board',
         'partners.group.sponsors': 'Sponsors',
         'partners.group.partners': 'Partners',
         'partners.lead.new':      '<span class="dot"></span>Just joined &middot; 17 June 2026',
@@ -3642,17 +3471,6 @@
         'founders.bio3':    'Max brings technical sharpness and founder energy to the team. On the Camino, he turns ideas into products that feel practical, useful, and human.',
 
         // sponsor
-        'sponsor.pill':          'Partners',
-        'sponsor.h1':            'Want to partner<br><em>in this story?</em>',
-        'sponsor.intro':         'Sponsorship puts this story on the map. We are looking for partners who want to make it bigger: with budget, hardware, expertise or reach. The AI tool goes to the MIND foundation for free.',
-        'sponsor.mind':          "No standard package. One conversation to hear where you're at, whether you bring hardware, want to get your team outside, or simply want to carry the story.",
-        'sponsor.quote':         "We're not looking for a logo on a shirt.<br>We're looking for <em>a partner in the story.</em>",
-        'sponsor.quote.cite':    'Back to Being · Summer 2026',
-        'sponsor.cta.label':     'Spots are limited',
-        'sponsor.cta.h':         'One conversation<br><em>is enough.</em>',
-        'sponsor.cta.body':      'Book 20 minutes and we will both know if this fits, and what it looks like when it does.',
-        'sponsor.cta.btn1':      'Book a call &rarr;',
-        'sponsor.cta.btn2':      'Email us &rarr;',
 
         // plan
         'plan.label':       'The plan',
@@ -3710,8 +3528,8 @@
       'verhaal.ch3.p1': 'De kaart laat de volledige Camino Portugues zien en zoomt per dag in op de etappe die we lopen.',
       'verhaal.ch3.p2': 'Zo wordt het verhaal makkelijk te volgen: waar starten we, waar eindigen we, en welk stuk lopen we vandaag?',
       'verhaal.map.activate': 'Klik om kaart te gebruiken',
-      'verhaal.closing.h': 'Wil je dit<br><em>groter maken?</em>',
-      'verhaal.closing.p': 'We zoeken partners die willen bijdragen met budget, hardware, expertise of bereik. Niet als logo op een shirt, maar als onderdeel van het verhaal.',
+      'verhaal.closing.h': 'E&eacute;n gesprek<br>is <em>genoeg.</em>',
+      'verhaal.closing.p': 'Vertel ons waar je nu staat en we kijken samen wat er kan.',
       'founders.role1': 'AI-founder · Amsterdam',
       'founders.bio1': 'Caesar bouwt AI-producten en brengt verhaal, partners en energie bij elkaar. Op de Camino laat hij zien dat technologie menselijker wordt buiten het kantoor.',
       'founders.role2': 'AI-founder · Amsterdam',
@@ -3733,8 +3551,8 @@
       'verhaal.ch3.p1': 'The map shows the full Camino Portugues and zooms into the stage we walk each day.',
       'verhaal.ch3.p2': 'That makes the story easy to follow: where we start, where we end, and which section we walk today.',
       'verhaal.map.activate': 'Click to use map',
-      'verhaal.closing.h': 'Want to make<br>this <em>bigger?</em>',
-      'verhaal.closing.p': 'We are looking for partners who can contribute budget, hardware, expertise, or reach. Not as a logo on a shirt, but as part of the story.',
+      'verhaal.closing.h': 'One conversation<br>is <em>enough.</em>',
+      'verhaal.closing.p': 'Tell us where you are now and we will look at what is possible together.',
       'founders.role1': 'AI founder · Amsterdam',
       'founders.bio1': 'Caesar builds AI products and brings story, partners, and energy together. On the Camino, he shows how technology becomes more human outside the office.',
       'founders.role2': 'AI founder · Amsterdam',
@@ -3751,7 +3569,6 @@
       'hero.tagline': 'Drie AI-founders maken van de Camino hun kantoor en bouwen onderweg een app voor MIND.',
       'intro.heading': 'Snelle tech,<br><em>langzame route.</em>',
       'intro.body': 'We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: laagdrempelige challenges die je even uit je hoofd halen, met de hulp van MIND op jouw maat. Op de Camino maken we er werkende software van.',
-      'sponsor.intro': 'Sponsoring maakt de Camino, de mini-docu en de bouw van de app voor MIND mogelijk. De app wordt samen met MIND aangescherpt en kosteloos overgedragen.',
       'plan.row2.d': 'Elke etappe is een bouwsprint voor de MIND-app: onderweg luisteren en inspreken, bij aankomst ontwerpen en testen.',
       'plan.row3.d': 'De werkende app gaat kosteloos naar stichting MIND, samen met het verhaal van de bouw.',
       'announcement.label': 'De announcement',
@@ -3786,7 +3603,7 @@
       'press.feature.lead': 'Deze zomer zit ons kantoor in <em>een rugzak.</em>',
       'press.feature.summary1': 'De Camino staat voor vertraging en bezinning, AI voor snelheid en productiviteit. Wij brengen die werelden samen in &eacute;&eacute;n live-experiment.',
       'press.feature.summary2': 'Onderweg bouwen we een app voor stichting MIND en leggen we het eerlijke proces vast: de hitte, de techniek, de gesprekken en alles wat anders loopt dan gepland.',
-      'verhaal.closing.p': 'We zoeken partners die willen bijdragen aan de bouw, productie en veilige overdracht van de app voor MIND. Met budget, expertise, hardware of bereik.',
+      'verhaal.closing.p': 'Vertel ons waar je nu staat en we kijken samen wat er kan.',
       'founders.role1': 'Partnerships & storytelling',
       'founders.bio1': 'Caesar bouwt AI-producten en merkte hoe makkelijk je in een constante versnelling terechtkomt: dagenlang achter zijn bureau terwijl de zon buiten schijnt. De Camino is voor hem een bewuste tegenbeweging, en het verhaal dat mensen en partners in beweging brengt.',
       'founders.role2': 'Product & AI',
@@ -3801,7 +3618,6 @@
       'hero.tagline': 'Three AI founders turn the Camino into their office and build an app for MIND along the way.',
       'intro.heading': 'Fast tech,<br><em>slow route.</em>',
       'intro.body': 'We walk 120 kilometres from Tui to Santiago while building an app for the MIND foundation: low-threshold challenges to get you out of your head, with MIND&rsquo;s support tailored to you. On the Camino, we turn it into working software.',
-      'sponsor.intro': 'Sponsorship makes the Camino, the mini-doc and the build of the app for MIND possible. The app is refined with MIND and handed over for free.',
       'plan.row2.d': 'Every stage is a build sprint for the MIND app: listening and dictating on the trail, designing and testing on arrival.',
       'plan.row3.d': 'The working app goes to the MIND foundation for free, together with the story of how it was built.',
       'announcement.label': 'The announcement',
@@ -3836,7 +3652,7 @@
       'press.feature.lead': 'This summer, our office fits in <em>a backpack.</em>',
       'press.feature.summary1': 'The Camino stands for slowing down and reflection; AI for speed and productivity. We bring those worlds together in one live experiment.',
       'press.feature.summary2': 'On the trail, we build an app for the MIND foundation and capture the honest process: the heat, the technology, the conversations and everything that goes differently than planned.',
-      'verhaal.closing.p': 'We are looking for partners who want to support the build, production and safe handover of the app for MIND with budget, expertise, hardware or reach.',
+      'verhaal.closing.p': 'Tell us where you are now and we will look at what is possible together.',
       'founders.role1': 'Partnerships & storytelling',
       'founders.bio1': 'Caesar builds AI products and noticed how easily you end up in constant acceleration: days behind a desk while the sun shines outside. For him the Camino is a deliberate counter-movement, and the story that gets people and partners moving.',
       'founders.role2': 'Product & AI',
