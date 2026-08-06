@@ -255,7 +255,7 @@
     }
     .section-label {
       font-family: var(--subhead);
-      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em;
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em;
       text-transform: uppercase; color: inherit; opacity: 0.62; margin-bottom: 1.25rem;
     }
     .btn {
@@ -420,6 +420,45 @@
       gap: 4rem;
     }
 
+    /* PRESS — "in de pers" strip */
+    .press-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(1.5rem, 4vw, 3.25rem);
+    }
+    .press-logo-link { display: inline-flex; align-items: center; }
+    .press-logo-link img {
+      height: 26px;
+      width: auto;
+      display: block;
+      filter: brightness(0);
+      opacity: 0.82;
+    }
+    /* Haarlem105 is een gekleurd blok met uitgespaarde tekst: dat kan niet
+       naar een zwart beeldmerk zonder onleesbaar te worden. Eigen kleur dus. */
+    .press-logo-link img[src="haarlem105-logo.svg"] { height: 30px; filter: none; }
+    .press-logo-link img[src="smarthealth-logo.png"] { height: 20px; }
+    a.press-logo-link { transition: opacity 0.2s; }
+    a.press-logo-link:hover img { opacity: 1; }
+    .press-name {
+      font-family: var(--serif);
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.2;
+      color: var(--ink);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    a.press-name {
+      border-bottom: 1px solid rgba(22,22,22,0.28);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+    a.press-name:hover { border-bottom-color: var(--ink); }
     /* PRESS — "in de pers" strip (één logo, gecentreerd, klikbaar) */
     .press-strip { padding-top: 2.5rem; padding-bottom: 4.5rem; }
     .press-grid {
@@ -2048,9 +2087,9 @@
       gap: 1rem;
       padding-top: 1rem;
       font-family: var(--subhead);
-      font-size: 0.62rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
       color: var(--ink-soft);
     }
@@ -2063,7 +2102,7 @@
     @media (max-width: 600px) {
       .announcement-frame video { object-position: center; }
       .announcement-meta { flex-direction: column; }
-      .announcement-meta span:last-child { color: var(--green); }
+      .announcement-meta span:last-child { color: var(--ink-soft); }
       .announcement-stage.is-takeover { height: 180vh; }
     }
 
@@ -2079,8 +2118,8 @@
       display: grid;
       align-content: end;
       padding: calc(var(--nav-h) + clamp(4rem, 9vw, 8rem)) var(--gutter-x) clamp(3rem, 6vw, 5.5rem);
-      background: var(--tree);
-      color: var(--canvas);
+      background: var(--surface-base);
+      color: var(--ink);
       isolation: isolate;
     }
     .story-editorial-hero::before {
@@ -2093,15 +2132,6 @@
       background-size: clamp(130px, 14vw, 220px) auto;
       opacity: 0.055;
       transform: rotate(-8deg);
-    }
-    .story-editorial-hero::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background:
-        radial-gradient(70% 65% at 90% 10%, rgba(167,189,213,0.2), transparent 70%),
-        linear-gradient(180deg, rgba(22,22,22,0.05), rgba(22,22,22,0.42));
     }
     .story-editorial-inner {
       width: min(100%, 1440px);
@@ -2118,7 +2148,7 @@
       font-weight: 600;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: rgba(255,254,241,0.64);
+      color: rgba(22,22,22,0.64);
     }
     .story-editorial-kicker span:first-child {
       display: inline-flex;
@@ -2153,13 +2183,13 @@
       align-items: end;
       margin-top: clamp(3rem, 6vw, 5rem);
       padding-top: clamp(1.5rem, 3vw, 2.25rem);
-      border-top: 1px solid rgba(255,254,241,0.2);
+      border-top: 1px solid rgba(22,22,22,0.2);
     }
     .story-editorial-lead {
       max-width: 58ch;
       font-size: clamp(1rem, 1.25vw, 1.2rem);
       line-height: 1.65;
-      color: rgba(255,254,241,0.78);
+      color: rgba(22,22,22,0.78);
     }
     .story-editorial-lead strong {
       color: var(--canvas);
@@ -2168,14 +2198,14 @@
     .story-hero-facts {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      border-top: 1px solid rgba(255,254,241,0.18);
+      border-top: 1px solid rgba(22,22,22,0.18);
     }
     .story-hero-fact {
       padding: 0.85rem 0.65rem 0 0;
     }
     .story-hero-fact + .story-hero-fact {
       padding-left: 0.85rem;
-      border-left: 1px solid rgba(255,254,241,0.18);
+      border-left: 1px solid rgba(22,22,22,0.18);
     }
     .story-hero-fact strong {
       display: block;
@@ -2183,7 +2213,7 @@
       font-size: clamp(1.7rem, 3vw, 2.8rem);
       font-weight: 400;
       line-height: 1;
-      color: var(--canvas);
+      color: var(--ink);
     }
     .story-hero-fact span {
       display: block;
@@ -2194,7 +2224,7 @@
       letter-spacing: 0.14em;
       line-height: 1.35;
       text-transform: uppercase;
-      color: rgba(255,254,241,0.48);
+      color: rgba(22,22,22,0.48);
     }
 
     .story-section-index {
@@ -2237,18 +2267,6 @@
       color: var(--canvas);
       isolation: isolate;
     }
-    .story-mind-explainer::before {
-      content: '';
-      position: absolute;
-      width: clamp(24rem, 55vw, 58rem);
-      aspect-ratio: 1;
-      top: 5%;
-      left: -22%;
-      z-index: -1;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(66,77,105,0.58), transparent 68%);
-      filter: blur(4px);
-    }
     .story-mind-inner {
       display: grid;
       gap: clamp(3.5rem, 8vw, 8rem);
@@ -2273,9 +2291,9 @@
       padding-left: 0.85rem;
       border-left: 1px solid var(--line);
       font-family: var(--subhead);
-      font-size: 0.62rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
       color: var(--ink-soft);
     }
@@ -2440,7 +2458,7 @@
         gap: 0.75rem;
         padding: 0.85rem 0;
         border-left: 0;
-        border-bottom: 1px solid rgba(255,254,241,0.14);
+        border-bottom: 1px solid rgba(22,22,22,0.14);
       }
       .story-hero-fact strong { font-size: 1.8rem; }
       .story-goal {
@@ -2645,8 +2663,8 @@
 
       <div class="announcement-inner">
         <div class="announcement-meta">
-          <span data-i18n="announcement.meta1">Back to Being · announcement film</span>
-          <span data-i18n="announcement.meta2">The world as our office</span>
+          <span data-i18n="announcement.meta1">Announcementfilm</span>
+          <span data-i18n="announcement.meta2">66 seconden</span>
         </div>
       </div>
     </section>
@@ -2692,15 +2710,20 @@
     <section class="partners-strip press-strip" aria-label="In de pers">
       <div class="partners-strip-inner">
         <div class="section-label" data-i18n="press.home.label">In de pers</div>
-        <div class="press-grid">
-          <a class="partner-logo press-logo"
-             href="https://www.noordhollandsdagblad.nl/regio/ijmond/caesar-21-stijn-24-en-max-26-gaan-de-camino-lopen-en-onderweg-met-ai-een-app-ontwikkelen-voor-mentale-gezondheid-de-wereld-wordt-ons-kantoor/152592259.html"
-             target="_blank"
-             rel="noopener"
-             aria-label="Artikel in Noord-Hollands Dagblad (opent in nieuw tabblad)">
-            <img src="noordhollands-dagblad-logo.webp" alt="Noord-Hollands Dagblad" loading="lazy" />
-          </a>
-        </div>
+        <ul class="press-list">
+          <li>
+            <a class="press-logo-link"
+               href="https://www.noordhollandsdagblad.nl/regio/ijmond/caesar-21-stijn-24-en-max-26-gaan-de-camino-lopen-en-onderweg-met-ai-een-app-ontwikkelen-voor-mentale-gezondheid-de-wereld-wordt-ons-kantoor/152592259.html"
+               target="_blank" rel="noopener"
+               aria-label="Artikel in Noord-Hollands Dagblad (opent in nieuw tabblad)">
+              <img src="noordhollands-dagblad-logo.webp" alt="Noord-Hollands Dagblad" loading="lazy" />
+            </a>
+          </li>
+          <li><span class="press-logo-link"><img src="trouw-logo.png" alt="Trouw" loading="lazy" /></span></li>
+          <li><span class="press-logo-link"><img src="haarlem105-logo.svg" alt="Haarlem105" loading="lazy" /></span></li>
+          <li><span class="press-logo-link"><img src="smarthealth-logo.png" alt="SmartHealth" loading="lazy" /></span></li>
+          <li><span class="press-name">Haarlems Dagblad</span></li>
+        </ul>
       </div>
     </section>
 
@@ -2851,27 +2874,27 @@
               <img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" />
               <span data-i18n="story.mind.lockup">Project voor MIND</span>
             </div>
-            <div class="story-section-index" data-i18n="story.mind.index">01 · Wat we bouwen</div>
-            <h2 class="story-mind-heading" data-i18n="story.mind.heading">Eén app.<br><em>Gebouwd om te blijven.</em></h2>
-            <p class="story-mind-summary" data-i18n="story.mind.summary">We ontwerpen en bouwen onderweg een app voor stichting MIND. Wat de app precies doet, werken we samen met MIND uit. Op de Camino maken we er werkende software van en daarna dragen we alles kosteloos over.</p>
+            <div class="story-section-index" data-i18n="story.mind.index">01 &middot; Wat we bouwen</div>
+            <h2 class="story-mind-heading" data-i18n="story.mind.heading">Hoe is het weer <em>in je hoofd?</em></em></h2>
+            <p class="story-mind-summary" data-i18n="story.mind.summary">Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag. Je beantwoordt hem in vijf seconden met een weertype: zonnig, bewolkt, storm. Dat kleine gebaar maakt het makkelijker om er daarna over te praten &mdash; met een vriend, thuis, of met hulpverlening.</p>
           </div>
 
           <div class="story-goals">
-            <div class="story-goals-intro" data-i18n="story.goals.intro">Drie uitgangspunten</div>
+            <div class="story-goals-intro" data-i18n="story.goals.intro">Hoe het werkt</div>
             <article class="story-goal is-active" data-number="01" data-story-reveal tabindex="0">
               <img class="story-goal-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
-              <h3 data-i18n="story.goal1.h">Bruikbaar voor MIND.</h3>
-              <p data-i18n="story.goal1.p">Hun vraag is het vertrekpunt. Wij leveren een werkende app op waar MIND echt mee verder kan.</p>
+              <h3 data-i18n="story.goal1.h">Eén vraag per dag.</h3>
+              <p data-i18n="story.goal1.p">Geen vragenlijst en geen dagboek. Je tikt aan welk weer het vandaag is en bent klaar. Juist omdat het zo klein is, doe je het ook echt.</p>
             </article>
             <article class="story-goal" data-number="02" data-story-reveal tabindex="0">
               <img class="story-goal-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
-              <h3 data-i18n="story.goal2.h">Eenvoudig voor mensen.</h3>
-              <p data-i18n="story.goal2.p">Technologie hoort ondersteuning toegankelijker te maken, zonder meer ruis of gedoe toe te voegen.</p>
+              <h3 data-i18n="story.goal2.h">Je eigen weerbericht.</h3>
+              <p data-i18n="story.goal2.p">Na een paar weken zie je je patroon terug: wanneer het beter ging en wanneer niet. Dat geeft je woorden voor een gesprek dat anders moeilijk te beginnen is.</p>
             </article>
             <article class="story-goal" data-number="03" data-story-reveal tabindex="0">
               <img class="story-goal-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
-              <h3 data-i18n="story.goal3.h">Gemaakt om door te gaan.</h3>
-              <p data-i18n="story.goal3.p">Na de laatste etappe blijft de app bij MIND en kan hun team het product verder ontwikkelen.</p>
+              <h3 data-i18n="story.goal3.h">MIND op het juiste moment.</h3>
+              <p data-i18n="story.goal3.p">Bij jouw weer hoort passende hulp uit het aanbod van MIND. Je hoeft niet zelf te zoeken; het juiste artikel of nummer komt naar je toe.</p>
             </article>
           </div>
         </div>
@@ -3023,7 +3046,7 @@
       <span class="pill" data-i18n="contact.pill">Contact</span>
       <h1 data-i18n="contact.h1">Begin het<br><em>gesprek.</em></h1>
       <div class="story-hero-foot">
-        <p data-i18n="contact.lead">Wil je partner worden, bijdragen of meebouwen? Plan een kort gesprek of stuur ons een bericht.</p>
+        <p data-i18n="contact.lead">Vragen over de app, de route of het project? Plan een gesprek van twintig minuten of stuur een bericht.</p>
         <p data-i18n="contact.note">We reageren binnen een dag. Geen verkooppraatje, gewoon een gesprek.</p>
       </div>
     </section>
@@ -3204,7 +3227,7 @@
 
         // intro
         'intro.heading':    'Drie nerds. Eén route.<br><em>Eén AI-tool</em> voor MIND.',
-        'intro.body':       'Drie AI-nerds uit Amsterdam lopen deze zomer de Camino van Tui naar Santiago en bouwen onderweg live aan één AI-tool voor mentale gezondheid. Daarna dragen we die gratis over aan MIND. Sponsors maken reis, productie en overdracht mogelijk.',
+        'intro.body':       'We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype. Op de Camino maken we er werkende software van.',
         'intro.cta1':       'Ons verhaal &rarr;',
 
         // footer
@@ -3334,14 +3357,14 @@
         // contact
         'contact.pill':         'Contact',
         'contact.h1':           'Begin het<br><em>gesprek.</em>',
-        'contact.lead':         'Partner worden, iets bijdragen of gewoon sparren over het idee? Plan een kort gesprek of stuur een bericht.',
-        'contact.note':         'We reageren binnen een dag. Geen verkooppraatje, gewoon een gesprek.',
+        'contact.lead':         'Vragen over de app, de route of het project? Plan een gesprek van twintig minuten of stuur een bericht.',
+        'contact.note':         'We reageren binnen een werkdag.',
         'contact.cal.head':     'Gesprek',
-        'contact.cal.value':    '20 minuten.<br><em>Genoeg om te weten of het past.</em>',
-        'contact.cal.desc':     'Plan direct in onze agenda. We kijken samen of en hoe het past.',
+        'contact.cal.value':    '20 minuten.<br><em>Genoeg voor een eerste antwoord.</em>',
+        'contact.cal.desc':     'Kies zelf een moment in onze agenda. Je krijgt een videolink per mail.',
         'contact.cal.btn':      'Plan een gesprek &rarr;',
         'contact.email.head':   'Mail',
-        'contact.email.desc':   'Voor partners, pers, meebouwers en iedereen die even wil sparren.',
+        'contact.email.desc':   'Voor pers, MIND-gerelateerde vragen en iedereen die meer wil weten over de app.',
         'contact.office.head':  'Kantoor',
         'contact.office.value': 'Jacob Bontiusplaats 9<br>1018 LL Amsterdam',
         'contact.office.desc':  'Kom langs of gebruik dit als postadres.',
@@ -3367,7 +3390,7 @@
 
         // intro
         'intro.heading':    'Three nerds. One route.<br><em>One AI tool</em> for MIND.',
-        'intro.body':       'Three AI nerds from Amsterdam are walking the Camino from Tui to Santiago this summer, building one AI tool for mental health live along the way. We hand it over to MIND for free. Sponsors make the journey, production, and handover possible.',
+        'intro.body':       'We walk 120 kilometres from Tui to Santiago and build an app for the MIND foundation along the way: one question a day about how you are doing, answered with a weather type. On the Camino we turn it into working software.',
         'intro.cta1':       'Our story &rarr;',
 
         // footer
@@ -3497,14 +3520,14 @@
         // contact
         'contact.pill':         'Contact',
         'contact.h1':           'Start the<br><em>conversation.</em>',
-        'contact.lead':         'Want to partner, contribute, or just talk the idea through? Book a short call or send a message.',
-        'contact.note':         'We respond within a day. No sales pitch, just a conversation.',
+        'contact.lead':         'Questions about the app, the route, or the project? Book a twenty-minute call or send us a message.',
+        'contact.note':         'We respond within one working day.',
         'contact.cal.head':     'Meeting',
-        'contact.cal.value':    '20 minutes.<br><em>Enough to know if it fits.</em>',
-        'contact.cal.desc':     'Book directly in our calendar. We figure out together if and how it fits.',
+        'contact.cal.value':    '20 minutes.<br><em>Enough for a first answer.</em>',
+        'contact.cal.desc':     'Pick a slot in our calendar. You get a video link by email.',
         'contact.cal.btn':      'Schedule a call &rarr;',
         'contact.email.head':   'Email',
-        'contact.email.desc':   'For partners, press, builders, and anyone who wants to talk it through.',
+        'contact.email.desc':   'For press, MIND-related questions, and anyone who wants to know more about the app.',
         'contact.office.head':  'Office',
         'contact.office.value': 'Jacob Bontiusplaats 9<br>1018 LL Amsterdam',
         'contact.office.desc':  'Drop by or use this as our postal address.',
@@ -3568,7 +3591,7 @@
       'meta.descShort': '120 kilometer lopen. Een app voor MIND bouwen. Kosteloos overdragen.',
       'hero.tagline': 'Drie AI-founders maken van de Camino hun kantoor en bouwen onderweg een app voor MIND.',
       'intro.heading': 'Snelle tech,<br><em>langzame route.</em>',
-      'intro.body': 'We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: laagdrempelige challenges die je even uit je hoofd halen, met de hulp van MIND op jouw maat. Op de Camino maken we er werkende software van.',
+      'intro.body': 'We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype. Op de Camino maken we er werkende software van.',
       'plan.row2.d': 'Elke etappe is een bouwsprint voor de MIND-app: onderweg luisteren en inspreken, bij aankomst ontwerpen en testen.',
       'plan.row3.d': 'De werkende app gaat kosteloos naar stichting MIND, samen met het verhaal van de bouw.',
       'announcement.label': 'De announcement',
@@ -3577,8 +3600,8 @@
       'announcement.play': 'Bekijk de film &middot; 01:06',
       'announcement.sound': 'Geluid',
       'announcement.fallback': 'Je browser ondersteunt deze video niet.',
-      'announcement.meta1': 'Back to Being &middot; announcement film',
-      'announcement.meta2': 'The world as our office',
+      'announcement.meta1': 'Announcement film',
+      'announcement.meta2': '66 seconds',
       'verhaal.h1': 'Werken terwijl <em>we lopen.</em>',
       'story.kicker': 'Ons verhaal',
       'story.season': 'Tui &rarr; Santiago &middot; zomer 2026',
@@ -3588,15 +3611,15 @@
       'story.fact.product': 'app voor MIND',
       'story.mind.lockup': 'Project voor MIND',
       'story.mind.index': '01 &middot; Wat we bouwen',
-      'story.mind.heading': 'Even <em>uit je hoofd.</em>',
-      'story.mind.summary': 'Samen met MIND bouwen we een app die je helpt om even uit je hoofd te stappen. Geen zoveelste zoekmachine, maar kleine, laagdrempelige challenges, een paar rake woorden op het juiste moment, en de hulp van MIND afgestemd op waar jij mee zit.',
-      'story.goals.intro': 'Wat de app doet',
-      'story.goal1.h': 'Het weer in je hoofd.',
-      'story.goal1.p': 'Stem hoe je je voelt: zonnig, bewolkt, of ergens ertussenin. Zo zie je je eigen weer over de dagen heen, en voor MIND wordt het een landelijk middel om te peilen hoe het echt met jongeren gaat.',
-      'story.goal2.h': 'Challenges, geen to-do&rsquo;s.',
-      'story.goal2.p': 'Kleine opdrachten die je even uit je hoofd halen, plus quotes die blijven hangen. Laagdrempelig genoeg om ze &eacute;cht te doen.',
-      'story.goal3.h': 'MIND, op jouw maat.',
-      'story.goal3.p': 'De kennis en hulp die MIND al biedt, maar gefilterd op jouw interesses. Wat past komt naar je toe, in plaats van dat jij het moet zoeken.',
+      'story.mind.heading': 'Hoe is het weer <em>in je hoofd?</em>',
+      'story.mind.summary': 'Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag. Je beantwoordt hem in vijf seconden met een weertype: zonnig, bewolkt, storm. Dat kleine gebaar maakt het makkelijker om er daarna over te praten &mdash; met een vriend, thuis, of met hulpverlening.',
+      'story.goals.intro': 'Hoe het werkt',
+      'story.goal1.h': 'Eén vraag per dag.',
+      'story.goal1.p': 'Geen vragenlijst en geen dagboek. Je tikt aan welk weer het vandaag is en bent klaar. Juist omdat het zo klein is, doe je het ook echt.',
+      'story.goal2.h': 'Je eigen weerbericht.',
+      'story.goal2.p': 'Na een paar weken zie je je patroon terug: wanneer het beter ging en wanneer niet. Dat geeft je woorden voor een gesprek dat anders moeilijk te beginnen is.',
+      'story.goal3.h': 'MIND op het juiste moment.',
+      'story.goal3.p': 'Bij jouw weer hoort passende hulp uit het aanbod van MIND. Je hoeft niet zelf te zoeken; het juiste artikel of nummer komt naar je toe.',
       'story.route.index': '02 &middot; Werken onderweg',
       'story.route.heading': 'Zes dagen. Zes etappes. <em>Elke dag verder.</em>',
       'story.route.p': 'De kaart laat niet alleen zien waar we lopen. Elke etappe wordt ook een bouwsprint: luisteren onderweg, keuzes maken bij aankomst en zichtbaar delen wat er die dag is veranderd.',
@@ -3617,7 +3640,7 @@
       'meta.descShort': 'Walk 120 kilometres. Build an app for MIND. Hand it over for free.',
       'hero.tagline': 'Three AI founders turn the Camino into their office and build an app for MIND along the way.',
       'intro.heading': 'Fast tech,<br><em>slow route.</em>',
-      'intro.body': 'We walk 120 kilometres from Tui to Santiago while building an app for the MIND foundation: low-threshold challenges to get you out of your head, with MIND&rsquo;s support tailored to you. On the Camino, we turn it into working software.',
+      'intro.body': 'We walk 120 kilometres from Tui to Santiago and build an app for the MIND foundation along the way: one question a day about how you are doing, answered with a weather type. On the Camino we turn it into working software.',
       'plan.row2.d': 'Every stage is a build sprint for the MIND app: listening and dictating on the trail, designing and testing on arrival.',
       'plan.row3.d': 'The working app goes to the MIND foundation for free, together with the story of how it was built.',
       'announcement.label': 'The announcement',
@@ -3626,8 +3649,8 @@
       'announcement.play': 'Watch the film &middot; 01:06',
       'announcement.sound': 'Sound',
       'announcement.fallback': 'Your browser does not support this video.',
-      'announcement.meta1': 'Back to Being &middot; announcement film',
-      'announcement.meta2': 'The world as our office',
+      'announcement.meta1': 'Announcement film',
+      'announcement.meta2': '66 seconds',
       'verhaal.h1': 'Working while <em>we walk.</em>',
       'story.kicker': 'Our story',
       'story.season': 'Tui &rarr; Santiago &middot; summer 2026',
@@ -3637,15 +3660,15 @@
       'story.fact.product': 'app for MIND',
       'story.mind.lockup': 'Project for MIND',
       'story.mind.index': '01 &middot; What we build',
-      'story.mind.heading': 'A moment <em>out of your head.</em>',
-      'story.mind.summary': 'Together with MIND we build an app that helps you step out of your head for a moment. Not yet another search engine, but small, low-threshold challenges, a few words that land at the right time, and MIND&rsquo;s support tuned to whatever you&rsquo;re dealing with.',
-      'story.goals.intro': 'What the app does',
-      'story.goal1.h': 'The weather in your head.',
-      'story.goal1.p': 'Rate how you feel: sunny, cloudy, or somewhere in between. You watch your own weather across the days, and for MIND it becomes a nationwide way to gauge how young people are really doing.',
-      'story.goal2.h': 'Challenges, not to-dos.',
-      'story.goal2.p': 'Small prompts that pull you out of your head, plus quotes that stick. Low-threshold enough to actually do them.',
-      'story.goal3.h': 'MIND, tailored to you.',
-      'story.goal3.p': 'The knowledge and support MIND already offers, filtered to your interests. What fits comes to you, instead of you having to search for it.',
+      'story.mind.heading': 'What is the weather <em>in your head?</em>',
+      'story.mind.summary': 'Together with the MIND foundation we are building an app around one fixed question. You answer it in five seconds with a weather type: sunny, cloudy, storm. That small gesture makes it easier to talk about afterwards &mdash; with a friend, at home, or with a professional.',
+      'story.goals.intro': 'How it works',
+      'story.goal1.h': 'One question a day.',
+      'story.goal1.p': 'No questionnaire, no journal. You tap the weather for today and you are done. Because it is that small, you actually keep doing it.',
+      'story.goal2.h': 'Your own forecast.',
+      'story.goal2.p': 'After a few weeks you see your pattern: when things were better and when they were not. That gives you words for a conversation that is otherwise hard to start.',
+      'story.goal3.h': 'MIND at the right moment.',
+      'story.goal3.p': 'Your weather is matched to support from what MIND already offers. No searching required; the right article or number comes to you.',
       'story.route.index': '02 &middot; Working on the trail',
       'story.route.heading': 'Six days. Six stages. <em>Moving forward every day.</em>',
       'story.route.p': 'The map shows more than where we walk. Every stage is also a build sprint: listening on the trail, making decisions on arrival and sharing what changed that day.',
@@ -3935,6 +3958,41 @@
       if (activateBtn) activateBtn.addEventListener('click', activateCaminoMap);
 
       caminoMapInstance.on('load', () => {
+        // Basemap on-brand maken: de Carto-stijl is grijs, wij willen beige.
+        // We hertinten de bestaande lagen in plaats van een eigen stijl te hosten.
+        try {
+          const BRAND = {
+            land:   '#FFFEF1',  // canvas
+            water:  '#DDE6EE',  // rustige lucht
+            green:  '#E7EADF',  // gras, sterk verzacht
+            road:   '#EFEADA',  // zand, sterk verzacht
+            roadHi: '#E3DCC6',
+            ink:    '#161616',
+            halo:   '#FFFEF1',
+          };
+          for (const layer of caminoMapInstance.getStyle().layers) {
+            const id = layer.id;
+            try {
+              if (layer.type === 'background') {
+                caminoMapInstance.setPaintProperty(id, 'background-color', BRAND.land);
+              } else if (layer.type === 'fill') {
+                if (/water|ocean|sea|river|lake/i.test(id))      caminoMapInstance.setPaintProperty(id, 'fill-color', BRAND.water);
+                else if (/park|wood|forest|grass|green|landcover/i.test(id)) caminoMapInstance.setPaintProperty(id, 'fill-color', BRAND.green);
+                else if (/building/i.test(id))                    caminoMapInstance.setPaintProperty(id, 'fill-color', BRAND.roadHi);
+                else                                              caminoMapInstance.setPaintProperty(id, 'fill-color', BRAND.land);
+              } else if (layer.type === 'line') {
+                if (/water|river|waterway/i.test(id))            caminoMapInstance.setPaintProperty(id, 'line-color', BRAND.water);
+                else if (/boundary|admin/i.test(id))             caminoMapInstance.setPaintProperty(id, 'line-color', BRAND.roadHi);
+                else                                             caminoMapInstance.setPaintProperty(id, 'line-color', /motorway|trunk|primary/i.test(id) ? BRAND.roadHi : BRAND.road);
+              } else if (layer.type === 'symbol') {
+                caminoMapInstance.setPaintProperty(id, 'text-color', BRAND.ink);
+                caminoMapInstance.setPaintProperty(id, 'text-halo-color', BRAND.halo);
+                caminoMapInstance.setPaintProperty(id, 'text-halo-width', 1.2);
+              }
+            } catch (e) { /* laag zonder die eigenschap: overslaan */ }
+          }
+        } catch (e) { /* stijl niet beschikbaar: laat de kaart zoals hij is */ }
+
         caminoMapInstance.addSource('camino-route', {
           type: 'geojson',
           data: {
