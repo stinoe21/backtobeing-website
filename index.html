@@ -73,6 +73,14 @@
       --space-6: 3rem;
       --space-7: 4rem;
 
+      /* Koppenschaal. Vier stappen, elke kop hoort bij precies één stap:
+         hero = paginaopener, section = eigen sectie, block = halve kolom,
+         card = kaart of subkop. */
+      --h-hero:    clamp(3.4rem, 8.8vw, 9rem);
+      --h-section: clamp(2.4rem, 5vw, 4.6rem);
+      --h-block:   clamp(2rem, 3.4vw, 3.2rem);
+      --h-card:    clamp(1.7rem, 2.6vw, 2.4rem);
+
       /* ---- STRUCTUUR: kleurtint ---- */
       /* canvas draagt de pagina, tree is de enige donkere sectie,
          charcoal komt alleen achter beeld en video. */
@@ -320,7 +328,7 @@
     .hero-title {
       font-family: var(--serif);
       font-weight: 400; font-variation-settings: "opsz" 144, "SOFT" 30;
-      font-size: clamp(3.5rem, 8.5vw, 9.5rem);
+      font-size: var(--h-hero);
       line-height: 0.94; letter-spacing: 0;
       color: var(--cream); margin-bottom: 2.5rem;
     }
@@ -365,7 +373,7 @@
     }
     .intro-strip h2 {
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(2rem, 3.5vw, 3.2rem); line-height: 1.04; letter-spacing: 0;
+      font-size: var(--h-block); line-height: 1.04; letter-spacing: 0;
     }
     .intro-strip h2 em { font-style: italic; color: var(--display-accent); }
     .intro-strip p {
@@ -387,7 +395,7 @@
     .partners-strip-heading {
       margin: 0;
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(2rem, 3.4vw, 3.2rem);
+      font-size: var(--h-block);
       line-height: 1.02; letter-spacing: 0;
       text-align: center; text-wrap: balance;
       color: var(--ink);
@@ -773,7 +781,7 @@
     .closing-cta-label { color: var(--green-light) !important; margin-bottom: 2rem; }
     .closing-cta-section h2 {
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(2.75rem, 6vw, 5.5rem);
+      font-size: var(--h-block);
       line-height: 0.96; letter-spacing: 0; color: var(--cream); margin-bottom: 1.75rem;
     }
     .closing-cta-section h2 em { font-style: italic; color: var(--display-accent); }
@@ -803,7 +811,7 @@
     .story-hero h1 {
       font-family: var(--serif); font-weight: 400;
       font-variation-settings: "opsz" 144;
-      font-size: clamp(2.75rem, 9vw, 9rem);
+      font-size: var(--h-hero);
       line-height: 0.94; letter-spacing: 0;
       margin: 1.5rem 0 3rem;
       max-width: 14ch;
@@ -821,7 +829,6 @@
       padding-bottom: 3.5rem;
     }
     #page-contact .story-hero h1 {
-      font-size: clamp(2.75rem, 7vw, 7.5rem);
       margin: 1.25rem 0 2.5rem;
       max-width: 13ch;
     }
@@ -942,26 +949,6 @@
       aspect-ratio: 4/3;
       width: min(100%, 880px);
       margin: 0 auto;
-    }
-    #page-verhaal .story-route-bottom {
-      display: block;
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 4.25rem var(--gutter-x);
-    }
-    #page-verhaal .story-route-bottom .ch-content {
-      max-width: 760px;
-      margin-bottom: 2rem;
-    }
-    #page-verhaal .story-route-bottom .ch-content p {
-      max-width: 58ch;
-    }
-    #page-verhaal .story-route-bottom .camino-map-wrap {
-      max-width: 880px;
-    }
-    #page-verhaal .story-route-bottom + .story-final-cta {
-      border-top: 0;
-      padding-top: 2rem;
     }
     /* Descendant selector raises specificity above MapLibre's
        `.maplibregl-map { position: relative }` rule, which is loaded
@@ -1323,7 +1310,11 @@
     }
 
     /* FOUNDERS */
-    .founders-section { background: var(--bg-dark); color: var(--canvas); padding: var(--section-y) var(--gutter-x); }
+    .founders-section {
+      background: var(--bg-dark); color: var(--canvas);
+      padding: var(--section-y) var(--gutter-x);
+      scroll-margin-top: var(--nav-h);
+    }
     .founders-inner { max-width: 1440px; margin: 0 auto; }
     .group-portrait {
       padding: var(--section-y-sm) var(--gutter-x);
@@ -1342,6 +1333,7 @@
       display: block;
       border-radius: var(--radius);
     }
+    .group-portrait-actions { margin-top: var(--space-2); }
     .group-portrait-cap {
       font-family: var(--subhead);
       font-size: 0.72rem;
@@ -1358,7 +1350,7 @@
     .founders-header .section-label { color: inherit; opacity: 0.66; }
     .founders-header h2 {
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(2rem, 3.2vw, 3.2rem); line-height: 1.05; letter-spacing: 0;
+      font-size: var(--h-section); line-height: 1.0; letter-spacing: -0.01em;
       color: var(--cream);
     }
     .founders-header h2 em { font-style: italic; color: var(--display-accent); }
@@ -1432,7 +1424,7 @@
     .story-final-cta h2 {
       font-family: var(--serif);
       font-weight: 400;
-      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-size: var(--h-block);
       line-height: 1.04;
       letter-spacing: 0;
     }
@@ -1873,9 +1865,6 @@
       .return-row .num { font-size: 0.85rem; }
       .ch-visual { aspect-ratio: 3/2; }
       .ch-visual.ch-visual-mind { aspect-ratio: 3/2; }
-      #page-verhaal .story-route-bottom {
-        padding: 3.25rem max(1.25rem, 5vw);
-      }
       .camino-map-card {
         left: 0.75rem;
         right: 0.75rem;
@@ -1972,7 +1961,7 @@
       max-width: 11ch;
       margin: 0;
       font-family: var(--serif);
-      font-size: clamp(2.7rem, 6vw, 5.8rem);
+      font-size: var(--h-section);
       font-weight: 400;
       line-height: 0.95;
       letter-spacing: -0.015em;
@@ -2163,7 +2152,7 @@
       max-width: 12ch;
       margin: 0;
       font-family: var(--serif);
-      font-size: clamp(3.7rem, 10.3vw, 9.5rem);
+      font-size: var(--h-hero);
       font-weight: 400;
       font-variation-settings: "opsz" 144;
       line-height: 0.87;
@@ -2224,11 +2213,10 @@
     .story-route-heading {
       margin: 0;
       font-family: var(--serif);
-      font-size: clamp(2.7rem, 6vw, 6.25rem);
+      font-size: var(--h-section);
       font-weight: 400;
       line-height: 0.94;
       letter-spacing: -0.015em;
-      text-wrap: balance;
     }
     .story-route-heading em {
       color: var(--display-accent);
@@ -2273,7 +2261,7 @@
       color: var(--ink-soft);
     }
     .story-mind-heading {
-      max-width: 9ch;
+      max-width: 15ch;
       color: var(--canvas);
     }
     .story-mind-heading em {
@@ -2335,9 +2323,9 @@
       max-width: 15ch;
       margin: 0;
       font-family: var(--serif);
-      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-size: var(--h-card);
       font-weight: 400;
-      line-height: 0.98;
+      line-height: 1.0;
     }
     .story-goal p {
       max-width: 47ch;
@@ -2392,7 +2380,7 @@
     .beta-heading {
       margin: 0;
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(2.2rem, 4.4vw, 4rem);
+      font-size: var(--h-section);
       line-height: 1.0; letter-spacing: -0.01em; text-wrap: balance;
     }
     .beta-heading em { font-style: italic; color: var(--display-accent); }
@@ -2530,7 +2518,8 @@
 
     /* Compact story structure: one app chapter with three animated principles. */
     .story-mind-inner {
-      grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+      /* De rechterkolom is leeg; de kop had meer breedte nodig dan 0.78fr gaf. */
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: clamp(3rem, 7vw, 7rem);
     }
     .story-mind-copy {
@@ -2547,9 +2536,6 @@
     .story-goals-intro { grid-column: 1 / -1; }
     .story-goal {
       min-height: clamp(16rem, 27vw, 22rem);
-    }
-    .story-goal h3 {
-      font-size: clamp(1.8rem, 2.8vw, 3rem);
     }
     @media (max-width: 799px) {
       .story-mind-inner { grid-template-columns: 1fr; }
@@ -2682,6 +2668,9 @@
              alt="Max, Caesar en Stijn zittend tegen een bewolkte lucht"
              width="2000" height="1333" loading="lazy" />
         <figcaption class="group-portrait-cap" data-i18n="home.group.cap">Max, Caesar en Stijn</figcaption>
+        <div class="group-portrait-actions">
+          <button class="btn btn-outline" type="button" data-i18n="home.group.cta" onclick="showStorySection('team')">Over ons &rarr;</button>
+        </div>
       </figure>
     </section>
 
@@ -2923,12 +2912,13 @@
       <section class="story-mind-explainer">
         <div class="story-mind-inner">
           <div class="story-mind-copy" data-story-reveal>
+            <h2 class="story-mind-heading" data-i18n="story.mind.heading">Over het weer<br>praat je zo.<br><em>Over jezelf niet.</em></h2>
+            <p class="story-mind-summary" data-i18n="story.mind.summary">Daarom bouwen we samen met stichting MIND een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met een weertype. Je weer wordt niet opgeslagen. Het is er om te delen, want daar begint het gesprek.</p>
+            <!-- Credit hoort onder het verhaal, niet als pil boven de kop. -->
             <div class="story-mind-lockup">
               <img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" />
               <span data-i18n="story.mind.lockup">Project voor MIND</span>
             </div>
-            <h2 class="story-mind-heading" data-i18n="story.mind.heading">Hoe is het weer <em>in je hoofd?</em></h2>
-            <p class="story-mind-summary" data-i18n="story.mind.summary">Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met een weertype. Je weer wordt niet opgeslagen. Het is er om te delen, want daar begint het gesprek.</p>
           </div>
 
           <div class="story-goals">
@@ -2981,34 +2971,11 @@
         </div>
       </section>
 
-      <section class="story-route-article">
-        <div class="story-route-inner">
-          <div class="story-route-copy">
-            <div data-story-reveal>
-              <h2 class="story-route-heading" data-i18n="story.route.heading">Zes dagen. Zes etappes. <em>Elke dag verder.</em></h2>
-            </div>
-            <p data-i18n="story.route.p" data-story-reveal>De kaart laat niet alleen zien waar we lopen. Elke etappe wordt ook een bouwsprint: luisteren onderweg, keuzes maken bij aankomst en zichtbaar delen wat er die dag is veranderd.</p>
-          </div>
-          <div class="camino-map-wrap" aria-label="Kaart van de Camino-route van Tui naar Santiago de Compostela" data-story-reveal>
-            <div id="caminoMap" class="camino-map"></div>
-            <div id="caminoDayControls" class="camino-day-controls" aria-label="Bekijk de Camino-route per dag"></div>
-            <button id="caminoActivate" class="camino-activate" type="button" aria-label="Activeer de kaart">
-              <span data-i18n="verhaal.map.activate">Klik om kaart te gebruiken</span>
-            </button>
-            <div class="camino-map-card">
-              <div>
-                <span id="caminoMapLabel" class="eyebrow" data-i18n="verhaal.map.label">De route</span>
-                <strong id="caminoMapTitle" data-i18n="verhaal.map.title">Tui naar Santiago de Compostela</strong>
-              </div>
-              <span id="caminoMapDistance" class="distance" data-i18n="verhaal.map.distance">120 km / 6 dagen</span>
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
 
-    <!-- FOUNDERS -->
-    <div class="founders-section">
+
+    <!-- TEAM -->
+    <div class="founders-section" id="team">
       <div class="founders-inner">
         <div class="founders-header">
           <h2 data-i18n="founders.h">Team<br><em>Back to Being.</em></h2>
@@ -3038,6 +3005,31 @@
       </div>
     </div>
 
+
+    <section class="story-route-article">
+      <div class="story-route-inner">
+        <div class="story-route-copy">
+          <div data-story-reveal>
+            <h2 class="story-route-heading" data-i18n="story.route.heading">Welke route <em>lopen we?</em></h2>
+          </div>
+          <p data-i18n="story.route.p" data-story-reveal>Zes dagen, zes etappes: van Tui naar Santiago de Compostela, 120 kilometer over de Camino Portugu&eacute;s. Elke etappe is ook een bouwsprint. Onderweg luisteren we, bij aankomst maken we keuzes, en aan het eind van de dag laten we zien wat er is veranderd.</p>
+        </div>
+        <div class="camino-map-wrap" aria-label="Kaart van de Camino-route van Tui naar Santiago de Compostela" data-story-reveal>
+          <div id="caminoMap" class="camino-map"></div>
+          <div id="caminoDayControls" class="camino-day-controls" aria-label="Bekijk de Camino-route per dag"></div>
+          <button id="caminoActivate" class="camino-activate" type="button" aria-label="Activeer de kaart">
+            <span data-i18n="verhaal.map.activate">Klik om kaart te gebruiken</span>
+          </button>
+          <div class="camino-map-card">
+            <div>
+              <span id="caminoMapLabel" class="eyebrow" data-i18n="verhaal.map.label">De route</span>
+              <strong id="caminoMapTitle" data-i18n="verhaal.map.title">Tui naar Santiago de Compostela</strong>
+            </div>
+            <span id="caminoMapDistance" class="distance" data-i18n="verhaal.map.distance">120 km / 6 dagen</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section class="story-final-cta">
       <div>
@@ -3332,6 +3324,7 @@
         // partners
         'partners.heading':       'Partners &amp; <em>sponsors.</em>',
         'home.group.cap':         'Max, Caesar en Stijn',
+        'home.group.cta':         'Over ons &rarr;',
         'partners.home.label':    'Met steun van',
         'partners.group.sponsors': 'Sponsors',
         'partners.group.partners': 'Partners',
@@ -3486,6 +3479,7 @@
         // partners
         'partners.heading':       'Partners &amp; <em>sponsors.</em>',
         'home.group.cap':         'Max, Caesar and Stijn',
+        'home.group.cta':         'About us &rarr;',
         'partners.home.label':    'Backed by',
         'partners.group.sponsors': 'Sponsors',
         'partners.group.partners': 'Partners',
@@ -3632,8 +3626,8 @@
       'story.fact.days': 'dagen bouwen',
       'story.fact.product': 'app voor MIND',
       'story.mind.lockup': 'Project voor MIND',
-      'story.mind.heading': 'Hoe is het weer <em>in je hoofd?</em>',
-      'story.mind.summary': "Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met een weertype. Je weer wordt niet opgeslagen. Het is er om te delen, want daar begint het gesprek.",
+      'story.mind.heading': 'Over het weer<br>praat je zo.<br><em>Over jezelf niet.</em>',
+      'story.mind.summary': "Daarom bouwen we samen met stichting MIND een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met een weertype. Je weer wordt niet opgeslagen. Het is er om te delen, want daar begint het gesprek.",
       'story.goals.intro': 'Hoe het werkt',
       'story.goal1.h': "E&eacute;n vraag per dag.",
       'story.goal1.p': "Geen vragenlijst en geen dagboek. Je tikt aan welk weer het vandaag is en bent klaar. Juist omdat het zo klein is, doe je het ook echt.",
@@ -3641,8 +3635,8 @@
       'story.goal2.p': "Stuur je weer door naar wie je wil en kijk hoe het weer bij anderen staat. Zo vraag je makkelijker door dan met \"hoe gaat het?\", en hoef je zelf niet te beginnen.",
       'story.goal3.h': "Het landelijk weerbericht.",
       'story.goal3.p': "Alle weertypes samen vormen geanonimiseerd een landelijk beeld. Je ziet waar de onweerswolk hangt, en MIND ziet hoe het echt met mensen gaat.",
-      'story.route.heading': 'Zes dagen. Zes etappes. <em>Elke dag verder.</em>',
-      'story.route.p': 'De kaart laat niet alleen zien waar we lopen. Elke etappe wordt ook een bouwsprint: luisteren onderweg, keuzes maken bij aankomst en zichtbaar delen wat er die dag is veranderd.',
+      'story.route.heading': 'Welke route <em>lopen we?</em>',
+      'story.route.p': 'Zes dagen, zes etappes: van Tui naar Santiago de Compostela, 120 kilometer over de Camino Portugu&eacute;s. Elke etappe is ook een bouwsprint. Onderweg luisteren we, bij aankomst maken we keuzes, en aan het eind van de dag laten we zien wat er is veranderd.',
       'press.feature.lead': 'Deze zomer zit ons kantoor in <em>een rugzak.</em>',
       'press.feature.summary1': 'De Camino staat voor vertraging en bezinning, AI voor snelheid en productiviteit. Wij brengen die werelden samen in &eacute;&eacute;n live-experiment.',
       'press.feature.summary2': 'Onderweg bouwen we een app voor stichting MIND en leggen we het eerlijke proces vast: de hitte, de techniek, de gesprekken en alles wat anders loopt dan gepland.',
@@ -3682,8 +3676,8 @@
       'story.fact.days': 'days building',
       'story.fact.product': 'app for MIND',
       'story.mind.lockup': 'Project for MIND',
-      'story.mind.heading': 'What is the weather <em>in your head?</em>',
-      'story.mind.summary': "Together with the MIND foundation we are building an app around one fixed question: what is the weather in your head? You answer it in five seconds with a weather type. Your weather is not stored. It is there to share, because that is where the conversation starts.",
+      'story.mind.heading': 'We talk about<br>the weather.<br><em>Not about ourselves.</em>',
+      'story.mind.summary': "So together with the MIND foundation we are building an app around one fixed question: what is the weather in your head? You answer it in five seconds with a weather type. Your weather is not stored. It is there to share, because that is where the conversation starts.",
       'story.goals.intro': 'How it works',
       'story.goal1.h': "One question a day.",
       'story.goal1.p': "No questionnaire, no journal. You tap the weather for today and you are done. Because it is that small, you actually keep doing it.",
@@ -3691,8 +3685,8 @@
       'story.goal2.p': "Send your weather to whoever you want and see how others are doing. It opens a conversation more easily than \"how are you?\", and you do not have to start it yourself.",
       'story.goal3.h': "The national forecast.",
       'story.goal3.p': "All weather types together form an anonymised national picture. You see where the thundercloud sits, and MIND sees how people are really doing.",
-      'story.route.heading': 'Six days. Six stages. <em>Moving forward every day.</em>',
-      'story.route.p': 'The map shows more than where we walk. Every stage is also a build sprint: listening on the trail, making decisions on arrival and sharing what changed that day.',
+      'story.route.heading': 'Which route <em>are we walking?</em>',
+      'story.route.p': 'Six days, six stages: from Tui to Santiago de Compostela, 120 kilometres on the Camino Portugu&eacute;s. Every stage doubles as a build sprint. We listen along the way, decide on arrival, and show what changed by the end of the day.',
       'press.feature.lead': 'This summer, our office fits in <em>a backpack.</em>',
       'press.feature.summary1': 'The Camino stands for slowing down and reflection; AI for speed and productivity. We bring those worlds together in one live experiment.',
       'press.feature.summary2': 'On the trail, we build an app for the MIND foundation and capture the honest process: the heat, the technology, the conversations and everything that goes differently than planned.',
@@ -3906,18 +3900,6 @@
       updateCaminoCard();
     }
 
-    function placeStoryRouteAtBottom() {
-      const mapEl = document.getElementById('caminoMap');
-      const founders = document.querySelector('#page-verhaal .founders-section');
-      const cta = document.querySelector('#page-verhaal .story-final-cta');
-      if (!mapEl || !founders || !cta) return;
-
-      const routeChapter = mapEl.closest('.story-chapter');
-      if (!routeChapter || routeChapter.classList.contains('story-route-bottom')) return;
-
-      routeChapter.classList.add('story-route-bottom');
-      cta.parentNode.insertBefore(routeChapter, cta);
-    }
 
 /* Wait until the map container actually has non-zero dimensions before
        resolving. MapLibre sizes its canvas at construction time from
@@ -3941,7 +3923,6 @@
     }
 
     function initCaminoMap() {
-      placeStoryRouteAtBottom();
       const mapEl = document.getElementById('caminoMap');
       if (!mapEl || caminoMapInstance || typeof maplibregl === 'undefined') return;
 
@@ -4473,6 +4454,20 @@
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
 
+    // Naar een sectie op de verhaalpagina springen vanaf een andere pagina.
+    // De nav-offset zit in scroll-margin-top, dus scrollIntoView is genoeg.
+    // Lazy beelden erboven nemen pas na een frame of wat ruimte in; daarom
+    // mikken we een tweede keer als de layout is uitgezakt.
+    function showStorySection(id) {
+      showPage('verhaal');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const jump = () => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      };
+      requestAnimationFrame(() => { jump(); setTimeout(jump, 400); });
+    }
+
     function showPage(name) {
       setMobileMenu(false);
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -4493,10 +4488,6 @@
 
       if (name === 'verhaal') {
         initStoryExperience();
-        // Place the route block first so the .story-route-bottom layout
-        // (aspect-ratio: 4/3) is in the DOM, then wait until the wrap
-        // actually has dimensions before MapLibre measures the container.
-        placeStoryRouteAtBottom();
         const mapEl = document.getElementById('caminoMap');
         Promise.all([
           ensureMaplibre(),
