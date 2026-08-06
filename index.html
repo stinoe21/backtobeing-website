@@ -397,6 +397,9 @@
        Wispr is de grootste sponsor: bovenaan op een eigen rij, maar door de brede wordmark
        maar een tikje groter dan de rest. Verder sponsors op geldbedrag; bij Partners zit
        Techleap qua grootte tussen de sponsors en de rest in. */
+    /* MIND is een vierkant merk met een oranje splash: als zwart beeldmerk
+       verdwijnt de wordmark in de vlek. Eigen kleur en wat groter dus. */
+    .partner-logo img[src="mind-logo.webp"] { height: 68px; filter: none; }
     .partner-logo img[src="wispr.webp"]      { height: 68px; } /* Hoofdsponsor (brede wordmark) */
     .partner-logo img[src="n8n-logo.svg"]    { height: 40px; } /* Sponsor (viewBox strak gecropt) */
     .partner-logo img[src="remote.svg"]      { height: 84px; } /* Sponsor 6k */
@@ -2608,10 +2611,10 @@
 
     <section class="intro-strip">
       <div>
-        <h2 data-i18n="intro.heading">Drie nerds. Eén route.<br><em>Eén AI-tool</em> voor MIND.</h2>
+        <h2 data-i18n="intro.heading">Ons kantoor past deze zomer<br><em>in een rugzak.</em></em> voor MIND.</h2>
       </div>
       <div>
-        <p data-i18n="intro.body">Drie AI-nerds uit Amsterdam lopen deze zomer de Camino van Tui naar Santiago en bouwen onderweg live aan één AI-tool voor mentale gezondheid. Daarna dragen we die gratis over aan MIND. Sponsors maken reis, productie en overdracht mogelijk.</p>
+        <p data-i18n="intro.body">We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype.</p>
         <div class="intro-actions">
           <button class="btn"         data-i18n="intro.cta1" onclick="showPage('verhaal')"    type="button">Ons verhaal &rarr;</button>
         </div>
@@ -2697,6 +2700,7 @@
         <div class="partners-group">
           <div class="section-label partners-group-label" data-i18n="partners.group.partners">Partners</div>
           <div class="partners-tier partners-tier-partners">
+            <a class="partner-logo" href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer"><img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" /></a>
             <a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer"><img src="techleap.webp" alt="Techleap" loading="lazy" /></a>
             <a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></a>
             <a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer"><img src="Lerai.webp" alt="LerAI" loading="lazy" /></a>
@@ -2719,9 +2723,9 @@
               <img src="noordhollands-dagblad-logo.webp" alt="Noord-Hollands Dagblad" loading="lazy" />
             </a>
           </li>
-          <li><span class="press-logo-link"><img src="trouw-logo.png" alt="Trouw" loading="lazy" /></span></li>
-          <li><span class="press-logo-link"><img src="haarlem105-logo.svg" alt="Haarlem105" loading="lazy" /></span></li>
-          <li><span class="press-logo-link"><img src="smarthealth-logo.png" alt="SmartHealth" loading="lazy" /></span></li>
+          <li><a class="press-logo-link" href="https://www.trouw.nl/nieuws/deze-drie-mannen-maken-een-app-tijdens-de-camino-werken-kan-ook-vanaf-een-bergpaadje-in-spanje~bfeb72ec/" target="_blank" rel="noopener" aria-label="Artikel in Trouw (opent in nieuw tabblad)"><img src="trouw-logo.png" alt="Trouw" loading="lazy" /></a></li>
+          <li><a class="press-logo-link" href="https://haarlem105.nl/drie-vrienden-bouwen-app-voor-mentale-gezondheid-tijdens-camino-de-santiago/" target="_blank" rel="noopener" aria-label="Artikel op Haarlem105 (opent in nieuw tabblad)"><img src="haarlem105-logo.svg" alt="Haarlem105" loading="lazy" /></a></li>
+          <li><a class="press-logo-link" href="https://smarthealth.live/" target="_blank" rel="noopener" aria-label="SmartHealth (opent in nieuw tabblad)"><img src="smarthealth-logo.png" alt="SmartHealth" loading="lazy" /></a></li>
           <li><span class="press-name">Haarlems Dagblad</span></li>
         </ul>
       </div>
@@ -2876,25 +2880,25 @@
             </div>
             <div class="story-section-index" data-i18n="story.mind.index">01 &middot; Wat we bouwen</div>
             <h2 class="story-mind-heading" data-i18n="story.mind.heading">Hoe is het weer <em>in je hoofd?</em></em></h2>
-            <p class="story-mind-summary" data-i18n="story.mind.summary">Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag. Je beantwoordt hem in vijf seconden met een weertype: zonnig, bewolkt, storm. Dat kleine gebaar maakt het makkelijker om er daarna over te praten &mdash; met een vriend, thuis, of met hulpverlening.</p>
+            <p class="story-mind-summary" data-i18n="story.mind.summary">Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met een weertype. Je weer wordt niet opgeslagen. Het is er om te delen, want daar begint het gesprek.</p>
           </div>
 
           <div class="story-goals">
             <div class="story-goals-intro" data-i18n="story.goals.intro">Hoe het werkt</div>
             <article class="story-goal is-active" data-number="01" data-story-reveal tabindex="0">
               <img class="story-goal-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
-              <h3 data-i18n="story.goal1.h">Eén vraag per dag.</h3>
+              <h3 data-i18n="story.goal1.h">E&eacute;n vraag per dag.</h3>
               <p data-i18n="story.goal1.p">Geen vragenlijst en geen dagboek. Je tikt aan welk weer het vandaag is en bent klaar. Juist omdat het zo klein is, doe je het ook echt.</p>
             </article>
             <article class="story-goal" data-number="02" data-story-reveal tabindex="0">
               <img class="story-goal-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
-              <h3 data-i18n="story.goal2.h">Je eigen weerbericht.</h3>
-              <p data-i18n="story.goal2.p">Na een paar weken zie je je patroon terug: wanneer het beter ging en wanneer niet. Dat geeft je woorden voor een gesprek dat anders moeilijk te beginnen is.</p>
+              <h3 data-i18n="story.goal2.h">Deel je weerbericht.</h3>
+              <p data-i18n="story.goal2.p">Stuur je weer door naar wie je wil en kijk hoe het weer bij anderen staat. Zo vraag je makkelijker door dan met "hoe gaat het?", en hoef je zelf niet te beginnen.</p>
             </article>
             <article class="story-goal" data-number="03" data-story-reveal tabindex="0">
               <img class="story-goal-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
-              <h3 data-i18n="story.goal3.h">MIND op het juiste moment.</h3>
-              <p data-i18n="story.goal3.p">Bij jouw weer hoort passende hulp uit het aanbod van MIND. Je hoeft niet zelf te zoeken; het juiste artikel of nummer komt naar je toe.</p>
+              <h3 data-i18n="story.goal3.h">Het landelijk weerbericht.</h3>
+              <p data-i18n="story.goal3.p">Alle weertypes samen vormen geanonimiseerd een landelijk beeld. Je ziet waar de onweerswolk hangt, en MIND ziet hoe het echt met mensen gaat.</p>
             </article>
           </div>
         </div>
@@ -2937,92 +2941,40 @@
         <div class="founders-grid">
 
           <div class="founder-card">
+            <div class="founder-photo"><img src="Max.jpeg" alt="Max Helmantel" loading="lazy" /></div>
+            <div class="founder-name">Max Helmantel</div>
+            <div class="founder-role" data-i18n="founders.role3">Techniek &amp; bouw</div>
+            <a href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener noreferrer" class="founder-li">LinkedIn &rarr;</a>
+          </div>
+
+          <div class="founder-card">
             <div class="founder-photo"><img src="caesar-schoorl.jpg" alt="Caesar Schoorl" loading="lazy" /></div>
             <div class="founder-name">Caesar Schoorl</div>
-            <div class="founder-role" data-i18n="founders.role1">AI-founder · Amsterdam</div>
-            <p class="founder-bio" data-i18n="founders.bio1">Caesar bouwt AI-producten en brengt verhaal, partners en energie bij elkaar. Op de Camino laat hij zien dat technologie menselijker wordt buiten het kantoor.</p>
+            <div class="founder-role" data-i18n="founders.role1">Partnerships &amp; verhaal</div>
             <a href="https://www.linkedin.com/in/caesar-schoorl-ai/" target="_blank" rel="noopener noreferrer" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
           <div class="founder-card">
             <div class="founder-photo"><img src="stijn-smit.jpg" alt="Stijn Smit" loading="lazy" /></div>
-            <div class="founder-name" data-i18n="founders.name2">Stijn Smit</div>
-            <div class="founder-role" data-i18n="founders.role2">AI-founder · Amsterdam</div>
-            <p class="founder-bio" data-i18n="founders.bio2">Stijn werkt op het snijvlak van AI, product en storytelling. Hij loopt mee om te bouwen aan een tool die concreet helpt, en om werken weer minder scherm en meer aandacht te maken.</p>
+            <div class="founder-name">Stijn Smit</div>
+            <div class="founder-role" data-i18n="founders.role2">Product &amp; AI</div>
             <a href="https://www.linkedin.com/in/stijn-smit-ai/" target="_blank" rel="noopener noreferrer" class="founder-li">LinkedIn &rarr;</a>
-          </div>
-
-          <div class="founder-card">
-            <div class="founder-photo"><img src="Max.jpeg" alt="Max Helmantel" loading="lazy" /></div>
-            <div class="founder-name" data-i18n="founders.name3">Max Helmantel</div>
-            <div class="founder-role" data-i18n="founders.role3">AI-founder · Amsterdam</div>
-            <p class="founder-bio" data-i18n="founders.bio3">Max brengt technische scherpte en ondernemersenergie mee in het team. Op de Camino zet hij ideeën snel om in producten die praktisch, bruikbaar en menselijk voelen.</p>
-            <a href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener noreferrer" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
         </div>
       </div>
     </div>
 
-    <!-- VERHAAL — Caesar's virale LinkedIn-post als styled quote card -->
-    <section class="press-feature" aria-label="Caesar op LinkedIn">
-      <div class="press-feature-inner">
-        <div class="press-feature-eyebrow">
-          <span class="section-label" data-i18n="press.feature.label">Caesar op LinkedIn</span>
-        </div>
-        <div class="press-feature-grid">
-        <article class="press-feature-card">
-          <div class="press-feature-meta">
-            <div class="press-feature-author">
-              <img class="press-feature-avatar" src="caesar-schoorl.jpg" alt="Caesar Schoorl" loading="lazy" />
-              <div>
-                <div class="press-feature-name">Caesar Schoorl</div>
-                <div class="press-feature-role" data-i18n="press.feature.role">AI-founder · Back to Being</div>
-              </div>
-            </div>
-            <a class="press-feature-link"
-               href="https://www.linkedin.com/feed/update/urn:li:share:7469766485381603328/"
-               target="_blank" rel="noopener noreferrer">LinkedIn &rarr;</a>
-          </div>
-
-          <p class="press-feature-lead" data-i18n="press.feature.lead">Deze zomer zit ons kantoor in <em>een rugzak.</em></p>
-
-          <div class="press-feature-body">
-            <p data-i18n="press.feature.summary1">De Camino staat voor vertraging en bezinning, AI voor snelheid en productiviteit. Wij brengen die werelden samen in één live-experiment.</p>
-            <p data-i18n="press.feature.summary2">Onderweg bouwen we een app voor stichting MIND en leggen we het eerlijke proces vast: de hitte, de techniek, de gesprekken en alles wat anders loopt dan gepland.</p>
-          </div>
-
-          <div class="press-feature-foot">
-            <a class="press-feature-cta"
-               href="https://www.linkedin.com/feed/update/urn:li:share:7469766485381603328/"
-               target="_blank" rel="noopener noreferrer"
-               data-i18n="press.feature.cta">Lees de volledige post op LinkedIn &rarr;</a>
-          </div>
-        </article>
-
-        <a class="press-feature-photo"
-           href="https://www.noordhollandsdagblad.nl/regio/ijmond/caesar-21-stijn-24-en-max-26-gaan-de-camino-lopen-en-onderweg-met-ai-een-app-ontwikkelen-voor-mentale-gezondheid-de-wereld-wordt-ons-kantoor/152592259.html"
-           target="_blank" rel="noopener noreferrer"
-           aria-label="Artikel in Noord-Hollands Dagblad (opent in nieuw tabblad)">
-          <img src="nhd-post-photo.webp" alt="Interview in het Noord-Hollands Dagblad met Caesar, Stijn en Max" loading="lazy" />
-          <div class="press-feature-photo-caption">
-            <span data-i18n="press.feature.photo.tag">Noord-Hollands Dagblad</span>
-            <span aria-hidden="true">&rarr;</span>
-          </div>
-        </a>
-        </div>
-      </div>
-    </section>
 
     <section class="story-final-cta">
       <div>
-        <div class="section-label" data-i18n="verhaal.closing.label">Contact</div>
-        <h2 data-i18n="verhaal.closing.h">E&eacute;n gesprek<br>is <em>genoeg.</em></h2>
+        <div class="section-label" data-i18n="verhaal.closing.label">Pers</div>
+        <h2 data-i18n="verhaal.closing.h">Schrijf je over<br><em>dit verhaal?</em></em></h2>
       </div>
       <div>
-        <p data-i18n="verhaal.closing.p">Vertel ons waar je nu staat en we kijken samen wat er kan.</p>
+        <p data-i18n="verhaal.closing.p">We delen graag beeldmateriaal, cijfers en de laatste stand van de app.</p>
         <div class="actions">
-          <button class="btn" data-i18n="verhaal.closing.cta1" onclick="showPage('contact')" type="button">Contact &rarr;</button>
+          <button class="btn" data-i18n="verhaal.closing.cta1" onclick="showPage('contact')" type="button">Neem contact op &rarr;</button>
         </div>
       </div>
     </section>
@@ -3044,10 +2996,10 @@
   <div class="page" id="page-contact">
     <section class="story-hero">
       <span class="pill" data-i18n="contact.pill">Contact</span>
-      <h1 data-i18n="contact.h1">Begin het<br><em>gesprek.</em></h1>
+      <h1 data-i18n="contact.h1">Vragen van de<br><em>pers?</em></em></h1>
       <div class="story-hero-foot">
-        <p data-i18n="contact.lead">Vragen over de app, de route of het project? Plan een gesprek van twintig minuten of stuur een bericht.</p>
-        <p data-i18n="contact.note">We reageren binnen een dag. Geen verkooppraatje, gewoon een gesprek.</p>
+        <p data-i18n="contact.lead">We vertellen graag over de tocht, de app en het werk voor stichting MIND. Beeldmateriaal en achtergrondinformatie sturen we op aanvraag toe.</p>
+        <p data-i18n="contact.note">We reageren binnen een werkdag.</p>
       </div>
     </section>
 
@@ -3060,10 +3012,10 @@
             <span class="contact-grid-head-label" data-i18n="contact.cal.head">Gesprek</span>
           </div>
           <div class="contact-grid-body">
-            <span class="contact-grid-value" data-i18n="contact.cal.value">20 minuten.<br><em>Genoeg om te weten of het past.</em></span>
+            <span class="contact-grid-value" data-i18n="contact.cal.value">20 minuten.<br><em>Genoeg voor een interview.</em></em></span>
             <a class="btn" href="https://cal.com/caesar-schoorl/back-to-being" target="_blank" rel="noopener noreferrer" data-i18n="contact.cal.btn">Plan een gesprek &rarr;</a>
           </div>
-          <div class="contact-grid-foot" data-i18n="contact.cal.desc">Plan direct via cal.eu. We kijken samen of en hoe het past.</div>
+          <div class="contact-grid-foot" data-i18n="contact.cal.desc">Kies zelf een moment in onze agenda. Je krijgt een videolink per mail.</div>
         </div>
 
         <div class="contact-grid-col">
@@ -3080,7 +3032,7 @@
               </button>
             </div>
           </div>
-          <div class="contact-grid-foot" data-i18n="contact.email.desc">Voor partners, pers, meebouwers en iedereen die even wil sparren.</div>
+          <div class="contact-grid-foot" data-i18n="contact.email.desc">Voor persvragen, beeldmateriaal en alles rond de app voor MIND.</div>
         </div>
 
         <div class="contact-grid-col">
@@ -3100,6 +3052,10 @@
     <div class="contact-online-strip">
       <div class="section-label" data-i18n="contact.online.label">Vind ons online</div>
       <div class="contact-links">
+        <a class="contact-social" href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.42 8.03h4.15V23H.42V8.03ZM8.1 8.03h3.98v2.05h.06c.55-1.05 1.91-2.16 3.94-2.16 4.22 0 5 2.78 5 6.39V23h-4.15v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.07V23H8.1V8.03Z"/></svg>
+          Max
+        </a>
         <a class="contact-social" href="https://www.linkedin.com/in/caesar-schoorl-ai/" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.42 8.03h4.15V23H.42V8.03ZM8.1 8.03h3.98v2.05h.06c.55-1.05 1.91-2.16 3.94-2.16 4.22 0 5 2.78 5 6.39V23h-4.15v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.07V23H8.1V8.03Z"/></svg>
           Caesar
@@ -3107,10 +3063,6 @@
         <a class="contact-social" href="https://www.linkedin.com/in/stijn-smit-ai/" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.42 8.03h4.15V23H.42V8.03ZM8.1 8.03h3.98v2.05h.06c.55-1.05 1.91-2.16 3.94-2.16 4.22 0 5 2.78 5 6.39V23h-4.15v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.07V23H8.1V8.03Z"/></svg>
           Stijn
-        </a>
-        <a class="contact-social" href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.42 8.03h4.15V23H.42V8.03ZM8.1 8.03h3.98v2.05h.06c.55-1.05 1.91-2.16 3.94-2.16 4.22 0 5 2.78 5 6.39V23h-4.15v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.07V23H8.1V8.03Z"/></svg>
-          Max
         </a>
         <a class="contact-social" href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 1.62c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.4-2.18a3.64 3.64 0 0 0-.88-1.35 3.64 3.64 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.76-.07Zm0 2.76a5.46 5.46 0 1 1 0 10.92 5.46 5.46 0 0 1 0-10.92Zm0 1.62a3.84 3.84 0 1 0 0 7.68 3.84 3.84 0 0 0 0-7.68Zm5.65-2.95a1.28 1.28 0 1 1 0 2.56 1.28 1.28 0 0 1 0-2.56Z"/></svg>
@@ -3226,8 +3178,8 @@
         'hero.meta':        '120 km &nbsp;·&nbsp; 6 dagen<br>Back to Being<br>Camino de Santiago',
 
         // intro
-        'intro.heading':    'Drie nerds. Eén route.<br><em>Eén AI-tool</em> voor MIND.',
-        'intro.body':       'We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype. Op de Camino maken we er werkende software van.',
+        'intro.heading':    "Ons kantoor past deze zomer<br><em>in een rugzak.</em>",
+        'intro.body':       "We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype.",
         'intro.cta1':       'Ons verhaal &rarr;',
 
         // footer
@@ -3262,10 +3214,10 @@
         'verhaal.quote1.cite':'Back to Being · Camino 2026',
         'verhaal.quote2':     'Tech maakt ons menselijker,<br><em>als je \'m goed inzet.</em>',
         'verhaal.quote2.cite':'Tui &rarr; Santiago · 120 km',
-        'verhaal.closing.label': 'Contact',
-        'verhaal.closing.h':     'E&eacute;n gesprek<br>is <em>genoeg.</em>',
-        'verhaal.closing.p':     'Vertel ons waar je nu staat en we kijken samen wat er kan.',
-        'verhaal.closing.cta1':  'Contact &rarr;',
+        'verhaal.closing.label': "Pers",
+        'verhaal.closing.h':     "Schrijf je over<br><em>dit verhaal?</em>",
+        'verhaal.closing.p':     "We delen graag beeldmateriaal, cijfers en de laatste stand van de app.",
+        'verhaal.closing.cta1':  "Neem contact op &rarr;",
 
         // home additions
         'home.tease.label':   'Het verhaal',
@@ -3321,13 +3273,13 @@
         // founders
         'founders.label':   'De founders',
         'founders.h':       'De mensen achter<br><em>Back to Being.</em>',
-        'founders.role1':   'AI-founder · Amsterdam',
+        'founders.role1':   "Partnerships &amp; verhaal",
         'founders.bio1':    'Caesar bouwt AI-producten en brengt verhaal, partners en energie bij elkaar. Op de Camino laat hij zien dat technologie menselijker wordt buiten het kantoor.',
         'founders.name2':   'Stijn Smit',
-        'founders.role2':   'AI-founder · Amsterdam',
+        'founders.role2':   "Product &amp; AI",
         'founders.bio2':    'Stijn werkt op het snijvlak van AI, product en storytelling. Hij loopt mee om te bouwen aan een tool die concreet helpt, en om werken weer minder scherm en meer aandacht te maken.',
         'founders.name3':   'Max Helmantel',
-        'founders.role3':   'AI-founder · Amsterdam',
+        'founders.role3':   "Techniek &amp; bouw",
         'founders.bio3':    'Max brengt technische scherpte en ondernemersenergie mee in het team. Op de Camino zet hij ideeën snel om in producten die praktisch, bruikbaar en menselijk voelen.',
 
         // sponsor
@@ -3356,18 +3308,18 @@
 
         // contact
         'contact.pill':         'Contact',
-        'contact.h1':           'Begin het<br><em>gesprek.</em>',
-        'contact.lead':         'Vragen over de app, de route of het project? Plan een gesprek van twintig minuten of stuur een bericht.',
-        'contact.note':         'We reageren binnen een werkdag.',
+        'contact.h1':           "Vragen van de<br><em>pers?</em>",
+        'contact.lead':         "We vertellen graag over de tocht, de app en het werk voor stichting MIND. Beeldmateriaal en achtergrondinformatie sturen we op aanvraag toe.",
+        'contact.note':         "We reageren binnen een werkdag.",
         'contact.cal.head':     'Gesprek',
-        'contact.cal.value':    '20 minuten.<br><em>Genoeg voor een eerste antwoord.</em>',
-        'contact.cal.desc':     'Kies zelf een moment in onze agenda. Je krijgt een videolink per mail.',
+        'contact.cal.value':    "20 minuten.<br><em>Genoeg voor een interview.</em>",
+        'contact.cal.desc':     "Kies zelf een moment in onze agenda. Je krijgt een videolink per mail.",
         'contact.cal.btn':      'Plan een gesprek &rarr;',
         'contact.email.head':   'Mail',
-        'contact.email.desc':   'Voor pers, MIND-gerelateerde vragen en iedereen die meer wil weten over de app.',
+        'contact.email.desc':   "Voor persvragen, beeldmateriaal en alles rond de app voor MIND.",
         'contact.office.head':  'Kantoor',
         'contact.office.value': 'Jacob Bontiusplaats 9<br>1018 LL Amsterdam',
-        'contact.office.desc':  'Kom langs of gebruik dit als postadres.',
+        'contact.office.desc':  "Kom langs of gebruik dit als postadres.",
         'contact.online.label': 'Vind ons online',
 
         // route
@@ -3389,8 +3341,8 @@
         'hero.meta':        '120 km &nbsp;·&nbsp; 6 days<br>Back to Being<br>Camino de Santiago',
 
         // intro
-        'intro.heading':    'Three nerds. One route.<br><em>One AI tool</em> for MIND.',
-        'intro.body':       'We walk 120 kilometres from Tui to Santiago and build an app for the MIND foundation along the way: one question a day about how you are doing, answered with a weather type. On the Camino we turn it into working software.',
+        'intro.heading':    "This summer our office fits<br><em>in a backpack.</em>",
+        'intro.body':       "We walk 120 kilometres from Tui to Santiago and build an app for the MIND foundation along the way: one question a day about how you are doing, answered with a weather type.",
         'intro.cta1':       'Our story &rarr;',
 
         // footer
@@ -3425,10 +3377,10 @@
         'verhaal.quote1.cite':'Back to Being · Camino 2026',
         'verhaal.quote2':     'Tech can make us more human,<br><em>if you use it right.</em>',
         'verhaal.quote2.cite':'Tui &rarr; Santiago · 120 km',
-        'verhaal.closing.label': 'Contact',
-        'verhaal.closing.h':     'One conversation<br>is <em>enough.</em>',
-        'verhaal.closing.p':     'Tell us where you are now and we will look at what is possible together.',
-        'verhaal.closing.cta1':  'Contact &rarr;',
+        'verhaal.closing.label': "Press",
+        'verhaal.closing.h':     "Writing about<br><em>this story?</em>",
+        'verhaal.closing.p':     "We are happy to share images, figures, and the latest state of the app.",
+        'verhaal.closing.cta1':  "Get in touch &rarr;",
 
         // home additions
         'home.tease.label':   'The story',
@@ -3484,13 +3436,13 @@
         // founders
         'founders.label':   'The founders',
         'founders.h':       'The people behind<br><em>Back to Being.</em>',
-        'founders.role1':   'AI founder · Amsterdam',
+        'founders.role1':   "Partnerships &amp; story",
         'founders.bio1':    'Caesar builds AI products and brings story, partners, and energy together. On the Camino, he shows how technology becomes more human outside the office.',
         'founders.name2':   'Stijn Smit',
-        'founders.role2':   'AI founder · Amsterdam',
+        'founders.role2':   "Product &amp; AI",
         'founders.bio2':    'Stijn works across AI, product, and storytelling. He is walking to build something useful for MIND, and to make work feel less screen-led and more intentional.',
         'founders.name3':   'Max Helmantel',
-        'founders.role3':   'AI founder · Amsterdam',
+        'founders.role3':   "Engineering &amp; build",
         'founders.bio3':    'Max brings technical sharpness and founder energy to the team. On the Camino, he turns ideas into products that feel practical, useful, and human.',
 
         // sponsor
@@ -3519,18 +3471,18 @@
 
         // contact
         'contact.pill':         'Contact',
-        'contact.h1':           'Start the<br><em>conversation.</em>',
-        'contact.lead':         'Questions about the app, the route, or the project? Book a twenty-minute call or send us a message.',
-        'contact.note':         'We respond within one working day.',
+        'contact.h1':           "Press<br><em>enquiries?</em>",
+        'contact.lead':         "We are happy to talk about the walk, the app, and the work for the MIND foundation. Images and background information are available on request.",
+        'contact.note':         "We respond within one working day.",
         'contact.cal.head':     'Meeting',
-        'contact.cal.value':    '20 minutes.<br><em>Enough for a first answer.</em>',
-        'contact.cal.desc':     'Pick a slot in our calendar. You get a video link by email.',
+        'contact.cal.value':    "20 minutes.<br><em>Enough for an interview.</em>",
+        'contact.cal.desc':     "Pick a slot in our calendar. You get a video link by email.",
         'contact.cal.btn':      'Schedule a call &rarr;',
         'contact.email.head':   'Email',
-        'contact.email.desc':   'For press, MIND-related questions, and anyone who wants to know more about the app.',
+        'contact.email.desc':   "For press enquiries, images, and anything about the app for MIND.",
         'contact.office.head':  'Office',
         'contact.office.value': 'Jacob Bontiusplaats 9<br>1018 LL Amsterdam',
-        'contact.office.desc':  'Drop by or use this as our postal address.',
+        'contact.office.desc':  "Drop by or use this as our postal address.",
         'contact.online.label': 'Find us online',
 
         // route
@@ -3551,13 +3503,13 @@
       'verhaal.ch3.p1': 'De kaart laat de volledige Camino Portugues zien en zoomt per dag in op de etappe die we lopen.',
       'verhaal.ch3.p2': 'Zo wordt het verhaal makkelijk te volgen: waar starten we, waar eindigen we, en welk stuk lopen we vandaag?',
       'verhaal.map.activate': 'Klik om kaart te gebruiken',
-      'verhaal.closing.h': 'E&eacute;n gesprek<br>is <em>genoeg.</em>',
-      'verhaal.closing.p': 'Vertel ons waar je nu staat en we kijken samen wat er kan.',
-      'founders.role1': 'AI-founder · Amsterdam',
+      'verhaal.closing.h': "Schrijf je over<br><em>dit verhaal?</em>",
+      'verhaal.closing.p': "We delen graag beeldmateriaal, cijfers en de laatste stand van de app.",
+      'founders.role1': "Partnerships &amp; verhaal",
       'founders.bio1': 'Caesar bouwt AI-producten en brengt verhaal, partners en energie bij elkaar. Op de Camino laat hij zien dat technologie menselijker wordt buiten het kantoor.',
-      'founders.role2': 'AI-founder · Amsterdam',
+      'founders.role2': "Product &amp; AI",
       'founders.bio2': 'Stijn werkt op het snijvlak van AI, product en storytelling. Hij loopt mee om te bouwen aan een tool die concreet helpt, en om werken weer minder scherm en meer aandacht te maken.',
-      'founders.role3': 'AI-founder · Amsterdam',
+      'founders.role3': "Techniek &amp; bouw",
       'founders.bio3': 'Max brengt technische scherpte en ondernemersenergie mee in het team. Op de Camino zet hij ideeën snel om in producten die praktisch, bruikbaar en menselijk voelen.',
     });
 
@@ -3574,13 +3526,13 @@
       'verhaal.ch3.p1': 'The map shows the full Camino Portugues and zooms into the stage we walk each day.',
       'verhaal.ch3.p2': 'That makes the story easy to follow: where we start, where we end, and which section we walk today.',
       'verhaal.map.activate': 'Click to use map',
-      'verhaal.closing.h': 'One conversation<br>is <em>enough.</em>',
-      'verhaal.closing.p': 'Tell us where you are now and we will look at what is possible together.',
-      'founders.role1': 'AI founder · Amsterdam',
+      'verhaal.closing.h': "Writing about<br><em>this story?</em>",
+      'verhaal.closing.p': "We are happy to share images, figures, and the latest state of the app.",
+      'founders.role1': "Partnerships &amp; story",
       'founders.bio1': 'Caesar builds AI products and brings story, partners, and energy together. On the Camino, he shows how technology becomes more human outside the office.',
-      'founders.role2': 'AI founder · Amsterdam',
+      'founders.role2': "Product &amp; AI",
       'founders.bio2': 'Stijn works across AI, product, and storytelling. He is walking to build something useful for MIND, and to make work feel less screen-led and more intentional.',
-      'founders.role3': 'AI founder · Amsterdam',
+      'founders.role3': "Engineering &amp; build",
       'founders.bio3': 'Max brings technical sharpness and founder energy to the team. On the Camino, he turns ideas into products that feel practical, useful, and human.',
     });
 
@@ -3590,8 +3542,8 @@
       'meta.desc': 'Drie AI-founders lopen 120 kilometer en bouwen onderweg een app die de kennis en hulp van MIND persoonlijk bereikbaar maakt.',
       'meta.descShort': '120 kilometer lopen. Een app voor MIND bouwen. Kosteloos overdragen.',
       'hero.tagline': 'Drie AI-founders maken van de Camino hun kantoor en bouwen onderweg een app voor MIND.',
-      'intro.heading': 'Snelle tech,<br><em>langzame route.</em>',
-      'intro.body': 'We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype. Op de Camino maken we er werkende software van.',
+      'intro.heading': "Ons kantoor past deze zomer<br><em>in een rugzak.</em>",
+      'intro.body': "We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype.",
       'plan.row2.d': 'Elke etappe is een bouwsprint voor de MIND-app: onderweg luisteren en inspreken, bij aankomst ontwerpen en testen.',
       'plan.row3.d': 'De werkende app gaat kosteloos naar stichting MIND, samen met het verhaal van de bouw.',
       'announcement.label': 'De announcement',
@@ -3612,26 +3564,26 @@
       'story.mind.lockup': 'Project voor MIND',
       'story.mind.index': '01 &middot; Wat we bouwen',
       'story.mind.heading': 'Hoe is het weer <em>in je hoofd?</em>',
-      'story.mind.summary': 'Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag. Je beantwoordt hem in vijf seconden met een weertype: zonnig, bewolkt, storm. Dat kleine gebaar maakt het makkelijker om er daarna over te praten &mdash; met een vriend, thuis, of met hulpverlening.',
+      'story.mind.summary': "Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met een weertype. Je weer wordt niet opgeslagen. Het is er om te delen, want daar begint het gesprek.",
       'story.goals.intro': 'Hoe het werkt',
-      'story.goal1.h': 'Eén vraag per dag.',
-      'story.goal1.p': 'Geen vragenlijst en geen dagboek. Je tikt aan welk weer het vandaag is en bent klaar. Juist omdat het zo klein is, doe je het ook echt.',
-      'story.goal2.h': 'Je eigen weerbericht.',
-      'story.goal2.p': 'Na een paar weken zie je je patroon terug: wanneer het beter ging en wanneer niet. Dat geeft je woorden voor een gesprek dat anders moeilijk te beginnen is.',
-      'story.goal3.h': 'MIND op het juiste moment.',
-      'story.goal3.p': 'Bij jouw weer hoort passende hulp uit het aanbod van MIND. Je hoeft niet zelf te zoeken; het juiste artikel of nummer komt naar je toe.',
+      'story.goal1.h': "E&eacute;n vraag per dag.",
+      'story.goal1.p': "Geen vragenlijst en geen dagboek. Je tikt aan welk weer het vandaag is en bent klaar. Juist omdat het zo klein is, doe je het ook echt.",
+      'story.goal2.h': "Deel je weerbericht.",
+      'story.goal2.p': "Stuur je weer door naar wie je wil en kijk hoe het weer bij anderen staat. Zo vraag je makkelijker door dan met \"hoe gaat het?\", en hoef je zelf niet te beginnen.",
+      'story.goal3.h': "Het landelijk weerbericht.",
+      'story.goal3.p': "Alle weertypes samen vormen geanonimiseerd een landelijk beeld. Je ziet waar de onweerswolk hangt, en MIND ziet hoe het echt met mensen gaat.",
       'story.route.index': '02 &middot; Werken onderweg',
       'story.route.heading': 'Zes dagen. Zes etappes. <em>Elke dag verder.</em>',
       'story.route.p': 'De kaart laat niet alleen zien waar we lopen. Elke etappe wordt ook een bouwsprint: luisteren onderweg, keuzes maken bij aankomst en zichtbaar delen wat er die dag is veranderd.',
       'press.feature.lead': 'Deze zomer zit ons kantoor in <em>een rugzak.</em>',
       'press.feature.summary1': 'De Camino staat voor vertraging en bezinning, AI voor snelheid en productiviteit. Wij brengen die werelden samen in &eacute;&eacute;n live-experiment.',
       'press.feature.summary2': 'Onderweg bouwen we een app voor stichting MIND en leggen we het eerlijke proces vast: de hitte, de techniek, de gesprekken en alles wat anders loopt dan gepland.',
-      'verhaal.closing.p': 'Vertel ons waar je nu staat en we kijken samen wat er kan.',
-      'founders.role1': 'Partnerships & storytelling',
+      'verhaal.closing.p': "We delen graag beeldmateriaal, cijfers en de laatste stand van de app.",
+      'founders.role1': "Partnerships &amp; verhaal",
       'founders.bio1': 'Caesar bouwt AI-producten en merkte hoe makkelijk je in een constante versnelling terechtkomt: dagenlang achter zijn bureau terwijl de zon buiten schijnt. De Camino is voor hem een bewuste tegenbeweging, en het verhaal dat mensen en partners in beweging brengt.',
-      'founders.role2': 'Product & AI',
+      'founders.role2': "Product &amp; AI",
       'founders.bio2': 'Stijn merkte dat hij steeds meer in een prestatieleven terechtkwam en wil bewust stilstaan bij wat hij heeft. Op de Camino vertaalt hij de vraag van MIND naar heldere productkeuzes en combineert hij waar hij het gelukkigst van wordt: met AI bezig zijn en met vrienden weg.',
-      'founders.role3': 'Technology & build',
+      'founders.role3': "Techniek &amp; bouw",
       'founders.bio3': 'Max leidt de technische bouw van de app. Wandelen gaf hem rust in de coronatijd en zijn vader fietste ooit de pelgrimsroute naar Santiago. Zijn sneeuwbol-idee: pas als je stilstaat, valt alles langzaam op zijn plek.',
     });
 
@@ -3639,8 +3591,8 @@
       'meta.desc': 'Three AI founders walk 120 kilometres while building an app that makes MIND&rsquo;s knowledge and support personally accessible.',
       'meta.descShort': 'Walk 120 kilometres. Build an app for MIND. Hand it over for free.',
       'hero.tagline': 'Three AI founders turn the Camino into their office and build an app for MIND along the way.',
-      'intro.heading': 'Fast tech,<br><em>slow route.</em>',
-      'intro.body': 'We walk 120 kilometres from Tui to Santiago and build an app for the MIND foundation along the way: one question a day about how you are doing, answered with a weather type. On the Camino we turn it into working software.',
+      'intro.heading': "This summer our office fits<br><em>in a backpack.</em>",
+      'intro.body': "We walk 120 kilometres from Tui to Santiago and build an app for the MIND foundation along the way: one question a day about how you are doing, answered with a weather type.",
       'plan.row2.d': 'Every stage is a build sprint for the MIND app: listening and dictating on the trail, designing and testing on arrival.',
       'plan.row3.d': 'The working app goes to the MIND foundation for free, together with the story of how it was built.',
       'announcement.label': 'The announcement',
@@ -3661,26 +3613,26 @@
       'story.mind.lockup': 'Project for MIND',
       'story.mind.index': '01 &middot; What we build',
       'story.mind.heading': 'What is the weather <em>in your head?</em>',
-      'story.mind.summary': 'Together with the MIND foundation we are building an app around one fixed question. You answer it in five seconds with a weather type: sunny, cloudy, storm. That small gesture makes it easier to talk about afterwards &mdash; with a friend, at home, or with a professional.',
+      'story.mind.summary': "Together with the MIND foundation we are building an app around one fixed question: what is the weather in your head? You answer it in five seconds with a weather type. Your weather is not stored. It is there to share, because that is where the conversation starts.",
       'story.goals.intro': 'How it works',
-      'story.goal1.h': 'One question a day.',
-      'story.goal1.p': 'No questionnaire, no journal. You tap the weather for today and you are done. Because it is that small, you actually keep doing it.',
-      'story.goal2.h': 'Your own forecast.',
-      'story.goal2.p': 'After a few weeks you see your pattern: when things were better and when they were not. That gives you words for a conversation that is otherwise hard to start.',
-      'story.goal3.h': 'MIND at the right moment.',
-      'story.goal3.p': 'Your weather is matched to support from what MIND already offers. No searching required; the right article or number comes to you.',
+      'story.goal1.h': "One question a day.",
+      'story.goal1.p': "No questionnaire, no journal. You tap the weather for today and you are done. Because it is that small, you actually keep doing it.",
+      'story.goal2.h': "Share your forecast.",
+      'story.goal2.p': "Send your weather to whoever you want and see how others are doing. It opens a conversation more easily than \"how are you?\", and you do not have to start it yourself.",
+      'story.goal3.h': "The national forecast.",
+      'story.goal3.p': "All weather types together form an anonymised national picture. You see where the thundercloud sits, and MIND sees how people are really doing.",
       'story.route.index': '02 &middot; Working on the trail',
       'story.route.heading': 'Six days. Six stages. <em>Moving forward every day.</em>',
       'story.route.p': 'The map shows more than where we walk. Every stage is also a build sprint: listening on the trail, making decisions on arrival and sharing what changed that day.',
       'press.feature.lead': 'This summer, our office fits in <em>a backpack.</em>',
       'press.feature.summary1': 'The Camino stands for slowing down and reflection; AI for speed and productivity. We bring those worlds together in one live experiment.',
       'press.feature.summary2': 'On the trail, we build an app for the MIND foundation and capture the honest process: the heat, the technology, the conversations and everything that goes differently than planned.',
-      'verhaal.closing.p': 'Tell us where you are now and we will look at what is possible together.',
-      'founders.role1': 'Partnerships & storytelling',
+      'verhaal.closing.p': "We are happy to share images, figures, and the latest state of the app.",
+      'founders.role1': "Partnerships &amp; story",
       'founders.bio1': 'Caesar builds AI products and noticed how easily you end up in constant acceleration: days behind a desk while the sun shines outside. For him the Camino is a deliberate counter-movement, and the story that gets people and partners moving.',
-      'founders.role2': 'Product & AI',
+      'founders.role2': "Product &amp; AI",
       'founders.bio2': 'Stijn caught himself sliding into a life of pure performance and wants to deliberately pause to value what he has. On the Camino he turns MIND&rsquo;s question into clear product decisions, combining the two things he loves most: working with AI and being away with friends.',
-      'founders.role3': 'Technology & build',
+      'founders.role3': "Engineering &amp; build",
       'founders.bio3': 'Max leads the technical build of the app. Walking gave him calm during the pandemic, and his father once cycled the pilgrim route to Santiago. His snow-globe idea: only when you stand still does everything slowly settle into place.',
     });
 
