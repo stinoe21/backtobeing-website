@@ -61,9 +61,9 @@
 
       /* ---- STRUCTUUR: ruimte ---- */
       /* Eén schaal. Secties kiezen uit deze drie, nooit een eigen waarde. */
-      --section-y:     var(--section-y);   /* volle sectie */
+      --section-y:     clamp(5rem, 10vw, 9rem);   /* volle sectie */
       --section-y-sm:  clamp(3rem, 6vw, 5rem);    /* compacte sectie */
-      --gutter-x:      var(--gutter-x);         /* zijmarge, overal gelijk */
+      --gutter-x:      max(1.25rem, 6vw);         /* zijmarge, overal gelijk */
 
       --space-1: 0.5rem;
       --space-2: 0.75rem;
@@ -1265,16 +1265,31 @@
     /* FOUNDERS */
     .founders-section { background: var(--bg-dark); color: var(--canvas); padding: var(--section-y) var(--gutter-x); }
     .founders-inner { max-width: 1440px; margin: 0 auto; }
-    .founders-group {
-      margin: 0 0 var(--space-7);
-      border-radius: var(--radius);
-      overflow: hidden;
-      line-height: 0;
+    .group-portrait {
+      padding: var(--section-y-sm) var(--gutter-x);
+      background: var(--surface-base);
     }
-    .founders-group img {
+    .group-portrait-figure {
+      margin: 0 auto;
+      max-width: 1180px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .group-portrait-figure img {
       width: 100%;
       height: auto;
       display: block;
+      border-radius: var(--radius);
+    }
+    .group-portrait-cap {
+      font-family: var(--subhead);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink);
+      opacity: 0.62;
     }
 
     .founders-header {
@@ -2602,6 +2617,15 @@
     </section>
 
     <!-- HOME — announcement film (scroll-driven takeover) -->
+    <section class="group-portrait">
+      <figure class="group-portrait-figure">
+        <img src="founders-group.jpg"
+             alt="Caesar, Stijn en Max zittend tegen een bewolkte lucht"
+             width="2000" height="1333" loading="lazy" />
+        <figcaption class="group-portrait-cap" data-i18n="home.group.cap">Caesar, Stijn en Max</figcaption>
+      </figure>
+    </section>
+
     <section class="announcement-section" aria-labelledby="announcementTitle">
       <div class="announcement-inner">
         <div class="announcement-header">
@@ -2903,11 +2927,6 @@
           <div class="section-label" data-i18n="founders.label">De founders</div>
           <h2 data-i18n="founders.h">De mensen achter<br><em>Back to Being.</em></h2>
         </div>
-        <figure class="founders-group">
-          <img src="founders-group.jpg"
-               alt="Caesar, Stijn en Max zittend tegen een bewolkte lucht"
-               width="2000" height="1333" loading="lazy" />
-        </figure>
         <div class="founders-grid">
 
           <div class="founder-card">
