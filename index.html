@@ -326,7 +326,30 @@
     }
     .hero-title em { font-style: italic; color: var(--display-accent); }
     .hero-foot {
-      display: flex; align-items: flex-end; gap: 3rem;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 3rem;
+    }
+    .hero-countdown { flex: 0 0 auto; text-align: right; }
+    .hero-countdown-label {
+      margin-bottom: 0.7rem;
+      font-family: var(--subhead);
+      font-size: 0.66rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,254,241,0.84);
+    }
+    .hero-countdown-units { display: flex; gap: 1.5rem; }
+    .hero-cd-unit { display: flex; flex-direction: column; align-items: flex-end; min-width: 2.6ch; }
+    .hero-cd-unit strong {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(1.6rem, 2.4vw, 2.4rem); line-height: 1;
+      font-variant-numeric: tabular-nums;
+      color: var(--cream);
+    }
+    .hero-cd-unit span {
+      margin-top: 0.35rem;
+      font-family: var(--subhead);
+      font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,254,241,0.8);
     }
     .hero-tagline {
       font-family: var(--subhead); font-style: normal; font-weight: 400;
@@ -1339,6 +1362,19 @@
       color: var(--cream);
     }
     .founders-header h2 em { font-style: italic; color: var(--display-accent); }
+    .founders-intro {
+      max-width: 58ch;
+      margin-top: var(--space-4);
+      font-size: clamp(0.98rem, 1.1vw, 1.1rem);
+      line-height: 1.7;
+      color: rgba(255,254,241,0.78);
+    }
+    .founders-intro a {
+      color: inherit;
+      border-bottom: 1px solid rgba(255,254,241,0.4);
+      transition: border-color 0.2s;
+    }
+    .founders-intro a:hover { border-color: var(--canvas); }
     /* Compact rijtje: per persoon één vierkante crop, naam en link. Verder niets. */
     .founders-grid {
       display: grid;
@@ -1604,7 +1640,7 @@
     .footer-legal a:hover { color: var(--tree); }
     .footer-social { display: flex; align-items: center; gap: 1.1rem; }
     .footer-social a {
-      display: inline-flex; color: var(--ink); opacity: 0.55;
+      display: inline-flex; color: var(--ink); opacity: 0.7;
       transition: opacity 0.2s, color 0.2s;
     }
     .footer-social a:hover { opacity: 1; color: var(--tree); }
@@ -1648,7 +1684,10 @@
       .contact-methods { grid-template-columns: 1fr; }
       .contact-box { min-height: 0; border-right: none; border-bottom: 1px solid var(--line); }
       .contact-box:last-child { border-bottom: none; }
-      .hero-foot { flex-direction: column; gap: 1.5rem; }
+      .hero-foot { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+      .hero-countdown { text-align: left; }
+      .hero-cd-unit { align-items: flex-start; }
+      .hero-countdown-units { gap: 1.15rem; }
     }
     @media (max-width: 760px) {
       :root { --nav-h: 72px; }
@@ -2120,24 +2159,6 @@
       width: min(100%, 1440px);
       margin-inline: auto;
     }
-    .story-editorial-kicker {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: clamp(2rem, 5vw, 4rem);
-      font-family: var(--subhead);
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(22,22,22,0.64);
-    }
-    .story-editorial-kicker span:first-child {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-    }
     .story-editorial-hero h1 {
       max-width: 12ch;
       margin: 0;
@@ -2174,14 +2195,10 @@
     .story-hero-facts {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      border-top: 1px solid rgba(22,22,22,0.18);
+      gap: var(--space-4);
     }
     .story-hero-fact {
-      padding: 0.85rem 0.65rem 0 0;
-    }
-    .story-hero-fact + .story-hero-fact {
-      padding-left: 0.85rem;
-      border-left: 1px solid rgba(22,22,22,0.18);
+      padding: 0;
     }
     .story-hero-fact strong {
       display: block;
@@ -2343,6 +2360,96 @@
       color: var(--ink-soft);
     }
 
+    /* BETA-AANMELDING */
+    .beta-section {
+      padding: var(--section-y) var(--gutter-x);
+      background: var(--surface-base);
+      color: var(--ink);
+    }
+    .beta-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+      align-items: start;
+    }
+    @media (min-width: 900px) {
+      .beta-inner {
+        grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.8fr);
+        gap: clamp(3rem, 7vw, 7rem);
+      }
+    }
+    .beta-eyebrow {
+      display: flex; align-items: center; gap: 0.65rem;
+      margin-bottom: var(--space-4);
+      font-family: var(--subhead);
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink);
+    }
+    .beta-arrow { width: 1.1rem; height: 1.1rem; flex: 0 0 auto; color: var(--tree); }
+    .beta-heading {
+      margin: 0;
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(2.2rem, 4.4vw, 4rem);
+      line-height: 1.0; letter-spacing: -0.01em; text-wrap: balance;
+    }
+    .beta-heading em { font-style: italic; color: var(--display-accent); }
+    .beta-lead {
+      max-width: 46ch;
+      margin-top: var(--space-4);
+      font-size: clamp(0.98rem, 1.1vw, 1.1rem);
+      line-height: 1.7;
+      color: var(--ink-soft);
+    }
+    .beta-points {
+      list-style: none; margin: var(--space-4) 0 0; padding: 0;
+      display: flex; flex-direction: column; gap: var(--space-2);
+    }
+    .beta-points li {
+      display: flex; align-items: flex-start; gap: 0.65rem;
+      font-size: 0.95rem; line-height: 1.6; color: var(--ink);
+    }
+    .beta-points .beta-arrow { margin-top: 0.15rem; }
+    .beta-mascotte { display: block; width: auto; height: 7.5rem; margin-top: var(--space-5); }
+
+    .beta-form { display: flex; flex-direction: column; gap: var(--space-4); }
+    .beta-field { display: flex; flex-direction: column; gap: 0.5rem; }
+    .beta-field label {
+      font-family: var(--subhead); font-size: 0.85rem; font-weight: 500; color: var(--ink);
+    }
+    .beta-field input {
+      width: 100%;
+      padding: 0.95rem 1.1rem;
+      font-family: var(--body); font-size: 1rem; color: var(--ink);
+      background: transparent;
+      border: 1px solid rgba(22,22,22,0.28);
+      border-radius: var(--radius-ctrl);
+      transition: border-color 0.2s;
+    }
+    .beta-field input::placeholder { color: rgba(22,22,22,0.42); }
+    .beta-field input:focus { outline: none; border-color: var(--tree); }
+    .beta-field input:focus-visible { outline: 2px solid var(--tree); outline-offset: 2px; }
+    .beta-submit { justify-content: center; width: 100%; }
+    .beta-consent {
+      display: flex; align-items: flex-start; gap: 0.7rem;
+      font-size: 0.88rem; line-height: 1.55; color: var(--ink);
+      cursor: pointer;
+    }
+    .beta-consent input {
+      width: 1.15rem; height: 1.15rem; margin-top: 0.15rem; flex: 0 0 auto;
+      accent-color: var(--tree);
+    }
+    .beta-consent a { color: inherit; border-bottom: 1px solid rgba(22,22,22,0.35); }
+    .beta-note { font-size: 0.82rem; line-height: 1.55; color: var(--ink-soft); }
+    .beta-status { font-size: 0.9rem; line-height: 1.55; min-height: 1.2em; }
+    .beta-status.is-error { color: #8A2A1F; }
+    .beta-form.is-done .beta-field,
+    .beta-form.is-done .beta-submit,
+    .beta-form.is-done .beta-consent,
+    .beta-form.is-done .beta-note { display: none; }
+
     .story-route-article {
       padding: var(--section-y) var(--gutter-x);
       background: var(--surface-base);
@@ -2404,21 +2511,17 @@
       }
     }
     @media (max-width: 799px) {
-      .story-editorial-kicker span:last-child { display: none; }
       .story-editorial-hero h1 {
         font-size: clamp(2.45rem, 13vw, 4.8rem);
         line-height: 0.92;
       }
-      .story-hero-facts { grid-template-columns: 1fr; }
-      .story-hero-fact,
-      .story-hero-fact + .story-hero-fact {
+      .story-hero-facts { grid-template-columns: 1fr; gap: var(--space-2); }
+      .story-hero-fact {
         display: grid;
         grid-template-columns: 5rem 1fr;
         align-items: baseline;
         gap: 0.75rem;
-        padding: 0.85rem 0;
-        border-left: 0;
-        border-bottom: 1px solid rgba(22,22,22,0.14);
+        padding: 0;
       }
       .story-hero-fact strong { font-size: 1.8rem; }
       .story-goal {
@@ -2557,6 +2660,15 @@
             Drie AI-nerds maken van de Camino hun kantoor: 120 km,
             live bouwen in beeld, daarna een echte overdracht aan MIND.
           </p>
+          <div class="hero-countdown" id="heroCountdown">
+            <div class="hero-countdown-label" data-i18n="hero.cd.label">Vertrek 23 augustus</div>
+            <div class="hero-countdown-units">
+              <div class="hero-cd-unit"><strong id="cdDays">--</strong><span data-i18n="hero.cd.days">dagen</span></div>
+              <div class="hero-cd-unit"><strong id="cdHours">--</strong><span data-i18n="hero.cd.hours">uur</span></div>
+              <div class="hero-cd-unit"><strong id="cdMinutes">--</strong><span data-i18n="hero.cd.minutes">min</span></div>
+              <div class="hero-cd-unit"><strong id="cdSeconds">--</strong><span data-i18n="hero.cd.seconds">sec</span></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -2792,7 +2904,7 @@
         <a href="algemene-voorwaarden.html" data-i18n="footer.terms">Algemene voorwaarden</a>
       </nav>
       <div class="footer-social">
-        <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 1.62c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.4-2.18a3.64 3.64 0 0 0-.88-1.35 3.64 3.64 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.76-.07Zm0 2.76a5.46 5.46 0 1 1 0 10.92 5.46 5.46 0 0 1 0-10.92Zm0 1.62a3.84 3.84 0 1 0 0 7.68 3.84 3.84 0 0 0 0-7.68Zm5.65-2.95a1.28 1.28 0 1 1 0 2.56 1.28 1.28 0 0 1 0-2.56Z"/></svg></a>
+        <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 2h8.8A5.6 5.6 0 0 1 22 7.6v8.8a5.6 5.6 0 0 1-5.6 5.6H7.6A5.6 5.6 0 0 1 2 16.4V7.6A5.6 5.6 0 0 1 7.6 2Zm4.4 4.9a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2Zm0 2.35a2.75 2.75 0 1 1 0 5.5 2.75 2.75 0 0 1 0-5.5ZM17.5 5.2a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z"/></svg></a>
         <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
         <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
       </div>
@@ -2805,10 +2917,6 @@
 
     <section class="story-editorial-hero">
       <div class="story-editorial-inner">
-        <div class="story-editorial-kicker" data-story-reveal>
-          <span data-i18n="story.kicker">Ons verhaal</span>
-          <span data-i18n="story.season">Tui → Santiago · zomer 2026</span>
-        </div>
         <h1 data-i18n="verhaal.h1" data-story-reveal>120 kilometer lopen.<br><em>Eén app bouwen.</em></h1>
         <div class="story-editorial-foot" data-story-reveal>
           <p class="story-editorial-lead" data-i18n="story.hero.lead">We verplaatsen ons kantoor naar de Camino. Zes dagen lang lopen, bouwen en documenteren we. Het resultaat: een werkende app die we kosteloos aan stichting MIND overdragen.</p>
@@ -2854,6 +2962,43 @@
         </div>
       </section>
 
+      <!-- VERHAAL &mdash; aanmelden voor de beta -->
+      <section class="beta-section" aria-labelledby="betaTitle">
+        <div class="beta-inner">
+          <div class="beta-copy">
+            <div class="beta-eyebrow">
+              <svg class="beta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg>
+              <span data-i18n="beta.label">Aanmelden voor de beta</span>
+            </div>
+            <h2 class="beta-heading" id="betaTitle" data-i18n="beta.h">Test het weerbericht <em>als eerste.</em></h2>
+            <p class="beta-lead" data-i18n="beta.p">We zoeken mensen die de app willen gebruiken zodra hij er is. Je krijgt vroege toegang en je feedback bepaalt mee wat we onderweg bouwen.</p>
+            <ul class="beta-points">
+              <li><svg class="beta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg><span data-i18n="beta.point1">Vroege toegang tot het mentale weerbericht.</span></li>
+              <li><svg class="beta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg><span data-i18n="beta.point2">Eén mail als we live gaan, verder niets.</span></li>
+            </ul>
+            <img class="beta-mascotte" src="mind-mascotte.svg" alt="" aria-hidden="true" width="44" height="73" loading="lazy" />
+          </div>
+
+          <form class="beta-form" id="betaForm" novalidate>
+            <div class="beta-field">
+              <label for="betaEmail" data-i18n="beta.email.label">E-mailadres*</label>
+              <input type="email" id="betaEmail" name="email" required autocomplete="email" placeholder="jouw@email.nl" />
+            </div>
+            <div class="beta-field">
+              <label for="betaName" data-i18n="beta.name.label">Naam (optioneel)</label>
+              <input type="text" id="betaName" name="name" autocomplete="name" placeholder="Je naam" />
+            </div>
+            <button class="btn beta-submit" type="submit" data-i18n="beta.cta">Aanmelden</button>
+            <label class="beta-consent" for="betaConsent">
+              <input type="checkbox" id="betaConsent" name="consent" required />
+              <span data-i18n="beta.consent">Ik ga akkoord met de verwerking van mijn gegevens volgens de <a href="privacybeleid.html">privacyverklaring</a>.</span>
+            </label>
+            <p class="beta-note" data-i18n="beta.note">We gebruiken je gegevens alleen voor contact over de beta. Uitschrijven kan altijd.</p>
+            <p class="beta-status" id="betaStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
       <section class="story-route-article">
         <div class="story-route-inner">
           <div class="story-route-copy">
@@ -2884,8 +3029,8 @@
     <div class="founders-section">
       <div class="founders-inner">
         <div class="founders-header">
-          <div class="section-label" data-i18n="founders.label">De founders</div>
-          <h2 data-i18n="founders.h">De mensen achter<br><em>Back to Being.</em></h2>
+          <h2 data-i18n="founders.h">Team<br><em>Back to Being.</em></h2>
+          <p class="founders-intro" data-i18n="founders.intro">Max komt uit design, Stijn uit back-end development, en Caesar wilde eigenlijk jachtmakelaar worden. Wat we delen: we zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Back to Being is het eerste dat we samen maken.</p>
         </div>
         <div class="founders-grid">
 
@@ -2934,7 +3079,7 @@
         <a href="algemene-voorwaarden.html" data-i18n="footer.terms">Algemene voorwaarden</a>
       </nav>
       <div class="footer-social">
-        <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 1.62c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.4-2.18a3.64 3.64 0 0 0-.88-1.35 3.64 3.64 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.76-.07Zm0 2.76a5.46 5.46 0 1 1 0 10.92 5.46 5.46 0 0 1 0-10.92Zm0 1.62a3.84 3.84 0 1 0 0 7.68 3.84 3.84 0 0 0 0-7.68Zm5.65-2.95a1.28 1.28 0 1 1 0 2.56 1.28 1.28 0 0 1 0-2.56Z"/></svg></a>
+        <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 2h8.8A5.6 5.6 0 0 1 22 7.6v8.8a5.6 5.6 0 0 1-5.6 5.6H7.6A5.6 5.6 0 0 1 2 16.4V7.6A5.6 5.6 0 0 1 7.6 2Zm4.4 4.9a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2Zm0 2.35a2.75 2.75 0 1 1 0 5.5 2.75 2.75 0 0 1 0-5.5ZM17.5 5.2a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z"/></svg></a>
         <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
         <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
       </div>
@@ -3016,7 +3161,7 @@
           Stijn
         </a>
         <a class="contact-social" href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 1.62c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.4-2.18a3.64 3.64 0 0 0-.88-1.35 3.64 3.64 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.76-.07Zm0 2.76a5.46 5.46 0 1 1 0 10.92 5.46 5.46 0 0 1 0-10.92Zm0 1.62a3.84 3.84 0 1 0 0 7.68 3.84 3.84 0 0 0 0-7.68Zm5.65-2.95a1.28 1.28 0 1 1 0 2.56 1.28 1.28 0 0 1 0-2.56Z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 2h8.8A5.6 5.6 0 0 1 22 7.6v8.8a5.6 5.6 0 0 1-5.6 5.6H7.6A5.6 5.6 0 0 1 2 16.4V7.6A5.6 5.6 0 0 1 7.6 2Zm4.4 4.9a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2Zm0 2.35a2.75 2.75 0 1 1 0 5.5 2.75 2.75 0 0 1 0-5.5ZM17.5 5.2a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z"/></svg>
           Instagram
         </a>
         <a class="contact-social" href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer">
@@ -3039,7 +3184,7 @@
         <a href="algemene-voorwaarden.html" data-i18n="footer.terms">Algemene voorwaarden</a>
       </nav>
       <div class="footer-social">
-        <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 1.62c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.4-2.18a3.64 3.64 0 0 0-.88-1.35 3.64 3.64 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.76-.07Zm0 2.76a5.46 5.46 0 1 1 0 10.92 5.46 5.46 0 0 1 0-10.92Zm0 1.62a3.84 3.84 0 1 0 0 7.68 3.84 3.84 0 0 0 0-7.68Zm5.65-2.95a1.28 1.28 0 1 1 0 2.56 1.28 1.28 0 0 1 0-2.56Z"/></svg></a>
+        <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 2h8.8A5.6 5.6 0 0 1 22 7.6v8.8a5.6 5.6 0 0 1-5.6 5.6H7.6A5.6 5.6 0 0 1 2 16.4V7.6A5.6 5.6 0 0 1 7.6 2Zm4.4 4.9a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2Zm0 2.35a2.75 2.75 0 1 1 0 5.5 2.75 2.75 0 0 1 0-5.5ZM17.5 5.2a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z"/></svg></a>
         <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
         <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
       </div>
@@ -3236,7 +3381,7 @@
 
         // founders
         'founders.label':   'De founders',
-        'founders.h':       'De mensen achter<br><em>Back to Being.</em>',
+        'founders.h':       'Team<br><em>Back to Being.</em>',
         // sponsor
 
         // plan
@@ -3390,7 +3535,7 @@
 
         // founders
         'founders.label':   'The founders',
-        'founders.h':       'The people behind<br><em>Back to Being.</em>',
+        'founders.h':       'Team<br><em>Back to Being.</em>',
         // sponsor
 
         // plan
@@ -3476,6 +3621,22 @@
       'meta.desc': 'Drie AI-founders lopen 120 kilometer en bouwen onderweg een app die de kennis en hulp van MIND persoonlijk bereikbaar maakt.',
       'meta.descShort': '120 kilometer lopen. Een app voor MIND bouwen. Kosteloos overdragen.',
       'hero.tagline': 'Drie AI-founders maken van de Camino hun kantoor en bouwen onderweg een app voor MIND.',
+      'founders.intro': 'Max komt uit design, Stijn uit back-end development, en Caesar wilde eigenlijk jachtmakelaar worden. Wat we delen: we zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Back to Being is het eerste dat we samen maken.',
+      'hero.cd.label': 'Vertrek 23 augustus',
+      'hero.cd.days': 'dagen',
+      'hero.cd.hours': 'uur',
+      'hero.cd.minutes': 'min',
+      'hero.cd.seconds': 'sec',
+      'beta.label': 'Aanmelden voor de beta',
+      'beta.h': 'Test het weerbericht <em>als eerste.</em>',
+      'beta.p': 'We zoeken mensen die de app willen gebruiken zodra hij er is. Je krijgt vroege toegang en je feedback bepaalt mee wat we onderweg bouwen.',
+      'beta.point1': 'Vroege toegang tot het mentale weerbericht.',
+      'beta.point2': 'E&eacute;n mail als we live gaan, verder niets.',
+      'beta.email.label': 'E-mailadres*',
+      'beta.name.label': 'Naam (optioneel)',
+      'beta.cta': 'Aanmelden',
+      'beta.consent': 'Ik ga akkoord met de verwerking van mijn gegevens volgens de <a href="privacybeleid.html">privacyverklaring</a>.',
+      'beta.note': 'We gebruiken je gegevens alleen voor contact over de beta. Uitschrijven kan altijd.',
       'intro.heading': "Ons kantoor past deze zomer<br><em>in een rugzak.</em>",
       'intro.body': "We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype.",
       'plan.row2.d': 'Elke etappe is een bouwsprint voor de MIND-app: onderweg luisteren en inspreken, bij aankomst ontwerpen en testen.',
@@ -3486,8 +3647,6 @@
       'announcement.sound': 'Geluid',
       'announcement.fallback': 'Je browser ondersteunt deze video niet.',
       'verhaal.h1': 'Werken terwijl <em>we lopen.</em>',
-      'story.kicker': 'Ons verhaal',
-      'story.season': 'Tui &rarr; Santiago &middot; zomer 2026',
       'story.hero.lead': 'We verplaatsen ons kantoor naar de Camino. Zes dagen lang lopen, bouwen en documenteren we. Het resultaat: een werkende app die we kosteloos aan stichting MIND overdragen.',
       'story.fact.km': 'kilometer lopen',
       'story.fact.days': 'dagen bouwen',
@@ -3514,6 +3673,22 @@
       'meta.desc': 'Three AI founders walk 120 kilometres while building an app that makes MIND&rsquo;s knowledge and support personally accessible.',
       'meta.descShort': 'Walk 120 kilometres. Build an app for MIND. Hand it over for free.',
       'hero.tagline': 'Three AI founders turn the Camino into their office and build an app for MIND along the way.',
+      'founders.intro': 'Max comes from design, Stijn from back-end development, and Caesar set out to become a yacht broker. What we share: all three of us started a company of our own, among them <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> and <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Back to Being is the first thing we are making together.',
+      'hero.cd.label': 'Departure 23 August',
+      'hero.cd.days': 'days',
+      'hero.cd.hours': 'hrs',
+      'hero.cd.minutes': 'min',
+      'hero.cd.seconds': 'sec',
+      'beta.label': 'Join the beta',
+      'beta.h': 'Be the first to test <em>the forecast.</em>',
+      'beta.p': 'We are looking for people who want to use the app the moment it exists. You get early access, and your feedback shapes what we build along the way.',
+      'beta.point1': 'Early access to the mental weather report.',
+      'beta.point2': 'One email when we go live, nothing else.',
+      'beta.email.label': 'Email address*',
+      'beta.name.label': 'Name (optional)',
+      'beta.cta': 'Sign up',
+      'beta.consent': 'I agree to my data being processed as described in the <a href="privacybeleid.html">privacy statement</a>.',
+      'beta.note': 'We only use your details to contact you about the beta. You can unsubscribe at any time.',
       'intro.heading': "This summer our office fits<br><em>in a backpack.</em>",
       'intro.body': "We walk 120 kilometres from Tui to Santiago and build an app for the MIND foundation along the way: one question a day about how you are doing, answered with a weather type.",
       'plan.row2.d': 'Every stage is a build sprint for the MIND app: listening and dictating on the trail, designing and testing on arrival.',
@@ -3524,8 +3699,6 @@
       'announcement.sound': 'Sound',
       'announcement.fallback': 'Your browser does not support this video.',
       'verhaal.h1': 'Working while <em>we walk.</em>',
-      'story.kicker': 'Our story',
-      'story.season': 'Tui &rarr; Santiago &middot; summer 2026',
       'story.hero.lead': 'We are moving our office to the Camino. For six days we walk, build and document the process. The result: a working app that we hand over to the MIND foundation for free.',
       'story.fact.km': 'kilometres walking',
       'story.fact.days': 'days building',
@@ -4161,6 +4334,101 @@
       localStorage.setItem('b2b-lang', lang);
       updateCaminoControlLanguage();
     }
+
+    /* ---------- Aftellen naar het vertrek ---------- */
+    // 23 augustus 2026, 00:00 in Amsterdam (CEST, UTC+2).
+    const DEPARTURE = new Date('2026-08-23T00:00:00+02:00').getTime();
+
+    function tickCountdown() {
+      const el = document.getElementById('heroCountdown');
+      if (!el) return;
+      let left = Math.max(0, DEPARTURE - Date.now());
+      const day = 86400000, hour = 3600000, minute = 60000;
+      const d = Math.floor(left / day);   left -= d * day;
+      const h = Math.floor(left / hour);  left -= h * hour;
+      const m = Math.floor(left / minute);
+      const sec = Math.floor((left - m * minute) / 1000);
+      const pad = n => String(n).padStart(2, '0');
+      document.getElementById('cdDays').textContent    = String(d);
+      document.getElementById('cdHours').textContent   = pad(h);
+      document.getElementById('cdMinutes').textContent = pad(m);
+      document.getElementById('cdSeconds').textContent = pad(sec);
+      // Na vertrek heeft aftellen geen betekenis meer; dan verbergen we het blok.
+      if (DEPARTURE - Date.now() <= 0) el.hidden = true;
+    }
+
+    tickCountdown();
+    setInterval(tickCountdown, 1000);
+
+    /* ---------- Aanmelden voor de beta ---------- */
+    // Zet hier het endpoint van het formulier (Formspree, Tally, eigen API).
+    // Zolang dit leeg is opent het formulier een vooringevulde mail als terugval.
+    const BETA_ENDPOINT = '';
+    const BETA_FALLBACK_MAIL = 'Caesar.schoorl@gmail.com';
+
+    (function initBetaForm() {
+      const form = document.getElementById('betaForm');
+      if (!form) return;
+      const status = document.getElementById('betaStatus');
+
+      const COPY = {
+        nl: {
+          email:   'Vul een geldig e-mailadres in.',
+          consent: 'Zet even een vinkje bij de privacyverklaring.',
+          sending: 'Bezig met versturen...',
+          done:    'Gelukt. Je hoort van ons zodra de beta klaarstaat.',
+          mail:    'Je mailprogramma opent met een vooringevuld bericht. Versturen en je staat op de lijst.',
+          error:   'Dat ging mis. Probeer het later nog eens of mail ons.'
+        },
+        en: {
+          email:   'Please enter a valid email address.',
+          consent: 'Please tick the privacy statement box.',
+          sending: 'Sending...',
+          done:    'Done. We will be in touch when the beta is ready.',
+          mail:    'Your mail app opens with a prefilled message. Send it and you are on the list.',
+          error:   'That did not work. Please try again later or email us.'
+        }
+      };
+      const t = key => COPY[currentLang()][key];
+
+      function say(message, isError) {
+        status.textContent = message;
+        status.classList.toggle('is-error', !!isError);
+      }
+
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const email   = form.email.value.trim();
+        const name    = form.name.value.trim();
+        const consent = form.consent.checked;
+
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { say(t('email'), true); form.email.focus(); return; }
+        if (!consent) { say(t('consent'), true); form.consent.focus(); return; }
+
+        if (!BETA_ENDPOINT) {
+          const subject = encodeURIComponent('Aanmelding beta Back to Being');
+          const body    = encodeURIComponent('E-mail: ' + email + '\nNaam: ' + (name || '-'));
+          window.location.href = 'mailto:' + BETA_FALLBACK_MAIL + '?subject=' + subject + '&body=' + body;
+          form.classList.add('is-done');
+          say(t('mail'), false);
+          return;
+        }
+
+        say(t('sending'), false);
+        try {
+          const response = await fetch(BETA_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ email, name })
+          });
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          form.classList.add('is-done');
+          say(t('done'), false);
+        } catch (err) {
+          say(t('error'), true);
+        }
+      });
+    })();
 
     async function copyContactValue(button) {
       const value = button.getAttribute('data-copy');
