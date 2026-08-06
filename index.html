@@ -326,18 +326,12 @@
     }
     .hero-title em { font-style: italic; color: var(--display-accent); }
     .hero-foot {
-      display: flex; align-items: flex-end; justify-content: space-between; gap: 3rem;
-      padding-top: 2rem; border-top: 1px solid rgba(255,254,241,0.14);
+      display: flex; align-items: flex-end; gap: 3rem;
     }
     .hero-tagline {
       font-family: var(--subhead); font-style: normal; font-weight: 400;
       font-size: clamp(1rem, 1.3vw, 1.25rem);
       color: rgba(255,254,241,0.8); max-width: 44ch; line-height: 1.55;
-    }
-    .hero-meta {
-      font-family: var(--subhead);
-      text-align: right; font-size: 0.7rem; letter-spacing: 0.16em;
-      text-transform: uppercase; color: rgba(255,254,241,0.46); line-height: 1.9; flex-shrink: 0;
     }
 
     /* INTRO */
@@ -367,6 +361,15 @@
       display: flex; flex-direction: column; align-items: center; gap: 4rem;
     }
     .partners-strip .section-label { margin-bottom: 0; text-align: center; }
+    .partners-strip-heading {
+      margin: 0;
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(2rem, 3.4vw, 3.2rem);
+      line-height: 1.02; letter-spacing: 0;
+      text-align: center; text-wrap: balance;
+      color: var(--ink);
+    }
+    .partners-strip-heading em { font-style: italic; color: var(--display-accent); }
     /* Twee groepen (Sponsors / Partners), elk met grootteniveaus */
     .partners-group {
       width: 100%;
@@ -1336,40 +1339,36 @@
       color: var(--cream);
     }
     .founders-header h2 em { font-style: italic; color: var(--display-accent); }
+    /* Compact rijtje: per persoon één vierkante crop, naam en link. Verder niets. */
     .founders-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-5);
+      max-width: 760px;
     }
-    .founder-card { padding: 2.5rem 2.5rem 2.5rem 0; border-right: 1px solid var(--line-dark); }
-    .founder-card:last-child { border-right: none; padding-right: 0; }
-    .founder-card:not(:first-child) { padding-left: 2.5rem; }
+    .founder-card { padding: 0; border: none; }
     .founder-photo {
       width: 100%;
-      aspect-ratio: 2 / 3;
+      aspect-ratio: 1 / 1;
       overflow: hidden;
-      border-radius: var(--radius);
-      margin-bottom: 1.5rem;
-      background: linear-gradient(135deg, #0f1f0f 0%, #182a18 60%, #0a1208 100%);
+      border-radius: var(--radius-ctrl);
+      margin-bottom: var(--space-3);
+      background: #1F2A19;
     }
-    .founder-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(15%); }
+    .founder-photo img { width: 100%; height: 100%; object-fit: cover; }
     .founder-photo .photo-ph { height: 100%; min-height: 0; }
     .founder-name {
       font-family: var(--serif); font-weight: 500;
-      font-size: 1.2rem; color: var(--cream); margin-bottom: 0.25rem;
+      font-size: 1.15rem; color: var(--cream); margin-bottom: 0.35rem;
     }
-    .founder-role {
-      font-family: var(--subhead);
-      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
-      color: inherit; opacity: 0.66; margin-bottom: 1.1rem;
-    }
-    .founder-bio { font-size: 0.9rem; line-height: 1.65; color: rgba(247,245,240,0.58); margin-bottom: 1.5rem; }
     .founder-li {
       display: inline-flex; align-items: center; gap: 0.4rem;
       font-family: var(--subhead);
       font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
       color: inherit; opacity: 0.78;
-      border-bottom: 1px solid currentColor; padding-bottom: 2px; transition: border-color 0.2s;
+      transition: opacity 0.2s;
     }
-    .founder-li:hover { border-color: var(--green-light); }
+    .founder-li:hover { opacity: 1; }
     #page-verhaal .founders-section {
       padding-top: 5rem;
       padding-bottom: 5rem;
@@ -1377,16 +1376,6 @@
     #page-verhaal .founders-header {
       margin-bottom: 2.5rem;
       padding-bottom: 1.75rem;
-    }
-    #page-verhaal .founders-grid {
-      gap: clamp(2rem, 4vw, 4rem);
-    }
-    #page-verhaal .founder-photo {
-      margin-bottom: 1.25rem;
-    }
-    #page-verhaal .founder-card {
-      padding: 0 !important;
-      border-right: 0;
     }
 
     .story-final-cta {
@@ -1613,6 +1602,13 @@
     .footer-legal { display: flex; gap: 1.5rem; flex-wrap: wrap; }
     .footer-legal a { font-family: var(--subhead); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); transition: color 0.2s; }
     .footer-legal a:hover { color: var(--tree); }
+    .footer-social { display: flex; align-items: center; gap: 1.1rem; }
+    .footer-social a {
+      display: inline-flex; color: var(--ink); opacity: 0.55;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .footer-social a:hover { opacity: 1; color: var(--tree); }
+    .footer-social svg { width: 18px; height: 18px; display: block; }
 
     /* MIND LOGO TREATMENTS */
     .cr-value-with-icon {
@@ -1644,16 +1640,15 @@
       .plan-header { grid-template-columns: 1fr; gap: 1.5rem; }
       .plan-row, .return-row { grid-template-columns: 40px 1fr; }
       .plan-row .detail, .return-row .detail { grid-column: 2; text-align: left; }
-      .founders-grid { grid-template-columns: 1fr; }
-      .founder-card { padding: 2rem 0; border-right: none; border-bottom: 1px solid var(--line-dark); }
-      .founder-card:not(:first-child) { padding-left: 0; }
-      .founder-photo { max-width: 320px; }
+      .founders-grid { gap: var(--space-3); }
+      /* drie kolommen blijven staan; naam en link krimpen mee zodat ze niet lelijk afbreken */
+      .founder-name { font-size: 1rem; }
+      .founder-li { font-size: 0.64rem; letter-spacing: 0.08em; }
       .contact-hero { grid-template-columns: 1fr; align-items: start; }
       .contact-methods { grid-template-columns: 1fr; }
       .contact-box { min-height: 0; border-right: none; border-bottom: 1px solid var(--line); }
       .contact-box:last-child { border-bottom: none; }
       .hero-foot { flex-direction: column; gap: 1.5rem; }
-      .hero-meta { text-align: left; }
     }
     @media (max-width: 760px) {
       :root { --nav-h: 72px; }
@@ -1800,7 +1795,6 @@
       .home-story-tease { padding: 5rem max(1.25rem, 5vw); }
       .home-journey { padding: 5rem max(1.25rem, 5vw); }
       .home-journey-stats { gap: 1.5rem; }
-      .founder-card:last-child { border-bottom: none; }
       .story-final-cta { padding: 4rem max(1.25rem, 5vw); }
       .site-footer {
         flex-direction: column;
@@ -2084,18 +2078,6 @@
     .announcement-frame.is-unmuted .announcement-sound .icon-muted { display: none; }
     .announcement-frame.is-unmuted .announcement-sound .icon-sound { display: inline; }
 
-    .announcement-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      padding-top: 1rem;
-      font-family: var(--subhead);
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-    }
     @media (min-width: 800px) {
       .announcement-header {
         grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.65fr);
@@ -2104,8 +2086,6 @@
     }
     @media (max-width: 600px) {
       .announcement-frame video { object-position: center; }
-      .announcement-meta { flex-direction: column; }
-      .announcement-meta span:last-child { color: var(--ink-soft); }
       .announcement-stage.is-takeover { height: 180vh; }
     }
 
@@ -2157,13 +2137,6 @@
       display: inline-flex;
       align-items: center;
       gap: 0.7rem;
-      color: inherit; opacity: 0.86;
-    }
-    .story-editorial-kicker span:first-child::before {
-      content: '';
-      width: 2.25rem;
-      height: 1px;
-      background: currentColor;
     }
     .story-editorial-hero h1 {
       max-width: 12ch;
@@ -2227,27 +2200,9 @@
       letter-spacing: 0.14em;
       line-height: 1.35;
       text-transform: uppercase;
-      color: rgba(22,22,22,0.48);
+      color: rgba(22,22,22,0.68);
     }
 
-    .story-section-index {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 1.5rem;
-      font-family: var(--subhead);
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: inherit; opacity: 0.66;
-    }
-    .story-section-index::after {
-      content: '';
-      width: 2.25rem;
-      height: 1px;
-      background: currentColor;
-    }
     .story-mind-heading,
     .story-route-heading {
       margin: 0;
@@ -2325,14 +2280,16 @@
       font-weight: 600;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,254,241,0.48);
+      color: rgba(255,254,241,0.72);
     }
     .story-goal {
       position: relative;
       min-height: clamp(18rem, 42vh, 25rem);
       display: grid;
       align-content: end;
-      padding: clamp(1.4rem, 3vw, 2.25rem);
+      /* bovenaan ruimte vrijhouden voor het cijfer, anders loopt lange copy erdoorheen */
+      padding: calc(clamp(1.25rem, 3vw, 2rem) + clamp(3rem, 7vw, 6rem) + 0.75rem)
+               clamp(1.4rem, 3vw, 2.25rem) clamp(1.4rem, 3vw, 2.25rem);
       border: 1px solid rgba(255,254,241,0.14);
       border-radius: var(--radius-ctrl);
       background: rgba(255,254,241,0.04);
@@ -2600,18 +2557,13 @@
             Drie AI-nerds maken van de Camino hun kantoor: 120 km,
             live bouwen in beeld, daarna een echte overdracht aan MIND.
           </p>
-          <div class="hero-meta" data-i18n="hero.meta">
-            120 km &nbsp;·&nbsp; 6 dagen<br>
-            Back to Being<br>
-            Camino de Santiago
-          </div>
         </div>
       </div>
     </section>
 
     <section class="intro-strip">
       <div>
-        <h2 data-i18n="intro.heading">Ons kantoor past deze zomer<br><em>in een rugzak.</em></em> voor MIND.</h2>
+        <h2 data-i18n="intro.heading">Ons kantoor past deze zomer<br><em>in een rugzak.</em></h2>
       </div>
       <div>
         <p data-i18n="intro.body">We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype.</p>
@@ -2625,9 +2577,9 @@
     <section class="group-portrait">
       <figure class="group-portrait-figure">
         <img src="founders-group.jpg"
-             alt="Caesar, Stijn en Max zittend tegen een bewolkte lucht"
+             alt="Max, Caesar en Stijn zittend tegen een bewolkte lucht"
              width="2000" height="1333" loading="lazy" />
-        <figcaption class="group-portrait-cap" data-i18n="home.group.cap">Caesar, Stijn en Max</figcaption>
+        <figcaption class="group-portrait-cap" data-i18n="home.group.cap">Max, Caesar en Stijn</figcaption>
       </figure>
     </section>
 
@@ -2635,7 +2587,6 @@
       <div class="announcement-inner">
         <div class="announcement-header">
           <div>
-            <div class="section-label" data-i18n="announcement.label">De announcement</div>
             <h2 class="announcement-heading" id="announcementTitle" data-i18n="announcement.heading">Waarom we ons kantoor <em>120 kilometer verplaatsen.</em></h2>
           </div>
           <p class="announcement-copy" data-i18n="announcement.copy">In 66 seconden zie je het idee achter Back to Being: technologie meenemen naar buiten, onderweg bouwen en iets werkends achterlaten voor MIND.</p>
@@ -2664,17 +2615,12 @@
         </div>
       </div>
 
-      <div class="announcement-inner">
-        <div class="announcement-meta">
-          <span data-i18n="announcement.meta1">Announcementfilm</span>
-          <span data-i18n="announcement.meta2">66 seconden</span>
-        </div>
-      </div>
     </section>
 
     <!-- HOME — partners credibility strip -->
     <section class="partners-strip" aria-label="Partners">
       <div class="partners-strip-inner">
+        <h2 class="partners-strip-heading" data-i18n="partners.heading">Partners &amp; <em>sponsors.</em></h2>
         <div class="partners-group">
           <div class="section-label partners-group-label" data-i18n="partners.group.sponsors">Sponsors</div>
           <div class="partners-tier partners-tier-sponsors">
@@ -2845,6 +2791,11 @@
         <a href="privacybeleid.html" data-i18n="footer.privacy">Privacybeleid</a>
         <a href="algemene-voorwaarden.html" data-i18n="footer.terms">Algemene voorwaarden</a>
       </nav>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 1.62c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.4-2.18a3.64 3.64 0 0 0-.88-1.35 3.64 3.64 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.76-.07Zm0 2.76a5.46 5.46 0 1 1 0 10.92 5.46 5.46 0 0 1 0-10.92Zm0 1.62a3.84 3.84 0 1 0 0 7.68 3.84 3.84 0 0 0 0-7.68Zm5.65-2.95a1.28 1.28 0 1 1 0 2.56 1.28 1.28 0 0 1 0-2.56Z"/></svg></a>
+        <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
+        <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
+      </div>
       <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
     </footer>
   </div>
@@ -2878,8 +2829,7 @@
               <img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" />
               <span data-i18n="story.mind.lockup">Project voor MIND</span>
             </div>
-            <div class="story-section-index" data-i18n="story.mind.index">01 &middot; Wat we bouwen</div>
-            <h2 class="story-mind-heading" data-i18n="story.mind.heading">Hoe is het weer <em>in je hoofd?</em></em></h2>
+            <h2 class="story-mind-heading" data-i18n="story.mind.heading">Hoe is het weer <em>in je hoofd?</em></h2>
             <p class="story-mind-summary" data-i18n="story.mind.summary">Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met een weertype. Je weer wordt niet opgeslagen. Het is er om te delen, want daar begint het gesprek.</p>
           </div>
 
@@ -2908,7 +2858,6 @@
         <div class="story-route-inner">
           <div class="story-route-copy">
             <div data-story-reveal>
-              <div class="story-section-index" data-i18n="story.route.index">04 · Het bouwritme</div>
               <h2 class="story-route-heading" data-i18n="story.route.heading">Zes dagen. Zes etappes. <em>Elke dag verder.</em></h2>
             </div>
             <p data-i18n="story.route.p" data-story-reveal>De kaart laat niet alleen zien waar we lopen. Elke etappe wordt ook een bouwsprint: luisteren onderweg, keuzes maken bij aankomst en zichtbaar delen wat er die dag is veranderd.</p>
@@ -2943,21 +2892,18 @@
           <div class="founder-card">
             <div class="founder-photo"><img src="Max.jpeg" alt="Max Helmantel" loading="lazy" /></div>
             <div class="founder-name">Max Helmantel</div>
-            <div class="founder-role" data-i18n="founders.role3">Techniek &amp; bouw</div>
             <a href="https://www.linkedin.com/in/maxhelmantel/" target="_blank" rel="noopener noreferrer" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
           <div class="founder-card">
             <div class="founder-photo"><img src="caesar-schoorl.jpg" alt="Caesar Schoorl" loading="lazy" /></div>
             <div class="founder-name">Caesar Schoorl</div>
-            <div class="founder-role" data-i18n="founders.role1">Partnerships &amp; verhaal</div>
             <a href="https://www.linkedin.com/in/caesar-schoorl-ai/" target="_blank" rel="noopener noreferrer" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
           <div class="founder-card">
             <div class="founder-photo"><img src="stijn-smit.jpg" alt="Stijn Smit" loading="lazy" /></div>
             <div class="founder-name">Stijn Smit</div>
-            <div class="founder-role" data-i18n="founders.role2">Product &amp; AI</div>
             <a href="https://www.linkedin.com/in/stijn-smit-ai/" target="_blank" rel="noopener noreferrer" class="founder-li">LinkedIn &rarr;</a>
           </div>
 
@@ -2969,7 +2915,7 @@
     <section class="story-final-cta">
       <div>
         <div class="section-label" data-i18n="verhaal.closing.label">Pers</div>
-        <h2 data-i18n="verhaal.closing.h">Schrijf je over<br><em>dit verhaal?</em></em></h2>
+        <h2 data-i18n="verhaal.closing.h">Schrijf je over<br><em>dit verhaal?</em></h2>
       </div>
       <div>
         <p data-i18n="verhaal.closing.p">We delen graag beeldmateriaal, cijfers en de laatste stand van de app.</p>
@@ -2987,6 +2933,11 @@
         <a href="privacybeleid.html" data-i18n="footer.privacy">Privacybeleid</a>
         <a href="algemene-voorwaarden.html" data-i18n="footer.terms">Algemene voorwaarden</a>
       </nav>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 1.62c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.4-2.18a3.64 3.64 0 0 0-.88-1.35 3.64 3.64 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.76-.07Zm0 2.76a5.46 5.46 0 1 1 0 10.92 5.46 5.46 0 0 1 0-10.92Zm0 1.62a3.84 3.84 0 1 0 0 7.68 3.84 3.84 0 0 0 0-7.68Zm5.65-2.95a1.28 1.28 0 1 1 0 2.56 1.28 1.28 0 0 1 0-2.56Z"/></svg></a>
+        <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
+        <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
+      </div>
       <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
     </footer>
   </div>
@@ -2996,7 +2947,7 @@
   <div class="page" id="page-contact">
     <section class="story-hero">
       <span class="pill" data-i18n="contact.pill">Contact</span>
-      <h1 data-i18n="contact.h1">Vragen van de<br><em>pers?</em></em></h1>
+      <h1 data-i18n="contact.h1">Vragen van de<br><em>pers?</em></h1>
       <div class="story-hero-foot">
         <p data-i18n="contact.lead">We vertellen graag over de tocht, de app en het werk voor stichting MIND. Beeldmateriaal en achtergrondinformatie sturen we op aanvraag toe.</p>
         <p data-i18n="contact.note">We reageren binnen een werkdag.</p>
@@ -3012,7 +2963,7 @@
             <span class="contact-grid-head-label" data-i18n="contact.cal.head">Gesprek</span>
           </div>
           <div class="contact-grid-body">
-            <span class="contact-grid-value" data-i18n="contact.cal.value">20 minuten.<br><em>Genoeg voor een interview.</em></em></span>
+            <span class="contact-grid-value" data-i18n="contact.cal.value">20 minuten.<br><em>Genoeg voor een interview.</em></span>
             <a class="btn" href="https://cal.com/caesar-schoorl/back-to-being" target="_blank" rel="noopener noreferrer" data-i18n="contact.cal.btn">Plan een gesprek &rarr;</a>
           </div>
           <div class="contact-grid-foot" data-i18n="contact.cal.desc">Kies zelf een moment in onze agenda. Je krijgt een videolink per mail.</div>
@@ -3068,6 +3019,14 @@
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 1.62c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.4-2.18a3.64 3.64 0 0 0-.88-1.35 3.64 3.64 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.76-.07Zm0 2.76a5.46 5.46 0 1 1 0 10.92 5.46 5.46 0 0 1 0-10.92Zm0 1.62a3.84 3.84 0 1 0 0 7.68 3.84 3.84 0 0 0 0-7.68Zm5.65-2.95a1.28 1.28 0 1 1 0 2.56 1.28 1.28 0 0 1 0-2.56Z"/></svg>
           Instagram
         </a>
+        <a class="contact-social" href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg>
+          TikTok
+        </a>
+        <a class="contact-social" href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg>
+          YouTube
+        </a>
       </div>
     </div>
 
@@ -3079,6 +3038,11 @@
         <a href="privacybeleid.html" data-i18n="footer.privacy">Privacybeleid</a>
         <a href="algemene-voorwaarden.html" data-i18n="footer.terms">Algemene voorwaarden</a>
       </nav>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 1.62c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.18.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.18-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.4 2.18.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.18.4 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.18-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.18.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.4-2.18a3.64 3.64 0 0 0-.88-1.35 3.64 3.64 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.18-.4-1.24-.06-1.61-.07-4.76-.07Zm0 2.76a5.46 5.46 0 1 1 0 10.92 5.46 5.46 0 0 1 0-10.92Zm0 1.62a3.84 3.84 0 1 0 0 7.68 3.84 3.84 0 0 0 0-7.68Zm5.65-2.95a1.28 1.28 0 1 1 0 2.56 1.28 1.28 0 0 1 0-2.56Z"/></svg></a>
+        <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
+        <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
+      </div>
       <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
     </footer>
   </div>
@@ -3175,8 +3139,6 @@
 
         // hero
         'hero.tagline':     'Drie AI-nerds maken van de Camino hun kantoor: 120 km, live bouwen in beeld, daarna een echte overdracht aan MIND.',
-        'hero.meta':        '120 km &nbsp;·&nbsp; 6 dagen<br>Back to Being<br>Camino de Santiago',
-
         // intro
         'intro.heading':    "Ons kantoor past deze zomer<br><em>in een rugzak.</em>",
         'intro.body':       "We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype.",
@@ -3241,6 +3203,8 @@
         'home.closing.cta2': 'Contact &rarr;',
 
         // partners
+        'partners.heading':       'Partners &amp; <em>sponsors.</em>',
+        'home.group.cap':         'Max, Caesar en Stijn',
         'partners.home.label':    'Met steun van',
         'partners.group.sponsors': 'Sponsors',
         'partners.group.partners': 'Partners',
@@ -3273,15 +3237,6 @@
         // founders
         'founders.label':   'De founders',
         'founders.h':       'De mensen achter<br><em>Back to Being.</em>',
-        'founders.role1':   "Partnerships &amp; verhaal",
-        'founders.bio1':    'Caesar bouwt AI-producten en brengt verhaal, partners en energie bij elkaar. Op de Camino laat hij zien dat technologie menselijker wordt buiten het kantoor.',
-        'founders.name2':   'Stijn Smit',
-        'founders.role2':   "Product &amp; AI",
-        'founders.bio2':    'Stijn werkt op het snijvlak van AI, product en storytelling. Hij loopt mee om te bouwen aan een tool die concreet helpt, en om werken weer minder scherm en meer aandacht te maken.',
-        'founders.name3':   'Max Helmantel',
-        'founders.role3':   "Techniek &amp; bouw",
-        'founders.bio3':    'Max brengt technische scherpte en ondernemersenergie mee in het team. Op de Camino zet hij ideeën snel om in producten die praktisch, bruikbaar en menselijk voelen.',
-
         // sponsor
 
         // plan
@@ -3338,8 +3293,6 @@
 
         // hero (tagline + meta)
         'hero.tagline':     'Three AI nerds turn the Camino into their office: 120 km, building live on camera, then a real handover to MIND.',
-        'hero.meta':        '120 km &nbsp;·&nbsp; 6 days<br>Back to Being<br>Camino de Santiago',
-
         // intro
         'intro.heading':    "This summer our office fits<br><em>in a backpack.</em>",
         'intro.body':       "We walk 120 kilometres from Tui to Santiago and build an app for the MIND foundation along the way: one question a day about how you are doing, answered with a weather type.",
@@ -3404,6 +3357,8 @@
         'home.closing.cta2': 'Contact &rarr;',
 
         // partners
+        'partners.heading':       'Partners &amp; <em>sponsors.</em>',
+        'home.group.cap':         'Max, Caesar and Stijn',
         'partners.home.label':    'Backed by',
         'partners.group.sponsors': 'Sponsors',
         'partners.group.partners': 'Partners',
@@ -3436,15 +3391,6 @@
         // founders
         'founders.label':   'The founders',
         'founders.h':       'The people behind<br><em>Back to Being.</em>',
-        'founders.role1':   "Partnerships &amp; story",
-        'founders.bio1':    'Caesar builds AI products and brings story, partners, and energy together. On the Camino, he shows how technology becomes more human outside the office.',
-        'founders.name2':   'Stijn Smit',
-        'founders.role2':   "Product &amp; AI",
-        'founders.bio2':    'Stijn works across AI, product, and storytelling. He is walking to build something useful for MIND, and to make work feel less screen-led and more intentional.',
-        'founders.name3':   'Max Helmantel',
-        'founders.role3':   "Engineering &amp; build",
-        'founders.bio3':    'Max brings technical sharpness and founder energy to the team. On the Camino, he turns ideas into products that feel practical, useful, and human.',
-
         // sponsor
 
         // plan
@@ -3505,12 +3451,6 @@
       'verhaal.map.activate': 'Klik om kaart te gebruiken',
       'verhaal.closing.h': "Schrijf je over<br><em>dit verhaal?</em>",
       'verhaal.closing.p': "We delen graag beeldmateriaal, cijfers en de laatste stand van de app.",
-      'founders.role1': "Partnerships &amp; verhaal",
-      'founders.bio1': 'Caesar bouwt AI-producten en brengt verhaal, partners en energie bij elkaar. Op de Camino laat hij zien dat technologie menselijker wordt buiten het kantoor.',
-      'founders.role2': "Product &amp; AI",
-      'founders.bio2': 'Stijn werkt op het snijvlak van AI, product en storytelling. Hij loopt mee om te bouwen aan een tool die concreet helpt, en om werken weer minder scherm en meer aandacht te maken.',
-      'founders.role3': "Techniek &amp; bouw",
-      'founders.bio3': 'Max brengt technische scherpte en ondernemersenergie mee in het team. Op de Camino zet hij ideeën snel om in producten die praktisch, bruikbaar en menselijk voelen.',
     });
 
     Object.assign(I18N.en, {
@@ -3528,12 +3468,6 @@
       'verhaal.map.activate': 'Click to use map',
       'verhaal.closing.h': "Writing about<br><em>this story?</em>",
       'verhaal.closing.p': "We are happy to share images, figures, and the latest state of the app.",
-      'founders.role1': "Partnerships &amp; story",
-      'founders.bio1': 'Caesar builds AI products and brings story, partners, and energy together. On the Camino, he shows how technology becomes more human outside the office.',
-      'founders.role2': "Product &amp; AI",
-      'founders.bio2': 'Stijn works across AI, product, and storytelling. He is walking to build something useful for MIND, and to make work feel less screen-led and more intentional.',
-      'founders.role3': "Engineering &amp; build",
-      'founders.bio3': 'Max brings technical sharpness and founder energy to the team. On the Camino, he turns ideas into products that feel practical, useful, and human.',
     });
 
     /* Concrete 2026 storytelling: describe the app clearly without treating
@@ -3546,14 +3480,11 @@
       'intro.body': "We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype.",
       'plan.row2.d': 'Elke etappe is een bouwsprint voor de MIND-app: onderweg luisteren en inspreken, bij aankomst ontwerpen en testen.',
       'plan.row3.d': 'De werkende app gaat kosteloos naar stichting MIND, samen met het verhaal van de bouw.',
-      'announcement.label': 'De announcement',
       'announcement.heading': 'Waarom we ons kantoor <em>120 kilometer verplaatsen.</em>',
       'announcement.copy': 'In 66 seconden zie je het idee achter Back to Being: technologie meenemen naar buiten, onderweg bouwen en iets werkends achterlaten voor MIND.',
       'announcement.play': 'Bekijk de film &middot; 01:06',
       'announcement.sound': 'Geluid',
       'announcement.fallback': 'Je browser ondersteunt deze video niet.',
-      'announcement.meta1': 'Announcement film',
-      'announcement.meta2': '66 seconds',
       'verhaal.h1': 'Werken terwijl <em>we lopen.</em>',
       'story.kicker': 'Ons verhaal',
       'story.season': 'Tui &rarr; Santiago &middot; zomer 2026',
@@ -3562,7 +3493,6 @@
       'story.fact.days': 'dagen bouwen',
       'story.fact.product': 'app voor MIND',
       'story.mind.lockup': 'Project voor MIND',
-      'story.mind.index': '01 &middot; Wat we bouwen',
       'story.mind.heading': 'Hoe is het weer <em>in je hoofd?</em>',
       'story.mind.summary': "Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met een weertype. Je weer wordt niet opgeslagen. Het is er om te delen, want daar begint het gesprek.",
       'story.goals.intro': 'Hoe het werkt',
@@ -3572,19 +3502,12 @@
       'story.goal2.p': "Stuur je weer door naar wie je wil en kijk hoe het weer bij anderen staat. Zo vraag je makkelijker door dan met \"hoe gaat het?\", en hoef je zelf niet te beginnen.",
       'story.goal3.h': "Het landelijk weerbericht.",
       'story.goal3.p': "Alle weertypes samen vormen geanonimiseerd een landelijk beeld. Je ziet waar de onweerswolk hangt, en MIND ziet hoe het echt met mensen gaat.",
-      'story.route.index': '02 &middot; Werken onderweg',
       'story.route.heading': 'Zes dagen. Zes etappes. <em>Elke dag verder.</em>',
       'story.route.p': 'De kaart laat niet alleen zien waar we lopen. Elke etappe wordt ook een bouwsprint: luisteren onderweg, keuzes maken bij aankomst en zichtbaar delen wat er die dag is veranderd.',
       'press.feature.lead': 'Deze zomer zit ons kantoor in <em>een rugzak.</em>',
       'press.feature.summary1': 'De Camino staat voor vertraging en bezinning, AI voor snelheid en productiviteit. Wij brengen die werelden samen in &eacute;&eacute;n live-experiment.',
       'press.feature.summary2': 'Onderweg bouwen we een app voor stichting MIND en leggen we het eerlijke proces vast: de hitte, de techniek, de gesprekken en alles wat anders loopt dan gepland.',
       'verhaal.closing.p': "We delen graag beeldmateriaal, cijfers en de laatste stand van de app.",
-      'founders.role1': "Partnerships &amp; verhaal",
-      'founders.bio1': 'Caesar bouwt AI-producten en merkte hoe makkelijk je in een constante versnelling terechtkomt: dagenlang achter zijn bureau terwijl de zon buiten schijnt. De Camino is voor hem een bewuste tegenbeweging, en het verhaal dat mensen en partners in beweging brengt.',
-      'founders.role2': "Product &amp; AI",
-      'founders.bio2': 'Stijn merkte dat hij steeds meer in een prestatieleven terechtkwam en wil bewust stilstaan bij wat hij heeft. Op de Camino vertaalt hij de vraag van MIND naar heldere productkeuzes en combineert hij waar hij het gelukkigst van wordt: met AI bezig zijn en met vrienden weg.',
-      'founders.role3': "Techniek &amp; bouw",
-      'founders.bio3': 'Max leidt de technische bouw van de app. Wandelen gaf hem rust in de coronatijd en zijn vader fietste ooit de pelgrimsroute naar Santiago. Zijn sneeuwbol-idee: pas als je stilstaat, valt alles langzaam op zijn plek.',
     });
 
     Object.assign(I18N.en, {
@@ -3595,14 +3518,11 @@
       'intro.body': "We walk 120 kilometres from Tui to Santiago and build an app for the MIND foundation along the way: one question a day about how you are doing, answered with a weather type.",
       'plan.row2.d': 'Every stage is a build sprint for the MIND app: listening and dictating on the trail, designing and testing on arrival.',
       'plan.row3.d': 'The working app goes to the MIND foundation for free, together with the story of how it was built.',
-      'announcement.label': 'The announcement',
       'announcement.heading': 'Why we are moving our office <em>120 kilometres.</em>',
       'announcement.copy': 'In 66 seconds, see the idea behind Back to Being: taking technology outside, building on the trail and leaving something useful with MIND.',
       'announcement.play': 'Watch the film &middot; 01:06',
       'announcement.sound': 'Sound',
       'announcement.fallback': 'Your browser does not support this video.',
-      'announcement.meta1': 'Announcement film',
-      'announcement.meta2': '66 seconds',
       'verhaal.h1': 'Working while <em>we walk.</em>',
       'story.kicker': 'Our story',
       'story.season': 'Tui &rarr; Santiago &middot; summer 2026',
@@ -3611,7 +3531,6 @@
       'story.fact.days': 'days building',
       'story.fact.product': 'app for MIND',
       'story.mind.lockup': 'Project for MIND',
-      'story.mind.index': '01 &middot; What we build',
       'story.mind.heading': 'What is the weather <em>in your head?</em>',
       'story.mind.summary': "Together with the MIND foundation we are building an app around one fixed question: what is the weather in your head? You answer it in five seconds with a weather type. Your weather is not stored. It is there to share, because that is where the conversation starts.",
       'story.goals.intro': 'How it works',
@@ -3621,19 +3540,12 @@
       'story.goal2.p': "Send your weather to whoever you want and see how others are doing. It opens a conversation more easily than \"how are you?\", and you do not have to start it yourself.",
       'story.goal3.h': "The national forecast.",
       'story.goal3.p': "All weather types together form an anonymised national picture. You see where the thundercloud sits, and MIND sees how people are really doing.",
-      'story.route.index': '02 &middot; Working on the trail',
       'story.route.heading': 'Six days. Six stages. <em>Moving forward every day.</em>',
       'story.route.p': 'The map shows more than where we walk. Every stage is also a build sprint: listening on the trail, making decisions on arrival and sharing what changed that day.',
       'press.feature.lead': 'This summer, our office fits in <em>a backpack.</em>',
       'press.feature.summary1': 'The Camino stands for slowing down and reflection; AI for speed and productivity. We bring those worlds together in one live experiment.',
       'press.feature.summary2': 'On the trail, we build an app for the MIND foundation and capture the honest process: the heat, the technology, the conversations and everything that goes differently than planned.',
       'verhaal.closing.p': "We are happy to share images, figures, and the latest state of the app.",
-      'founders.role1': "Partnerships &amp; story",
-      'founders.bio1': 'Caesar builds AI products and noticed how easily you end up in constant acceleration: days behind a desk while the sun shines outside. For him the Camino is a deliberate counter-movement, and the story that gets people and partners moving.',
-      'founders.role2': "Product &amp; AI",
-      'founders.bio2': 'Stijn caught himself sliding into a life of pure performance and wants to deliberately pause to value what he has. On the Camino he turns MIND&rsquo;s question into clear product decisions, combining the two things he loves most: working with AI and being away with friends.',
-      'founders.role3': "Engineering &amp; build",
-      'founders.bio3': 'Max leads the technical build of the app. Walking gave him calm during the pandemic, and his father once cycled the pilgrim route to Santiago. His snow-globe idea: only when you stand still does everything slowly settle into place.',
     });
 
     let caminoMapInstance = null;
