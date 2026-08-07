@@ -151,7 +151,7 @@
       transition: filter 0.25s ease;
     }
     .site-nav.on-hero:not(.scrolled) .nav-logo-mark {
-      filter: brightness(0) invert(1) drop-shadow(0 1px 6px rgba(22,22,22,0.5));
+      mix-blend-mode: exclusion;
     }
     .nav-menu-btn {
       display: none;
@@ -727,22 +727,41 @@
       list-style: none;
       margin: 0;
       padding: 0;
+      display: grid;
+      gap: var(--space-3);
     }
+    /* Om en om een groen vlak. Vier lijstregels op canvas werden één
+       beige lap; de afwisseling geeft de pagina ritme. Geen scheidingslijnen
+       meer nodig: de vlakken doen dat werk. */
     .pers-item {
       display: grid;
       grid-template-columns: 1fr;
       gap: var(--space-3);
-      padding: var(--space-5) 0;
-      border-bottom: 1px solid var(--line);
+      padding: var(--space-5);
+      border-radius: var(--radius);
     }
     @media (min-width: 800px) {
       .pers-item {
         grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
         gap: var(--space-6);
         align-items: start;
-        padding: var(--space-6) 0;
+        padding: clamp(2rem, 3.5vw, 3rem);
       }
     }
+    .pers-item:nth-child(odd) {
+      background: var(--surface-dark);
+      color: var(--canvas);
+    }
+    .pers-item:nth-child(odd) .pers-title { color: var(--canvas); }
+    .pers-item:nth-child(odd) .pers-kind { color: rgba(255,254,241,0.7); }
+    .pers-item:nth-child(odd) .pers-link {
+      color: var(--canvas);
+      border-bottom-color: rgba(255,254,241,0.42);
+    }
+    .pers-item:nth-child(odd) .pers-link:hover { border-bottom-color: var(--canvas); }
+    /* Zwarte beeldmerken verdwijnen op het groen: die keren we om. */
+    .pers-item:nth-child(odd) .pers-outlet img { filter: brightness(0) invert(1); opacity: 0.92; }
+    .pers-item:nth-child(odd) .pers-outlet img[src="haarlem105-logo.svg"] { filter: none; opacity: 1; }
     .pers-outlet {
       display: flex;
       flex-direction: column;
@@ -974,6 +993,16 @@
       max-width: 14ch;
     }
     .story-hero h1 em { font-style: italic; color: var(--display-accent); }
+    /* Contact is een ondersteunende pagina: kop op de sectie-trede. */
+    .contact-title {
+      max-width: 16ch;
+      margin: 0 0 2.5rem;
+      font-family: var(--serif); font-weight: 400;
+      font-size: var(--h-section);
+      line-height: 0.96; letter-spacing: -0.015em;
+      color: var(--ink);
+    }
+    .contact-title em { font-style: italic; color: var(--display-accent); }
     #page-verhaal .story-hero {
       padding-bottom: 2.5rem;
     }
@@ -1603,101 +1632,71 @@
     }
 
     /* ========= CONTACT ========= */
-    .contact-grid-section {
-      padding: 0 var(--gutter-x) 5.5rem;
+    /* Contactgegevens als horizontale lijst op canvas. Was een donker
+       driekoloms blok met verticale scheidingen en scherpe hoeken; dat gaf
+       meer lijnen dan inhoud. */
+    .contact-list-section {
+      padding: 0 var(--gutter-x) var(--section-y);
       max-width: 1440px;
       margin: 0 auto;
     }
-    .contact-grid {
+    .contact-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .contact-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border-top: 1px solid var(--line-dark);
-      border-bottom: 1px solid var(--line-dark);
-      background: var(--surface-dark);
-      color: var(--cream);
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+      padding: var(--space-5) 0;
+      border-bottom: 1px solid var(--line);
     }
-    .contact-grid-col {
-      display: flex;
-      flex-direction: column;
-      min-height: 360px;
-      border-right: 1px solid var(--line-dark);
+    .contact-row:last-child { border-bottom: none; }
+    @media (min-width: 800px) {
+      .contact-row {
+        grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) auto;
+        gap: var(--space-6);
+        align-items: start;
+        padding: var(--space-6) 0;
+      }
     }
-    .contact-grid-col:last-child { border-right: none; }
-    .contact-grid-head {
+    .contact-row-label {
       display: flex;
       align-items: center;
-      gap: 0.65rem;
-      padding: 1.15rem clamp(1.25rem, 2vw, 2rem);
-      border-bottom: 1px solid var(--line-dark);
-      background: rgba(255,254,241,0.03);
-    }
-    .contact-grid-icon {
-      width: 18px; height: 18px;
-      color: var(--green);
-      flex-shrink: 0;
-    }
-    .contact-grid-head-label {
+      gap: 0.6rem;
       font-family: var(--subhead);
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 600;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,254,241,0.62);
+      color: rgba(22,22,22,0.62);
     }
-    .contact-grid-body {
-      flex: 1;
-      padding: clamp(2rem, 3vw, 3rem) clamp(1.25rem, 2vw, 2rem);
-      border-bottom: 1px solid var(--line-dark);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      gap: 2rem;
-    }
-    .contact-grid-value {
-      font-family: var(--serif);
-      font-size: clamp(1.65rem, 2.6vw, 2.6rem);
-      line-height: 1.05;
-      letter-spacing: 0;
-      color: var(--cream);
-      text-decoration: none;
+    .contact-row-label svg { width: 16px; height: 16px; flex: 0 0 auto; }
+    .contact-row-main { display: grid; gap: 0.6rem; justify-items: start; }
+    .contact-row-value {
       display: block;
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: var(--h-card);
+      line-height: 1.06;
+      color: var(--ink);
+      text-decoration: none;
       overflow-wrap: anywhere;
     }
-    .contact-grid-value em { font-style: italic; }
-    a.contact-grid-value:hover { color: var(--green); text-decoration: underline; text-decoration-color: var(--green); text-underline-offset: 0.18em; }
-    .contact-grid-value-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
+    .contact-row-value em { font-style: italic; color: var(--display-accent); }
+    a.contact-row-value { border-bottom: 1px solid rgba(22,22,22,0.28); padding-bottom: 2px; }
+    a.contact-row-value:hover { border-bottom-color: var(--ink); }
+    .contact-row-note {
+      max-width: 52ch;
+      margin: 0;
+      font-size: clamp(0.94rem, 1.05vw, 1.05rem);
+      line-height: 1.7;
+      color: var(--ink-soft);
     }
-    .contact-grid-value-row .contact-grid-value {
-      font-size: clamp(1.45rem, 1.6vw, 1.95rem);
-      line-height: 1.18;
-      white-space: nowrap;
-      overflow-wrap: normal;
-    }
-    .contact-grid-body .btn {
-      align-self: flex-start;
-      background: var(--green);
-      color: var(--charcoal);
-      border-color: var(--green);
-      padding: 0.7rem 1.35rem;
-      font-size: 0.84rem;
-    }
-    .contact-grid-body .btn:hover {
-      background: var(--canvas);
-      border-color: var(--canvas);
-      color: var(--charcoal);
-    }
-    .contact-grid-foot {
-      padding: 1.25rem clamp(1.25rem, 2vw, 2rem);
-      min-height: 7rem;
-      display: flex;
-      align-items: center;
-      color: rgba(255,254,241,0.56);
-      font-size: 0.88rem;
-      line-height: 1.6;
-    }
+    .contact-row-action { display: flex; align-items: center; gap: 0.6rem; }
+    .contact-row-value-line { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
     .contact-online-strip {
       position: relative;
       overflow: hidden;
@@ -1734,15 +1733,15 @@
     .contact-copy-btn {
       width: 36px; height: 36px;
       display: inline-flex; align-items: center; justify-content: center;
-      border: 1px solid rgba(255,254,241,0.18); border-radius: 999px;
-      background: rgba(255,254,241,0.04); color: rgba(255,254,241,0.62);
+      border: 1px solid var(--line); border-radius: 999px;
+      background: transparent; color: var(--ink-soft);
       cursor: pointer; flex-shrink: 0;
       transition: color 0.2s, background 0.2s, border-color 0.2s;
     }
     .contact-copy-btn:hover {
-      color: var(--canvas);
-      background: rgba(151,160,129,0.2);
-      border-color: rgba(151,160,129,0.5);
+      color: var(--ink);
+      background: rgba(151,160,129,0.16);
+      border-color: rgba(151,160,129,0.6);
     }
     .contact-copy-btn svg { width: 15px; height: 15px; }
     .contact-copy-btn .check-icon { display: none; color: #2f7d46; }
@@ -1764,13 +1763,6 @@
     }
     .contact-social svg { width: 17px; height: 17px; }
     @media (max-width: 680px) {
-      .contact-grid { grid-template-columns: 1fr; }
-      .contact-grid-col { min-height: 0; border-right: none; border-bottom: 1px solid var(--line-dark); }
-      .contact-grid-col:last-child { border-bottom: none; }
-      .contact-grid-value-row .contact-grid-value {
-        white-space: normal;
-        overflow-wrap: anywhere;
-      }
       .contact-online-strip { align-items: flex-start; flex-direction: column; }
       .contact-links { justify-content: flex-start; }
     }
@@ -2035,25 +2027,6 @@
       .contact-box-body { align-items: flex-start; }
       .contact-final { flex-direction: column; align-items: flex-start; }
       .contact-final .btn { width: 100%; justify-content: center; }
-      .contact-grid-section {
-        padding-inline: 0;
-        padding-bottom: 3.5rem;
-      }
-      .contact-grid {
-        border-left: none;
-        border-right: none;
-      }
-      .contact-grid-body {
-        gap: 1.25rem;
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-      }
-      .contact-grid-value {
-        font-size: clamp(1.55rem, 10vw, 2.1rem);
-      }
-      .contact-grid-value-row {
-        gap: 0.5rem;
-      }
       .contact-copy-btn {
         width: 34px;
         height: 34px;
@@ -3160,7 +3133,7 @@
 
     <section class="pers-kit" aria-labelledby="persKitTitle">
       <div class="pers-kit-inner">
-        <h2 id="persKitTitle" data-i18n="pers.kit.h">Schrijf je<br><em>over ons?</em></h2>
+        <h2 id="persKitTitle" data-i18n="pers.kit.h">Meer weten over<br><em>ons verhaal?</em></h2>
         <div class="pers-kit-aside">
           <p data-i18n="pers.kit.p">We vertellen graag over de tocht, de app en het werk voor stichting MIND. Foto&rsquo;s in hoge resolutie, logo&rsquo;s en achtergrondinformatie sturen we op aanvraag toe. We reageren binnen een werkdag.</p>
           <a class="pers-kit-mail" href="mailto:Caesar.schoorl@gmail.com">Caesar.schoorl@gmail.com</a>
@@ -3189,58 +3162,49 @@
   <!-- ======== PAGE: CONTACT ======== -->
   <div class="page" id="page-contact">
     <section class="story-hero">
-      <span class="pill" data-i18n="contact.pill">Contact</span>
-      <h1 data-i18n="contact.h1">Vragen van de<br><em>pers?</em></h1>
+      <h2 class="contact-title" data-i18n="contact.h1">Vragen over ons<br><em>verhaal?</em></h2>
       <div class="story-hero-foot">
         <p data-i18n="contact.lead">We vertellen graag over de tocht, de app en het werk voor stichting MIND. Beeldmateriaal en achtergrondinformatie sturen we op aanvraag toe.</p>
         <p data-i18n="contact.note">We reageren binnen een werkdag.</p>
       </div>
     </section>
 
-    <section class="contact-grid-section" aria-label="Contactgegevens">
-      <div class="contact-grid">
+    <section class="contact-list-section" aria-label="Contactgegevens">
+      <ul class="contact-list">
 
-        <div class="contact-grid-col">
-          <div class="contact-grid-head">
-            <svg class="contact-grid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            <span class="contact-grid-head-label" data-i18n="contact.cal.head">Gesprek</span>
+        <li class="contact-row">
+          <div class="contact-row-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span data-i18n="contact.cal.head">Gesprek</span></div>
+          <div class="contact-row-main">
+            <span class="contact-row-value" data-i18n="contact.cal.value">20 minuten. <em>Genoeg voor een interview.</em></span>
+            <p class="contact-row-note" data-i18n="contact.cal.desc">Kies zelf een moment in onze agenda. Je krijgt een videolink per mail.</p>
           </div>
-          <div class="contact-grid-body">
-            <span class="contact-grid-value" data-i18n="contact.cal.value">20 minuten.<br><em>Genoeg voor een interview.</em></span>
+          <div class="contact-row-action">
             <a class="btn" href="https://cal.com/caesar-schoorl/back-to-being" target="_blank" rel="noopener noreferrer" data-i18n="contact.cal.btn">Plan een gesprek &rarr;</a>
           </div>
-          <div class="contact-grid-foot" data-i18n="contact.cal.desc">Kies zelf een moment in onze agenda. Je krijgt een videolink per mail.</div>
-        </div>
+        </li>
 
-        <div class="contact-grid-col">
-          <div class="contact-grid-head">
-            <svg class="contact-grid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            <span class="contact-grid-head-label" data-i18n="contact.email.head">Mail</span>
+        <li class="contact-row">
+          <div class="contact-row-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><span data-i18n="contact.email.head">Mail</span></div>
+          <div class="contact-row-main">
+            <span class="contact-row-value-line">
+              <a class="contact-row-value" href="mailto:Caesar.schoorl@gmail.com">Caesar.schoorl@gmail.com</a>
+              <button class="contact-copy-btn" type="button" data-copy="Caesar.schoorl@gmail.com" aria-label="Kopieer e-mailadres"><svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+            </span>
+            <p class="contact-row-note" data-i18n="contact.email.desc">Voor persvragen, beeldmateriaal en alles rond de app voor MIND.</p>
           </div>
-          <div class="contact-grid-body">
-            <div class="contact-grid-value-row">
-              <a class="contact-grid-value" href="mailto:Caesar.schoorl@gmail.com">Caesar.schoorl@gmail.com</a>
-              <button class="contact-copy-btn" type="button" data-copy="Caesar.schoorl@gmail.com" aria-label="Copy email">
-                <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-              </button>
-            </div>
-          </div>
-          <div class="contact-grid-foot" data-i18n="contact.email.desc">Voor persvragen, beeldmateriaal en alles rond de app voor MIND.</div>
-        </div>
+          <div class="contact-row-action"></div>
+        </li>
 
-        <div class="contact-grid-col">
-          <div class="contact-grid-head">
-            <svg class="contact-grid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.78a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span class="contact-grid-head-label" data-i18n="contact.office.head">Kantoor</span>
+        <li class="contact-row">
+          <div class="contact-row-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.78a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span data-i18n="contact.office.head">Postadres</span></div>
+          <div class="contact-row-main">
+            <span class="contact-row-value" data-i18n="contact.office.value">t.a.v. TAG &ndash; Back to Being<br>Jacob Bontiusplaats 9, 1018 LL Amsterdam</span>
+            <p class="contact-row-note" data-i18n="contact.office.desc">Kom langs of gebruik dit als postadres.</p>
           </div>
-          <div class="contact-grid-body">
-            <span class="contact-grid-value" data-i18n="contact.office.value">Jacob Bontiusplaats 9<br>1018 LL Amsterdam</span>
-          </div>
-          <div class="contact-grid-foot" data-i18n="contact.office.desc">Kom langs of gebruik dit als postadres.</div>
-        </div>
+          <div class="contact-row-action"></div>
+        </li>
 
-      </div>
+      </ul>
     </section>
 
     <div class="contact-online-strip">
@@ -3510,18 +3474,17 @@
         'return.row3.d':    'Hardware, AI-credits of een eigen invulling. In één gesprek kijken we wat voor jou het meeste waarde heeft.',
 
         // contact
-        'contact.pill':         'Contact',
-        'contact.h1':           "Vragen van de<br><em>pers?</em>",
+        'contact.h1':           "Vragen over ons<br><em>verhaal?</em>",
         'contact.lead':         "We vertellen graag over de tocht, de app en het werk voor stichting MIND. Beeldmateriaal en achtergrondinformatie sturen we op aanvraag toe.",
         'contact.note':         "We reageren binnen een werkdag.",
         'contact.cal.head':     'Gesprek',
-        'contact.cal.value':    "20 minuten.<br><em>Genoeg voor een interview.</em>",
+        'contact.cal.value':    "20 minuten. <em>Genoeg voor een interview.</em>",
         'contact.cal.desc':     "Kies zelf een moment in onze agenda. Je krijgt een videolink per mail.",
         'contact.cal.btn':      'Plan een gesprek &rarr;',
         'contact.email.head':   'Mail',
         'contact.email.desc':   "Voor persvragen, beeldmateriaal en alles rond de app voor MIND.",
-        'contact.office.head':  'Kantoor',
-        'contact.office.value': 'Jacob Bontiusplaats 9<br>1018 LL Amsterdam',
+        'contact.office.head':  'Postadres',
+        'contact.office.value': 't.a.v. TAG &ndash; Back to Being<br>Jacob Bontiusplaats 9, 1018 LL Amsterdam',
         'contact.office.desc':  "Kom langs of gebruik dit als postadres.",
         'contact.online.label': 'Vind ons online',
 
@@ -3669,18 +3632,17 @@
         'return.row3.d':    'Hardware, AI credits or your own idea. In one conversation we figure out what creates the most value for you.',
 
         // contact
-        'contact.pill':         'Contact',
-        'contact.h1':           "Press<br><em>enquiries?</em>",
+        'contact.h1':           "Questions about<br><em>our story?</em>",
         'contact.lead':         "We are happy to talk about the walk, the app, and the work for the MIND foundation. Images and background information are available on request.",
         'contact.note':         "We respond within one working day.",
         'contact.cal.head':     'Meeting',
-        'contact.cal.value':    "20 minutes.<br><em>Enough for an interview.</em>",
+        'contact.cal.value':    "20 minutes. <em>Enough for an interview.</em>",
         'contact.cal.desc':     "Pick a slot in our calendar. You get a video link by email.",
         'contact.cal.btn':      'Schedule a call &rarr;',
         'contact.email.head':   'Email',
         'contact.email.desc':   "For press enquiries, images, and anything about the app for MIND.",
-        'contact.office.head':  'Office',
-        'contact.office.value': 'Jacob Bontiusplaats 9<br>1018 LL Amsterdam',
+        'contact.office.head':  'Postal address',
+        'contact.office.value': 'c/o TAG &ndash; Back to Being<br>Jacob Bontiusplaats 9, 1018 LL Amsterdam',
         'contact.office.desc':  "Drop by or use this as our postal address.",
         'contact.online.label': 'Find us online',
 
@@ -3738,7 +3700,7 @@
       'pers.trouw.title': '&ldquo;Deze drie mannen maken een app tijdens de Camino: werken kan ook vanaf een bergpaadje in Spanje&rdquo;',
       'pers.h105.title': '&ldquo;Drie vrienden bouwen app voor mentale gezondheid tijdens Camino de Santiago&rdquo;',
       'pers.smarthealth.title': '&ldquo;Drie makers bouwen al lopend app over hoe je je voelt&rdquo;',
-      'pers.kit.h': 'Schrijf je<br><em>over ons?</em>',
+      'pers.kit.h': 'Meer weten over<br><em>ons verhaal?</em>',
       'pers.kit.p': 'We vertellen graag over de tocht, de app en het werk voor stichting MIND. Er staat een perskit voor je klaar met foto&rsquo;s in hoge resolutie, logo&rsquo;s, feiten over het project en citaten die je kunt gebruiken. Vraag hem aan en je hebt hem binnen een werkdag.',
       'pers.kit.cta': 'Naar contact &rarr;',
       'meta.desc': 'Drie AI-founders lopen 120 kilometer en bouwen onderweg een app die de kennis en hulp van MIND persoonlijk bereikbaar maakt.',
@@ -3795,7 +3757,7 @@
       'pers.trouw.title': '&ldquo;These three men are making an app during the Camino: you can work from a mountain path in Spain too&rdquo;',
       'pers.h105.title': '&ldquo;Three friends build a mental health app during the Camino de Santiago&rdquo;',
       'pers.smarthealth.title': '&ldquo;Three makers are building an app about how you feel, while walking&rdquo;',
-      'pers.kit.h': 'Writing<br><em>about us?</em>',
+      'pers.kit.h': 'Want to know more<br><em>about our story?</em>',
       'pers.kit.p': 'We are happy to talk about the walk, the app and the work for the MIND foundation. A press kit is ready for you with high resolution photos, logos, project facts and quotes you can use. Ask for it and you will have it within one working day.',
       'pers.kit.cta': 'Go to contact &rarr;',
       'meta.desc': 'Three AI founders walk 120 kilometres while building an app that makes MIND&rsquo;s knowledge and support personally accessible.',
