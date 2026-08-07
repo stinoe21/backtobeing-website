@@ -1497,7 +1497,7 @@
 
     /* FOUNDERS */
     .founders-section {
-      background: var(--bg-dark); color: var(--canvas);
+      background: var(--surface-base); color: var(--ink);
       padding: var(--section-y) var(--gutter-x);
       scroll-margin-top: var(--nav-h);
     }
@@ -1537,7 +1537,7 @@
     .founders-header h2 {
       font-family: var(--serif); font-weight: 400;
       font-size: var(--h-section); line-height: 1.0; letter-spacing: -0.01em;
-      color: var(--cream);
+      color: var(--ink);
     }
     .founders-header h2 em { font-style: italic; color: var(--display-accent); }
     .founders-intro {
@@ -1545,14 +1545,14 @@
       margin-top: var(--space-4);
       font-size: clamp(0.98rem, 1.1vw, 1.1rem);
       line-height: 1.7;
-      color: rgba(255,254,241,0.78);
+      color: var(--ink-soft);
     }
     .founders-intro a {
-      color: inherit;
-      border-bottom: 1px solid rgba(255,254,241,0.4);
+      color: var(--ink);
+      border-bottom: 1px solid rgba(22,22,22,0.35);
       transition: border-color 0.2s;
     }
-    .founders-intro a:hover { border-color: var(--canvas); }
+    .founders-intro a:hover { border-color: var(--ink); }
     /* Compact rijtje: per persoon één vierkante crop, naam en link. Verder niets. */
     .founders-grid {
       display: grid;
@@ -1563,7 +1563,7 @@
     .founder-card { padding: 0; border: none; }
     .founder-photo {
       width: 100%;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 3 / 4;
       overflow: hidden;
       border-radius: var(--radius-ctrl);
       margin-bottom: var(--space-3);
@@ -1576,7 +1576,7 @@
     .founder-photo .photo-ph { height: 100%; min-height: 0; }
     .founder-name {
       font-family: var(--serif); font-weight: 500;
-      font-size: 1.15rem; color: var(--cream); margin-bottom: 0.35rem;
+      font-size: 1.15rem; color: var(--ink); margin-bottom: 0.35rem;
     }
     .founder-li {
       display: inline-flex; align-items: center; gap: 0.4rem;
@@ -1598,7 +1598,7 @@
     .story-final-cta {
       max-width: 1440px;
       margin: 0 auto;
-      padding: 5rem var(--gutter-x);
+      padding: var(--section-y) var(--gutter-x);
       display: grid;
       grid-template-columns: 1fr;
       gap: 2rem;
@@ -2365,12 +2365,15 @@
       margin-inline: auto;
       align-items: start;
     }
-    .story-mind-credit {
+    .story-mind-bottom {
       grid-column: 1 / -1;
+      display: grid;
+      gap: var(--space-4);
+    }
+    .story-mind-credit {
       display: flex;
       align-items: center;
       gap: var(--space-4);
-      margin-top: var(--space-5);
     }
     .story-mind-credit img {
       flex: 0 0 auto;
@@ -2459,7 +2462,7 @@
     .story-route-copy {
       display: grid;
       gap: 2rem;
-      align-items: end;
+      align-items: start;
       margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
     }
     .story-route-copy p {
@@ -2533,7 +2536,8 @@
     .story-mind-inner {
       /* De rechterkolom is leeg; de kop had meer breedte nodig dan 0.78fr gaf. */
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: clamp(3rem, 7vw, 7rem);
+      column-gap: clamp(3rem, 7vw, 7rem);
+      row-gap: clamp(2.25rem, 4vw, 3.5rem);
     }
     /* Vanaf 800px valt de wrapper weg als grid-laag: de kop pakt de linker
        kolom, de alinea met het MIND-logo de rechter. Anders staat rechts een
@@ -2957,6 +2961,7 @@
             </div>
           </div>
 
+          <div class="story-mind-bottom">
           <div class="story-goals">
             <div class="story-goals-intro" data-i18n="story.goals.intro">Hoe het werkt</div>
             <article class="story-goal" data-number="01" data-story-reveal>
@@ -2973,10 +2978,12 @@
             </article>
           </div>
 
-          <!-- Credit sluit de sectie af: geen pil, geen knop, gewoon een regel. -->
+          <!-- Credit hoort strak onder de kaarten, niet als eigen rasterrij met
+               de volle sectiemarge ertussen. -->
           <div class="story-mind-credit">
             <img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" />
             <p data-i18n="story.mind.credit">Dit doen we in nauwe samenwerking met stichting MIND.</p>
+          </div>
           </div>
         </div>
       </section>
@@ -2989,7 +2996,7 @@
       <div class="founders-inner">
         <div class="founders-header">
           <h2 data-i18n="founders.h">Team<br><em>Back to Being.</em></h2>
-          <p class="founders-intro" data-i18n="founders.intro">Max komt uit design, Stijn uit back-end development, en Caesar wilde eigenlijk jachtmakelaar worden. Wat we delen: we zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Daar zagen we van dichtbij hoe snel AI het werk verandert, en hoe weinig daarvan zichtbaar wordt. Vandaar de volgende stap: in zes dagen, lopend, laten zien wat AI doet met het tempo en de manier waarop je werkt. Back to Being is het eerste dat we samen maken.</p>
+          <p class="founders-intro" data-i18n="founders.intro">Max komt uit design, Stijn uit back-end development, en Caesar wilde eigenlijk jachtmakelaar worden. Wat we delen: we zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being is de proef op de som: in zes dagen een werkende app, onderweg gebouwd.</p>
         </div>
         <div class="founders-grid">
 
@@ -3706,7 +3713,7 @@
       'meta.desc': 'Drie AI-founders lopen 120 kilometer en bouwen onderweg een app die de kennis en hulp van MIND persoonlijk bereikbaar maakt.',
       'meta.descShort': '120 kilometer lopen. Een app voor MIND bouwen. Kosteloos overdragen.',
       'hero.tagline': 'Drie AI-founders maken van de Camino hun kantoor en bouwen onderweg een app voor MIND.',
-      'founders.intro': 'Max komt uit design, Stijn uit back-end development, en Caesar wilde eigenlijk jachtmakelaar worden. Wat we delen: we zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Daar zagen we van dichtbij hoe snel AI het werk verandert, en hoe weinig daarvan zichtbaar wordt. Vandaar de volgende stap: in zes dagen, lopend, laten zien wat AI doet met het tempo en de manier waarop je werkt. Back to Being is het eerste dat we samen maken.',
+      'founders.intro': 'Max komt uit design, Stijn uit back-end development, en Caesar wilde eigenlijk jachtmakelaar worden. Wat we delen: we zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being is de proef op de som: in zes dagen een werkende app, onderweg gebouwd.',
       'hero.cd.label': 'Vertrek 23 augustus',
       'hero.cd.days': 'dagen',
       'hero.cd.hours': 'uur',
@@ -3763,7 +3770,7 @@
       'meta.desc': 'Three AI founders walk 120 kilometres while building an app that makes MIND&rsquo;s knowledge and support personally accessible.',
       'meta.descShort': 'Walk 120 kilometres. Build an app for MIND. Hand it over for free.',
       'hero.tagline': 'Three AI founders turn the Camino into their office and build an app for MIND along the way.',
-      'founders.intro': 'Max comes from design, Stijn from back-end development, and Caesar set out to become a yacht broker. What we share: all three of us started a company of our own, among them <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> and <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. That is where we saw up close how fast AI is changing the work, and how little of it people get to see. Hence the next step: showing in six days, on foot, what AI does to the pace and the way you work. Back to Being is the first thing we are making together.',
+      'founders.intro': 'Max comes from design, Stijn from back-end development, and Caesar set out to become a yacht broker. What we share: all three of us started a company of our own, among them <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> and <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. From building those, and from working with AI every day, all three of us notice how much is possible now. Back to Being is where we put that to the test: a working app in six days, built along the way.',
       'hero.cd.label': 'Departure 23 August',
       'hero.cd.days': 'days',
       'hero.cd.hours': 'hrs',
