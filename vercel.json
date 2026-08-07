@@ -14,15 +14,13 @@
       ]
     },
     {
-      "//": "Beeld, video en animatiedata veranderen zelden. Zonder deze regel kreeg alles public, max-age=0, must-revalidate en vroeg de browser bij elk bezoek opnieuw na of elk bestand nog klopt: ruim twintig extra rondjes, waaronder een van bijna drie megabyte. Een dag vers, daarna nog een maand lang meteen serveren en op de achtergrond verversen, dus een vervangen foto is bij het volgende bezoek binnen.",
-      "source": "/(.*)\\.(mp4|webm|jpg|jpeg|png|webp|avif|svg|ico|woff2|woff|json)",
+      "source": "/(.*).(mp4|webm|jpg|jpeg|png|webp|avif|svg|ico|woff2|woff|json)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=2592000" }
       ]
     },
     {
-      "//": "De pagina zelf blijft wel elke keer nagevraagd worden.",
-      "source": "/(.*)\\.html",
+      "source": "/(.*).html",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
