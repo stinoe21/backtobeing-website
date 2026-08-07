@@ -12,21 +12,31 @@
           data-watermelon-settings-id="17335"></script>
 
   <title>Back to Being: The World as our Office</title>
-  <link rel="icon" href="LOGOMARK_B2B.svg" type="image/svg+xml">
-  <meta name="description" id="metaDesc" content="Drie AI-nerds maken van de Camino hun kantoor: 120 km, live bouwen in beeld, daarna een echte overdracht aan stichting MIND." />
+  <!-- Vierkant icoon; het losse beeldmerk heeft een liggende verhouding en
+       werd daardoor in het icoonvak uitgerekt. -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="favicon-512.png" type="image/png" sizes="512x512" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="canonical" href="https://backtobeing.tech/" />
+  <meta name="description" id="metaDesc" content="Max, Caesar en Stijn lopen 120 kilometer over de Camino en bouwen in zes dagen een app die mentale gezondheid bespreekbaar maakt. Voor stichting MIND." />
 
   <!-- Open Graph / sociale previews -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Back to Being: The World as our Office" />
-  <meta property="og:description" id="ogDesc" content="Drie AI-nerds maken van de Camino hun kantoor: 120 km, live bouwen in beeld, daarna een echte overdracht aan stichting MIND." />
+  <meta property="og:description" id="ogDesc" content="Max, Caesar en Stijn lopen 120 kilometer over de Camino en bouwen in zes dagen een app die mentale gezondheid bespreekbaar maakt. Voor stichting MIND." />
   <meta property="og:locale" id="ogLocale" content="nl_NL" />
   <meta property="og:site_name" content="Back to Being" />
+  <meta property="og:url" content="https://backtobeing.tech/" />
+  <meta property="og:image" content="https://backtobeing.tech/founders-group.jpg" />
+  <meta property="og:image:width" content="2000" />
+  <meta property="og:image:height" content="1333" />
+  <meta property="og:image:alt" content="Max, Caesar en Stijn tegen een bewolkte lucht" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Back to Being: The World as our Office" />
-  <meta name="twitter:description" id="twDesc" content="Drie AI-nerds maken van de Camino hun kantoor: 120 km, live bouwen in beeld, daarna een echte overdracht aan MIND." />
+  <meta name="twitter:image" content="https://backtobeing.tech/founders-group.jpg" />
+  <meta name="twitter:description" id="twDesc" content="120 kilometer lopen. In zes dagen een app bouwen die mentale gezondheid bespreekbaar maakt. Kosteloos voor stichting MIND." />
   <meta name="theme-color" content="#3d5a3d" />
 
-  <link rel="icon" href="LOGOMARK_B2B.svg" type="image/svg+xml" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -117,6 +127,11 @@
     img { display: block; max-width: 100%; }
     a { color: inherit; text-decoration: none; }
     button { font-family: inherit; }
+
+    /* Beginstand van de scroll-intro. Deze klas wordt pas door JS gezet als
+       GSAP echt geladen is; staat hij niet in de HTML, dan is er ook niets
+       onzichtbaar. */
+    .intro-hidden { opacity: 0; transform: translateY(24px); }
 
     .page { display: none; }
     .page.active { display: block; animation: pageIn 0.35s ease forwards; }
@@ -418,14 +433,30 @@
     }
     .partners-group-label { margin-bottom: 0; text-align: center; }
 
-    /* Logoband: twee identieke rijen achter elkaar, de track schuift precies
-       de helft op. Daardoor valt de kopie op het startpunt en is de lus naadloos. */
+    /* Logoband. De rij wordt in JS gemeten: hij wordt zo vaak gekopieerd als
+       de band breed is, schuift precies één rijbreedte op en sluit daardoor
+       naadloos. De duur volgt uit die breedte, zodat de band op elk scherm
+       even snel loopt in plaats van sneller op een smal scherm. Zonder JS
+       blijven de twee rijen uit de HTML staan en geldt de terugval van 50%. */
     .marquee {
+      position: relative;
       width: 100%;
-      overflow: hidden;
-      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
-              mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+      overflow: clip;
     }
+    /* De randen vervagen met twee vlakken in de achtergrondkleur, niet met een
+       mask. Een mask over een lange, bewegende laag laat mobiele browsers die
+       laag soms weggooien; dan is de band na een paar seconden ineens leeg. */
+    .marquee::before,
+    .marquee::after {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0;
+      width: clamp(1.5rem, 8%, 5rem);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .marquee::before { left: 0;  background: linear-gradient(90deg,  var(--surface-base), rgba(255,254,241,0)); }
+    .marquee::after  { right: 0; background: linear-gradient(270deg, var(--surface-base), rgba(255,254,241,0)); }
     .marquee-track {
       display: flex;
       width: max-content;
@@ -445,12 +476,15 @@
     }
     @keyframes marquee-scroll {
       from { transform: translate3d(0, 0, 0); }
-      to   { transform: translate3d(-50%, 0, 0); }
+      to   { transform: translate3d(calc(-1 * var(--marquee-shift, 50%)), 0, 0); }
     }
     /* Zonder beweging wordt het een gewone, met de hand scrollbare rij. */
     @media (prefers-reduced-motion: reduce) {
-      .marquee { overflow-x: auto; }
+      .marquee { overflow-x: auto; overflow-y: hidden; }
       .marquee-track { animation: none; }
+      /* De randvervaging hoort bij een band die doorloopt. In een rij die je
+         zelf scrollt zou hij meebewegen en het laatste logo verstoppen. */
+      .marquee::before, .marquee::after { display: none; }
     }
     .partner-logo {
       display: flex; align-items: center; justify-content: center;
@@ -2681,8 +2715,7 @@
         </h1>
         <div class="hero-foot">
           <p class="hero-tagline" data-i18n="hero.tagline">
-            Drie AI-nerds maken van de Camino hun kantoor: 120 km,
-            live bouwen in beeld, daarna een echte overdracht aan MIND.
+            Drie AI-founders maken van de Camino hun kantoor en bouwen onderweg een app voor MIND.
           </p>
           <div class="hero-countdown" id="heroCountdown">
             <div class="hero-countdown-label" data-i18n="hero.cd.label">Vertrek 23 augustus</div>
@@ -2765,52 +2798,42 @@
         <h2 class="partners-strip-heading" data-i18n="partners.heading">Partners &amp; <em>sponsors.</em></h2>
         <div class="partners-group">
           <div class="section-label partners-group-label" data-i18n="partners.group.sponsors">Sponsors</div>
-          <div class="marquee" style="--marquee-duration: 46s;">
+          <div class="marquee" data-speed="34">
             <div class="marquee-track">
               <ul class="marquee-row">
-                <li><a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a></li>
-                <li><a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://watermelon.ai/" target="_blank" rel="noopener noreferrer"><img src="watermelon.svg" alt="Watermelon AI" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer"><img src="n8n-logo.svg" alt="n8n" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" decoding="async" /></a></li>
+                <li><a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" decoding="async" /></a></li>
+                <li><a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" decoding="async" /></a></li>
+                <li><a class="partner-logo" href="https://watermelon.ai/" target="_blank" rel="noopener noreferrer"><img src="watermelon.svg" alt="Watermelon AI" decoding="async" /></a></li>
+                <li><a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer"><img src="n8n-logo.svg" alt="n8n" decoding="async" /></a></li>
               </ul>
               <ul class="marquee-row" aria-hidden="true">
-                <li><a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="wispr.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="remote.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="helloprint.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://watermelon.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="watermelon.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="n8n-logo.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="wispr.webp" alt="" aria-hidden="true" decoding="async" /></a></li>
+                <li><a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="remote.svg" alt="" aria-hidden="true" decoding="async" /></a></li>
+                <li><a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="helloprint.webp" alt="" aria-hidden="true" decoding="async" /></a></li>
+                <li><a class="partner-logo" href="https://watermelon.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="watermelon.svg" alt="" aria-hidden="true" decoding="async" /></a></li>
+                <li><a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="n8n-logo.svg" alt="" aria-hidden="true" decoding="async" /></a></li>
               </ul>
             </div>
           </div>
         </div>
         <div class="partners-group">
           <div class="section-label partners-group-label" data-i18n="partners.group.partners">Partners</div>
-          <div class="marquee marquee-reverse" style="--marquee-duration: 56s;">
+          <div class="marquee marquee-reverse" data-speed="28">
             <div class="marquee-track">
               <ul class="marquee-row">
-                <li><a class="partner-logo" href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer"><img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" /></a></li>
-                <li><a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer"><img src="techleap.webp" alt="Techleap" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer"><img src="Lerai.webp" alt="LerAI" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer"><img src="TAG_black.svg" alt="TAG" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer"><img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" /></a></li>
-                <li><a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer"><img src="techleap.webp" alt="Techleap" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer"><img src="Lerai.webp" alt="LerAI" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer"><img src="TAG_black.svg" alt="TAG" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer"><img src="mind-logo.webp" alt="Stichting MIND" decoding="async" /></a></li>
+                <li><a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer"><img src="techleap.webp" alt="Techleap" decoding="async" /></a></li>
+                <li><a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer"><img src="ai.am.svg" alt="AI.AM" decoding="async" /></a></li>
+                <li><a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer"><img src="Lerai.webp" alt="LerAI" decoding="async" /></a></li>
+                <li><a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer"><img src="TAG_black.svg" alt="TAG" decoding="async" /></a></li>
               </ul>
               <ul class="marquee-row" aria-hidden="true">
-                <li><a class="partner-logo" href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="mind-logo.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="techleap.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="ai.am.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="Lerai.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="TAG_black.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="mind-logo.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="techleap.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="ai.am.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="Lerai.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
-                <li><a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="TAG_black.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="mind-logo.webp" alt="" aria-hidden="true" decoding="async" /></a></li>
+                <li><a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="techleap.webp" alt="" aria-hidden="true" decoding="async" /></a></li>
+                <li><a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="ai.am.svg" alt="" aria-hidden="true" decoding="async" /></a></li>
+                <li><a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="Lerai.webp" alt="" aria-hidden="true" decoding="async" /></a></li>
+                <li><a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="TAG_black.svg" alt="" aria-hidden="true" decoding="async" /></a></li>
               </ul>
             </div>
           </div>
@@ -3026,7 +3049,7 @@
       <div class="founders-inner">
         <div class="founders-header">
           <h2 data-i18n="founders.h">Team<br><em>Back to Being.</em></h2>
-          <p class="founders-intro" data-i18n="founders.intro">Max komt uit design, Stijn uit back-end development, en Caesar wilde eigenlijk jachtmakelaar worden. Wat we delen: we zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being is de proef op de som: in zes dagen een werkende app, onderweg gebouwd.</p>
+          <p class="founders-intro" data-i18n="founders.intro">We zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being is de proef op de som: in zes dagen een werkende app, onderweg gebouwd.</p>
         </div>
         <div class="founders-grid">
 
@@ -3373,8 +3396,8 @@
     const I18N = {
       nl: {
         // meta
-        'meta.desc':        'Drie AI-nerds maken van de Camino hun kantoor: 120 km, live bouwen in beeld, daarna een echte overdracht aan stichting MIND.',
-        'meta.descShort':   'Drie AI-nerds maken van de Camino hun kantoor: 120 km, live bouwen in beeld, daarna een echte overdracht aan MIND.',
+        'meta.desc':        'Max, Caesar en Stijn lopen 120 kilometer over de Camino en bouwen in zes dagen een app die mentale gezondheid bespreekbaar maakt. Voor stichting MIND.',
+        'meta.descShort':   '120 kilometer lopen. In zes dagen een app bouwen die mentale gezondheid bespreekbaar maakt. Kosteloos voor stichting MIND.',
         'meta.locale':      'nl_NL',
 
         // nav
@@ -3383,7 +3406,7 @@
         'nav.contact':      'Contact',
 
         // hero
-        'hero.tagline':     'Drie AI-nerds maken van de Camino hun kantoor: 120 km, live bouwen in beeld, daarna een echte overdracht aan MIND.',
+        'hero.tagline':     'Drie AI-founders maken van de Camino hun kantoor en bouwen onderweg een app voor MIND.',
         // intro
         'intro.heading':    "Ons kantoor past deze zomer<br><em>in een rugzak.</em>",
         'intro.body':       "We lopen 120 kilometer van Tui naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype.",
@@ -3532,8 +3555,8 @@
 
       en: {
         // meta
-        'meta.desc':        'Three AI nerds turn the Camino into their office: 120 km, building live on camera, then a real handover to the MIND foundation.',
-        'meta.descShort':   'Three AI nerds turn the Camino into their office: 120 km, building live on camera, then a real handover to MIND.',
+        'meta.desc':        'Max, Caesar and Stijn walk 120 kilometres of the Camino and build an app in six days that makes mental health easier to talk about. For the MIND foundation.',
+        'meta.descShort':   'Walk 120 kilometres. Build an app in six days that makes mental health easier to talk about. Free, for the MIND foundation.',
         'meta.locale':      'en_US',
 
         // nav
@@ -3542,7 +3565,7 @@
         'nav.contact':      'Contact',
 
         // hero (tagline + meta)
-        'hero.tagline':     'Three AI nerds turn the Camino into their office: 120 km, building live on camera, then a real handover to MIND.',
+        'hero.tagline':     'Three AI founders turn the Camino into their office and build an app for MIND along the way.',
         // intro
         'intro.heading':    "This summer our office fits<br><em>in a backpack.</em>",
         'intro.body':       "We walk 120 kilometres from Tui to Santiago and build an app for the MIND foundation along the way: one question a day about how you are doing, answered with a weather type.",
@@ -3742,10 +3765,10 @@
       'pers.kit.h': 'Meer weten over<br><em>ons verhaal?</em>',
       'pers.kit.p': 'We vertellen graag over de tocht, de app en het werk voor stichting MIND. Er staat een perskit voor je klaar met foto&rsquo;s in hoge resolutie, logo&rsquo;s, feiten over het project en citaten die je kunt gebruiken. Vraag hem aan en je hebt hem binnen een werkdag.',
       'pers.kit.cta': 'Naar contact &rarr;',
-      'meta.desc': 'Drie AI-founders lopen 120 kilometer en bouwen onderweg een app die de kennis en hulp van MIND persoonlijk bereikbaar maakt.',
-      'meta.descShort': '120 kilometer lopen. Een app voor MIND bouwen. Kosteloos overdragen.',
+      'meta.desc': 'Max, Caesar en Stijn lopen 120 kilometer over de Camino en bouwen in zes dagen een app die mentale gezondheid bespreekbaar maakt. Voor stichting MIND.',
+      'meta.descShort': '120 kilometer lopen. In zes dagen een app bouwen die mentale gezondheid bespreekbaar maakt. Kosteloos voor stichting MIND.',
       'hero.tagline': 'Drie AI-founders maken van de Camino hun kantoor en bouwen onderweg een app voor MIND.',
-      'founders.intro': 'Max komt uit design, Stijn uit back-end development, en Caesar wilde eigenlijk jachtmakelaar worden. Wat we delen: we zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being is de proef op de som: in zes dagen een werkende app, onderweg gebouwd.',
+      'founders.intro': 'We zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being is de proef op de som: in zes dagen een werkende app, onderweg gebouwd.',
       'hero.cd.label': 'Vertrek 23 augustus',
       'hero.cd.days': 'dagen',
       'hero.cd.hours': 'uur',
@@ -3799,10 +3822,10 @@
       'pers.kit.h': 'Want to know more<br><em>about our story?</em>',
       'pers.kit.p': 'We are happy to talk about the walk, the app and the work for the MIND foundation. A press kit is ready for you with high resolution photos, logos, project facts and quotes you can use. Ask for it and you will have it within one working day.',
       'pers.kit.cta': 'Go to contact &rarr;',
-      'meta.desc': 'Three AI founders walk 120 kilometres while building an app that makes MIND&rsquo;s knowledge and support personally accessible.',
-      'meta.descShort': 'Walk 120 kilometres. Build an app for MIND. Hand it over for free.',
+      'meta.desc': 'Max, Caesar and Stijn walk 120 kilometres of the Camino and build an app in six days that makes mental health easier to talk about. For the MIND foundation.',
+      'meta.descShort': 'Walk 120 kilometres. Build an app in six days that makes mental health easier to talk about. Free, for the MIND foundation.',
       'hero.tagline': 'Three AI founders turn the Camino into their office and build an app for MIND along the way.',
-      'founders.intro': 'Max comes from design, Stijn from back-end development, and Caesar set out to become a yacht broker. What we share: all three of us started a company of our own, among them <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> and <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. From building those, and from working with AI every day, all three of us notice how much is possible now. Back to Being is where we put that to the test: a working app in six days, built along the way.',
+      'founders.intro': 'All three of us started a company of our own, among them <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> and <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. From building those, and from working with AI every day, all three of us notice how much is possible now. Back to Being is where we put that to the test: a working app in six days, built along the way.',
       'hero.cd.label': 'Departure 23 August',
       'hero.cd.days': 'days',
       'hero.cd.hours': 'hrs',
@@ -4537,6 +4560,11 @@
           }
         }).catch(() => { /* swallow — the map just won't render */ });
       }
+
+      // Deze pagina stond net op display:none. De logobanden meten zichzelf
+      // opnieuw via hun ResizeObserver; de scroll-intro moet hier gestart
+      // worden, want die kende deze elementen nog niet.
+      requestAnimationFrame(() => playScrollIntro(name));
     }
 
     // Coalesce scroll-driven nav state changes to one per frame so the
@@ -4558,6 +4586,174 @@
         requestAnimationFrame(updateNavOnScroll);
       }, { passive: true });
     })();
+
+    /* ============================================================
+       LOGOBANDEN
+       ============================================================ */
+    /* De band moet op elk scherm even snel lopen en naadloos sluiten. Met een
+       vaste verschuiving van 50% over twee rijen klopt dat allebei niet: op
+       een smal scherm legt de band dezelfde afstand af in dezelfde tijd, dus
+       hij gaat harder, en als één rij smaller is dan de band valt er halverwege
+       de lus een gat. Daarom meten we één rij, kopiëren we hem tot de band
+       gevuld is, en schuiven we precies één rijbreedte op. De duur volgt uit
+       die breedte: snelheid in pixels per seconde is overal gelijk. */
+    function setupMarquees() {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      document.querySelectorAll('.marquee').forEach(band => {
+        const track = band.querySelector('.marquee-track');
+        if (!track) return;
+        const rows = track.querySelectorAll('.marquee-row');
+        const source = rows[0];
+        if (!source) return;
+
+        // De tweede rij in de HTML is alleen de terugval voor als dit script
+        // niet draait. Vanaf hier maken we de kopieën zelf, op maat.
+        for (let i = 1; i < rows.length; i++) rows[i].remove();
+        if (reduce) return;
+
+        const speed = parseFloat(band.dataset.speed) || 32; // pixels per seconde
+
+        // Logo's zonder geladen bestand zijn nul pixels breed. Meten mag pas
+        // als ze er allemaal zijn, anders klopt de verschuiving niet.
+        const ready = Promise.all(Array.prototype.map.call(
+          source.querySelectorAll('img'),
+          img => img.complete ? Promise.resolve() : new Promise(done => {
+            img.addEventListener('load', done, { once: true });
+            img.addEventListener('error', done, { once: true });
+          })
+        ));
+
+        let builtFor = -1;
+        function layout() {
+          const bandW = band.clientWidth;
+          const rowW = source.getBoundingClientRect().width;
+          if (!bandW || !rowW) return;   // pagina staat op display:none
+          track.style.setProperty('--marquee-shift', rowW + 'px');
+          track.style.setProperty('--marquee-duration', (rowW / speed) + 's');
+          // Alleen opnieuw opbouwen als de band echt van maat verandert;
+          // een herbouw laat de animatie zichtbaar terugspringen.
+          if (Math.abs(bandW - builtFor) < 24) return;
+          builtFor = bandW;
+          while (track.children.length > 1) track.lastElementChild.remove();
+          const copies = Math.max(2, Math.ceil(bandW / rowW) + 1);
+          for (let i = 1; i < copies; i++) {
+            const clone = source.cloneNode(true);
+            clone.setAttribute('aria-hidden', 'true');
+            clone.querySelectorAll('a').forEach(a => a.setAttribute('tabindex', '-1'));
+            clone.querySelectorAll('img').forEach(img => { img.alt = ''; });
+            track.appendChild(clone);
+          }
+        }
+
+        ready.then(() => {
+          layout();
+          if ('ResizeObserver' in window) {
+            let frame = 0;
+            new ResizeObserver(() => {
+              if (frame) cancelAnimationFrame(frame);
+              frame = requestAnimationFrame(() => { frame = 0; layout(); });
+            }).observe(band);
+          } else {
+            window.addEventListener('resize', layout, { passive: true });
+          }
+        });
+      });
+    }
+
+    /* ============================================================
+       SCROLL-INTRO (GSAP)
+       ============================================================ */
+    /* Eén beweging, één keer, bij het in beeld komen. Bewust niet op de hero
+       en niet op de filmsectie: die hebben hun eigen scrollbeweging en twee
+       animaties over elkaar wordt onrustig. De verhaalpagina heeft al zijn
+       eigen reveals; die laten we met rust. */
+    const SCROLL_INTRO = {
+      home: ['.intro-strip > div', '.group-portrait-figure', '.announcement-header > *',
+             '.partners-strip-inner > .section-label', '.partners-strip-heading',
+             '.press-lead', '.press-list', '.press-strip .btn',
+             '.founders-header', '.founder-card', '.closing-cta-inner > *'],
+      pers: ['.pers-item', '.pers-kit h2', '.pers-kit p', '.pers-kit .btn'],
+      contact: ['.contact-title', '.contact-row', '.contact-intro']
+    };
+    const scrollIntroDone = new WeakSet();
+
+    /* De trigger is een IntersectionObserver, niet ScrollTrigger. Een element
+       moet eerst op onzichtbaar gezet worden voordat het in beeld kan komen,
+       en dan is de vraag wat er gebeurt als de trigger niet afgaat: bij
+       ScrollTrigger hangt dat aan een eigen klok, bij de IntersectionObserver
+       aan de browser zelf. GSAP doet hier waar het voor gevraagd is, de
+       beweging. Scheelt ook het plugin-bestand. */
+    function playScrollIntro(page) {
+      if (!window.gsap) return;
+      const list = SCROLL_INTRO[page];
+      const root = document.getElementById('page-' + page);
+      if (!list || !root) return;
+      const targets = [];
+      list.forEach(sel => root.querySelectorAll(sel).forEach(el => {
+        if (scrollIntroDone.has(el)) return;
+        // Nooit stapelen op wat al zijn eigen beweging heeft.
+        if (el.closest('.hero, .announcement-stage, .marquee') || el.hasAttribute('data-story-reveal')) return;
+        scrollIntroDone.add(el);
+        targets.push(el);
+      }));
+      if (!targets.length) return;
+
+      const reveal = (el) => {
+        gsap.to(el, {
+          opacity: 1, y: 0, duration: 0.7, ease: 'power2.out', overwrite: 'auto',
+          onComplete() {
+            el.classList.remove('intro-hidden');
+            el.style.opacity = '';
+            el.style.transform = '';
+          }
+        });
+      };
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          obs.unobserve(entry.target);
+          reveal(entry.target);
+        });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0 });
+
+      targets.forEach(el => { el.classList.add('intro-hidden'); io.observe(el); });
+
+      // Vangnet. Tekst mag nooit door een animatie onzichtbaar blijven. Staat
+      // er iets in beeld dat nog op nul staat en niet beweegt, dan zetten we
+      // het gewoon aan: geen GSAP, alleen de klas eraf, zodat dit ook werkt
+      // als de animatielus zelf niet draait.
+      let sweeps = 0;
+      const sweep = setInterval(() => {
+        let left = 0;
+        targets.forEach(el => {
+          if (!el.classList.contains('intro-hidden')) return;
+          left++;
+          if (gsap.isTweening(el)) return;
+          const r = el.getBoundingClientRect();
+          if (r.top >= window.innerHeight || r.bottom <= 0) return;
+          io.unobserve(el);
+          el.classList.remove('intro-hidden');
+          el.style.opacity = '';
+          el.style.transform = '';
+        });
+        if (!left || ++sweeps > 20) clearInterval(sweep);
+      }, 1500);
+    }
+
+    function initScrollIntro() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!('IntersectionObserver' in window)) return;
+      // Los inladen. Komt het script er niet door, dan gebeurt er niets:
+      // de pagina staat al in zijn eindstand, de tekst blijft gewoon staan.
+      const s = document.createElement('script');
+      s.src = 'https://unpkg.com/gsap@3.13.0/dist/gsap.min.js';
+      s.async = true;
+      s.onload = () => {
+        const active = document.querySelector('.page.active');
+        playScrollIntro(active ? active.id.replace('page-', '') : 'home');
+      };
+      document.head.appendChild(s);
+    }
 
     /* ============================================================
        INIT
@@ -4589,8 +4785,10 @@
     });
 
     initAnnouncementVideo();
+    setupMarquees();
     setLanguage(detectInitialLang());
     showPage('home');
+    initScrollIntro();
   </script>
 </body>
 </html>
