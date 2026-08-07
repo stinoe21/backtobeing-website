@@ -38,9 +38,13 @@
   <meta name="theme-color" content="#3d5a3d" />
 
 
+  <!-- De hero-video is het grootste element in beeld. De poster ervan
+       zo vroeg mogelijk ophalen, zodat er beeld staat voordat de
+       eerste videoframes binnen zijn. -->
+  <link rel="preload" as="image" href="hero-poster.jpg" fetchpriority="high" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <!-- maplibre-gl CSS is lazy-loaded with its JS on the Verhaal page -->
   <link rel="preconnect" href="https://unpkg.com" />
   <style>
@@ -505,7 +509,7 @@
     .partner-logo img[src="wispr.webp"]      { height: 53px; }
     .partner-logo img[src="n8n-logo.svg"]    { height: 31px; }
     .partner-logo img[src="remote.svg"]      { height: 66px; }
-    .partner-logo img[src="helloprint.webp"] { height: 37px; }
+    .partner-logo img[src="helloprint.png"] { height: 37px; }
     .partner-logo img[src="watermelon.svg"]  { height: 29px; }
     .partner-logo img[src="techleap.webp"]   { height: 34px; }
     .partner-logo img[src="ai.am.svg"]       { height: 27px; }
@@ -1863,7 +1867,7 @@
       .partner-logo img[src="wispr.webp"]      { height: 42px; }
       .partner-logo img[src="n8n-logo.svg"]    { height: 25px; }
       .partner-logo img[src="remote.svg"]      { height: 52px; }
-      .partner-logo img[src="helloprint.webp"] { height: 30px; }
+      .partner-logo img[src="helloprint.png"] { height: 30px; }
       .partner-logo img[src="watermelon.svg"]  { height: 23px; }
       .partner-logo img[src="techleap.webp"]   { height: 24px; }
       .partner-logo img[src="ai.am.svg"]       { height: 18px; }
@@ -2704,7 +2708,11 @@
 
     <section class="hero">
       <div class="hero-video">
-        <video muted loop playsinline preload="auto">
+        <!-- Poster erbij: de video is het grootste element in beeld, dus
+             bepaalt hij de Largest Contentful Paint. Zonder poster wacht
+             die op de eerste videoframes; met poster valt hij samen met
+             de eerste tekst. -->
+        <video muted loop playsinline preload="auto" poster="hero-poster.jpg">
           <source src="hero-video.mp4" type="video/mp4" />
         </video>
       </div>
@@ -2803,14 +2811,14 @@
               <ul class="marquee-row">
                 <li><a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" decoding="async" /></a></li>
                 <li><a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" decoding="async" /></a></li>
-                <li><a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" decoding="async" /></a></li>
+                <li><a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.png" alt="Helloprint" decoding="async" /></a></li>
                 <li><a class="partner-logo" href="https://watermelon.ai/" target="_blank" rel="noopener noreferrer"><img src="watermelon.svg" alt="Watermelon AI" decoding="async" /></a></li>
                 <li><a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer"><img src="n8n-logo.svg" alt="n8n" decoding="async" /></a></li>
               </ul>
               <ul class="marquee-row" aria-hidden="true">
                 <li><a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="wispr.webp" alt="" aria-hidden="true" decoding="async" /></a></li>
                 <li><a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="remote.svg" alt="" aria-hidden="true" decoding="async" /></a></li>
-                <li><a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="helloprint.webp" alt="" aria-hidden="true" decoding="async" /></a></li>
+                <li><a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="helloprint.png" alt="" aria-hidden="true" decoding="async" /></a></li>
                 <li><a class="partner-logo" href="https://watermelon.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="watermelon.svg" alt="" aria-hidden="true" decoding="async" /></a></li>
                 <li><a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="n8n-logo.svg" alt="" aria-hidden="true" decoding="async" /></a></li>
               </ul>
@@ -2853,7 +2861,7 @@
                href="https://www.noordhollandsdagblad.nl/regio/ijmond/caesar-21-stijn-24-en-max-26-gaan-de-camino-lopen-en-onderweg-met-ai-een-app-ontwikkelen-voor-mentale-gezondheid-de-wereld-wordt-ons-kantoor/152592259.html"
                target="_blank" rel="noopener"
                aria-label="Artikel in Noord-Hollands Dagblad (opent in nieuw tabblad)">
-              <img src="noordhollands-dagblad-logo.webp" alt="Noord-Hollands Dagblad" loading="lazy" />
+              <img src="noordhollands-dagblad-logo.png" alt="Noord-Hollands Dagblad" loading="lazy" />
             </a>
           </li>
           <li><a class="press-logo-link" href="https://www.trouw.nl/nieuws/deze-drie-mannen-maken-een-app-tijdens-de-camino-werken-kan-ook-vanaf-een-bergpaadje-in-spanje~bfeb72ec/" target="_blank" rel="noopener" aria-label="Artikel in Trouw (opent in nieuw tabblad)"><img src="trouw-logo.png" alt="Trouw" loading="lazy" /></a></li>
@@ -3049,7 +3057,7 @@
       <div class="founders-inner">
         <div class="founders-header">
           <h2 data-i18n="founders.h">Team<br><em>Back to Being.</em></h2>
-          <p class="founders-intro" data-i18n="founders.intro">We zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being is de proef op de som: in zes dagen een werkende app, onderweg gebouwd.</p>
+          <p class="founders-intro" data-i18n="founders.intro">We zijn alle drie een startup begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise ai</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being is de proef op de som: in zes dagen een werkende app, onderweg gebouwd. Wat er aan het eind staat, dragen we kosteloos over aan stichting MIND.</p>
         </div>
         <div class="founders-grid">
 
@@ -3158,7 +3166,7 @@
 
         <li class="pers-item">
           <div class="pers-outlet">
-            <img src="noordhollands-dagblad-logo.webp" alt="Noord-Hollands Dagblad" loading="lazy" />
+            <img src="noordhollands-dagblad-logo.png" alt="Noord-Hollands Dagblad" loading="lazy" />
             <span class="pers-kind" data-i18n="pers.kind.krant">Krant</span>
           </div>
           <div class="pers-body">
@@ -3768,7 +3776,7 @@
       'meta.desc': 'Max, Caesar en Stijn lopen 120 kilometer over de Camino en bouwen in zes dagen een app die mentale gezondheid bespreekbaar maakt. Voor stichting MIND.',
       'meta.descShort': '120 kilometer lopen. In zes dagen een app bouwen die mentale gezondheid bespreekbaar maakt. Kosteloos voor stichting MIND.',
       'hero.tagline': 'Drie AI-founders maken van de Camino hun kantoor en bouwen onderweg een app voor MIND.',
-      'founders.intro': 'We zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being is de proef op de som: in zes dagen een werkende app, onderweg gebouwd.',
+      'founders.intro': 'We zijn alle drie een startup begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise ai</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being is de proef op de som: in zes dagen een werkende app, onderweg gebouwd. Wat er aan het eind staat, dragen we kosteloos over aan stichting MIND.',
       'hero.cd.label': 'Vertrek 23 augustus',
       'hero.cd.days': 'dagen',
       'hero.cd.hours': 'uur',
@@ -3825,7 +3833,7 @@
       'meta.desc': 'Max, Caesar and Stijn walk 120 kilometres of the Camino and build an app in six days that makes mental health easier to talk about. For the MIND foundation.',
       'meta.descShort': 'Walk 120 kilometres. Build an app in six days that makes mental health easier to talk about. Free, for the MIND foundation.',
       'hero.tagline': 'Three AI founders turn the Camino into their office and build an app for MIND along the way.',
-      'founders.intro': 'All three of us started a company of our own, among them <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> and <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. From building those, and from working with AI every day, all three of us notice how much is possible now. Back to Being is where we put that to the test: a working app in six days, built along the way.',
+      'founders.intro': 'All three of us started a startup, among them <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> and <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise ai</a>. From building those, and from working with AI every day, all three of us notice how much is possible now. Back to Being is where we put that to the test: a working app in six days, built along the way. Whatever stands at the end, we hand over to the MIND foundation free of charge.',
       'hero.cd.label': 'Departure 23 August',
       'hero.cd.days': 'days',
       'hero.cd.hours': 'hrs',
