@@ -385,11 +385,11 @@
 
 /* PARTNERS — credibility strip (homepage + sponsoring) */
     .partners-strip {
-      padding: 5.5rem 6vw;
+      padding: var(--section-y-sm) var(--gutter-x);
     }
     .partners-strip-inner {
       max-width: 1200px; margin: 0 auto;
-      display: flex; flex-direction: column; align-items: center; gap: 4rem;
+      display: flex; flex-direction: column; align-items: center; gap: var(--space-6);
     }
     .partners-strip .section-label { margin-bottom: 0; text-align: center; }
     .partners-strip-heading {
@@ -401,23 +401,47 @@
       color: var(--ink);
     }
     .partners-strip-heading em { font-style: italic; color: var(--display-accent); }
-    /* Twee groepen (Sponsors / Partners), elk met grootteniveaus */
+    /* Twee groepen (Sponsors / Partners), elk als doorlopende band */
     .partners-group {
       width: 100%;
-      display: flex; flex-direction: column; align-items: center; gap: 2.25rem;
+      display: flex; flex-direction: column; align-items: center; gap: var(--space-4);
     }
     .partners-group-label { margin-bottom: 0; text-align: center; }
-    .partners-tier {
+
+    /* Logoband: twee identieke rijen achter elkaar, de track schuift precies
+       de helft op. Daardoor valt de kopie op het startpunt en is de lus naadloos. */
+    .marquee {
       width: 100%;
-      display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+              mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
     }
-    .partners-tier-sponsors {
-      max-width: 1100px;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 3rem 4rem;
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee-scroll var(--marquee-duration, 60s) linear infinite;
     }
-    .partners-tier-partners { gap: 2rem 3.25rem; }
+    .marquee-reverse .marquee-track { animation-direction: reverse; }
+    .marquee:hover .marquee-track,
+    .marquee:focus-within .marquee-track { animation-play-state: paused; }
+    .marquee-row {
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+      gap: var(--marquee-gap, clamp(3.5rem, 7vw, 6.5rem));
+      margin: 0;
+      padding: 0 0 0 var(--marquee-gap, clamp(3.5rem, 7vw, 6.5rem));
+      list-style: none;
+    }
+    @keyframes marquee-scroll {
+      from { transform: translate3d(0, 0, 0); }
+      to   { transform: translate3d(-50%, 0, 0); }
+    }
+    /* Zonder beweging wordt het een gewone, met de hand scrollbare rij. */
+    @media (prefers-reduced-motion: reduce) {
+      .marquee { overflow-x: auto; }
+      .marquee-track { animation: none; }
+    }
     .partner-logo {
       display: flex; align-items: center; justify-content: center;
       min-height: 44px;
@@ -433,29 +457,16 @@
        Techleap qua grootte tussen de sponsors en de rest in. */
     /* MIND is een vierkant merk met een oranje splash: als zwart beeldmerk
        verdwijnt de wordmark in de vlek. Eigen kleur en wat groter dus. */
-    .partner-logo img[src="mind-logo.webp"] { height: 68px; filter: none; }
-    .partner-logo img[src="wispr.webp"]      { height: 68px; } /* Hoofdsponsor (brede wordmark) */
-    .partner-logo img[src="n8n-logo.svg"]    { height: 40px; } /* Sponsor (viewBox strak gecropt) */
-    .partner-logo img[src="remote.svg"]      { height: 84px; } /* Sponsor 6k */
-    .partner-logo img[src="helloprint.webp"] { height: 47px; } /* Sponsor 2,5k */
-    .partner-logo img[src="watermelon.svg"]  { height: 37px; } /* Sponsor 2,5k */
-    .partner-logo img[src="techleap.webp"]   { height: 38px; } /* Partner (connecties) */
-    .partner-logo img[src="ai.am.svg"]       { height: 29px; } /* Partner */
-    .partner-logo img[src="Lerai.webp"]      { height: 35px; } /* Partner */
-    .partner-logo img[src="TAG_black.svg"]   { height: 26px; } /* Partner */
-
-    .partner-item { display: flex; flex-direction: column; align-items: center; gap: 0.95rem; }
-    .partner-item .partner-logo { min-height: 84px; }
-    /* Zelfde 2-boven-3-onder compositie als de sponsor-endcard */
-    .partners-lead {
-      grid-column: 1 / -1;
-      width: min(760px, 76%);
-      margin-inline: auto;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: center;
-      gap: 4rem;
-    }
+    .partner-logo img[src="mind-logo.webp"] { height: 60px; filter: none; }
+    .partner-logo img[src="wispr.webp"]      { height: 53px; }
+    .partner-logo img[src="n8n-logo.svg"]    { height: 31px; }
+    .partner-logo img[src="remote.svg"]      { height: 66px; }
+    .partner-logo img[src="helloprint.webp"] { height: 37px; }
+    .partner-logo img[src="watermelon.svg"]  { height: 29px; }
+    .partner-logo img[src="techleap.webp"]   { height: 34px; }
+    .partner-logo img[src="ai.am.svg"]       { height: 27px; }
+    .partner-logo img[src="Lerai.webp"]      { height: 31px; }
+    .partner-logo img[src="TAG_black.svg"]   { height: 24px; }
 
     /* PRESS — "in de pers" strip */
     .press-list {
@@ -470,7 +481,7 @@
     }
     .press-logo-link { display: inline-flex; align-items: center; }
     .press-logo-link img {
-      height: 26px;
+      height: 34px;
       width: auto;
       display: block;
       filter: brightness(0);
@@ -478,8 +489,8 @@
     }
     /* Haarlem105 is een gekleurd blok met uitgespaarde tekst: dat kan niet
        naar een zwart beeldmerk zonder onleesbaar te worden. Eigen kleur dus. */
-    .press-logo-link img[src="haarlem105-logo.svg"] { height: 30px; filter: none; }
-    .press-logo-link img[src="smarthealth-logo.png"] { height: 20px; }
+    .press-logo-link img[src="haarlem105-logo.svg"] { height: 38px; filter: none; }
+    .press-logo-link img[src="smarthealth-logo.png"] { height: 26px; }
     a.press-logo-link { transition: opacity 0.2s; }
     a.press-logo-link:hover img { opacity: 1; }
     .press-name {
@@ -497,7 +508,19 @@
     }
     a.press-name:hover { border-bottom-color: var(--ink); }
     /* PRESS — "in de pers" strip (één logo, gecentreerd, klikbaar) */
-    .press-strip { padding-top: 2.5rem; padding-bottom: 4.5rem; }
+    /* De persstrip is het laatste blok voor de afsluiter en droeg te weinig
+       gewicht: eigen kop en dezelfde ademruimte als de partnerstrip. */
+    .press-strip { padding-top: 3.5rem; padding-bottom: var(--section-y); }
+    .press-strip .press-lead {
+      max-width: 56ch;
+      margin: 0;
+      text-align: center;
+      font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+      line-height: 1.7;
+      color: var(--ink-soft);
+    }
+    .press-strip .partners-strip-inner { gap: var(--space-5); }
+    .press-strip .press-list { margin-top: var(--space-4); }
     .press-grid {
       display: flex; align-items: center; justify-content: center;
       width: 100%;
@@ -683,6 +706,149 @@
       .press-feature-card::before { display: none; }
       .press-feature-meta { padding-bottom: 1.25rem; }
     }
+
+    /* ============================================================
+       PAGINA: IN DE PERS
+       Zelfde bouwstenen als de rest: canvas met charcoal, één groen
+       cursief in de display, koppen uit de vier-stapsschaal, en de
+       28px/10px ronding. Geen kaarten, alleen een lijst met regels.
+       ============================================================ */
+    .pers-list-section {
+      padding: 0 var(--gutter-x) var(--section-y);
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .pers-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid var(--line);
+    }
+    .pers-item {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+      padding: var(--space-5) 0;
+      border-bottom: 1px solid var(--line);
+    }
+    @media (min-width: 800px) {
+      .pers-item {
+        grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+        gap: var(--space-6);
+        align-items: start;
+        padding: var(--space-6) 0;
+      }
+    }
+    .pers-outlet {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2);
+    }
+    .pers-outlet img {
+      height: 26px;
+      width: auto;
+      display: block;
+      filter: brightness(0);
+      opacity: 0.86;
+    }
+    /* Haarlem105 is een gekleurd blok met uitgespaarde tekst: als zwart
+       beeldmerk wordt het onleesbaar. Eigen kleur dus. */
+    .pers-outlet img[src="haarlem105-logo.svg"] { height: 30px; filter: none; opacity: 1; }
+    .pers-outlet img[src="smarthealth-logo.png"] { height: 20px; }
+    .pers-outlet-name {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+    .pers-kind {
+      font-family: var(--subhead);
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(22,22,22,0.62);
+    }
+    .pers-body { display: grid; gap: var(--space-3); justify-items: start; }
+    .pers-title {
+      max-width: 34ch;
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: var(--h-card);
+      line-height: 1.06;
+      color: var(--ink);
+    }
+    .pers-note {
+      max-width: 56ch;
+      margin: 0;
+      font-size: clamp(0.94rem, 1.05vw, 1.05rem);
+      line-height: 1.7;
+      color: var(--ink-soft);
+    }
+    .pers-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--subhead);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      border-bottom: 1px solid rgba(22,22,22,0.32);
+      padding-bottom: 3px;
+      transition: border-color 0.2s, gap 0.2s;
+    }
+    .pers-link:hover { border-bottom-color: var(--ink); gap: 0.8rem; }
+
+    /* Afsluiter voor journalisten: het enige donkere vlak op deze pagina. */
+    .pers-kit {
+      padding: var(--section-y) var(--gutter-x);
+      background: var(--surface-dark);
+      color: var(--canvas);
+    }
+    .pers-kit-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      gap: var(--space-6);
+    }
+    @media (min-width: 800px) {
+      .pers-kit-inner {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: clamp(3rem, 7vw, 7rem);
+        align-items: start;
+      }
+    }
+    .pers-kit h2 {
+      max-width: 14ch;
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: var(--h-section);
+      line-height: 0.94;
+      letter-spacing: -0.015em;
+      color: var(--canvas);
+    }
+    .pers-kit h2 em { font-style: italic; color: var(--green-light); }
+    .pers-kit-aside { display: grid; gap: var(--space-4); justify-items: start; padding-top: 0.6rem; }
+    .pers-kit-aside p {
+      max-width: 46ch;
+      margin: 0;
+      font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+      line-height: 1.75;
+      color: rgba(255,254,241,0.72);
+    }
+    .pers-kit-mail {
+      font-family: var(--subhead);
+      font-size: 0.95rem;
+      color: var(--canvas);
+      border-bottom: 1px solid rgba(255,254,241,0.4);
+      padding-bottom: 3px;
+      transition: border-color 0.2s;
+    }
+    .pers-kit-mail:hover { border-bottom-color: var(--canvas); }
 
     /* PLAN — drie stappen (rows-stijl uit pitchdeck) */
     .plan-section { padding: 7rem 6vw; max-width: 1200px; margin: 0 auto; }
@@ -1334,14 +1500,14 @@
       border-radius: var(--radius);
     }
     .group-portrait-actions { margin-top: var(--space-2); }
+    /* Onderschrift is een zin geworden, geen label: dus gewoon leesbaar
+       zetten in plaats van uppercase met letterafstand. */
     .group-portrait-cap {
-      font-family: var(--subhead);
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--ink);
-      opacity: 0.62;
+      max-width: 62ch;
+      font-family: var(--sans);
+      font-size: clamp(0.92rem, 1vw, 1rem);
+      line-height: 1.6;
+      color: var(--ink-soft);
     }
 
     .founders-header {
@@ -1384,6 +1550,9 @@
       background: #1F2A19;
     }
     .founder-photo img { width: 100%; height: 100%; object-fit: cover; }
+    /* Max staat verder van de lens dan de andere twee; 15% inzoomen laat de
+       drie crops op dezelfde schaal uitkomen. */
+    .founder-photo img[src="Max.jpeg"] { transform: scale(1.15); }
     .founder-photo .photo-ph { height: 100%; min-height: 0; }
     .founder-name {
       font-family: var(--serif); font-weight: 500;
@@ -1649,22 +1818,18 @@
     /* RESPONSIVE */
     @media (max-width: 960px) {
       .intro-strip { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 6vw; }
-      .partners-strip-inner { gap: 3rem; }
-      .partners-group { gap: 1.6rem; }
-      .partners-tier-sponsors { gap: 1.5rem 2.5rem; }
-      .partners-tier-partners { gap: 1.25rem 2rem; }
-      .partners-lead { width: min(520px, 78%); gap: 2.5rem; }
-      .partner-logo img[src="wispr.webp"]      { height: 44px; }
-      .partner-logo img[src="n8n-logo.svg"]    { height: 28px; }
-      .partner-logo img[src="remote.svg"]      { height: 60px; }
-      .partner-logo img[src="helloprint.webp"] { height: 34px; }
-      .partner-logo img[src="watermelon.svg"]  { height: 27px; }
-      .partner-logo img[src="techleap.webp"]   { height: 28px; }
-      .partner-logo img[src="ai.am.svg"]       { height: 22px; }
-      .partner-logo img[src="Lerai.webp"]      { height: 26px; }
-      .partner-logo img[src="TAG_black.svg"]   { height: 20px; }
-      .partner-item .partner-logo { min-height: 60px; }
-      .partner-item { gap: 0.7rem; }
+      .partners-strip-inner { gap: var(--space-5); }
+      .partners-group { gap: var(--space-3); }
+      .partner-logo img[src="mind-logo.webp"]  { height: 42px; }
+      .partner-logo img[src="wispr.webp"]      { height: 42px; }
+      .partner-logo img[src="n8n-logo.svg"]    { height: 25px; }
+      .partner-logo img[src="remote.svg"]      { height: 52px; }
+      .partner-logo img[src="helloprint.webp"] { height: 30px; }
+      .partner-logo img[src="watermelon.svg"]  { height: 23px; }
+      .partner-logo img[src="techleap.webp"]   { height: 24px; }
+      .partner-logo img[src="ai.am.svg"]       { height: 18px; }
+      .partner-logo img[src="Lerai.webp"]      { height: 21px; }
+      .partner-logo img[src="TAG_black.svg"]   { height: 16px; }
       .plan-header { grid-template-columns: 1fr; gap: 1.5rem; }
       .plan-row, .return-row { grid-template-columns: 40px 1fr; }
       .plan-row .detail, .return-row .detail { grid-column: 2; text-align: left; }
@@ -2269,7 +2434,7 @@
       font-style: italic;
     }
     .story-mind-summary {
-      max-width: 53ch;
+      max-width: 46ch;
       font-size: clamp(0.98rem, 1.2vw, 1.12rem);
       line-height: 1.75;
       color: rgba(255,254,241,0.68);
@@ -2287,64 +2452,37 @@
       text-transform: uppercase;
       color: rgba(255,254,241,0.72);
     }
+    /* Compacte crèmewitte kaartjes op het groene vlak. Geen eigen tint groen
+       en geen eigen ronding: canvas en de controlronding van de rest van de site. */
     .story-goal {
-      position: relative;
-      min-height: clamp(18rem, 42vh, 25rem);
-      display: grid;
-      align-content: end;
-      /* bovenaan ruimte vrijhouden voor het cijfer, anders loopt lange copy erdoorheen */
-      padding: calc(clamp(1.25rem, 3vw, 2rem) + clamp(3rem, 7vw, 6rem) + 0.75rem)
-               clamp(1.4rem, 3vw, 2.25rem) clamp(1.4rem, 3vw, 2.25rem);
-      border: 1px solid rgba(255,254,241,0.14);
+      padding: clamp(1.15rem, 2.2vw, 1.6rem);
       border-radius: var(--radius-ctrl);
-      background: rgba(255,254,241,0.04);
-      cursor: default;
-      transition: color 0.4s ease, background 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+      background: var(--canvas);
+      color: var(--ink);
     }
     .story-goal::before {
       content: attr(data-number);
-      position: absolute;
-      top: clamp(1.25rem, 3vw, 2rem);
-      left: clamp(1.4rem, 3vw, 2.25rem);
-      font-family: var(--serif);
-      font-size: clamp(3rem, 7vw, 6rem);
-      font-style: italic;
-      line-height: 1;
-      color: rgba(255,254,241,0.12);
-      transition: color 0.4s ease;
-    }
-    .story-goal .story-goal-mark {
-      width: 2.1rem;
-      height: auto;
-      margin-bottom: 1.4rem;
-      opacity: 0.72;
+      display: block;
+      margin-bottom: 0.7rem;
+      font-family: var(--subhead);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: rgba(22,22,22,0.55);
     }
     .story-goal h3 {
-      max-width: 15ch;
+      max-width: 20ch;
       margin: 0;
       font-family: var(--serif);
       font-size: var(--h-card);
       font-weight: 400;
-      line-height: 1.0;
+      line-height: 1.02;
     }
     .story-goal p {
-      max-width: 47ch;
-      margin-top: 1rem;
-      font-size: clamp(0.94rem, 1.05vw, 1.05rem);
-      line-height: 1.7;
-      color: rgba(255,254,241,0.58);
-      transition: color 0.4s ease;
-    }
-    .story-goal.is-active {
-      border-color: var(--canvas);
-      background: var(--canvas);
-      color: var(--ink);
-      transform: translateX(-0.65rem);
-    }
-    .story-goal.is-active::before {
-      color: rgba(151,160,129,0.24);
-    }
-    .story-goal.is-active p {
+      max-width: 52ch;
+      margin-top: 0.6rem;
+      font-size: clamp(0.92rem, 1vw, 1rem);
+      line-height: 1.65;
       color: var(--ink-soft);
     }
 
@@ -2400,7 +2538,7 @@
       font-size: 0.95rem; line-height: 1.6; color: var(--ink);
     }
     .beta-points .beta-arrow { margin-top: 0.15rem; }
-    .beta-mascotte { display: block; width: auto; height: 7.5rem; margin-top: var(--space-5); }
+    .beta-mascotte { display: block; width: auto; height: 11rem; margin-top: var(--space-5); }
 
     .beta-form { display: flex; flex-direction: column; gap: var(--space-4); }
     .beta-field { display: flex; flex-direction: column; gap: 0.5rem; }
@@ -2475,9 +2613,6 @@
       opacity: 1;
       transform: none;
     }
-    .story-motion-ready .story-goal.is-active[data-story-reveal] {
-      transform: translateX(-0.65rem);
-    }
 
     @media (min-width: 800px) {
       .story-editorial-foot {
@@ -2502,10 +2637,6 @@
         padding: 0;
       }
       .story-hero-fact strong { font-size: 1.8rem; }
-      .story-goal {
-        min-height: 18rem;
-      }
-      .story-goal.is-active { transform: none; }
       #page-verhaal .story-route-article .camino-map-wrap {
         aspect-ratio: 1 / 1.18;
       }
@@ -2522,10 +2653,17 @@
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: clamp(3rem, 7vw, 7rem);
     }
+    /* Vanaf 800px valt de wrapper weg als grid-laag: de kop pakt de linker
+       kolom, de alinea met het MIND-logo de rechter. Anders staat rechts een
+       leeg vlak van een halve pagina. */
     .story-mind-copy {
+      display: contents;
+    }
+    .story-mind-aside {
       display: grid;
       align-content: start;
-      gap: 1.5rem;
+      gap: var(--space-5);
+      padding-top: 0.6rem;
     }
     .story-goals {
       grid-column: 1 / -1;
@@ -2534,16 +2672,12 @@
       padding: 0;
     }
     .story-goals-intro { grid-column: 1 / -1; }
-    .story-goal {
-      min-height: clamp(16rem, 27vw, 22rem);
-    }
     @media (max-width: 799px) {
-      .story-mind-inner { grid-template-columns: 1fr; }
+      .story-mind-inner { grid-template-columns: 1fr; gap: var(--space-6); }
       .story-goals {
         grid-column: auto;
         grid-template-columns: 1fr;
       }
-      .story-goal { min-height: 14rem; }
     }
     @media (prefers-reduced-motion: reduce) {
       [data-story-reveal] {
@@ -2608,6 +2742,7 @@
     </button>
     <div class="nav-links" id="navLinks">
       <button class="nav-link" data-page="verhaal"    data-i18n="nav.story"      onclick="showPage('verhaal')"    type="button">Ons verhaal</button>
+      <button class="nav-link" data-page="pers"       data-i18n="nav.press"      onclick="showPage('pers')"       type="button">In de pers</button>
       <div class="lang-toggle" role="group" aria-label="Language">
         <button class="lang-btn" data-lang="nl" type="button" aria-label="Nederlands">NL</button>
         <span class="lang-sep" aria-hidden="true">·</span>
@@ -2667,7 +2802,7 @@
         <img src="founders-group.jpg"
              alt="Max, Caesar en Stijn zittend tegen een bewolkte lucht"
              width="2000" height="1333" loading="lazy" />
-        <figcaption class="group-portrait-cap" data-i18n="home.group.cap">Max, Caesar en Stijn</figcaption>
+        <figcaption class="group-portrait-cap" data-i18n="home.group.cap">Max, Caesar en Stijn gaan het doen: in zes dagen een app bouwen die mentale gezondheid beter bespreekbaar maakt.</figcaption>
         <div class="group-portrait-actions">
           <button class="btn btn-outline" type="button" data-i18n="home.group.cta" onclick="showStorySection('team')">Over ons &rarr;</button>
         </div>
@@ -2680,7 +2815,7 @@
           <div>
             <h2 class="announcement-heading" id="announcementTitle" data-i18n="announcement.heading">Waarom we ons kantoor <em>120 kilometer verplaatsen.</em></h2>
           </div>
-          <p class="announcement-copy" data-i18n="announcement.copy">In 66 seconden zie je het idee achter Back to Being: technologie meenemen naar buiten, onderweg bouwen en iets werkends achterlaten voor MIND.</p>
+          <p class="announcement-copy" data-i18n="announcement.copy">We willen laten zien dat werken ook anders kan: de oudste pelgrimsroute van Europa als kantoor, de nieuwste technologie in onze rugzak. Wat we onderweg bouwen dragen we kosteloos over aan stichting MIND, zodat hun impact verder reikt dan wat wij in zes dagen kunnen doen.</p>
         </div>
       </div>
 
@@ -2714,34 +2849,54 @@
         <h2 class="partners-strip-heading" data-i18n="partners.heading">Partners &amp; <em>sponsors.</em></h2>
         <div class="partners-group">
           <div class="section-label partners-group-label" data-i18n="partners.group.sponsors">Sponsors</div>
-          <div class="partners-tier partners-tier-sponsors">
-            <div class="partners-lead">
-              <div class="partner-item partner-item-lead">
-                <a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a>
-              </div>
-              <div class="partner-item partner-item-lead">
-                <a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a>
-              </div>
-            </div>
-            <div class="partner-item">
-              <a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" loading="lazy" /></a>
-            </div>
-            <div class="partner-item">
-              <a class="partner-logo" href="https://watermelon.ai/" target="_blank" rel="noopener noreferrer"><img src="watermelon.svg" alt="Watermelon AI" loading="lazy" /></a>
-            </div>
-            <div class="partner-item">
-              <a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer"><img src="n8n-logo.svg" alt="n8n" loading="lazy" /></a>
+          <div class="marquee" style="--marquee-duration: 46s;">
+            <div class="marquee-track">
+              <ul class="marquee-row">
+                <li><a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer"><img src="wispr.webp" alt="Wispr Flow" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer"><img src="remote.svg" alt="Remote" loading="lazy" /></a></li>
+                <li><a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer"><img src="helloprint.webp" alt="Helloprint" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://watermelon.ai/" target="_blank" rel="noopener noreferrer"><img src="watermelon.svg" alt="Watermelon AI" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer"><img src="n8n-logo.svg" alt="n8n" loading="lazy" /></a></li>
+              </ul>
+              <ul class="marquee-row" aria-hidden="true">
+                <li><a class="partner-logo" href="https://wisprflow.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="wispr.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://remote.com/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="remote.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo is-light" href="https://www.helloprint.com/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="helloprint.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://watermelon.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="watermelon.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://n8n.io/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="n8n-logo.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
+              </ul>
             </div>
           </div>
         </div>
         <div class="partners-group">
           <div class="section-label partners-group-label" data-i18n="partners.group.partners">Partners</div>
-          <div class="partners-tier partners-tier-partners">
-            <a class="partner-logo" href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer"><img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" /></a>
-            <a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer"><img src="techleap.webp" alt="Techleap" loading="lazy" /></a>
-            <a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></a>
-            <a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer"><img src="Lerai.webp" alt="LerAI" loading="lazy" /></a>
-            <a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer"><img src="TAG_black.svg" alt="TAG" loading="lazy" /></a>
+          <div class="marquee marquee-reverse" style="--marquee-duration: 56s;">
+            <div class="marquee-track">
+              <ul class="marquee-row">
+                <li><a class="partner-logo" href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer"><img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" /></a></li>
+                <li><a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer"><img src="techleap.webp" alt="Techleap" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer"><img src="Lerai.webp" alt="LerAI" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer"><img src="TAG_black.svg" alt="TAG" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer"><img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" /></a></li>
+                <li><a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer"><img src="techleap.webp" alt="Techleap" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer"><img src="ai.am.svg" alt="AI.AM" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer"><img src="Lerai.webp" alt="LerAI" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer"><img src="TAG_black.svg" alt="TAG" loading="lazy" /></a></li>
+              </ul>
+              <ul class="marquee-row" aria-hidden="true">
+                <li><a class="partner-logo" href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="mind-logo.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="techleap.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="ai.am.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="Lerai.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="TAG_black.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="mind-logo.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo is-light" href="https://techleap.nl/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="techleap.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://aiam.amsterdam/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="ai.am.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://www.lerai.ai/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="Lerai.webp" alt="" aria-hidden="true" loading="lazy" /></a></li>
+                <li><a class="partner-logo" href="https://www.tag.space/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img src="TAG_black.svg" alt="" aria-hidden="true" loading="lazy" /></a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -2751,6 +2906,8 @@
     <section class="partners-strip press-strip" aria-label="In de pers">
       <div class="partners-strip-inner">
         <div class="section-label" data-i18n="press.home.label">In de pers</div>
+        <h2 class="partners-strip-heading" data-i18n="press.home.heading">Ze schreven er <em>al over.</em></h2>
+        <p class="press-lead" data-i18n="press.home.lead">Trouw, het Noordhollands Dagblad en Haarlem105 liepen al een stuk met ons mee. Lees hoe zij het plan beschrijven.</p>
         <ul class="press-list">
           <li>
             <a class="press-logo-link"
@@ -2765,6 +2922,7 @@
           <li><a class="press-logo-link" href="https://smarthealth.live/" target="_blank" rel="noopener" aria-label="SmartHealth (opent in nieuw tabblad)"><img src="smarthealth-logo.png" alt="SmartHealth" loading="lazy" /></a></li>
           <li><span class="press-name">Haarlems Dagblad</span></li>
         </ul>
+        <button class="btn btn-outline" type="button" data-i18n="press.home.cta" onclick="showPage('pers')">Alle artikelen &rarr;</button>
       </div>
     </section>
 
@@ -2911,30 +3069,29 @@
     <main class="story-article">
       <section class="story-mind-explainer">
         <div class="story-mind-inner">
-          <div class="story-mind-copy" data-story-reveal>
-            <h2 class="story-mind-heading" data-i18n="story.mind.heading">Over het weer<br>praat je zo.<br><em>Over jezelf niet.</em></h2>
-            <p class="story-mind-summary" data-i18n="story.mind.summary">Daarom bouwen we samen met stichting MIND een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met een weertype. Je weer wordt niet opgeslagen. Het is er om te delen, want daar begint het gesprek.</p>
+          <div class="story-mind-copy">
+            <h2 class="story-mind-heading" data-i18n="story.mind.heading" data-story-reveal>De app die we<br><em>gaan bouwen.</em></h2>
+            <div class="story-mind-aside" data-story-reveal>
+            <p class="story-mind-summary" data-i18n="story.mind.summary">Als Nederlanders praten we (te) makkelijk over het weer, maar over onze mentale gezondheid heerst nog altijd een taboe. Dat willen we doorbreken door het gesprek normaal te maken. Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met het weertype dat bij je past. Je weer wordt niet opgeslagen, het is er om te delen.</p>
             <!-- Credit hoort onder het verhaal, niet als pil boven de kop. -->
             <div class="story-mind-lockup">
               <img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" />
               <span data-i18n="story.mind.lockup">Project voor MIND</span>
             </div>
+            </div>
           </div>
 
           <div class="story-goals">
             <div class="story-goals-intro" data-i18n="story.goals.intro">Hoe het werkt</div>
-            <article class="story-goal is-active" data-number="01" data-story-reveal tabindex="0">
-              <img class="story-goal-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+            <article class="story-goal" data-number="01" data-story-reveal>
               <h3 data-i18n="story.goal1.h">E&eacute;n vraag per dag.</h3>
               <p data-i18n="story.goal1.p">Geen vragenlijst en geen dagboek. Je tikt aan welk weer het vandaag is en bent klaar. Juist omdat het zo klein is, doe je het ook echt.</p>
             </article>
-            <article class="story-goal" data-number="02" data-story-reveal tabindex="0">
-              <img class="story-goal-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+            <article class="story-goal" data-number="02" data-story-reveal>
               <h3 data-i18n="story.goal2.h">Deel je weerbericht.</h3>
               <p data-i18n="story.goal2.p">Stuur je weer door naar wie je wil en kijk hoe het weer bij anderen staat. Zo vraag je makkelijker door dan met "hoe gaat het?", en hoef je zelf niet te beginnen.</p>
             </article>
-            <article class="story-goal" data-number="03" data-story-reveal tabindex="0">
-              <img class="story-goal-mark" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+            <article class="story-goal" data-number="03" data-story-reveal>
               <h3 data-i18n="story.goal3.h">Het landelijk weerbericht.</h3>
               <p data-i18n="story.goal3.p">Alle weertypes samen vormen geanonimiseerd een landelijk beeld. Je ziet waar de onweerswolk hangt, en MIND ziet hoe het echt met mensen gaat.</p>
             </article>
@@ -2954,7 +3111,6 @@
             <p class="beta-lead" data-i18n="beta.p">We zoeken mensen die de app willen gebruiken zodra hij er is. Je krijgt vroege toegang en je feedback bepaalt mee wat we onderweg bouwen.</p>
             <ul class="beta-points">
               <li><svg class="beta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg><span data-i18n="beta.point1">Vroege toegang tot het mentale weerbericht.</span></li>
-              <li><svg class="beta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg><span data-i18n="beta.point2">Eén mail als we live gaan, verder niets.</span></li>
             </ul>
             <img class="beta-mascotte" src="mind-mascotte.svg" alt="" aria-hidden="true" width="44" height="73" loading="lazy" />
           </div>
@@ -2979,7 +3135,7 @@
       <div class="founders-inner">
         <div class="founders-header">
           <h2 data-i18n="founders.h">Team<br><em>Back to Being.</em></h2>
-          <p class="founders-intro" data-i18n="founders.intro">Max komt uit design, Stijn uit back-end development, en Caesar wilde eigenlijk jachtmakelaar worden. Wat we delen: we zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Back to Being is het eerste dat we samen maken.</p>
+          <p class="founders-intro" data-i18n="founders.intro">Max komt uit design, Stijn uit back-end development, en Caesar wilde eigenlijk jachtmakelaar worden. Wat we delen: we zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Daar zagen we van dichtbij hoe snel AI het werk verandert, en hoe weinig daarvan zichtbaar wordt. Vandaar de volgende stap: in zes dagen, lopend, laten zien wat AI doet met het tempo en de manier waarop je werkt. Back to Being is het eerste dat we samen maken.</p>
         </div>
         <div class="founders-grid">
 
@@ -3062,6 +3218,105 @@
   </div>
 
   <!-- ======== PAGE: SPONSORING ======== -->
+  <!-- ======== PAGE: IN DE PERS ======== -->
+  <div class="page" id="page-pers">
+    <section class="story-hero">
+      <span class="pill" data-i18n="pers.pill">In de pers</span>
+      <h1 data-i18n="pers.h1">Wat anderen<br><em>al schreven.</em></h1>
+      <div class="story-hero-foot">
+        <p data-i18n="pers.lead">Kranten, radio en vakmedia pikten het plan op voordat we vertrokken. Hieronder staan de stukken die tot nu toe zijn verschenen.</p>
+        <p data-i18n="pers.note">Wil je ons spreken of beeldmateriaal gebruiken? Onderaan deze pagina staat hoe je ons bereikt.</p>
+      </div>
+    </section>
+
+    <section class="pers-list-section" aria-label="Artikelen">
+      <ul class="pers-list">
+
+        <li class="pers-item">
+          <div class="pers-outlet">
+            <img src="noordhollands-dagblad-logo.webp" alt="Noord-Hollands Dagblad" loading="lazy" />
+            <span class="pers-kind" data-i18n="pers.kind.krant">Krant</span>
+          </div>
+          <div class="pers-body">
+            <h2 class="pers-title" data-i18n="pers.nhd.title">&ldquo;Caesar (21), Stijn (24) en Max (26) gaan de Camino lopen en onderweg met AI een app ontwikkelen voor mentale gezondheid&rdquo;</h2>
+            <a class="pers-link" href="https://www.noordhollandsdagblad.nl/regio/ijmond/caesar-21-stijn-24-en-max-26-gaan-de-camino-lopen-en-onderweg-met-ai-een-app-ontwikkelen-voor-mentale-gezondheid-de-wereld-wordt-ons-kantoor/152592259.html" target="_blank" rel="noopener noreferrer"><span data-i18n="pers.read">Lees het artikel</span> &rarr;</a>
+          </div>
+        </li>
+
+        <li class="pers-item">
+          <div class="pers-outlet">
+            <img src="trouw-logo.png" alt="Trouw" loading="lazy" />
+            <span class="pers-kind" data-i18n="pers.kind.krant">Krant</span>
+          </div>
+          <div class="pers-body">
+            <h2 class="pers-title" data-i18n="pers.trouw.title">&ldquo;Deze drie mannen maken een app tijdens de Camino: werken kan ook vanaf een bergpaadje in Spanje&rdquo;</h2>
+            <a class="pers-link" href="https://www.trouw.nl/nieuws/deze-drie-mannen-maken-een-app-tijdens-de-camino-werken-kan-ook-vanaf-een-bergpaadje-in-spanje~bfeb72ec/" target="_blank" rel="noopener noreferrer"><span data-i18n="pers.read">Lees het artikel</span> &rarr;</a>
+          </div>
+        </li>
+
+        <li class="pers-item">
+          <div class="pers-outlet">
+            <img src="haarlem105-logo.svg" alt="Haarlem105" loading="lazy" />
+            <span class="pers-kind" data-i18n="pers.kind.radio">Radio</span>
+          </div>
+          <div class="pers-body">
+            <h2 class="pers-title" data-i18n="pers.h105.title">&ldquo;Drie vrienden bouwen app voor mentale gezondheid tijdens Camino de Santiago&rdquo;</h2>
+            <a class="pers-link" href="https://haarlem105.nl/drie-vrienden-bouwen-app-voor-mentale-gezondheid-tijdens-camino-de-santiago/" target="_blank" rel="noopener noreferrer"><span data-i18n="pers.read">Lees het artikel</span> &rarr;</a>
+          </div>
+        </li>
+
+        <li class="pers-item">
+          <div class="pers-outlet">
+            <img src="smarthealth-logo.png" alt="SmartHealth" loading="lazy" />
+            <span class="pers-kind" data-i18n="pers.kind.vakmedium">Vakmedium</span>
+          </div>
+          <div class="pers-body">
+            <p class="pers-note" data-i18n="pers.smarthealth.note">SmartHealth volgt het project vanuit de hoek van digitale zorg.</p>
+            <a class="pers-link" href="https://smarthealth.live/" target="_blank" rel="noopener noreferrer"><span data-i18n="pers.visit">Naar SmartHealth</span> &rarr;</a>
+          </div>
+        </li>
+
+        <li class="pers-item">
+          <div class="pers-outlet">
+            <span class="pers-outlet-name">Haarlems Dagblad</span>
+            <span class="pers-kind" data-i18n="pers.kind.krant">Krant</span>
+          </div>
+          <div class="pers-body">
+            <p class="pers-note" data-i18n="pers.hd.note">Ook het Haarlems Dagblad schreef over het vertrek. Zodra de link online staat, zetten we hem hier neer.</p>
+          </div>
+        </li>
+
+      </ul>
+    </section>
+
+    <section class="pers-kit" aria-labelledby="persKitTitle">
+      <div class="pers-kit-inner">
+        <h2 id="persKitTitle" data-i18n="pers.kit.h">Schrijf je<br><em>over ons?</em></h2>
+        <div class="pers-kit-aside">
+          <p data-i18n="pers.kit.p">We vertellen graag over de tocht, de app en het werk voor stichting MIND. Foto&rsquo;s in hoge resolutie, logo&rsquo;s en achtergrondinformatie sturen we op aanvraag toe. We reageren binnen een werkdag.</p>
+          <a class="pers-kit-mail" href="mailto:Caesar.schoorl@gmail.com">Caesar.schoorl@gmail.com</a>
+          <button class="btn closing-cta-btn" type="button" data-i18n="pers.kit.cta" onclick="showPage('contact')">Naar contact &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-logo">
+        <img class="footer-logo-mark" src="b2b_horizontal banner.svg" alt="Back to Being" />
+      </div>
+      <nav class="footer-legal">
+        <a href="privacybeleid.html" data-i18n="footer.privacy">Privacybeleid</a>
+        <a href="algemene-voorwaarden.html" data-i18n="footer.terms">Algemene voorwaarden</a>
+      </nav>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 2h8.8A5.6 5.6 0 0 1 22 7.6v8.8a5.6 5.6 0 0 1-5.6 5.6H7.6A5.6 5.6 0 0 1 2 16.4V7.6A5.6 5.6 0 0 1 7.6 2Zm4.4 4.9a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2Zm0 2.35a2.75 2.75 0 1 1 0 5.5 2.75 2.75 0 0 1 0-5.5ZM17.5 5.2a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z"/></svg></a>
+        <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
+        <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
+      </div>
+      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
+    </footer>
+  </div>
+
   <!-- ======== PAGE: CONTACT ======== -->
   <div class="page" id="page-contact">
     <section class="story-hero">
@@ -3254,6 +3509,7 @@
 
         // nav
         'nav.story':        'Ons verhaal',
+        'nav.press':        'In de pers',
         'nav.contact':      'Contact',
 
         // hero
@@ -3323,7 +3579,7 @@
 
         // partners
         'partners.heading':       'Partners &amp; <em>sponsors.</em>',
-        'home.group.cap':         'Max, Caesar en Stijn',
+        'home.group.cap':         'Max, Caesar en Stijn gaan het doen: in zes dagen een app bouwen die mentale gezondheid beter bespreekbaar maakt.',
         'home.group.cta':         'Over ons &rarr;',
         'partners.home.label':    'Met steun van',
         'partners.group.sponsors': 'Sponsors',
@@ -3332,6 +3588,9 @@
         'partners.lead.new2':     '<span class="dot"></span>Net aangesloten &middot; 19 juni 2026',
         'partners.lead.new3':     '<span class="dot"></span>Net aangesloten &middot; 22 juni 2026',
         'press.home.label':       'In de pers',
+        'press.home.heading':     'Ze schreven er <em>al over.</em>',
+        'press.home.cta':         'Alle artikelen &rarr;',
+        'press.home.lead':        'Trouw, het Noordhollands Dagblad en Haarlem105 schreven eerder over het plan. Hier lees je hun stukken.',
         'press.feature.label':    'Caesar op LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
         'press.feature.cta':      'Lees de volledige post op LinkedIn &rarr;',
@@ -3409,6 +3668,7 @@
 
         // nav
         'nav.story':        'Our story',
+        'nav.press':        'Press',
         'nav.contact':      'Contact',
 
         // hero (tagline + meta)
@@ -3478,7 +3738,7 @@
 
         // partners
         'partners.heading':       'Partners &amp; <em>sponsors.</em>',
-        'home.group.cap':         'Max, Caesar and Stijn',
+        'home.group.cap':         'Max, Caesar and Stijn are going to do it: build an app in six days that makes mental health easier to talk about.',
         'home.group.cta':         'About us &rarr;',
         'partners.home.label':    'Backed by',
         'partners.group.sponsors': 'Sponsors',
@@ -3487,6 +3747,9 @@
         'partners.lead.new2':     '<span class="dot"></span>Just joined &middot; 19 June 2026',
         'partners.lead.new3':     '<span class="dot"></span>Just joined &middot; 22 June 2026',
         'press.home.label':       'Featured in',
+        'press.home.heading':     'They wrote about <em>it already.</em>',
+        'press.home.cta':         'All coverage &rarr;',
+        'press.home.lead':        'Trouw, Noordhollands Dagblad and Haarlem105 have written about the plan. Their pieces are here.',
         'press.feature.label':    'Caesar on LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
         'press.feature.cta':      'Read the full post on LinkedIn (Dutch) &rarr;',
@@ -3594,10 +3857,28 @@
     /* Concrete 2026 storytelling: describe the app clearly without treating
        a working concept name as the final product name. */
     Object.assign(I18N.nl, {
+      /* PAGINA: IN DE PERS */
+      'pers.pill': 'In de pers',
+      'pers.h1': 'Wat anderen<br><em>al schreven.</em>',
+      'pers.lead': 'Kranten, radio en vakmedia pikten het plan op voordat we vertrokken. Hieronder staan de stukken die tot nu toe zijn verschenen.',
+      'pers.note': 'Wil je ons spreken of beeldmateriaal gebruiken? Onderaan deze pagina staat hoe je ons bereikt.',
+      'pers.kind.krant': 'Krant',
+      'pers.kind.radio': 'Radio',
+      'pers.kind.vakmedium': 'Vakmedium',
+      'pers.read': 'Lees het artikel',
+      'pers.visit': 'Naar SmartHealth',
+      'pers.nhd.title': '&ldquo;Caesar (21), Stijn (24) en Max (26) gaan de Camino lopen en onderweg met AI een app ontwikkelen voor mentale gezondheid&rdquo;',
+      'pers.trouw.title': '&ldquo;Deze drie mannen maken een app tijdens de Camino: werken kan ook vanaf een bergpaadje in Spanje&rdquo;',
+      'pers.h105.title': '&ldquo;Drie vrienden bouwen app voor mentale gezondheid tijdens Camino de Santiago&rdquo;',
+      'pers.smarthealth.note': 'SmartHealth volgt het project vanuit de hoek van digitale zorg.',
+      'pers.hd.note': 'Ook het Haarlems Dagblad schreef over het vertrek. Zodra de link online staat, zetten we hem hier neer.',
+      'pers.kit.h': 'Schrijf je<br><em>over ons?</em>',
+      'pers.kit.p': 'We vertellen graag over de tocht, de app en het werk voor stichting MIND. Foto&rsquo;s in hoge resolutie, logo&rsquo;s en achtergrondinformatie sturen we op aanvraag toe. We reageren binnen een werkdag.',
+      'pers.kit.cta': 'Naar contact &rarr;',
       'meta.desc': 'Drie AI-founders lopen 120 kilometer en bouwen onderweg een app die de kennis en hulp van MIND persoonlijk bereikbaar maakt.',
       'meta.descShort': '120 kilometer lopen. Een app voor MIND bouwen. Kosteloos overdragen.',
       'hero.tagline': 'Drie AI-founders maken van de Camino hun kantoor en bouwen onderweg een app voor MIND.',
-      'founders.intro': 'Max komt uit design, Stijn uit back-end development, en Caesar wilde eigenlijk jachtmakelaar worden. Wat we delen: we zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Back to Being is het eerste dat we samen maken.',
+      'founders.intro': 'Max komt uit design, Stijn uit back-end development, en Caesar wilde eigenlijk jachtmakelaar worden. Wat we delen: we zijn alle drie een eigen bedrijf begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Daar zagen we van dichtbij hoe snel AI het werk verandert, en hoe weinig daarvan zichtbaar wordt. Vandaar de volgende stap: in zes dagen, lopend, laten zien wat AI doet met het tempo en de manier waarop je werkt. Back to Being is het eerste dat we samen maken.',
       'hero.cd.label': 'Vertrek 23 augustus',
       'hero.cd.days': 'dagen',
       'hero.cd.hours': 'uur',
@@ -3607,7 +3888,6 @@
       'beta.h': 'Test het weerbericht <em>als eerste.</em>',
       'beta.p': 'We zoeken mensen die de app willen gebruiken zodra hij er is. Je krijgt vroege toegang en je feedback bepaalt mee wat we onderweg bouwen.',
       'beta.point1': 'Vroege toegang tot het mentale weerbericht.',
-      'beta.point2': 'E&eacute;n mail als we live gaan, verder niets.',
       'beta.email.label': 'E-mailadres*',
       'beta.cta': 'Aanmelden',
       'beta.note': 'Je maakt het aanmelden af in twee vragen. We gebruiken je gegevens alleen voor contact over de beta en je kunt je altijd uitschrijven. Zie de <a href="privacybeleid.html">privacyverklaring</a>.',
@@ -3616,7 +3896,7 @@
       'plan.row2.d': 'Elke etappe is een bouwsprint voor de MIND-app: onderweg luisteren en inspreken, bij aankomst ontwerpen en testen.',
       'plan.row3.d': 'De werkende app gaat kosteloos naar stichting MIND, samen met het verhaal van de bouw.',
       'announcement.heading': 'Waarom we ons kantoor <em>120 kilometer verplaatsen.</em>',
-      'announcement.copy': 'In 66 seconden zie je het idee achter Back to Being: technologie meenemen naar buiten, onderweg bouwen en iets werkends achterlaten voor MIND.',
+      'announcement.copy': 'We willen laten zien dat werken ook anders kan: de oudste pelgrimsroute van Europa als kantoor, de nieuwste technologie in onze rugzak. Wat we onderweg bouwen dragen we kosteloos over aan stichting MIND, zodat hun impact verder reikt dan wat wij in zes dagen kunnen doen.',
       'announcement.play': 'Bekijk de film &middot; 01:06',
       'announcement.sound': 'Geluid',
       'announcement.fallback': 'Je browser ondersteunt deze video niet.',
@@ -3626,8 +3906,8 @@
       'story.fact.days': 'dagen bouwen',
       'story.fact.product': 'app voor MIND',
       'story.mind.lockup': 'Project voor MIND',
-      'story.mind.heading': 'Over het weer<br>praat je zo.<br><em>Over jezelf niet.</em>',
-      'story.mind.summary': "Daarom bouwen we samen met stichting MIND een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met een weertype. Je weer wordt niet opgeslagen. Het is er om te delen, want daar begint het gesprek.",
+      'story.mind.heading': 'De app die we<br><em>gaan bouwen.</em>',
+      'story.mind.summary': "Als Nederlanders praten we (te) makkelijk over het weer, maar over onze mentale gezondheid heerst nog altijd een taboe. Dat willen we doorbreken door het gesprek normaal te maken. Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met het weertype dat bij je past. Je weer wordt niet opgeslagen, het is er om te delen.",
       'story.goals.intro': 'Hoe het werkt',
       'story.goal1.h': "E&eacute;n vraag per dag.",
       'story.goal1.p': "Geen vragenlijst en geen dagboek. Je tikt aan welk weer het vandaag is en bent klaar. Juist omdat het zo klein is, doe je het ook echt.",
@@ -3644,10 +3924,28 @@
     });
 
     Object.assign(I18N.en, {
+      /* PAGE: PRESS */
+      'pers.pill': 'Press',
+      'pers.h1': 'What others<br><em>already wrote.</em>',
+      'pers.lead': 'Newspapers, radio and trade press picked up the plan before we left. The pieces published so far are listed below.',
+      'pers.note': 'Want to talk to us or use our images? The bottom of this page has how to reach us.',
+      'pers.kind.krant': 'Newspaper',
+      'pers.kind.radio': 'Radio',
+      'pers.kind.vakmedium': 'Trade press',
+      'pers.read': 'Read the article',
+      'pers.visit': 'Go to SmartHealth',
+      'pers.nhd.title': '&ldquo;Caesar (21), Stijn (24) and Max (26) are walking the Camino and building an AI app for mental health along the way&rdquo;',
+      'pers.trouw.title': '&ldquo;These three men are making an app during the Camino: you can work from a mountain path in Spain too&rdquo;',
+      'pers.h105.title': '&ldquo;Three friends build a mental health app during the Camino de Santiago&rdquo;',
+      'pers.smarthealth.note': 'SmartHealth follows the project from the digital care angle.',
+      'pers.hd.note': 'Haarlems Dagblad wrote about the departure as well. We will add the link here once it is online.',
+      'pers.kit.h': 'Writing<br><em>about us?</em>',
+      'pers.kit.p': 'We are happy to talk about the walk, the app and the work for the MIND foundation. High resolution photos, logos and background information are available on request. We reply within one working day.',
+      'pers.kit.cta': 'Go to contact &rarr;',
       'meta.desc': 'Three AI founders walk 120 kilometres while building an app that makes MIND&rsquo;s knowledge and support personally accessible.',
       'meta.descShort': 'Walk 120 kilometres. Build an app for MIND. Hand it over for free.',
       'hero.tagline': 'Three AI founders turn the Camino into their office and build an app for MIND along the way.',
-      'founders.intro': 'Max comes from design, Stijn from back-end development, and Caesar set out to become a yacht broker. What we share: all three of us started a company of our own, among them <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> and <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. Back to Being is the first thing we are making together.',
+      'founders.intro': 'Max comes from design, Stijn from back-end development, and Caesar set out to become a yacht broker. What we share: all three of us started a company of our own, among them <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> and <a href="https://waise.nl" target="_blank" rel="noopener noreferrer">Waise</a>. That is where we saw up close how fast AI is changing the work, and how little of it people get to see. Hence the next step: showing in six days, on foot, what AI does to the pace and the way you work. Back to Being is the first thing we are making together.',
       'hero.cd.label': 'Departure 23 August',
       'hero.cd.days': 'days',
       'hero.cd.hours': 'hrs',
@@ -3657,7 +3955,6 @@
       'beta.h': 'Be the first to test <em>the forecast.</em>',
       'beta.p': 'We are looking for people who want to use the app the moment it exists. You get early access, and your feedback shapes what we build along the way.',
       'beta.point1': 'Early access to the mental weather report.',
-      'beta.point2': 'One email when we go live, nothing else.',
       'beta.email.label': 'Email address*',
       'beta.cta': 'Sign up',
       'beta.note': 'You finish signing up in two questions. We only use your details to contact you about the beta, and you can unsubscribe at any time. See the <a href="privacybeleid.html">privacy statement</a>.',
@@ -3666,7 +3963,7 @@
       'plan.row2.d': 'Every stage is a build sprint for the MIND app: listening and dictating on the trail, designing and testing on arrival.',
       'plan.row3.d': 'The working app goes to the MIND foundation for free, together with the story of how it was built.',
       'announcement.heading': 'Why we are moving our office <em>120 kilometres.</em>',
-      'announcement.copy': 'In 66 seconds, see the idea behind Back to Being: taking technology outside, building on the trail and leaving something useful with MIND.',
+      'announcement.copy': 'We want to show that work can be done differently: Europe\'s oldest pilgrim route as our office, the newest technology in our backpacks. Whatever we build along the way we hand over to the MIND foundation free of charge, so their impact reaches further than the six days we put in.',
       'announcement.play': 'Watch the film &middot; 01:06',
       'announcement.sound': 'Sound',
       'announcement.fallback': 'Your browser does not support this video.',
@@ -3676,8 +3973,8 @@
       'story.fact.days': 'days building',
       'story.fact.product': 'app for MIND',
       'story.mind.lockup': 'Project for MIND',
-      'story.mind.heading': 'We talk about<br>the weather.<br><em>Not about ourselves.</em>',
-      'story.mind.summary': "So together with the MIND foundation we are building an app around one fixed question: what is the weather in your head? You answer it in five seconds with a weather type. Your weather is not stored. It is there to share, because that is where the conversation starts.",
+      'story.mind.heading': 'The app we are<br><em>going to build.</em>',
+      'story.mind.summary': "In the Netherlands we talk about the weather (too) easily, but our mental health is still a taboo. We want to break that open by making the conversation normal. Together with the MIND foundation we are building an app around one fixed question: what is the weather in your head? You answer in five seconds with the weather type that fits you. Your weather is not stored, it is there to share.",
       'story.goals.intro': 'How it works',
       'story.goal1.h': "One question a day.",
       'story.goal1.p': "No questionnaire, no journal. You tap the weather for today and you are done. Because it is that small, you actually keep doing it.",
@@ -4101,15 +4398,6 @@
        ============================================================ */
     let storyExperienceReady = false;
 
-    function setActiveStoryGoal(goal) {
-      const root = document.getElementById('page-verhaal');
-      if (!root || !goal) return;
-
-      root.querySelectorAll('.story-goal').forEach(item => {
-        item.classList.toggle('is-active', item === goal);
-      });
-    }
-
     function initStoryExperience() {
       if (storyExperienceReady) return;
       const root = document.getElementById('page-verhaal');
@@ -4117,7 +4405,6 @@
       storyExperienceReady = true;
 
       const revealItems = root.querySelectorAll('[data-story-reveal]');
-      const goals = root.querySelectorAll('.story-goal');
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       if (reducedMotion || typeof IntersectionObserver === 'undefined') {
@@ -4132,20 +4419,7 @@
           });
         }, { threshold: 0.14, rootMargin: '0px 0px -7% 0px' });
         revealItems.forEach(item => revealObserver.observe(item));
-
-        const goalObserver = new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) setActiveStoryGoal(entry.target);
-          });
-        }, { threshold: 0.2, rootMargin: '-34% 0px -42% 0px' });
-        goals.forEach(goal => goalObserver.observe(goal));
       }
-
-      goals.forEach(goal => {
-        goal.addEventListener('mouseenter', () => setActiveStoryGoal(goal));
-        goal.addEventListener('focus', () => setActiveStoryGoal(goal));
-        goal.addEventListener('click', () => setActiveStoryGoal(goal));
-      });
     }
 
     function initAnnouncementVideo() {
