@@ -1,4 +1,12 @@
 next-app/
+tools/
+photos-origineel/
+video/
+dag.cmd
+# De ruwe exports uit Garmin staan wel in git (dat is het originele spoor),
+# maar de site heeft ze niet nodig: de vereenvoudigde coordinaten zitten al in
+# data/camino-log.json.
+data/sporen/
 .claude/
 .git/
 .gitignore

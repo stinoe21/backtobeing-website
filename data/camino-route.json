@@ -1,0 +1,34 @@
+{
+  "_bron": "Spiegelt caminoRoute en caminoStages in index.html (~regel 3930-3957). Bij een wijziging beide bijwerken. LET OP: index.html start nog in Tui, deze route start in Valença (Portugal), en schrijft plaatsnamen zonder accenten.",
+  "_km": "Etappe 1 en totaalKm zijn geschat vanaf Valença: de brug over de Minho naar Tui is ongeveer 3 km. Vanaf Tui was het 18 en 120. Controleer voor vertrek.",
+  "totaalKm": 123,
+  "punten": [
+    { "naam": "Valença", "lngLat": [-8.644, 42.0296] },
+    { "naam": "Tui", "lngLat": [-8.644, 42.0471] },
+    { "naam": "A Madalena", "lngLat": [-8.6226, 42.0958] },
+    { "naam": "O Porriño", "lngLat": [-8.6167, 42.1616] },
+    { "naam": "Mos", "lngLat": [-8.6142, 42.1968] },
+    { "naam": "Redondela", "lngLat": [-8.6096, 42.2835] },
+    { "naam": "Arcade", "lngLat": [-8.6066, 42.3362] },
+    { "naam": "Ponte Sampaio", "lngLat": [-8.6114, 42.3454] },
+    { "naam": "Pontevedra", "lngLat": [-8.6444, 42.431] },
+    { "naam": "Santa María de Alba", "lngLat": [-8.6327, 42.4752] },
+    { "naam": "Barro", "lngLat": [-8.6412, 42.5487] },
+    { "naam": "Caldas de Reis", "lngLat": [-8.642, 42.604] },
+    { "naam": "Santa Marina", "lngLat": [-8.641, 42.6518] },
+    { "naam": "O Pino", "lngLat": [-8.6424, 42.6915] },
+    { "naam": "Padrón", "lngLat": [-8.6606, 42.7387] },
+    { "naam": "A Esclavitude", "lngLat": [-8.6464, 42.7975] },
+    { "naam": "Castro Lupario", "lngLat": [-8.6372, 42.8217] },
+    { "naam": "Milladoiro", "lngLat": [-8.5814, 42.8462] },
+    { "naam": "Santiago de Compostela", "lngLat": [-8.5448, 42.8782] }
+  ],
+  "etappes": [
+    { "dag": 1, "datum": "2026-08-24", "van": "Valença", "naar": "O Porriño", "km": 21, "vanIndex": 0, "totIndex": 4 },
+    { "dag": 2, "datum": "2026-08-25", "van": "O Porriño", "naar": "Redondela", "km": 18, "vanIndex": 3, "totIndex": 6 },
+    { "dag": 3, "datum": "2026-08-26", "van": "Redondela", "naar": "Pontevedra", "km": 19, "vanIndex": 5, "totIndex": 9 },
+    { "dag": 4, "datum": "2026-08-27", "van": "Pontevedra", "naar": "Caldas de Reis", "km": 23, "vanIndex": 8, "totIndex": 12 },
+    { "dag": 5, "datum": "2026-08-28", "van": "Caldas de Reis", "naar": "Padrón", "km": 18, "vanIndex": 11, "totIndex": 15 },
+    { "dag": 6, "datum": "2026-08-29", "van": "Padrón", "naar": "Santiago", "km": 24, "vanIndex": 14, "totIndex": 19 }
+  ]
+}

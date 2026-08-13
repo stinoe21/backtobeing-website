@@ -1,0 +1,2533 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <title>Volg ons · Back to Being</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="favicon-512.png" type="image/png" sizes="512x512" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="canonical" href="https://backtobeing.tech/volg" />
+  <meta name="description" id="metaDesc" content="Volg Caesar, Stijn en Max live op de Camino. Elke dag de gelopen route, foto's en een korte update, van Valença naar Santiago de Compostela." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#fffef1" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Volg ons op de Camino · Back to Being" />
+  <meta property="og:description" id="ogDesc" content="123 kilometer van Valença naar Santiago. Elke dag de route, foto's en een korte update." />
+  <meta property="og:locale" id="ogLocale" content="nl_NL" />
+  <meta property="og:site_name" content="Back to Being" />
+  <meta property="og:url" content="https://backtobeing.tech/volg" />
+  <meta property="og:image" content="https://backtobeing.tech/founders-group.jpg" />
+  <meta property="og:image:width" content="2000" />
+  <meta property="og:image:height" content="1333" />
+  <meta property="og:image:alt" content="Max, Caesar en Stijn tegen een bewolkte lucht" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="preconnect" href="https://basemaps.cartocdn.com" />
+  <!-- Exact dezelfde fontregel als index.html. Inter zonder 300: de site zet
+       body-tekst op 400 en met een lichtere snit oogt de pagina meteen als
+       een andere website. -->
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       Deze pagina hoort bij index.html: dezelfde tokens en dezelfde nav.
+       Wijzig je daar iets aan de huisstijl, doe het hier ook. Bewust geen
+       footer en geen socialsblok: dit scherm gaat over waar we zijn en wat
+       we die dag meemaakten, en alles wat daarvan wegleidt staat al op de
+       hoofdsite.
+
+       Opzet: één scherm dat niet als geheel scrollt. Links de kaart, rechts
+       één dag tegelijk. Je gaat naar links en rechts door de dagen en scrollt
+       alleen binnen de dag die je leest. Op mobiel staat de kaart bovenaan en
+       de dag eronder.
+       ============================================================ */
+    :root {
+      --tree:        #2a3723;
+      --grass:       #97a081;
+      --sky:         #a7bdd5;
+      --creek:       #424d69;
+      --charcoal:    #161616;
+      --canvas:      #fffef1;
+      --sand:        #b9a26e;
+
+      --bg:          var(--canvas);
+      --ink:         var(--charcoal);
+      --ink-soft:    rgba(22, 22, 22, 0.62);
+      --line:        rgba(42, 55, 35, 0.18);
+      --green:       var(--grass);
+      --cream:       var(--canvas);
+      --route-main:  var(--grass);
+      --route-strong: var(--tree);
+      --route-soft:  rgba(151, 160, 129, 0.22);
+      --route-wash:  rgba(151, 160, 129, 0.12);
+      --nav-h:       72px;
+
+      --space-1: 0.5rem;
+      --space-2: 0.75rem;
+      --space-3: 1rem;
+      --space-4: 1.5rem;
+      --space-5: 2rem;
+      --space-6: 3rem;
+      --space-7: 4rem;
+
+      --h-card:    clamp(1.85rem, 2.9vw, 2.6rem);
+
+      --display-accent: var(--grass);
+      /* Alles rond. Vierkante hoeken alleen waar een vlak tegen de schermrand
+         aan loopt en er dus niets te ronden valt. --radius-pill is voor
+         knoppen, chips en de voortgangsbalk, --radius-ctrl voor foto's en
+         kleine vlakken, --radius / --radius-lg voor panelen. */
+      --radius:      28px;
+      --radius-lg:   34px;
+      --radius-ctrl: 18px;
+      --radius-pill: 999px;
+
+      --serif:       "Instrument Serif", Georgia, serif;
+      --subhead:     "Inter Tight", Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      --sans:        Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+
+      /* Alleen voor deze pagina */
+      --pane-x:   clamp(1.5rem, 2.6vw, 2.75rem);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      font-family: var(--sans);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      overflow-x: clip;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 3px; border-radius: 4px;
+    }
+
+    .section-label {
+      font-family: var(--subhead);
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; color: inherit; opacity: 0.62;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ---------- NAV (gelijk aan index.html) ---------- */
+    /* Staat altijd in de 'scrolled'-staat, net als de subpagina's op de
+       hoofdsite: er ligt hier geen video onder waar hij transparant
+       overheen moet vallen. */
+    .site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6vw;
+      background: rgba(255,254,241,0.93);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { display: flex; align-items: center; background: none; border: none; cursor: pointer; color: inherit; }
+    .nav-logo-mark { width: auto; height: 2rem; flex: 0 0 auto; }
+    .nav-menu-btn {
+      display: none;
+      width: 44px; height: 44px;
+      align-items: center; justify-content: center;
+      border: 1px solid rgba(22,22,22,0.14);
+      border-radius: var(--radius-ctrl);
+      background: rgba(255,254,241,0.1);
+      color: var(--ink); cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .nav-menu-icon { width: 18px; height: 12px; position: relative; display: block; transition: opacity 0.2s, transform 0.2s; }
+    .nav-menu-icon span {
+      position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: currentColor; border-radius: 999px;
+      transition: transform 0.2s, opacity 0.2s, top 0.2s;
+    }
+    .nav-menu-icon span:nth-child(1) { top: 0; }
+    .nav-menu-icon span:nth-child(2) { top: 5px; }
+    .nav-menu-icon span:nth-child(3) { top: 10px; }
+    .nav-menu-logo {
+      position: absolute; width: 24px; height: auto;
+      opacity: 0; transform: rotate(90deg) scale(0.72);
+      transition: opacity 0.2s, transform 0.2s; pointer-events: none;
+    }
+    .site-nav.menu-open .nav-menu-icon { opacity: 0; transform: rotate(-12deg) scale(0.72); }
+    .site-nav.menu-open .nav-menu-logo { opacity: 1; transform: rotate(90deg) scale(1); }
+
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+    .nav-link {
+      font-family: var(--subhead);
+      font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink-soft); cursor: pointer; transition: color 0.2s;
+      background: none; border: none;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--ink); }
+    .nav-cta-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.6rem 1.25rem;
+      background: var(--tree); color: var(--canvas) !important;
+      border-radius: var(--radius-ctrl); font-size: 0.75rem !important; font-weight: 500;
+      letter-spacing: 0.04em !important; text-transform: none !important;
+      transition: background 0.2s, color 0.2s, transform 0.2s !important;
+    }
+    .nav-cta-btn:hover { background: #1F2A19 !important; color: var(--canvas) !important; transform: translateY(-1px); }
+
+    .lang-toggle { display: inline-flex; align-items: center; gap: 0.5rem; padding-left: 0.25rem; }
+    .lang-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: var(--subhead);
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink-soft); padding: 0.25rem 0.1rem;
+      transition: color 0.2s;
+    }
+    .lang-btn:hover, .lang-btn.active { color: var(--ink); }
+    .lang-sep { color: var(--ink-soft); opacity: 0.35; font-size: 0.7rem; user-select: none; }
+
+    /* ============================================================
+       SHELL
+       ============================================================ */
+    .shell { position: relative; }
+
+    /* ---------- KAART ---------- */
+    .map-pane {
+      position: sticky; top: 0;
+      height: 56svh;
+      background: var(--canvas);
+      overflow: hidden;
+      z-index: 0;
+    }
+    /* Descendant selector tilt de specificity boven MapLibre's
+       `.maplibregl-map { position: relative }`, die lazy na onze inline CSS
+       wordt geladen en anders wint op bronvolgorde. Met position:relative
+       stopt inset:0 met sizen en klapt de container dicht tot 0x0. Zelfde
+       valkuil als bij .camino-map in index.html. */
+    .map-pane > .map-holder { position: absolute; inset: 0; }
+
+    /* Bewust een overlay-div en GEEN mask-image op de pane: MapLibre hangt
+       zijn HTML-markers in de container, dus een mask zou de plaatsnamen aan
+       de randen mee wegknippen. Deze wash laat de kaart aan de randen
+       oplossen in het canvas in plaats van in een harde rechthoek te staan. */
+    .map-wash {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255,254,241,0.9) 0%, rgba(255,254,241,0) 20%, rgba(255,254,241,0) 76%, rgba(255,254,241,0.92) 100%),
+        linear-gradient(90deg, rgba(255,254,241,0.72) 0%, rgba(255,254,241,0) 14%, rgba(255,254,241,0) 86%, rgba(255,254,241,0.72) 100%);
+    }
+
+    .map-loading, .map-error {
+      position: absolute; inset: 0; z-index: 6;
+      display: grid; place-items: center;
+      background: var(--canvas);
+      font-family: var(--subhead); font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
+    }
+
+    /* Klik om te gebruiken. Zonder dit kaapt de kaart op mobiel de scroll. */
+    .map-gate {
+      position: absolute; inset: 0; z-index: 5;
+      border: 0; background: transparent; cursor: pointer;
+      display: grid; place-items: center;
+      opacity: 0; transition: opacity 0.25s ease;
+    }
+    .map-gate span {
+      font-family: var(--subhead); font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      background: rgba(255,254,241,0.94); color: var(--tree);
+      padding: 0.55rem 0.9rem; border-radius: var(--radius-ctrl);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 28px rgba(42,55,35,0.12);
+    }
+    .map-pane:hover .map-gate, .map-gate:focus-visible { opacity: 1; }
+    .map-pane.is-active .map-gate { display: none; }
+
+    /* Lichte variant van de kaart-kaart op Ons verhaal: zelfde opbouw
+       (eyebrow, plaats, afstand), maar in canvas zodat hij niet als een
+       zwart blok op een lichte kaart ligt. */
+    .map-info {
+      position: absolute; z-index: 4;
+      left: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem);
+      max-width: min(84%, 24rem);
+      padding: 0.85rem 1.1rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,254,241,0.9);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 12px 34px rgba(42,55,35,0.08);
+      pointer-events: none;
+    }
+    .map-info .eyebrow {
+      display: block; margin-bottom: 0.35rem;
+      font-family: var(--subhead); font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft);
+    }
+    .map-info strong {
+      display: block;
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(1.15rem, 2.2vw, 1.6rem); line-height: 1.05;
+    }
+    .map-info .distance {
+      display: block; margin-top: 0.35rem;
+      font-family: var(--subhead); font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
+    }
+    .map-info .distance[hidden] { display: none; }
+    /* De totalen stonden eerst als losse statregel naast de kaart. Daar zeiden
+       ze hetzelfde als dit kaartje eronder, dus ze wonen nu hier. */
+    .map-cijfers {
+      display: flex; gap: 1.5rem;
+      margin-top: 0.8rem; padding-top: 0.8rem;
+      border-top: 1px solid var(--line);
+    }
+    .map-cijfers > div { display: flex; flex-direction: column; gap: 0.2rem; }
+    .map-cijfers b {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(1.2rem, 1.9vw, 1.5rem); line-height: 1;
+    }
+    .map-cijfers i {
+      font-style: normal;
+      font-family: var(--subhead); font-size: 0.56rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
+    }
+    .map-cijfers[hidden] { display: none; }
+
+    /* Rechtsonder, gespiegeld aan het kaartje links: de weg terug nadat de
+       kaart met je is meegezoomd naar één dag. */
+    .map-reset {
+      position: absolute; z-index: 4;
+      right: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem);
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.65rem 1.1rem;
+      border: 1px solid var(--line); border-radius: var(--radius-pill);
+      background: rgba(255,254,241,0.94); color: var(--tree); cursor: pointer;
+      font-family: var(--subhead); font-size: 0.64rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      box-shadow: 0 10px 28px rgba(42,55,35,0.12);
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+    .map-reset:hover { background: var(--tree); color: var(--canvas); transform: translateY(-2px); }
+    .map-reset[hidden] { display: none; }
+    /* Op mobiel staat de knop naast het kaartje linksonder; daar past alleen
+       de korte tekst. */
+    .map-reset .reset-kort { display: none; }
+
+    .map-legend {
+      position: absolute; z-index: 4;
+      right: clamp(1rem, 3vw, 2rem); bottom: calc(clamp(1rem, 3vw, 2rem) + 3.2rem);
+      display: flex; flex-direction: column; gap: 0.4rem;
+      font-family: var(--subhead); font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
+      pointer-events: none; text-align: right;
+    }
+    .map-legend > span { display: inline-flex; align-items: center; justify-content: flex-end; gap: 0.5rem; }
+    .map-legend i { width: 20px; height: 0; display: block; flex: 0 0 20px; }
+    .lg-done { border-top: 3px solid var(--tree); border-radius: 2px; }
+    .lg-plan { border-top: 2px dashed var(--grass); }
+
+    .map-attr {
+      position: absolute; z-index: 4;
+      right: clamp(1rem, 3vw, 2rem); top: calc(var(--nav-h) + 0.6rem);
+      font-size: 0.58rem; letter-spacing: 0.02em;
+      color: var(--ink); opacity: 0.3;
+    }
+    .map-attr a:hover { text-decoration: underline; }
+
+    /* Eigen plaatsnamen in de huisstijl. De nolabels-basemap heeft geen
+       symbol-layers, dus er is geen font-probleem: MapLibre kan alleen
+       fonts renderen die in de glyph-server van de tile-aanbieder zitten,
+       en Inter Tight zit daar niet in. */
+    .map-place {
+      font-family: var(--subhead); font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--tree); white-space: nowrap;
+      text-shadow:
+        0 0 3px var(--canvas), 0 0 3px var(--canvas),
+        0 0 6px var(--canvas), 0 0 6px var(--canvas);
+      pointer-events: none;
+    }
+    .map-place.is-endpoint {
+      text-transform: uppercase; letter-spacing: 0.1em;
+      font-weight: 600; font-size: 0.7rem;
+    }
+    .map-punt {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--route-main);
+      border: 2px solid var(--cream);
+      box-shadow: 0 0 0 3px var(--route-soft);
+    }
+    .map-dag {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--route-strong); color: var(--cream);
+      border: 2px solid var(--cream);
+      font-family: var(--subhead); font-size: 0.68rem; font-weight: 600;
+      display: grid; place-items: center; cursor: pointer;
+      box-shadow: 0 0 0 5px rgba(151,160,129,0.28);
+    }
+    /* Laatst bekende punt. Bewust het eindpunt van de laatste etappe en niet
+       een live locatie: we delen waar we die dag geëindigd zijn, niet waar we
+       op dit moment lopen. */
+    .map-positie { position: relative; width: 20px; height: 20px; }
+    .map-positie::before {
+      content: ''; position: absolute; inset: 0; border-radius: 50%;
+      background: var(--route-main);
+      animation: puls 2.6s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+    }
+    .map-positie::after {
+      content: ''; position: absolute; inset: 4px; border-radius: 50%;
+      background: var(--route-strong); border: 2px solid var(--cream);
+    }
+    @keyframes puls {
+      0%   { transform: scale(0.5); opacity: 0.7; }
+      70%  { transform: scale(2.8); opacity: 0; }
+      100% { transform: scale(2.8); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) { .map-positie::before { animation: none; opacity: 0.35; } }
+
+    /* ---------- FEED ---------- */
+    /* Kop bovenaan die blijft staan, daaronder één dag tegelijk. Je gaat naar
+       links en rechts door de dagen, niet omlaag door een lange lijst. */
+    .feed-pane {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; min-height: 0;
+      background: var(--canvas);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      margin-top: -34px;
+      box-shadow: 0 -18px 40px rgba(42,55,35,0.07);
+    }
+    .feed-grip {
+      flex: 0 0 auto;
+      width: 42px; height: 4px; border-radius: var(--radius-pill);
+      background: rgba(42,55,35,0.28);
+      margin: 0.7rem auto 0;
+    }
+    .feed-kop {
+      flex: 0 0 auto;
+      padding: var(--space-4) var(--pane-x) var(--space-3);
+    }
+    /* Op een breed scherm is de helft van het venster te breed voor tekst.
+       Deze grens houdt de regellengte leesbaar zonder de kolom te versmallen. */
+    .kop-inner, .slide-inner { max-width: 780px; }
+
+    /* ---------- HERO ---------- */
+    .hero-label { display: inline-flex; align-items: center; gap: 0.55rem; }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--grass);
+      animation: livepuls 2.2s ease-out infinite;
+    }
+    @keyframes livepuls {
+      0%   { box-shadow: 0 0 0 0 rgba(151,160,129,0.7); }
+      70%  { box-shadow: 0 0 0 9px rgba(151,160,129,0); }
+      100% { box-shadow: 0 0 0 0 rgba(151,160,129,0); }
+    }
+    @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+
+    .kop-rij {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: var(--space-3); flex-wrap: wrap;
+    }
+    .feed-kop h1 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(2.5rem, 4.6vw, 3.6rem);
+      line-height: 0.94; letter-spacing: 0;
+      margin: 0.35rem 0 0;
+    }
+    .feed-kop h1 em { font-style: italic; color: var(--display-accent); }
+
+    /* Vorige en volgende dag. Naast de titel en niet over de inhoud heen,
+       zodat ze nooit een foto afdekken. */
+    .dag-nav-groep { display: inline-flex; gap: 0.45rem; }
+    .dag-nav-groep[hidden] { display: none; }
+    .dag-nav {
+      width: 44px; height: 44px; flex: 0 0 44px;
+      display: grid; place-items: center;
+      border: 1px solid var(--line); border-radius: var(--radius-pill);
+      background: var(--canvas); color: var(--tree);
+      font-size: 1rem; line-height: 1; cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.2s, opacity 0.2s;
+    }
+    .dag-nav:hover:not(:disabled) { background: var(--tree); color: var(--canvas); transform: translateY(-2px); }
+    .dag-nav:disabled { opacity: 0.28; cursor: default; }
+
+    /* Voortgang: één segment per etappe, klikbaar zodra die dag er is.
+       Metadata, geen dashboard: de knop houdt een klikvlak van 16px, maar
+       de getekende lijn is 5px en de kleuren blijven ver onder de titel in
+       gewicht. De lijn volgt de dag die je LEEST: tot en met die dag donker,
+       gelopen dagen erna als lichte tussentint, de rest bijna onzichtbaar.
+       Zo zegt de balk hetzelfde als "Dag 2 van 6" erboven.
+       Hij staat onder de kaarten, op kaartbreedte: paginering, geen kop. */
+    .voortgang {
+      flex: 0 0 auto;
+      padding: 0.45rem clamp(18px, 7%, 72px) var(--space-4);
+    }
+    .voortgang-bar { display: flex; gap: 8px; }
+    .voortgang-bar button {
+      flex: 1; height: 16px; padding: 0; border: 0;
+      position: relative; background: none; cursor: pointer;
+    }
+    .voortgang-bar button::before {
+      content: ''; position: absolute; left: 0; right: 0;
+      top: 50%; height: 5px; transform: translateY(-50%);
+      border-radius: var(--radius-pill);
+      background: rgba(42, 55, 35, 0.1);
+      transition: background 0.25s ease, height 0.25s ease;
+    }
+    .voortgang-bar button:disabled { cursor: default; }
+    .voortgang-bar button.is-done::before { background: rgba(151, 160, 129, 0.5); }
+    .voortgang-bar button.is-now::before  { background: rgba(151, 160, 129, 0.3); }
+    .voortgang-bar button.is-tot::before  { background: rgba(42, 55, 35, 0.78); }
+    .voortgang-bar button.is-actief::before,
+    .voortgang-bar button:not(:disabled):hover::before { height: 8px; }
+    @media (prefers-reduced-motion: reduce) {
+      .voortgang-bar button::before { transition: background 0.25s ease; }
+    }
+
+    /* Statusregel voor de dag die nu bezig is. Bewust één regel en geen
+       kaart: er is nog niets te tonen, en een leeg kaartje leest als kapot. */
+    .vandaag {
+      margin-top: var(--space-4);
+      padding: 1rem 1.35rem;
+      border: 1px dashed rgba(42,55,35,0.3);
+      border-radius: var(--radius);
+      font-size: 0.92rem; line-height: 1.7; color: var(--ink-soft);
+    }
+    .vandaag b { font-family: var(--subhead); font-weight: 600; color: var(--ink); }
+
+    /* ---------- SECTIES ---------- */
+    .volg-sectie { padding-top: var(--space-6); }
+    .volg-sectie > h2 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(1.9rem, 3.4vw, 2.5rem); line-height: 1;
+      margin-bottom: var(--space-5);
+    }
+    .volg-sectie h2 em { font-style: italic; color: var(--display-accent); }
+
+    /* De kolom voor vertrek: aftellen en het plan. Scrollt gewoon. */
+    .feed-scroll {
+      flex: 1 1 auto; min-height: 0;
+      overflow-y: auto; overscroll-behavior: contain;
+      padding: 0 var(--pane-x) var(--space-6);
+    }
+    .feed-scroll[hidden] { display: none; }
+
+    /* ---------- CARROUSEL ---------- */
+    /* Scroll-snap in plaats van transform: dan is swipen op mobiel gewoon de
+       native scroll, met de vaart en het terugveren die daarbij horen.
+       Horizontaal tussen de dagen, verticaal binnen één dag.
+
+       Elke dag is een zwevende kaart die iets smaller is dan het paneel: de
+       volgende dag kijkt aan de rand alvast mee, en dat is de hele uitleg die
+       de carrousel nodig heeft. De kaartbreedte volgt uit de padding van de
+       track: elke kaart is 100% van de content-box, dus wat hier aan de
+       zijkanten afgaat is precies wat er van de buren te zien is. */
+    .dag-carousel { position: relative; flex: 1 1 auto; min-height: 0; }
+    .dag-carousel[hidden] { display: none; }
+    .dag-track {
+      display: flex; height: 100%;
+      gap: 16px;
+      padding: 6px clamp(18px, 7%, 72px) 30px;
+      overflow-x: auto; overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none; -ms-overflow-style: none;
+    }
+    .dag-track::-webkit-scrollbar { display: none; }
+    /* De kaart is een voorproefje, geen leesvenster: hij scrolt niet en heeft
+       dus ook geen scrollbalk. Klikken opent het verhaal in een eigen
+       venster, en dat is de enige plek waar gescrold wordt. */
+    .dag-slide {
+      flex: 0 0 100%; min-width: 0;
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      scroll-snap-align: center; scroll-snap-stop: always;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 36px rgba(42, 55, 35, 0.1);
+      cursor: pointer;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    /* De buren staan er iets terug, zodat het oog weet waar het verhaal is.
+       Klikken op een buurkaart maakt hem de actieve dag. */
+    .dag-slide:not(.is-huidig) { opacity: 0.55; transform: scale(0.97); cursor: pointer; }
+    @media (prefers-reduced-motion: reduce) {
+      .dag-slide { transition: opacity 0.35s ease; }
+      .dag-slide:not(.is-huidig) { transform: none; }
+    }
+
+    /* De mooiste foto opent de dag. In de kaart is hij het venster op de dag
+       en vult hij alle ruimte die de regels eronder overlaten; in het
+       leesvenster staat hij als vaste banner boven het verhaal. */
+    .dag-hero {
+      display: block; width: 100%; padding: 0; border: 0;
+      background: none; overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .dag-hero img {
+      display: block; width: 100%; object-fit: cover;
+      /* Iets boven het midden: in een staande telefoonfoto zit het gezicht
+         in de bovenste helft, en een brede crop door het midden onthoofdt. */
+      object-position: 50% 30%;
+      background: var(--route-wash);
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    /* In de kaart wisselen de foto's van de dag vanzelf, als een rustige
+       crossfade: alle beelden liggen gestapeld en alleen .is-zicht is te
+       zien. De stipjes onderin tellen mee. */
+    .dag-slide .dag-hero { position: relative; flex: 1 1 auto; min-height: 0; }
+    .dag-slide .dag-hero img {
+      position: absolute; inset: 0; height: 100%;
+      opacity: 0;
+      transition: opacity 0.9s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .dag-slide .dag-hero img.is-zicht { opacity: 1; }
+    .dag-slide:hover .dag-hero img { transform: scale(1.03); }
+    .hero-stippen {
+      position: absolute; left: 50%; bottom: 0.7rem; transform: translateX(-50%);
+      display: flex; gap: 6px; pointer-events: none;
+    }
+    .hero-stip {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255, 254, 241, 0.55);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .hero-stip.is-zicht { background: var(--canvas); transform: scale(1.15); }
+    .dag-popup .dag-hero { cursor: zoom-in; }
+    .dag-popup .dag-hero img { aspect-ratio: 21/10; }
+    .dag-popup .dag-hero:hover img { transform: scale(1.03); }
+    @media (prefers-reduced-motion: reduce) {
+      .dag-slide:hover .dag-hero img, .dag-popup .dag-hero:hover img { transform: none; }
+    }
+    .dag-body { padding: clamp(1.3rem, 2vw, 1.9rem) clamp(1.3rem, 2.4vw, 2.2rem) clamp(1.6rem, 2.4vw, 2.4rem); }
+    .dag-slide .dag-body { flex: 0 0 auto; }
+
+    /* Geen knop-doos maar een stille wenk: de hele kaart is al klikbaar. */
+    .dag-lees {
+      margin-top: var(--space-3);
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0; border: 0; background: none; cursor: pointer;
+      font-family: var(--subhead); font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--tree);
+    }
+    .dag-lees .pijl { transition: transform 0.2s; }
+    .dag-slide:hover .dag-lees .pijl { transform: translateX(3px); }
+    @media (prefers-reduced-motion: reduce) { .dag-slide:hover .dag-lees .pijl { transform: none; } }
+
+    .dag-datum {
+      font-family: var(--subhead); font-size: 0.66rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
+    }
+    .dag-titel {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(1.7rem, 2.8vw, 2.2rem); line-height: 1.08;
+      margin: 0.55rem 0 0.35rem;
+    }
+    .dag-route {
+      font-family: var(--subhead); font-size: 0.92rem; font-weight: 500;
+      color: var(--ink-soft); margin-bottom: var(--space-4);
+    }
+    .dag-route .pijl { color: var(--grass); padding: 0 0.15em; }
+    /* Zelfde vorm als de cijfers in het kaartje op de kaart: serif-getal met
+       een klein kapitaaltje eronder. Eén cijfertaal voor de hele pagina. */
+    .dag-cijfers {
+      display: flex; flex-wrap: wrap; gap: 1.1rem 2.2rem;
+      margin-bottom: var(--space-4);
+    }
+    .dag-cijfers > div { display: flex; flex-direction: column; gap: 0.25rem; }
+    .dag-cijfers b {
+      font-family: var(--serif); font-weight: 400;
+      font-size: 1.5rem; line-height: 1;
+    }
+    .dag-cijfers i {
+      font-style: normal;
+      font-family: var(--subhead); font-size: 0.58rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
+    }
+    .dag-tekst { font-size: 0.98rem; line-height: 1.75; color: var(--ink-soft); }
+    .dag-tekst + .dag-tekst { margin-top: 0.85rem; }
+    .dag-nietvertaald {
+      margin-top: 0.7rem;
+      font-family: var(--subhead); font-size: 0.64rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-soft); opacity: 0.7;
+    }
+    /* De foto's zijn waar het om gaat, dus ze mogen groot. Elke foto is een
+       knop: klikken opent hem schermvullend. */
+    .dag-fotos {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px; margin-top: var(--space-4);
+    }
+    .dag-foto {
+      display: block; padding: 0; border: 0; background: none;
+      border-radius: var(--radius-ctrl); overflow: hidden;
+      cursor: zoom-in; -webkit-tap-highlight-color: transparent;
+    }
+    .dag-foto img {
+      width: 100%; aspect-ratio: 4/5; object-fit: cover;
+      background: var(--route-wash);
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .dag-foto:hover img { transform: scale(1.045); }
+    .dag-foto.wide { grid-column: 1 / -1; }
+    .dag-foto.wide img { aspect-ratio: 3/2; }
+    @media (prefers-reduced-motion: reduce) { .dag-foto:hover img { transform: none; } }
+
+    /* ---------- HET VERHAAL (leesvenster) ---------- */
+    /* De kaarten bladeren, dit venster leest. Onder de lightbox (300) zodat
+       een foto uit het verhaal er nog bovenop kan. */
+    .dag-popup {
+      position: fixed; inset: 0; z-index: 250;
+      display: grid; place-items: center;
+      padding: clamp(0.75rem, 3vw, 3rem);
+      background: rgba(18, 20, 16, 0.55);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .dag-popup[hidden] { display: none; }
+    .popup-paneel {
+      width: min(100%, 660px);
+      max-height: 100%;
+      overflow-y: auto; overscroll-behavior: contain;
+      background: var(--canvas);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 40px 90px rgba(0, 0, 0, 0.35);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(42, 55, 35, 0.3) transparent;
+      animation: paneelIn 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes paneelIn {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+    }
+    @media (prefers-reduced-motion: reduce) { .popup-paneel { animation: none; } }
+    .popup-sluit { top: clamp(0.75rem, 3vw, 2rem); right: clamp(0.75rem, 3vw, 2rem); }
+
+    /* ---------- FOTO SCHERMVULLEND ---------- */
+    .lightbox {
+      /* Boven de nav (200): een foto schermvullend is schermvullend, en het
+         kruisje rechtsboven viel anders precies achter de navbalk. */
+      position: fixed; inset: 0; z-index: 300;
+      display: grid; place-items: center;
+      padding: clamp(1rem, 5vw, 3.5rem);
+      background: rgba(18, 20, 16, 0.88);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .lightbox[hidden] { display: none; }
+    .lightbox img {
+      max-width: 100%; max-height: 84vh; width: auto;
+      border-radius: var(--radius); box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    }
+    .lb-knop {
+      position: absolute; width: 46px; height: 46px;
+      display: grid; place-items: center;
+      border: 1px solid rgba(255,254,241,0.32); border-radius: var(--radius-pill);
+      background: rgba(255,254,241,0.12); color: var(--canvas);
+      font-size: 1.1rem; line-height: 1; cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .lb-knop:hover { background: rgba(255,254,241,0.26); }
+    .lb-sluit { top: clamp(0.75rem, 3vw, 2rem); right: clamp(0.75rem, 3vw, 2rem); }
+    .lb-prev { left: clamp(0.5rem, 2vw, 2rem); top: 50%; transform: translateY(-50%); }
+    .lb-next { right: clamp(0.5rem, 2vw, 2rem); top: 50%; transform: translateY(-50%); }
+    .lb-prev:hover, .lb-next:hover { transform: translateY(-50%) scale(1.06); }
+    .lb-teller {
+      position: absolute; bottom: clamp(0.75rem, 3vw, 2rem); left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--subhead); font-size: 0.66rem; font-weight: 500;
+      letter-spacing: 0.16em; color: rgba(255,254,241,0.7);
+    }
+
+    /* ---------- TEASER (voor vertrek) ---------- */
+    /* De reis die eraan komt, beeld eerst: de foto draagt de kaart en de
+       vertrekregel en de route staan op de foto, zoals een reis-teaser in
+       PolarSteps. De aftelklok is een rustige strip eronder, in dezelfde
+       verhouding foto-boven-inhoud-onder als de dagkaarten. */
+    .teaser-kaart {
+      margin-top: var(--space-4);
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 36px rgba(42, 55, 35, 0.1);
+      overflow: hidden;
+    }
+    .teaser-held { position: relative; height: clamp(320px, 52vh, 560px); }
+    .teaser-held img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: 50% 30%; display: block;
+    }
+    /* Onderin net donker genoeg voor de tekst; bovenin blijft de foto vrij. */
+    .teaser-held::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg,
+        rgba(18, 20, 16, 0) 42%, rgba(18, 20, 16, 0.14) 62%, rgba(18, 20, 16, 0.56) 100%);
+    }
+    .teaser-held.is-zonder-foto { background: var(--tree); }
+    .teaser-tekst {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+      padding: clamp(1.1rem, 3vw, 1.8rem);
+      color: var(--canvas);
+    }
+    .teaser-eyebrow {
+      margin: 0 0 0.55rem;
+      font-family: var(--subhead); font-size: 0.64rem; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase; line-height: 1.7;
+      color: rgba(255, 254, 241, 0.82);
+    }
+    /* Smal scherm: breken mag alleen tussen plaats en datum, en datum en
+       tijd blijven altijd bij elkaar. */
+    .teaser-eyebrow span { white-space: nowrap; }
+    .teaser-titel {
+      margin: 0;
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(1.6rem, 3.2vw, 2.3rem); line-height: 1.04;
+    }
+    .teaser-titel .pijl { color: rgba(255, 254, 241, 0.6); }
+    .teaser-feiten {
+      margin: 0.55rem 0 0;
+      font-family: var(--subhead); font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.02em; color: rgba(255, 254, 241, 0.85);
+    }
+    /* De klok tikt per seconde; tabular-nums houdt de rij stil. */
+    .teaser-tel { display: flex; }
+    .teaser-cel { flex: 1; padding: 0.95rem 0.5rem 1.05rem; text-align: center; }
+    .teaser-cel + .teaser-cel { border-left: 1px solid var(--line); }
+    .teaser-cel b {
+      display: block;
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1;
+      color: var(--ink); font-variant-numeric: tabular-nums;
+    }
+    .teaser-cel span {
+      display: block; margin-top: 0.35rem;
+      font-family: var(--subhead); font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+    }
+
+    /* ---------- HET PLAN ---------- */
+    .plan-rij {
+      display: grid; grid-template-columns: 2.6rem 1fr auto;
+      align-items: baseline; gap: var(--space-3);
+      padding: 1rem 0; border-top: 1px solid var(--line);
+    }
+    .plan-rij:last-child { border-bottom: 1px solid var(--line); }
+    .plan-nr { font-family: var(--serif); font-size: 1.4rem; color: var(--route-main); }
+    .plan-route { font-family: var(--subhead); font-size: 0.98rem; font-weight: 500; }
+    .plan-datum {
+      display: block; margin-top: 0.2rem;
+      font-family: var(--subhead); font-size: 0.64rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
+    }
+    .plan-km {
+      font-family: var(--subhead); font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.06em; color: var(--ink-soft); white-space: nowrap;
+    }
+
+    /* Geen socialsblok en geen footer op deze pagina: dit scherm gaat over
+       waar we zijn en wat we die dag meemaakten. Alles wat daarvan wegleidt
+       staat op de hoofdsite, die via de nav bereikbaar blijft. */
+
+    /* ============================================================
+       DESKTOP: half kaart, half verhaal. Allebei schermhoog, en de enige
+       scroll zit binnen de dag die je op dat moment leest.
+       ============================================================ */
+    @media (min-width: 1024px) {
+      html, body { height: 100%; overflow: hidden; }
+      .shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        height: 100dvh;
+      }
+      .map-pane {
+        position: relative; top: auto;
+        height: 100dvh;
+        border-right: 1px solid var(--line);
+      }
+      .map-wash {
+        background:
+          linear-gradient(180deg, rgba(255,254,241,0.92) 0%, rgba(255,254,241,0) 15%, rgba(255,254,241,0) 84%, rgba(255,254,241,0.85) 100%),
+          linear-gradient(90deg, rgba(255,254,241,0.88) 0%, rgba(255,254,241,0) 13%, rgba(255,254,241,0) 82%, rgba(255,254,241,0.95) 100%);
+      }
+      .feed-pane {
+        height: 100dvh;
+        border-radius: 0; margin-top: 0; box-shadow: none;
+      }
+      .feed-grip { display: none; }
+      .feed-kop { padding-top: calc(var(--nav-h) + var(--space-4)); }
+    }
+
+    /* Kort en breed (laptop in landschap): iets compacter. */
+    @media (min-width: 1024px) and (max-height: 760px) {
+      .feed-kop h1 { font-size: clamp(2.1rem, 3.2vw, 2.8rem); }
+      .feed-kop { padding-bottom: var(--space-2); }
+      .dag-fotos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    /* ============================================================
+       MOBIEL: kaart bovenaan, dag eronder. Ook hier één scherm, zodat
+       links en rechts vegen door de dagen werkt zonder dat de pagina
+       eronder mee schuift.
+       ============================================================ */
+    @media (max-width: 1023px) {
+      html, body { height: 100%; overflow: hidden; }
+      .shell { display: flex; flex-direction: column; height: 100dvh; }
+      .map-pane {
+        position: relative; top: auto;
+        flex: 0 0 auto; height: 48svh;
+        padding-top: var(--nav-h);
+      }
+      .feed-pane { flex: 1 1 auto; min-height: 0; }
+      /* De kop is hier zo compact mogelijk: elke pixel die hij niet neemt is
+         een pixel die de dagkaart eronder wel krijgt, en die moet minstens de
+         foto plus de titel laten zien. */
+      .feed-grip { margin-top: 0.45rem; }
+      .feed-kop { padding: var(--space-2) var(--pane-x) var(--space-2); }
+      .feed-kop h1 { font-size: clamp(1.8rem, 7vw, 2.2rem); margin-top: 0.15rem; }
+      .voortgang {
+        padding: 0.35rem clamp(14px, 5.5%, 28px)
+                 calc(0.85rem + env(safe-area-inset-bottom, 0px));
+      }
+
+      /* Alleen begin- en eindpunt: de rest wordt leesbaar zodra je op een dag
+         inzoomt, en zou hier alleen maar over elkaar heen vallen. */
+      .map-place.is-tussen { display: none; }
+
+      /* Het kaartje moet ruim boven de rand van het dagpaneel blijven: dat
+         schuift 34 px over de kaart heen en zou het anders afknippen. Niet de
+         volle breedte: dan bedekt het de halve kaart, en de kaart is hier al
+         klein genoeg. */
+      .map-info {
+        left: 0.9rem; right: auto; bottom: 2.9rem;
+        max-width: min(62vw, 244px); padding: 0.7rem 1rem;
+      }
+      .map-info .eyebrow { margin-bottom: 0.2rem; font-size: 0.58rem; }
+      .map-info strong { font-size: 1.3rem; }
+      .map-cijfers { gap: 1.75rem; margin-top: 0.5rem; padding-top: 0.5rem; }
+      .map-cijfers b { font-size: 1.1rem; }
+      /* Op één lijn met het kaartje links, in de vrije rechteronderhoek. */
+      .map-reset { right: 0.9rem; bottom: 2.9rem; padding: 0.55rem 0.95rem; }
+      .map-reset .reset-lang { display: none; }
+      .map-reset .reset-kort { display: inline; }
+
+      /* De kaarten zijn hier laag: de cijfers verhuizen naar het leesvenster
+         zodat de foto de ruimte houdt. */
+      .dag-track { gap: 12px; padding: 4px clamp(14px, 5.5%, 28px) 22px; }
+      .dag-slide .dag-cijfers { display: none; }
+      .dag-popup .dag-hero img { aspect-ratio: 16/9; }
+      .dag-body { padding: 1.15rem 1.15rem 1.5rem; }
+      /* Beeld eerst, ook hier: staand kader, dichter bij een telefoonfoto. */
+      .teaser-held { height: auto; aspect-ratio: 4/5; max-height: 62svh; }
+    }
+    @media (max-width: 760px) {
+      .site-nav {
+        flex-wrap: nowrap; align-content: center; gap: 1rem;
+        padding: 0 max(1rem, 5vw);
+      }
+      .nav-logo { width: auto; justify-content: flex-start; }
+      .nav-logo-mark { height: 1.5rem; max-width: min(64vw, 230px); }
+      .nav-menu-btn { display: inline-flex; margin-left: auto; }
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        left: max(1rem, 5vw); right: max(1rem, 5vw);
+        width: auto;
+        display: flex; flex-direction: column;
+        align-items: stretch; justify-content: flex-start; gap: 0;
+        padding: 0.45rem;
+        border: 1px solid rgba(42,55,35,0.14);
+        border-radius: var(--radius);
+        background: rgba(255,254,241,0.96);
+        box-shadow: 0 18px 48px rgba(13,13,13,0.16);
+        backdrop-filter: blur(18px);
+        opacity: 0; pointer-events: none;
+        transform: translateY(-8px);
+        transition: opacity 0.2s, transform 0.2s;
+      }
+      .site-nav.menu-open .nav-links { opacity: 1; pointer-events: auto; transform: translateY(0); }
+      .nav-link {
+        width: 100%; min-height: 44px;
+        display: flex; align-items: center; justify-content: flex-start;
+        padding: 0 0.85rem;
+        border-radius: var(--radius-ctrl);
+        color: var(--ink) !important;
+        font-size: 0.72rem; letter-spacing: 0.1em; line-height: 1.1;
+      }
+      .nav-link:hover, .nav-link.active { background: rgba(151,160,129,0.14); color: var(--tree) !important; }
+      .lang-toggle {
+        justify-content: flex-start; gap: 0.45rem;
+        padding: 0.6rem 0.85rem; border-top: 1px solid var(--line);
+      }
+      .lang-btn { color: var(--ink-soft) !important; font-size: 0.68rem; letter-spacing: 0.1em; }
+      .lang-btn.active, .lang-btn:hover { color: var(--tree) !important; }
+      .lang-sep { color: var(--ink-soft) !important; }
+      .nav-cta-btn { margin-top: 0.25rem; justify-content: center; background: var(--tree) !important; color: var(--canvas) !important; }
+      .map-legend { display: none; }
+    }
+    @media (max-width: 560px) {
+      .dag-nav { width: 40px; height: 40px; flex-basis: 40px; }
+      .dag-foto.wide img { aspect-ratio: 4/3; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="site-nav" id="siteNav">
+    <a class="nav-logo" href="/" aria-label="Back to Being">
+      <img class="nav-logo-mark" src="b2b_horizontal banner.svg" alt="Back to Being" />
+    </a>
+    <button class="nav-menu-btn" id="navMenuBtn" type="button" aria-label="Menu" aria-controls="navLinks" aria-expanded="false">
+      <span class="nav-menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+      <img class="nav-menu-logo" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
+    </button>
+    <div class="nav-links" id="navLinks">
+      <!-- index.html is een SPA zonder router, dus vanaf hier linken we met
+           een hash die index.html bij het laden oppakt. -->
+      <a class="nav-link" href="/#verhaal" data-i18n="nav.story">Ons verhaal</a>
+      <a class="nav-link" href="/#pers" data-i18n="nav.press">In de pers</a>
+      <a class="nav-link active" href="/volg" data-i18n="nav.volg" aria-current="page">Volg ons</a>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button class="lang-btn" data-lang="nl" type="button" aria-label="Nederlands">NL</button>
+        <span class="lang-sep" aria-hidden="true">·</span>
+        <button class="lang-btn" data-lang="en" type="button" aria-label="English">EN</button>
+      </div>
+      <a class="nav-link nav-cta-btn" href="/#contact" data-i18n="nav.contact">Contact</a>
+    </div>
+  </nav>
+
+  <div class="shell">
+
+    <!-- ============ KAART ============ -->
+    <div class="map-pane" id="mapPane">
+      <div class="map-holder" id="volgMap"></div>
+      <div class="map-wash" aria-hidden="true"></div>
+
+      <div class="map-loading" id="mapLoading" data-i18n="map.loading">Kaart laden</div>
+
+      <div class="map-info">
+        <span class="eyebrow" id="mapEyebrow" data-i18n="map.eyebrowPre">De route</span>
+        <strong id="mapPlaats">Valença &rarr; Santiago de Compostela</strong>
+        <span class="distance" id="mapAfstand">123 km</span>
+        <div class="map-cijfers" id="mapCijfers" hidden>
+          <!-- Het label is "van 123 km" en wordt in JS gezet: het totaal komt
+               uit camino-route.json en "van" moet meevertalen. -->
+          <div><b id="mapKm">0</b><i id="mapKmLabel">van 123 km</i></div>
+          <div><b id="mapEtappes">0 / 6</b><i data-i18n="stat.dagen">Etappes af</i></div>
+        </div>
+      </div>
+
+      <div class="map-legend" aria-hidden="true">
+        <span><span data-i18n="legend.gelopen">Gelopen</span><i class="lg-done"></i></span>
+        <span><span data-i18n="legend.plan">Te gaan</span><i class="lg-plan"></i></span>
+      </div>
+
+      <!-- De kaart volgt de dag die je leest; deze knop zoomt weer uit naar
+           de hele route. Alleen zichtbaar zodra er gelopen wordt: daarvoor
+           staat de kaart al op de hele route. -->
+      <button class="map-reset" id="mapReset" type="button" hidden>
+        <span class="reset-lang" data-i18n="map.reset">Bekijk de hele route</span>
+        <span class="reset-kort" data-i18n="map.resetKort">Hele route</span>
+      </button>
+
+      <button class="map-gate" id="mapGate" type="button">
+        <span data-i18n="map.activate">Kaart gebruiken</span>
+      </button>
+
+      <div class="map-attr">
+        <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">&copy; OpenStreetMap</a>
+        &nbsp;·&nbsp;
+        <a href="https://carto.com/attributions" target="_blank" rel="noopener noreferrer">CARTO</a>
+      </div>
+    </div>
+
+    <!-- ============ FEED ============ -->
+    <div class="feed-pane" id="feedPane">
+      <div class="feed-grip" aria-hidden="true"></div>
+
+      <div class="feed-kop">
+        <div class="kop-inner">
+          <div class="section-label hero-label">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span id="heroLabel" data-i18n="hero.labelPre">Nog niet vertrokken</span>
+          </div>
+
+          <div class="kop-rij">
+            <h1 id="heroTitle">Nog <em>even</em> geduld</h1>
+            <div class="dag-nav-groep" id="dagNav" hidden>
+              <button class="dag-nav" id="dagVorige" type="button" data-i18n-aria="nav.vorige" aria-label="Vorige dag">&larr;</button>
+              <button class="dag-nav" id="dagVolgende" type="button" data-i18n-aria="nav.volgende" aria-label="Volgende dag">&rarr;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Onderweg: één dag per scherm, links en rechts door de dagen. -->
+      <div class="dag-carousel" id="dagCarousel" hidden>
+        <div class="dag-track" id="dagTrack"></div>
+      </div>
+
+      <!-- Voor vertrek: aftellen en het plan. -->
+      <div class="feed-scroll" id="preScroll">
+        <div class="slide-inner">
+          <div id="teaserSlot"></div>
+          <div id="vandaagSlot"></div>
+
+          <section class="volg-sectie" id="planSectie" hidden>
+            <h2 data-i18n="plan.heading">Het <em>plan</em></h2>
+            <div id="planList"></div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Onderaan, als paginering onder de kaarten: metadata, geen kop. -->
+      <div class="voortgang">
+        <div class="voortgang-bar" id="voortgangBar" role="group" aria-label="Etappes"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Het verhaal van een dag, in een eigen venster -->
+  <div class="dag-popup" id="dagPopup" hidden>
+    <div class="popup-paneel" id="popupPaneel" role="dialog" aria-modal="true"></div>
+    <button class="lb-knop popup-sluit" id="popupSluit" type="button" data-i18n-aria="foto.sluit" aria-label="Sluiten">&times;</button>
+  </div>
+
+  <!-- Foto schermvullend -->
+  <div class="lightbox" id="lightbox" hidden>
+    <img id="lbImg" alt="" />
+    <button class="lb-knop lb-sluit" id="lbSluit" type="button" data-i18n-aria="foto.sluit" aria-label="Sluiten">&times;</button>
+    <button class="lb-knop lb-prev" id="lbPrev" type="button" data-i18n-aria="foto.vorige" aria-label="Vorige foto">&larr;</button>
+    <button class="lb-knop lb-next" id="lbNext" type="button" data-i18n-aria="foto.volgende" aria-label="Volgende foto">&rarr;</button>
+    <span class="lb-teller" id="lbTeller"></span>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ---------- i18n ---------- */
+    const I18N = {
+      nl: {
+        'nav.story': 'Ons verhaal',
+        'nav.press': 'In de pers',
+        'nav.volg': 'Volg ons',
+        'nav.contact': 'Contact',
+        'hero.labelLive': 'Live vanaf de Camino',
+        'hero.labelPre': 'Nog niet vertrokken',
+        'hero.labelKlaar': 'We zijn aangekomen',
+        'stat.dagen': 'Etappes af',
+        'nav.vorige': 'Vorige dag',
+        'nav.volgende': 'Volgende dag',
+        'nav.etappe': 'Etappe',
+        'foto.sluit': 'Sluiten',
+        'foto.vorige': 'Vorige foto',
+        'foto.volgende': 'Volgende foto',
+        'foto.open': 'Bekijk foto {n} groot',
+        'map.loading': 'Kaart laden',
+        'map.error': 'Kaart kon niet laden',
+        'map.activate': 'Kaart gebruiken',
+        'map.eyebrowPre': 'De route',
+        'map.eyebrowLive': 'Waar we nu zijn',
+        'legend.gelopen': 'Gelopen',
+        'legend.plan': 'Te gaan',
+        'dag.afstand': 'Afstand',
+        'dag.tijd': 'Onderweg',
+        'dag.hoogte': 'Hoogte',
+        'dag.lees': 'Lees het verhaal',
+        'plan.heading': 'Het <em>plan</em>',
+        'titel.dag': 'Dag',
+        'titel.van': 'van',
+        'titel.binnenkort': 'Binnenkort <em>lopen</em> we',
+        'titel.morgen': 'Morgen <em>beginnen</em> we',
+        'titel.vandaag': 'Vandaag <em>beginnen</em> we',
+        'dag.nietVertaald': '',
+        'vandaag.nu': 'Vandaag lopen we',
+        'vandaag.straks': 'Vanavond verschijnt hier de route.',
+        'van.km': 'van',
+        'map.reset': 'Bekijk de hele route',
+        'map.resetKort': 'Hele route',
+        'teaser.vertrek': 'Vertrek uit {plaats}',
+        'teaser.feiten': '{km} km · {n} dagen · te voet',
+        'tel.dagen': 'Dagen',
+        'tel.uren': 'Uren',
+        'tel.minuten': 'Minuten',
+        'tel.seconden': 'Seconden',
+      },
+      en: {
+        'nav.story': 'Our story',
+        'nav.press': 'Press',
+        'nav.volg': 'Follow us',
+        'nav.contact': 'Contact',
+        'hero.labelLive': 'Live from the Camino',
+        'hero.labelPre': 'Not on the road yet',
+        'hero.labelKlaar': 'We made it',
+        'stat.dagen': 'Stages done',
+        'nav.vorige': 'Previous day',
+        'nav.volgende': 'Next day',
+        'nav.etappe': 'Stage',
+        'foto.sluit': 'Close',
+        'foto.vorige': 'Previous photo',
+        'foto.volgende': 'Next photo',
+        'foto.open': 'View photo {n} full size',
+        'map.loading': 'Loading map',
+        'map.error': 'Map could not load',
+        'map.activate': 'Use the map',
+        'map.eyebrowPre': 'The route',
+        'map.eyebrowLive': 'Where we are now',
+        'legend.gelopen': 'Walked',
+        'legend.plan': 'To go',
+        'dag.afstand': 'Distance',
+        'dag.tijd': 'Moving time',
+        'dag.hoogte': 'Elevation',
+        'dag.lees': 'Read the story',
+        'plan.heading': 'The <em>plan</em>',
+        'titel.dag': 'Day',
+        'titel.van': 'of',
+        'titel.binnenkort': 'Soon we <em>walk</em>',
+        'titel.morgen': 'We start <em>tomorrow</em>',
+        'titel.vandaag': 'We start <em>today</em>',
+        'dag.nietVertaald': 'This update has not been translated yet.',
+        'vandaag.nu': 'Today we walk',
+        'vandaag.straks': 'The route appears here tonight.',
+        'van.km': 'of',
+        'map.reset': 'See the whole route',
+        'map.resetKort': 'Whole route',
+        'teaser.vertrek': 'Departure from {plaats}',
+        'teaser.feiten': '{km} km · {n} days · on foot',
+        'tel.dagen': 'Days',
+        'tel.uren': 'Hours',
+        'tel.minuten': 'Minutes',
+        'tel.seconden': 'Seconds',
+      },
+    };
+
+    let lang = localStorage.getItem('b2b-lang') === 'en' ? 'en' : 'nl';
+    /* Op undefined testen en niet op falsy: een vertaling die bewust leeg is
+       ('') zou met || terugvallen op het Nederlands en zo een half Nederlandse
+       zin opleveren. */
+    function t(key) {
+      const woordenboek = I18N[lang];
+      if (woordenboek && woordenboek[key] !== undefined) return woordenboek[key];
+      if (I18N.nl[key] !== undefined) return I18N.nl[key];
+      return key;
+    }
+    function loc() { return lang === 'en' ? 'en-GB' : 'nl-NL'; }
+
+    /* ---------- state ---------- */
+    let route = null;   // data/camino-route.json
+    let log = null;     // data/camino-log.json
+    let map = null;
+    const breed = window.matchMedia('(min-width: 1024px)');
+
+    /* ---------- helpers ---------- */
+    function fmtKm(km) {
+      return (Math.round(km * 10) / 10).toLocaleString(loc(), {
+        minimumFractionDigits: 1, maximumFractionDigits: 1,
+      });
+    }
+    function fmtTijd(sec) {
+      const u = Math.floor(sec / 3600);
+      const m = Math.round((sec % 3600) / 60);
+      return lang === 'en' ? u + 'h ' + m + 'm' : u + 'u ' + m + 'm';
+    }
+    function fmtDatum(iso) {
+      const d = new Date(iso + 'T12:00:00');
+      if (isNaN(d)) return iso;
+      return d.toLocaleDateString(loc(), { weekday: 'long', day: 'numeric', month: 'long' });
+    }
+    /* Hele dagen tussen vandaag en een datum. Middag als ankerpunt, zodat
+       zomertijd de uitkomst niet met een dag verschuift. */
+    function dagenTot(iso) {
+      const doel = new Date(iso + 'T12:00:00');
+      if (isNaN(doel)) return null;
+      const nu = new Date();
+      const vandaag = new Date(nu.getFullYear(), nu.getMonth(), nu.getDate(), 12, 0, 0);
+      return Math.round((doel - vandaag) / 86400000);
+    }
+    function vandaagISO() {
+      const d = new Date();
+      const p = n => String(n).padStart(2, '0');
+      return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+    }
+
+    function etappeCoords(etappe) {
+      if (!route || !etappe) return [];
+      return route.punten.slice(etappe.vanIndex, etappe.totIndex).map(p => p.lngLat);
+    }
+    function etappeVoorDag(nr) {
+      if (!route) return null;
+      return route.etappes.find(e => e.dag === nr) || null;
+    }
+    function dagenOplopend() {
+      return (log && Array.isArray(log.dagen) ? log.dagen.slice() : [])
+        .sort((a, b) => a.dag - b.dag);
+    }
+    /* Alle daadwerkelijk gelopen coordinaten aaneengeregen. Dagen zonder
+       GPX vallen terug op de geplande etappe, zodat de lijn niet onderbroken
+       raakt als er een dag mist. */
+    function gelopenCoords() {
+      const out = [];
+      for (const d of dagenOplopend()) {
+        const c = (d.track && Array.isArray(d.track.coords) && d.track.coords.length)
+          ? d.track.coords
+          : etappeCoords(etappeVoorDag(d.dag));
+        for (const p of c) out.push(p);
+      }
+      return out;
+    }
+    function totalen() {
+      let km = 0, hoogte = 0;
+      for (const d of dagenOplopend()) {
+        if (d.track) {
+          km += d.track.afstandKm || 0;
+          hoogte += d.track.hoogtemeters || 0;
+        } else {
+          const e = etappeVoorDag(d.dag);
+          if (e) km += e.km;
+        }
+      }
+      return { km: km, hoogte: hoogte };
+    }
+    function huidigeEtappe() {
+      if (!route) return null;
+      const vandaag = vandaagISO();
+      return route.etappes.find(e => e.datum === vandaag) || null;
+    }
+
+    /* ---------- statische teksten ---------- */
+    function applyStaticText() {
+      document.documentElement.lang = lang;
+      const ogLocale = document.getElementById('ogLocale');
+      if (ogLocale) ogLocale.setAttribute('content', lang === 'en' ? 'en_GB' : 'nl_NL');
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (I18N[lang] && I18N[lang][key] !== undefined) {
+          // Het woordenboek staat inline in dit bestand en komt nooit van
+          // buiten, dus innerHTML is hier veilig. Dagteksten uit de JSON
+          // gaan bewust via textContent.
+          el.innerHTML = I18N[lang][key];
+        }
+      });
+      // Knoppen zonder tekst (pijlen, kruisje) hebben alleen een aria-label.
+      // Die moet net zo goed meevertalen als de zichtbare tekst.
+      document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
+      });
+
+      document.querySelectorAll('.lang-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.lang === lang);
+      });
+    }
+
+    /* ---------- kop ---------- */
+    function totaalDagen() {
+      return route && route.etappes.length ? route.etappes.length : 6;
+    }
+
+    function renderKop() {
+      const dagen = dagenOplopend();
+      const label = document.getElementById('heroLabel');
+
+      if (dagen.length >= totaalDagen()) label.textContent = t('hero.labelKlaar');
+      else if (dagen.length) label.textContent = t('hero.labelLive');
+      else label.textContent = t('hero.labelPre');
+
+      // Voortgangsbalk: één knop per etappe. Een dag die er is, is klikbaar.
+      // Voor vertrek is er niets om door te bladeren, dus ook geen balk.
+      const bar = document.getElementById('voortgangBar');
+      bar.closest('.voortgang').hidden = !dagen.length;
+      bar.textContent = '';
+      const nu = huidigeEtappe();
+      for (let i = 1; i <= totaalDagen(); i++) {
+        const index = dagen.findIndex(d => d.dag === i);
+        const seg = document.createElement('button');
+        seg.type = 'button';
+        seg.dataset.index = String(index);
+        const etappe = etappeVoorDag(i);
+        seg.setAttribute('aria-label',
+          t('nav.etappe') + ' ' + i + (etappe ? ': ' + etappe.van + ' → ' + etappe.naar : ''));
+        if (index !== -1) {
+          seg.className = 'is-done';
+          seg.addEventListener('click', () => toonDag(index));
+        } else {
+          seg.disabled = true;
+          if (nu && nu.dag === i) seg.className = 'is-now';
+        }
+        bar.appendChild(seg);
+      }
+
+      renderMapInfo(dagen.length ? dagen[dagen.length - 1] : null);
+    }
+
+    /* De titel volgt de dag die je op dat moment leest, niet de laatste dag. */
+    function zetTitel() {
+      const titel = document.getElementById('heroTitle');
+      const dagen = dagenOplopend();
+
+      if (!dagen.length) {
+        // Aftellen. Bewust geen lege dagkaartjes, alleen hoeveel nachtjes nog.
+        const start = (log && log.startDatum) || (route && route.etappes[0] && route.etappes[0].datum);
+        const n = start ? dagenTot(start) : null;
+        if (n === null) titel.innerHTML = t('hero.labelPre');
+        else if (n <= 0) titel.innerHTML = t('titel.vandaag');
+        else if (n === 1) titel.innerHTML = t('titel.morgen');
+        // Geen dagenteller in de titel: de aftelklok in de teaser telt exact
+        // en twee net verschillende getallen boven elkaar lezen als een fout.
+        else titel.innerHTML = t('titel.binnenkort');
+        return;
+      }
+
+      const d = dagen[Math.min(actieveDag, dagen.length - 1)];
+      titel.innerHTML = t('titel.dag') + ' <em>' + d.dag + '</em> ' + t('titel.van') + ' ' + totaalDagen();
+    }
+
+    /* Het blokje op de kaart: vóór vertrek de hele route, onderweg de plek
+       waar we het laatst waren. */
+    function renderMapInfo(laatste) {
+      if (!route || !route.punten.length) return;
+      const eyebrow = document.getElementById('mapEyebrow');
+      const plaats = document.getElementById('mapPlaats');
+      const afstand = document.getElementById('mapAfstand');
+      const totaal = route.totaalKm || 123;
+
+      const cijfers = document.getElementById('mapCijfers');
+      const dagen = dagenOplopend();
+
+      if (laatste) {
+        const e = etappeVoorDag(laatste.dag);
+        eyebrow.textContent = t('map.eyebrowLive');
+        plaats.textContent = laatste.naar || (e && e.naar) || '';
+        // De totalen stonden hiervoor als losse statregel rechts. Die staan nu
+        // hier, en dan zou de regel eronder hetzelfde nog eens zeggen: de
+        // afstand staat al als eerste cijfer. Dus die regel gaat weg.
+        afstand.hidden = true;
+        cijfers.hidden = false;
+        document.getElementById('mapKm').textContent = fmtKm(totalen().km);
+        document.getElementById('mapKmLabel').textContent = t('van.km') + ' ' + totaal + ' km';
+        document.getElementById('mapEtappes').textContent = dagen.length + ' / ' + totaalDagen();
+        document.getElementById('mapReset').hidden = false;
+      } else {
+        eyebrow.textContent = t('map.eyebrowPre');
+        plaats.textContent = route.punten[0].naam + ' → ' + route.punten[route.punten.length - 1].naam;
+        afstand.hidden = false;
+        afstand.textContent = totaal + ' km';
+        cijfers.hidden = true;
+        document.getElementById('mapReset').hidden = true;
+      }
+    }
+
+    /* ---------- vandaag-strip ---------- */
+    function renderVandaag() {
+      const slot = document.getElementById('vandaagSlot');
+      slot.textContent = '';
+      const e = huidigeEtappe();
+      if (!e) return;
+      if (dagenOplopend().some(d => d.dag === e.dag)) return; // al gelogd
+
+      const div = document.createElement('div');
+      div.className = 'vandaag';
+      const b = document.createElement('b');
+      b.textContent = t('vandaag.nu') + ': ' + t('titel.dag').toLowerCase() + ' ' + e.dag + ', ' + e.van + ' → ' + e.naar + '.';
+      div.appendChild(b);
+      div.appendChild(document.createTextNode(' ' + t('vandaag.straks')));
+      slot.appendChild(div);
+    }
+
+    /* ---------- carrousel ---------- */
+    let actieveDag = 0;   // index in dagenOplopend()
+
+    function renderCarousel() {
+      const carousel = document.getElementById('dagCarousel');
+      const track = document.getElementById('dagTrack');
+      const nav = document.getElementById('dagNav');
+      const pre = document.getElementById('preScroll');
+      track.textContent = '';
+
+      const dagen = dagenOplopend();
+      carousel.hidden = dagen.length === 0;
+      nav.hidden = dagen.length < 2;
+      pre.hidden = dagen.length > 0;
+
+      if (!dagen.length) {
+        zetTitel();
+        return;
+      }
+
+      dagen.forEach((d, i) => track.appendChild(dagSlide(d, i)));
+
+      // Standaard op de laatste dag: dat is waar we nu zijn. Een link als
+      // /volg#dag-3 opent die dag, zodat je een losse dag kunt delen.
+      const uitHash = (location.hash.match(/^#dag-(\d+)$/) || [])[1];
+      const viaHash = uitHash ? dagen.findIndex(d => d.dag === Number(uitHash)) : -1;
+      if (viaHash !== -1) actieveDag = viaHash;
+      else actieveDag = Math.min(actieveDag || dagen.length - 1, dagen.length - 1);
+      toonDag(actieveDag, true);
+    }
+
+    function dagSlide(d, index) {
+      const etappe = etappeVoorDag(d.dag);
+      const slide = document.createElement('article');
+      slide.className = 'dag-slide';
+      slide.id = 'dag-' + d.dag; // deeplink: /volg#dag-3
+      slide.dataset.index = String(index);
+
+      const van = d.van || (etappe && etappe.van);
+      const naar = d.naar || (etappe && etappe.naar);
+      const fotos = Array.isArray(d.fotos) ? d.fotos.slice() : [];
+
+      // Alle foto's van de dag gestapeld in de kaart; de diashow wisselt ze.
+      // Geen eigen knop: de hele kaart klikt. Alleen de zichtbare foto heeft
+      // een alt, de rest is voor een schermlezer herhaling.
+      if (fotos.length) {
+        const held = document.createElement('div');
+        held.className = 'dag-hero';
+        const stippen = document.createElement('div');
+        stippen.className = 'hero-stippen';
+        stippen.setAttribute('aria-hidden', 'true');
+        fotos.forEach((src, i) => {
+          const img = document.createElement('img');
+          img.src = src;
+          img.decoding = 'async';
+          if (i === 0) img.classList.add('is-zicht');
+          img.alt = i === 0 ? dagAlt(d, van, naar, 0) : '';
+          const stip = document.createElement('span');
+          stip.className = 'hero-stip' + (i === 0 ? ' is-zicht' : '');
+          img.addEventListener('error', () => { img.remove(); stip.remove(); }, { once: true });
+          held.appendChild(img);
+          stippen.appendChild(stip);
+        });
+        if (fotos.length > 1) held.appendChild(stippen);
+        slide.appendChild(held);
+      }
+
+      const body = document.createElement('div');
+      body.className = 'dag-body';
+      slide.appendChild(body);
+      const inner = document.createElement('div');
+      inner.className = 'slide-inner';
+      body.appendChild(inner);
+
+      if (d.datum) {
+        const dt = document.createElement('p');
+        dt.className = 'dag-datum';
+        dt.textContent = fmtDatum(d.datum);
+        inner.appendChild(dt);
+      }
+
+      const titel = lang === 'en' ? (d.titel_en || d.titel) : d.titel;
+      if (titel) {
+        const h = document.createElement('h2');
+        h.className = 'dag-titel';
+        h.textContent = titel;
+        inner.appendChild(h);
+      }
+
+      if (van && naar) {
+        const r = document.createElement('p');
+        r.className = 'dag-route';
+        r.appendChild(document.createTextNode(van));
+        const pijl = document.createElement('span');
+        pijl.className = 'pijl';
+        pijl.setAttribute('aria-hidden', 'true');
+        pijl.textContent = ' → ';
+        r.appendChild(pijl);
+        r.appendChild(document.createTextNode(naar));
+        inner.appendChild(r);
+      }
+
+      const cijfers = dagCijfers(d, etappe);
+      if (cijfers) inner.appendChild(cijfers);
+
+      // De wenk dat er meer is; de hele kaart doet hetzelfde.
+      const lees = document.createElement('button');
+      lees.type = 'button';
+      lees.className = 'dag-lees';
+      lees.appendChild(document.createTextNode(t('dag.lees')));
+      const leesPijl = document.createElement('span');
+      leesPijl.className = 'pijl';
+      leesPijl.setAttribute('aria-hidden', 'true');
+      leesPijl.textContent = '→';
+      lees.appendChild(leesPijl);
+      inner.appendChild(lees);
+
+      // Eén klik, één betekenis: een buurkaart komt naar voren, de actieve
+      // dag opent zijn verhaal. Capture-fase, zodat niets in de kaart er
+      // tussendoor fietst.
+      slide.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        const i = Number(slide.dataset.index);
+        if (i !== actieveDag) toonDag(i);
+        else openDag(d);
+      }, true);
+
+      return slide;
+    }
+
+    function dagAlt(d, van, naar, i) {
+      return t('titel.dag') + ' ' + d.dag
+        + (van && naar ? ' — ' + van + ' naar ' + naar : '') + ' (' + (i + 1) + ')';
+    }
+
+    function dagCijfers(d, etappe) {
+      const rij = document.createElement('div');
+      rij.className = 'dag-cijfers';
+      if (d.track) {
+        rij.appendChild(cijfer(fmtKm(d.track.afstandKm) + ' km', t('dag.afstand')));
+        if (d.track.tijdSeconden) rij.appendChild(cijfer(fmtTijd(d.track.tijdSeconden), t('dag.tijd')));
+        if (d.track.hoogtemeters) rij.appendChild(cijfer(Math.round(d.track.hoogtemeters) + ' m', t('dag.hoogte')));
+      } else if (etappe) {
+        rij.appendChild(cijfer(etappe.km + ' km', t('dag.afstand')));
+      }
+      return rij.childElementCount ? rij : null;
+    }
+
+    /* ---------- het verhaal (leesvenster) ---------- */
+    let popupVanaf = null;   // waar de focus vandaan kwam
+
+    function openDag(d) {
+      const etappe = etappeVoorDag(d.dag);
+      const van = d.van || (etappe && etappe.van);
+      const naar = d.naar || (etappe && etappe.naar);
+      const fotos = Array.isArray(d.fotos) ? d.fotos.slice() : [];
+
+      const paneel = document.getElementById('popupPaneel');
+      paneel.textContent = '';
+
+      // Hier is de foto wel een knop: schermvullend bekijken.
+      if (fotos.length) {
+        const held = document.createElement('button');
+        held.type = 'button';
+        held.className = 'dag-hero';
+        held.setAttribute('aria-label', t('foto.open').replace('{n}', 1));
+        const img = document.createElement('img');
+        img.src = fotos[0];
+        img.decoding = 'async';
+        img.alt = dagAlt(d, van, naar, 0);
+        img.addEventListener('error', () => held.remove(), { once: true });
+        held.appendChild(img);
+        held.addEventListener('click', () => openFoto(fotos, 0, img.alt));
+        paneel.appendChild(held);
+      }
+
+      const body = document.createElement('div');
+      body.className = 'dag-body';
+      paneel.appendChild(body);
+
+      if (d.datum) {
+        const dt = document.createElement('p');
+        dt.className = 'dag-datum';
+        dt.textContent = fmtDatum(d.datum);
+        body.appendChild(dt);
+      }
+
+      const titel = lang === 'en' ? (d.titel_en || d.titel) : d.titel;
+      if (titel) {
+        const h = document.createElement('h2');
+        h.className = 'dag-titel';
+        h.textContent = titel;
+        body.appendChild(h);
+      }
+
+      if (van && naar) {
+        const r = document.createElement('p');
+        r.className = 'dag-route';
+        r.appendChild(document.createTextNode(van));
+        const pijl = document.createElement('span');
+        pijl.className = 'pijl';
+        pijl.setAttribute('aria-hidden', 'true');
+        pijl.textContent = ' → ';
+        r.appendChild(pijl);
+        r.appendChild(document.createTextNode(naar));
+        body.appendChild(r);
+      }
+
+      const cijfers = dagCijfers(d, etappe);
+      if (cijfers) body.appendChild(cijfers);
+
+      const tekst = lang === 'en' ? (d.tekst_en || d.tekst_nl) : d.tekst_nl;
+      if (tekst) {
+        // Lege regel scheidt alinea's, net als in data/teksten/dag-N.md.
+        tekst.split(/\n\s*\n/).forEach(stuk => {
+          const s = stuk.trim();
+          if (!s) return;
+          const p = document.createElement('p');
+          p.className = 'dag-tekst';
+          p.textContent = s;
+          body.appendChild(p);
+        });
+        // Mislukte de vertaling, dan tonen we het Nederlands: beter dan een
+        // leeg venster. Wel even zeggen, anders lijkt het een fout.
+        if (lang === 'en' && !d.tekst_en && d.tekst_nl) {
+          const note = document.createElement('p');
+          note.className = 'dag-nietvertaald';
+          note.textContent = t('dag.nietVertaald');
+          body.appendChild(note);
+        }
+      }
+
+      // De rest van de foto's; de eerste hangt al bovenaan het venster.
+      const rest = fotos.slice(1);
+      if (rest.length) {
+        const grid = document.createElement('div');
+        grid.className = 'dag-fotos';
+        rest.forEach((src, i) => {
+          const knop = document.createElement('button');
+          knop.type = 'button';
+          knop.className = 'dag-foto';
+          // Bij een oneven aantal krijgt de eerste de volle breedte, zodat
+          // er nooit een halve lege rij overblijft.
+          if (i === 0 && rest.length % 2 === 1) knop.classList.add('wide');
+          knop.setAttribute('aria-label', t('foto.open').replace('{n}', i + 2));
+
+          const img = document.createElement('img');
+          img.src = src;
+          img.loading = 'lazy';
+          img.decoding = 'async';
+          // Mist een foto (verkeerd pad, niet meegecommit), haal hem dan weg
+          // in plaats van een kapot beeldvlak te tonen.
+          img.addEventListener('error', () => knop.remove(), { once: true });
+          img.alt = dagAlt(d, van, naar, i + 1);
+
+          knop.appendChild(img);
+          knop.addEventListener('click', () => openFoto(fotos, i + 1, img.alt));
+          grid.appendChild(knop);
+        });
+        body.appendChild(grid);
+      }
+
+      popupVanaf = document.activeElement;
+      document.getElementById('dagPopup').hidden = false;
+      document.getElementById('popupPaneel').scrollTop = 0;
+      document.getElementById('popupSluit').focus();
+    }
+
+    function sluitDag() {
+      const popup = document.getElementById('dagPopup');
+      if (popup.hidden) return;
+      popup.hidden = true;
+      if (popupVanaf && document.contains(popupVanaf)) popupVanaf.focus();
+      popupVanaf = null;
+    }
+
+    /* De foto's in de actieve kaart wisselen vanzelf, elke vier seconden.
+       Alleen de kaart die je leest: de buren staan stil, en zodra je het
+       verhaal of een foto groot opent pauzeert de wissel. Bij
+       prefers-reduced-motion blijft de eerste foto gewoon staan. */
+    function bindDiashow() {
+      if (kalm.matches) return;
+      setInterval(() => {
+        if (document.hidden) return;
+        if (document.getElementById('dagCarousel').hidden) return;
+        if (!document.getElementById('dagPopup').hidden) return;
+        if (!document.getElementById('lightbox').hidden) return;
+        const held = document.querySelector('.dag-slide.is-huidig .dag-hero');
+        if (!held) return;
+        const beelden = [...held.querySelectorAll('img')];
+        if (beelden.length < 2) return;
+        const i = Math.max(0, beelden.findIndex(b => b.classList.contains('is-zicht')));
+        const volgende = (i + 1) % beelden.length;
+        beelden[i].classList.remove('is-zicht');
+        beelden[volgende].classList.add('is-zicht');
+        held.querySelectorAll('.hero-stip').forEach((s, n) => {
+          s.classList.toggle('is-zicht', n === volgende);
+        });
+      }, 4000);
+    }
+
+    function bindPopup() {
+      const popup = document.getElementById('dagPopup');
+      document.getElementById('popupSluit').addEventListener('click', sluitDag);
+      // Klikken naast het paneel sluit; het paneel zelf niet.
+      popup.addEventListener('click', e => { if (e.target === popup) sluitDag(); });
+      document.addEventListener('keydown', e => {
+        if (popup.hidden) return;
+        // Eerst de foto dicht, dan pas het verhaal: de lightbox ligt erboven.
+        if (!document.getElementById('lightbox').hidden) return;
+        if (e.key === 'Escape') sluitDag();
+      });
+    }
+
+    /* Springt naar dag `i`. `direct` slaat de animatie over, wat nodig is bij
+       de eerste render: dan is de breedte net gezet en zou smooth scrollen
+       een zichtbare veeg over alle dagen geven. */
+    /* Tijdens een geanimeerde sprong komt de track langs alle tussenliggende
+       dagen, en de scroll-listener zou de titel dan per dag laten flitsen
+       (dag 3 → 2 → 1). Zolang deze vlag staat kijkt de listener niet mee:
+       de titel staat al op het doel. Hij gaat er weer af zodra de scroll
+       tot rust komt. */
+    let negeerScroll = false;
+    let scrollRust = 0;
+
+    function toonDag(i, direct) {
+      const track = document.getElementById('dagTrack');
+      const n = track.children.length;
+      if (!n) return;
+
+      actieveDag = Math.max(0, Math.min(n - 1, i));
+      // De kaarten zijn smaller dan de track (de buren kijken mee), dus de
+      // doelpositie is het midden van de kaart in het midden van de track.
+      const kaart = track.children[actieveDag];
+      negeerScroll = !direct;
+      // Vangnet voor als er geen scroll-events komen (we staan er al).
+      clearTimeout(scrollRust);
+      if (!direct) scrollRust = setTimeout(() => { negeerScroll = false; }, 900);
+      track.scrollTo({
+        left: kaart.offsetLeft - (track.clientWidth - kaart.clientWidth) / 2,
+        behavior: direct ? 'auto' : 'smooth',
+      });
+      syncDag();
+    }
+
+    /* Titel, pijlen, balk en kaartaccent gelijkzetten met de zichtbare dag. */
+    function syncDag() {
+      const dagen = dagenOplopend();
+      if (!dagen.length) return;
+
+      zetTitel();
+
+      document.getElementById('dagVorige').disabled = actieveDag <= 0;
+      document.getElementById('dagVolgende').disabled = actieveDag >= dagen.length - 1;
+
+      document.querySelectorAll('.voortgang-bar button').forEach(b => {
+        const idx = Number(b.dataset.index);
+        b.classList.toggle('is-actief', idx === actieveDag);
+        // Donker tot en met de dag die je leest; de balk vertelt hetzelfde
+        // als de titel. Gelopen dagen erna houden hun lichte tint (is-done).
+        b.classList.toggle('is-tot', idx !== -1 && idx <= actieveDag);
+      });
+
+      document.querySelectorAll('.dag-track > .dag-slide').forEach((s, i) => {
+        s.classList.toggle('is-huidig', i === actieveDag);
+      });
+
+      markeerDagOpKaart(dagen[actieveDag]);
+      volgKaart(dagen[actieveDag]);
+    }
+
+    function bindCarousel() {
+      const track = document.getElementById('dagTrack');
+
+      // Bijhouden waar je met vegen belandt. De stap tussen twee kaarten is
+      // kaartbreedte + gap; die lezen we uit de eerste twee kaarten af in
+      // plaats van hem hier te herhalen.
+      track.addEventListener('scroll', () => {
+        if (negeerScroll) {
+          // Geanimeerde sprong onderweg: pas weer meekijken als hij stilstaat.
+          clearTimeout(scrollRust);
+          scrollRust = setTimeout(() => { negeerScroll = false; }, 150);
+          return;
+        }
+        const kids = track.children;
+        if (kids.length < 2) return;
+        const stap = kids[1].offsetLeft - kids[0].offsetLeft;
+        if (!stap) return;
+        const i = Math.max(0, Math.min(kids.length - 1, Math.round(track.scrollLeft / stap)));
+        if (i !== actieveDag) { actieveDag = i; syncDag(); }
+      }, { passive: true });
+
+      document.getElementById('dagVorige').addEventListener('click', () => toonDag(actieveDag - 1));
+      document.getElementById('dagVolgende').addEventListener('click', () => toonDag(actieveDag + 1));
+
+      // Bij het draaien van een telefoon of het verslepen van een venster
+      // klopt de scrollpositie niet meer: die is in pixels, niet in dagen.
+      window.addEventListener('resize', () => {
+        if (!document.getElementById('dagCarousel').hidden) toonDag(actieveDag, true);
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        if (!document.getElementById('lightbox').hidden) return; // die stuurt zichzelf
+        if (!document.getElementById('dagPopup').hidden) return; // eerst lezen
+        if (document.getElementById('dagCarousel').hidden) return;
+        if (e.key === 'ArrowLeft') { e.preventDefault(); toonDag(actieveDag - 1); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); toonDag(actieveDag + 1); }
+      });
+    }
+
+    /* ---------- foto schermvullend ---------- */
+    let lbFotos = [];
+    let lbIndex = 0;
+    let lbVanaf = null;   // waar de focus vandaan kwam
+
+    function openFoto(fotos, i, alt) {
+      lbFotos = fotos;
+      lbIndex = i;
+      lbVanaf = document.activeElement;
+      const box = document.getElementById('lightbox');
+      box.hidden = false;
+      document.getElementById('lbImg').alt = alt || '';
+      toonFoto(i);
+      document.getElementById('lbSluit').focus();
+    }
+    function toonFoto(i) {
+      if (!lbFotos.length) return;
+      lbIndex = (i + lbFotos.length) % lbFotos.length;
+      document.getElementById('lbImg').src = lbFotos[lbIndex];
+      document.getElementById('lbTeller').textContent = (lbIndex + 1) + ' / ' + lbFotos.length;
+      const eenFoto = lbFotos.length < 2;
+      document.getElementById('lbPrev').hidden = eenFoto;
+      document.getElementById('lbNext').hidden = eenFoto;
+    }
+    function sluitFoto() {
+      document.getElementById('lightbox').hidden = true;
+      document.getElementById('lbImg').removeAttribute('src');
+      // Terug naar de foto waar je vandaan kwam, anders staat de focus na het
+      // sluiten weer helemaal bovenaan de pagina.
+      if (lbVanaf && document.contains(lbVanaf)) lbVanaf.focus();
+      lbVanaf = null;
+    }
+    function bindLightbox() {
+      const box = document.getElementById('lightbox');
+      document.getElementById('lbSluit').addEventListener('click', sluitFoto);
+      document.getElementById('lbPrev').addEventListener('click', () => toonFoto(lbIndex - 1));
+      document.getElementById('lbNext').addEventListener('click', () => toonFoto(lbIndex + 1));
+      // Klikken naast de foto sluit. De knoppen en de foto zelf niet.
+      box.addEventListener('click', e => { if (e.target === box) sluitFoto(); });
+      document.addEventListener('keydown', e => {
+        if (box.hidden) return;
+        if (e.key === 'Escape') sluitFoto();
+        if (e.key === 'ArrowLeft') toonFoto(lbIndex - 1);
+        if (e.key === 'ArrowRight') toonFoto(lbIndex + 1);
+      });
+    }
+
+    function cijfer(waarde, label) {
+      const el = document.createElement('div');
+      const b = document.createElement('b');
+      b.textContent = waarde;
+      const i = document.createElement('i');
+      i.textContent = label;
+      el.appendChild(b); el.appendChild(i);
+      return el;
+    }
+
+    /* ---------- teaser (voor vertrek) ---------- */
+    /* De reis die eraan komt als kaart, PolarSteps-achtig: foto, vertrek,
+       route en een aftelklok die per seconde tikt. Verdwijnt zodra dag 1
+       er staat, dan neemt de carrousel het over. */
+    let telTimer = 0;
+    function renderTeaser() {
+      const slot = document.getElementById('teaserSlot');
+      slot.textContent = '';
+      clearInterval(telTimer);
+      if (!route || !route.punten.length || dagenOplopend().length) return;
+
+      const start = (log && log.startDatum) || (route.etappes[0] && route.etappes[0].datum);
+      if (!start) return;
+      // De starttijd staat in camino-log.json (startTijd), zodat de klok op
+      // nul staat als we echt gaan lopen en niet al om middernacht.
+      const doel = new Date(start + 'T' + ((log && log.startTijd) || '08:00') + ':00');
+      if (isNaN(doel)) return;
+
+      const kaart = document.createElement('div');
+      kaart.className = 'teaser-kaart';
+
+      // Beeld eerst: de tekst staat op de foto, niet eronder.
+      const held = document.createElement('div');
+      held.className = 'teaser-held';
+      const img = document.createElement('img');
+      img.src = 'founders-group.jpg';
+      img.alt = 'Max, Caesar en Stijn';
+      img.decoding = 'async';
+      // Zonder foto blijft de tekst staan, op het donkergroen van het merk.
+      img.addEventListener('error', () => {
+        img.remove();
+        held.classList.add('is-zonder-foto');
+      }, { once: true });
+      held.appendChild(img);
+
+      const tekst = document.createElement('div');
+      tekst.className = 'teaser-tekst';
+
+      // "Vertrek uit Valença": ze vliegen al een dag eerder, dus zonder
+      // plaatsnaam zou dit als de vliegdag gelezen kunnen worden.
+      const dt = document.createElement('p');
+      dt.className = 'teaser-eyebrow';
+      const plek = document.createElement('span');
+      plek.textContent = t('teaser.vertrek').replace('{plaats}', route.punten[0].naam);
+      const wanneer = document.createElement('span');
+      wanneer.textContent = fmtDatum(start) + ' · ' + ((log && log.startTijd) || '08:00');
+      // De losse punt staat buiten de nowrap-spans: daar mag de regel breken.
+      dt.append(plek, document.createTextNode(' · '), wanneer);
+      tekst.appendChild(dt);
+
+      const h = document.createElement('h2');
+      h.className = 'teaser-titel';
+      h.appendChild(document.createTextNode(route.punten[0].naam));
+      const pijl = document.createElement('span');
+      pijl.className = 'pijl';
+      pijl.setAttribute('aria-hidden', 'true');
+      pijl.textContent = ' → ';
+      h.appendChild(pijl);
+      h.appendChild(document.createTextNode(route.punten[route.punten.length - 1].naam));
+      tekst.appendChild(h);
+
+      const feiten = document.createElement('p');
+      feiten.className = 'teaser-feiten';
+      feiten.textContent = t('teaser.feiten')
+        .replace('{km}', route.totaalKm || 123)
+        .replace('{n}', totaalDagen());
+      tekst.appendChild(feiten);
+
+      held.appendChild(tekst);
+      kaart.appendChild(held);
+
+      const rij = document.createElement('div');
+      rij.className = 'teaser-tel';
+      const cellen = ['tel.dagen', 'tel.uren', 'tel.minuten', 'tel.seconden'].map(key => {
+        const cel = document.createElement('div');
+        cel.className = 'teaser-cel';
+        const b = document.createElement('b');
+        b.textContent = '0';
+        const label = document.createElement('span');
+        label.textContent = t(key);
+        cel.append(b, label);
+        rij.appendChild(cel);
+        return b;
+      });
+      kaart.appendChild(rij);
+      slot.appendChild(kaart);
+
+      const tik = () => {
+        const s = Math.max(0, Math.floor((doel - new Date()) / 1000));
+        cellen[0].textContent = String(Math.floor(s / 86400));
+        cellen[1].textContent = String(Math.floor((s % 86400) / 3600)).padStart(2, '0');
+        cellen[2].textContent = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+        cellen[3].textContent = String(s % 60).padStart(2, '0');
+      };
+      tik();
+      telTimer = setInterval(tik, 1000);
+    }
+
+    /* ---------- het plan ---------- */
+    /* Alleen zichtbaar zolang er nog niets gelopen is. Zodra dag 1 er staat
+       verdwijnt deze lijst: vooruitkijken naar lege dagen is precies wat we
+       niet willen tonen. */
+    function renderPlan() {
+      const sectie = document.getElementById('planSectie');
+      const lijst = document.getElementById('planList');
+      lijst.textContent = '';
+
+      if (!route || dagenOplopend().length) { sectie.hidden = true; return; }
+      sectie.hidden = false;
+
+      for (const e of route.etappes) {
+        const rij = document.createElement('div');
+        rij.className = 'plan-rij';
+
+        const nr = document.createElement('span');
+        nr.className = 'plan-nr';
+        nr.textContent = String(e.dag).padStart(2, '0');
+
+        const mid = document.createElement('div');
+        const r = document.createElement('span');
+        r.className = 'plan-route';
+        r.textContent = e.van + ' → ' + e.naar;
+        const dt = document.createElement('span');
+        dt.className = 'plan-datum';
+        dt.textContent = e.datum ? fmtDatum(e.datum) : '';
+        mid.appendChild(r); mid.appendChild(dt);
+
+        const km = document.createElement('span');
+        km.className = 'plan-km';
+        km.textContent = e.km + ' km';
+
+        rij.appendChild(nr); rij.appendChild(mid); rij.appendChild(km);
+        lijst.appendChild(rij);
+      }
+    }
+
+    /* ---------- kaart ---------- */
+    const MAPLIBRE_VERSION = '5.9.0';
+    const CARTO_STYLE = 'https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json';
+
+    /* Wacht bewust op ZOWEL de CSS als de JS. Als de JS eerder resolvet dan
+       de CSS mist MapLibre `.maplibregl-canvas { position: absolute }` en
+       belandt de canvas in de normale flow op 2x containergrootte, wat met
+       overflow:hidden een zwart blok oplevert. Zie index.html. */
+    let maplibrePromise = null;
+    function ensureMaplibre() {
+      if (maplibrePromise) return maplibrePromise;
+
+      const cssPromise = new Promise((resolve, reject) => {
+        const css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = 'https://unpkg.com/maplibre-gl@' + MAPLIBRE_VERSION + '/dist/maplibre-gl.css';
+        css.integrity = 'sha384-gNYNsUmuZqDYiT3gbirWTV5K7rt71RoveS/yXAaU09d4ZUmeDVTD3XoqB6uJAIFR';
+        css.crossOrigin = 'anonymous';
+        css.addEventListener('load', () => resolve(), { once: true });
+        css.addEventListener('error', () => reject(new Error('maplibre css load failed')), { once: true });
+        document.head.appendChild(css);
+      });
+
+      const jsPromise = new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = 'https://unpkg.com/maplibre-gl@' + MAPLIBRE_VERSION + '/dist/maplibre-gl.js';
+        s.integrity = 'sha384-81ppUWZZO+pveTPk4qU9cZuScEFULHfuOMHVJHFZ7xVBlWQTG1zsPrVIMGAl1WMb';
+        s.crossOrigin = 'anonymous';
+        s.async = true;
+        s.onload = () => resolve();
+        s.onerror = () => reject(new Error('maplibre js load failed'));
+        document.head.appendChild(s);
+      });
+
+      maplibrePromise = Promise.all([cssPromise, jsPromise]).then(() => {})
+        .catch(err => { maplibrePromise = null; throw err; });
+      return maplibrePromise;
+    }
+
+    /* MapLibre rendert een 0x0 canvas als de container nog geen afmetingen
+       heeft. Wacht tot dat wel zo is. */
+    function waitForLayout(el, maxFrames = 60) {
+      return new Promise(resolve => {
+        let frames = 0;
+        (function check() {
+          if ((el.offsetWidth > 0 && el.offsetHeight > 0) || frames >= maxFrames) { resolve(); return; }
+          frames += 1;
+          requestAnimationFrame(check);
+        })();
+      });
+    }
+
+    /* Ruime marge: de wash eet aan alle kanten een stuk van de kaart op, en
+       bovenaan ligt ook nog de navigatiebalk. */
+    function mapPadding() {
+      // Onder zit het kaartje "waar we nu zijn", dus daar moet meer ruimte
+      // overblijven dan boven. Op mobiel beslaat dat kaartje de volle breedte.
+      // Boven moet in beide gevallen de navbalk (72 px) eruit blijven, plus
+      // ruimte voor het label van Santiago dat op het bovenste punt hangt.
+      return breed.matches
+        ? { top: 110, bottom: 150, left: 120, right: 150 }
+        : { top: 105, bottom: 170, left: 44, right: 44 };
+    }
+
+    /* Zet de juiste paint-property afhankelijk van het layertype. */
+    function verf(layer, color, opacity) {
+      layer.paint = layer.paint || {};
+      const key = layer.type === 'background' ? 'background'
+        : layer.type === 'fill' ? 'fill'
+        : layer.type === 'line' ? 'line'
+        : null;
+      if (!key) return;
+      layer.paint[key + '-color'] = color;
+      if (opacity != null) layer.paint[key + '-opacity'] = opacity;
+    }
+
+    /* Haalt de CARTO-style op en herschildert hem in de huisstijl. De
+       nolabels-variant heeft geen symbol-layers, dus er is geen font-
+       probleem: plaatsnamen zetten we zelf als HTML-marker. */
+    async function huisstijlStyle() {
+      const res = await fetch(CARTO_STYLE);
+      if (!res.ok) throw new Error('style fetch failed: ' + res.status);
+      const style = await res.json();
+
+      // Prefix-filter in plaats van een harde lijst, zodat een style-update
+      // bij CARTO geen wegen terug laat lekken.
+      // boundary_country_outline is een halo van 8 px breed rond elke
+      // landsgrens. Ook doorzichtig gemaakt blijft dat een sluier die dwars
+      // door de kaart loopt en zwaarder weegt dan onze eigen route, dus die
+      // gaat er helemaal uit.
+      const WEG = /^(road_|tunnel_|bridge_|rail|aeroway-|building|boundary_(state|county|country_outline))/;
+      style.layers = style.layers.filter(l => !WEG.test(l.id));
+
+      for (const l of style.layers) {
+        if (l.id === 'background' || l.id.startsWith('landcover') || l.id.startsWith('landuse')) {
+          verf(l, '#fffef1', 1);
+        } else if (l.id.startsWith('park_')) {
+          verf(l, '#97a081', 0.1);
+        } else if (l.id.startsWith('waterway')) {
+          // Riviertjes zijn lijnen, net als onze route. Extra laag houden,
+          // anders vecht het beekjesnetwerk met de Camino om de aandacht.
+          verf(l, '#a7bdd5', 0.3);
+        } else if (l.id.startsWith('water')) {
+          verf(l, '#a7bdd5', 0.5);
+        } else if (l.id.startsWith('boundary_')) {
+          // Alleen de landsgrens blijft over. Die is het tonen waard, want dag
+          // 1 loopt van Portugal naar Spanje. Wel als haarlijn: CARTO zet hier
+          // een breedte per zoomniveau, en die overschrijven we met een vaste 1
+          // zodat de grens nooit met de route om de aandacht vecht.
+          verf(l, '#2a3723', 0.3);
+          l.paint['line-width'] = 1;
+        }
+      }
+      return style;
+    }
+
+    function lijnBron(coords) {
+      return {
+        type: 'geojson',
+        data: { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: coords } },
+      };
+    }
+
+    async function initMap() {
+      const pane = document.getElementById('mapPane');
+      const el = document.getElementById('volgMap');
+      const loading = document.getElementById('mapLoading');
+
+      try {
+        await ensureMaplibre();
+        await waitForLayout(el);
+        const style = await huisstijlStyle();
+
+        const geplandeCoords = route.punten.map(p => p.lngLat);
+        const gelopen = gelopenCoords();
+
+        map = new maplibregl.Map({
+          container: el,
+          style: style,
+          center: [-8.61, 42.46],
+          zoom: 8,
+          attributionControl: false,
+          dragRotate: false,
+          pitchWithRotate: false,
+          touchZoomRotate: false,
+        });
+
+        // Op mobiel plakt de kaart achter een scrollende feed: daar mag hij de
+        // scroll niet kapen, dus alles staat uit tot je hem aanklikt. Op
+        // desktop is de kaart een eigen kolom die zelf niet scrollt, dus daar
+        // is een gebaar op de kaart nooit een gebaar voor de pagina.
+        zetInteractie(false);
+
+        let gebouwd = false;
+        // Watchdog: op trage wifi (of als unpkg/CARTO onbereikbaar is) mag de
+        // bezoeker niet eindeloos naar "Kaart laden" blijven kijken.
+        const watchdog = setTimeout(() => {
+          if (gebouwd) return;
+          loading.className = 'map-error';
+          loading.textContent = t('map.error');
+        }, 15000);
+
+        map.on('load', () => {
+          gebouwd = true;
+          clearTimeout(watchdog);
+          loading.remove();
+
+          if (breed.matches) {
+            zetInteractie(true);
+            pane.classList.add('is-active');
+          }
+
+          // De volle route ligt eronder als lichte stippellijn: dat is het
+          // plan. De GPS-track ligt er donkergroen overheen: dat is wat we
+          // echt gelopen hebben.
+          map.addSource('route-gepland', lijnBron(geplandeCoords));
+          map.addLayer({
+            id: 'route-gepland-line',
+            type: 'line',
+            source: 'route-gepland',
+            layout: { 'line-cap': 'round', 'line-join': 'round' },
+            paint: {
+              'line-color': '#2a3723',
+              'line-width': 3,
+              'line-opacity': 0.38,
+              'line-dasharray': [1.4, 1.6],
+            },
+          });
+
+          if (gelopen.length) {
+            map.addSource('route-gelopen', lijnBron(gelopen));
+            // Cremen casing eronder, zodat de groene lijn ook over water en
+            // parken heen leesbaar blijft.
+            map.addLayer({
+              id: 'route-gelopen-casing',
+              type: 'line',
+              source: 'route-gelopen',
+              layout: { 'line-cap': 'round', 'line-join': 'round' },
+              paint: { 'line-color': '#fffef1', 'line-width': 9, 'line-opacity': 0.9 },
+            });
+            map.addLayer({
+              id: 'route-gelopen-line',
+              type: 'line',
+              source: 'route-gelopen',
+              layout: { 'line-cap': 'round', 'line-join': 'round' },
+              paint: { 'line-color': '#2a3723', 'line-width': 4 },
+            });
+          }
+
+          // Accent op de dag die je op dat moment leest. Leeg tot syncDag hem
+          // vult, zodat de laag alvast in de goede volgorde staat.
+          map.addSource('route-actief', lijnBron([]));
+          map.addLayer({
+            id: 'route-actief-gloed',
+            type: 'line',
+            source: 'route-actief',
+            layout: { 'line-cap': 'round', 'line-join': 'round' },
+            paint: { 'line-color': '#97a081', 'line-width': 18, 'line-opacity': 0.7, 'line-blur': 5 },
+          });
+          map.addLayer({
+            id: 'route-actief-line',
+            type: 'line',
+            source: 'route-actief',
+            layout: { 'line-cap': 'round', 'line-join': 'round' },
+            paint: { 'line-color': '#2a3723', 'line-width': 5 },
+          });
+
+          plaatsMarkers();
+          dagMarkers();
+          plaatsPositie(gelopen);
+
+          map.resize();
+          fitOp(geplandeCoords);
+          syncDag();
+
+          let frame = 0;
+          const ro = new ResizeObserver(() => {
+            if (frame) cancelAnimationFrame(frame);
+            frame = requestAnimationFrame(() => { frame = 0; if (map) map.resize(); });
+          });
+          ro.observe(el);
+        });
+
+        map.on('error', e => {
+          // Losse tile-fouten mogen de pagina niet slopen.
+          console.warn('[volg] maplibre:', e && e.error ? e.error.message : e);
+        });
+
+      } catch (err) {
+        console.error('[volg] kaart kon niet laden:', err);
+        loading.className = 'map-error';
+        loading.textContent = t('map.error');
+      }
+    }
+
+    function zetInteractie(aan) {
+      if (!map) return;
+      ['scrollZoom', 'dragPan', 'doubleClickZoom', 'keyboard'].forEach(n => {
+        if (map[n]) aan ? map[n].enable() : map[n].disable();
+      });
+    }
+
+    /* Alleen de plaatsen die een etappe beginnen of eindigen krijgen een
+       label; alle 19 punten labelen wordt een wirwar op mobiel. */
+    function plaatsMarkers() {
+      const belangrijk = new Set();
+      route.etappes.forEach(e => { belangrijk.add(e.vanIndex); belangrijk.add(e.totIndex - 1); });
+
+      route.punten.forEach((punt, i) => {
+        if (!belangrijk.has(i)) return;
+        const laatste = i === route.punten.length - 1;
+
+        const stip = document.createElement('div');
+        stip.className = 'map-punt';
+        new maplibregl.Marker({ element: stip, anchor: 'center' }).setLngLat(punt.lngLat).addTo(map);
+
+        const div = document.createElement('div');
+        // Zeven namen passen niet in de lage kaart op een telefoon: ze
+        // stapelen op elkaar. De tussenliggende krijgen daarom een klasse die
+        // CSS onder 1024px verbergt. Dat gaat via CSS en niet via een check
+        // hier, zodat het meteen klopt als je een venster smaller sleept.
+        div.className = 'map-place'
+          + (i === 0 || laatste ? ' is-endpoint' : ' is-tussen');
+        div.textContent = punt.naam;
+        // Santiago ligt rechtsboven in de bocht van de route, dus daar hangt
+        // een label rechts van de stip half buiten beeld. Alleen dat label
+        // klapt naar links; de rest staat rechts, wat rustiger leest.
+        // 18px opzij: de dagbolletjes (24px) en de positiemarker (20px) staan
+        // gecentreerd op hetzelfde punt, dus met minder ruimte valt het label
+        // achter de marker weg.
+        new maplibregl.Marker(laatste
+          ? { element: div, anchor: 'right', offset: [-18, 0] }
+          : { element: div, anchor: 'left', offset: [18, 0] })
+          .setLngLat(punt.lngLat)
+          .addTo(map);
+      });
+    }
+
+    /* Genummerd bolletje op het eindpunt van elke afgeronde dag. De laatste
+       dag krijgt er geen: daar staat de pulserende positiemarker. */
+    function dagMarkers() {
+      const dagen = dagenOplopend();
+      dagen.forEach((d, i) => {
+        if (i === dagen.length - 1) return;
+        const coords = (d.track && d.track.coords && d.track.coords.length)
+          ? d.track.coords
+          : etappeCoords(etappeVoorDag(d.dag));
+        if (!coords.length) return;
+
+        const el = document.createElement('div');
+        el.className = 'map-dag';
+        el.textContent = d.dag;
+        el.title = t('titel.dag') + ' ' + d.dag;
+        el.addEventListener('click', () => toonDag(i));
+        new maplibregl.Marker({ element: el, anchor: 'center' })
+          .setLngLat(coords[coords.length - 1])
+          .addTo(map);
+      });
+    }
+
+    function plaatsPositie(gelopen) {
+      if (!gelopen.length) return;
+      const el = document.createElement('div');
+      el.className = 'map-positie';
+      el.setAttribute('aria-label', 'Laatst bekende punt');
+      new maplibregl.Marker({ element: el, anchor: 'center' })
+        .setLngLat(gelopen[gelopen.length - 1])
+        .addTo(map);
+    }
+
+    function boundsVan(coords) {
+      return coords.reduce((b, c) => b.extend(c), new maplibregl.LngLatBounds(coords[0], coords[0]));
+    }
+    const kalm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function fitOp(coords, duur) {
+      if (!map || !coords.length) return;
+      map.fitBounds(boundsVan(coords), { padding: mapPadding(), duration: kalm.matches ? 0 : (duur || 0) });
+    }
+
+    function dagCoords(dag) {
+      return (dag && dag.track && dag.track.coords && dag.track.coords.length)
+        ? dag.track.coords
+        : etappeCoords(etappeVoorDag(dag && dag.dag));
+    }
+
+    /* Tekent de dag die je leest extra dik op de kaart. Het inzoomen zelf
+       zit in volgKaart, met een adempauze erin. */
+    function markeerDagOpKaart(dag) {
+      if (!map || !map.getSource('route-actief')) return;
+      const coords = dagCoords(dag);
+      map.getSource('route-actief').setData({
+        type: 'Feature', properties: {},
+        geometry: { type: 'LineString', coordinates: coords },
+      });
+    }
+
+    function zoomNaarDag(dag, duur) {
+      const coords = dagCoords(dag);
+      if (!map || !coords.length) return;
+      map.fitBounds(boundsVan(coords), {
+        padding: mapPadding(),
+        duration: kalm.matches ? 0 : (duur == null ? 900 : duur),
+      });
+    }
+
+    /* De kaart volgt de dag die je leest en zoomt er zachtjes naartoe. De
+       pauze vooraf zorgt dat snel doorbladeren geen stuiterende kaart geeft:
+       pas als je ergens blijft hangen komt de kaart achter je aan. De
+       allereerste keer wacht hij langer, zodat je eerst de hele route ziet
+       en de kaart daarna naar vandaag glijdt. */
+    let volgTimer = 0;
+    let eersteFocus = true;
+    function volgKaart(dag) {
+      if (!map || !map.getSource('route-actief')) return;
+      clearTimeout(volgTimer);
+      const pauze = eersteFocus ? 1600 : 550;
+      eersteFocus = false;
+      volgTimer = setTimeout(() => zoomNaarDag(dag, 1300), pauze);
+    }
+
+    /* ---------- nav ---------- */
+    function bindNav() {
+      const nav = document.getElementById('siteNav');
+      const btn = document.getElementById('navMenuBtn');
+      btn.addEventListener('click', () => {
+        const open = nav.classList.toggle('menu-open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+      document.addEventListener('click', e => {
+        if (!nav.contains(e.target)) {
+          nav.classList.remove('menu-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          nav.classList.remove('menu-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    /* ---------- init ---------- */
+    function renderAlles() {
+      // Bij een taalwissel worden de kaarten opnieuw opgebouwd; een open
+      // leesvenster zou dan naar een oude dag wijzen.
+      sluitDag();
+      applyStaticText();
+      renderKop();
+      renderVandaag();
+      renderTeaser();
+      renderCarousel();
+      renderPlan();
+    }
+
+    function bindLangButtons() {
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          lang = btn.dataset.lang === 'en' ? 'en' : 'nl';
+          localStorage.setItem('b2b-lang', lang);
+          renderAlles();
+        });
+      });
+    }
+
+    function bindMapGate() {
+      const pane = document.getElementById('mapPane');
+      document.getElementById('mapGate').addEventListener('click', () => {
+        pane.classList.add('is-active');
+        zetInteractie(true);
+      });
+    }
+
+    function bindMapReset() {
+      document.getElementById('mapReset').addEventListener('click', () => {
+        // Een nog wachtende dag-zoom zou dit meteen weer ongedaan maken.
+        clearTimeout(volgTimer);
+        if (route && route.punten.length) fitOp(route.punten.map(p => p.lngLat), 1100);
+      });
+    }
+
+    async function start() {
+      applyStaticText();
+      bindNav();
+      bindLangButtons();
+      bindMapGate();
+      bindMapReset();
+      bindCarousel();
+      bindPopup();
+      bindLightbox();
+      bindDiashow();
+
+      try {
+        // camino-log.json verandert elke dag, maar vercel.json cachet .json
+        // een etmaal (die regel staat er voor de Lottie-animatie van 42 KB).
+        // Die generieke regel matcht ook /data/, en het is niet gedocumenteerd
+        // welke regel wint als er twee matchen. Daarom niet op de header
+        // vertrouwen maar de URL uniek maken: een andere URL wordt door geen
+        // enkele cache hergebruikt, ook niet door de CDN. Granulariteit van
+        // een minuut, zodat snel achter elkaar herladen nog wel meeprofiteert.
+        const bust = '?t=' + Math.floor(Date.now() / 60000);
+        const opties = { cache: 'no-store' };
+        const [r, l] = await Promise.all([
+          fetch('data/camino-route.json' + bust, opties).then(res => res.json()),
+          fetch('data/camino-log.json' + bust, opties).then(res => res.json()).catch(() => ({ dagen: [] })),
+        ]);
+        route = r;
+        log = l;
+      } catch (err) {
+        // Bij file:// blokkeert de browser fetch. Draai een lokale server.
+        console.error('[volg] data laden mislukt:', err);
+        route = { punten: [], etappes: [], totaalKm: 123 };
+        log = { dagen: [] };
+      }
+
+      renderAlles();
+      if (route.punten.length) initMap();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start);
+    } else {
+      start();
+    }
+  })();
+  </script>
+</body>
+</html>

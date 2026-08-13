@@ -2697,6 +2697,8 @@
     <div class="nav-links" id="navLinks">
       <button class="nav-link" data-page="verhaal"    data-i18n="nav.story"      onclick="showPage('verhaal')"    type="button">Ons verhaal</button>
       <button class="nav-link" data-page="pers"       data-i18n="nav.press"      onclick="showPage('pers')"       type="button">In de pers</button>
+      <!-- Echte link, geen showPage(): /volg is een aparte pagina (volg.html). -->
+      <a class="nav-link" href="/volg" data-i18n="nav.volg">Volg ons</a>
       <div class="lang-toggle" role="group" aria-label="Language">
         <button class="lang-btn" data-lang="nl" type="button" aria-label="Nederlands">NL</button>
         <span class="lang-sep" aria-hidden="true">·</span>
@@ -3414,6 +3416,7 @@
         // nav
         'nav.story':        'Ons verhaal',
         'nav.press':        'In de pers',
+        'nav.volg':         'Volg ons',
         'nav.contact':      'Contact',
 
         // hero
@@ -3573,6 +3576,7 @@
         // nav
         'nav.story':        'Our story',
         'nav.press':        'Press',
+        'nav.volg':         'Follow us',
         'nav.contact':      'Contact',
 
         // hero (tagline + meta)
@@ -4578,6 +4582,17 @@
       requestAnimationFrame(() => playScrollIntro(name));
     }
 
+    /* Deze site is een SPA zonder router, dus /verhaal bestaat niet als URL.
+       Om vanaf volg.html (een echte losse pagina) terug te kunnen linken naar
+       een sectie pakken we bij het laden een hash op: /#verhaal, /#pers,
+       /#contact. Alleen lezen, niet schrijven: showPage laat de URL verder
+       ongemoeid, zodat het gedrag binnen de site blijft zoals het was. */
+    function startPagina() {
+      const PAGINAS = ['home', 'verhaal', 'pers', 'contact'];
+      const naam = (location.hash || '').replace(/^#/, '');
+      return PAGINAS.includes(naam) ? naam : 'home';
+    }
+
     // Coalesce scroll-driven nav state changes to one per frame so the
     // backdrop-filter on .site-nav.scrolled doesn't recalc on every event.
     (function () {
@@ -4798,7 +4813,7 @@
     initAnnouncementVideo();
     setupMarquees();
     setLanguage(detectInitialLang());
-    showPage('home');
+    showPage(startPagina());
     initScrollIntro();
   </script>
 </body>

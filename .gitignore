@@ -31,5 +31,9 @@ Thumbs.db
 # Lokale werk-/temp-output (screenshots, chrome-profielen, render-frames)
 .tmp/
 
+# Onbewerkte telefoonfoto's voor de Camino-blog. tools/sync-dag.mjs verkleint
+# deze naar photos/ (webp, EXIF gestript); alleen die versie hoort in git.
+photos-origineel/
+
 # Grote video-masters (te groot voor GitHub; alleen de gecomprimeerde web-versie committen)
 back_to_being_intro_video_v5.mp4
