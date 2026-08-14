@@ -440,50 +440,54 @@
     }
     .feed-kop h1 em { font-style: italic; color: var(--display-accent); }
 
-    /* Vorige en volgende dag. Naast de titel en niet over de inhoud heen,
-       zodat ze nooit een foto afdekken. */
-    .dag-nav-groep { display: inline-flex; gap: 0.45rem; }
-    .dag-nav-groep[hidden] { display: none; }
+    /* Bladeren door de dagen: twee ronde chevron-knoppen met daartussen een
+       pil met één stip per etappe. Eén gecentreerd groepje onder de kaarten,
+       zodat de kop alleen nog de titel draagt. De stippen volgen de dag die
+       je LEEST: tot en met die dag donker, gelopen dagen erna als lichte
+       tussentint, de rest bijna onzichtbaar. Zo zegt de rij hetzelfde als
+       "Dag 2 van 6" erboven. */
+    .voortgang {
+      flex: 0 0 auto;
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.8rem;
+      padding: 0.45rem clamp(18px, 7%, 72px) var(--space-4);
+    }
+    .voortgang[hidden] { display: none; }
     .dag-nav {
       width: 44px; height: 44px; flex: 0 0 44px;
       display: grid; place-items: center;
-      border: 1px solid var(--line); border-radius: var(--radius-pill);
-      background: var(--canvas); color: var(--tree);
-      font-size: 1rem; line-height: 1; cursor: pointer;
-      transition: background 0.2s, color 0.2s, transform 0.2s, opacity 0.2s;
+      border: 0; border-radius: 50%;
+      background: rgba(42, 55, 35, 0.08); color: var(--tree);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, opacity 0.2s;
     }
-    .dag-nav:hover:not(:disabled) { background: var(--tree); color: var(--canvas); transform: translateY(-2px); }
+    .dag-nav svg { display: block; }
+    .dag-nav:hover:not(:disabled) { background: var(--tree); color: var(--canvas); }
     .dag-nav:disabled { opacity: 0.28; cursor: default; }
-
-    /* Voortgang: één segment per etappe, klikbaar zodra die dag er is.
-       Metadata, geen dashboard: de knop houdt een klikvlak van 16px, maar
-       de getekende lijn is 5px en de kleuren blijven ver onder de titel in
-       gewicht. De lijn volgt de dag die je LEEST: tot en met die dag donker,
-       gelopen dagen erna als lichte tussentint, de rest bijna onzichtbaar.
-       Zo zegt de balk hetzelfde als "Dag 2 van 6" erboven.
-       Hij staat onder de kaarten, op kaartbreedte: paginering, geen kop. */
-    .voortgang {
-      flex: 0 0 auto;
-      padding: 0.45rem clamp(18px, 7%, 72px) var(--space-4);
+    .dag-nav[hidden] { display: none; }
+    .voortgang-bar {
+      display: flex; align-items: center;
+      height: 44px; padding: 0 0.6rem;
+      background: rgba(42, 55, 35, 0.08);
+      border-radius: var(--radius-pill);
     }
-    .voortgang-bar { display: flex; gap: 8px; }
     .voortgang-bar button {
-      flex: 1; height: 16px; padding: 0; border: 0;
+      width: 24px; height: 100%; padding: 0; border: 0;
       position: relative; background: none; cursor: pointer;
     }
     .voortgang-bar button::before {
-      content: ''; position: absolute; left: 0; right: 0;
-      top: 50%; height: 5px; transform: translateY(-50%);
-      border-radius: var(--radius-pill);
-      background: rgba(42, 55, 35, 0.1);
-      transition: background 0.25s ease, height 0.25s ease;
+      content: ''; position: absolute; top: 50%; left: 50%;
+      width: 8px; height: 8px; transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: rgba(42, 55, 35, 0.14);
+      transition: background 0.25s ease, transform 0.25s ease;
     }
     .voortgang-bar button:disabled { cursor: default; }
     .voortgang-bar button.is-done::before { background: rgba(151, 160, 129, 0.5); }
     .voortgang-bar button.is-now::before  { background: rgba(151, 160, 129, 0.3); }
     .voortgang-bar button.is-tot::before  { background: rgba(42, 55, 35, 0.78); }
     .voortgang-bar button.is-actief::before,
-    .voortgang-bar button:not(:disabled):hover::before { height: 8px; }
+    .voortgang-bar button:not(:disabled):hover::before { transform: translate(-50%, -50%) scale(1.3); }
     @media (prefers-reduced-motion: reduce) {
       .voortgang-bar button::before { transition: background 0.25s ease; }
     }
@@ -734,19 +738,15 @@
     }
 
     /* ---------- TEASER (voor vertrek) ---------- */
-    /* De reis die eraan komt, beeld eerst: de foto draagt de kaart en de
-       vertrekregel en de route staan op de foto, zoals een reis-teaser in
-       PolarSteps. De aftelklok is een rustige strip eronder, in dezelfde
-       verhouding foto-boven-inhoud-onder als de dagkaarten. */
-    .teaser-kaart {
-      margin-top: var(--space-4);
-      background: rgba(255, 255, 255, 0.55);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      box-shadow: 0 16px 36px rgba(42, 55, 35, 0.1);
-      overflow: hidden;
+    /* De reis die eraan komt, beeld eerst: de vertrekregel en de route staan
+       op de foto. Geen kaartrand of schaduw: de foto staat in de pagina zoals
+       elk beeld op de hoofdsite (afgerond, verder niets), met de aftelklok
+       er rustig onder. */
+    .teaser-kaart { margin-top: var(--space-4); }
+    .teaser-held {
+      position: relative; height: clamp(320px, 52vh, 560px);
+      border-radius: var(--radius); overflow: hidden;
     }
-    .teaser-held { position: relative; height: clamp(320px, 52vh, 560px); }
     .teaser-held img {
       position: absolute; inset: 0; width: 100%; height: 100%;
       object-fit: cover; object-position: 50% 30%; display: block;
@@ -783,20 +783,26 @@
       font-family: var(--subhead); font-size: 0.82rem; font-weight: 500;
       letter-spacing: 0.02em; color: rgba(255, 254, 241, 0.85);
     }
-    /* De klok tikt per seconde; tabular-nums houdt de rij stil. */
-    .teaser-tel { display: flex; }
-    .teaser-cel { flex: 1; padding: 0.95rem 0.5rem 1.05rem; text-align: center; }
-    .teaser-cel + .teaser-cel { border-left: 1px solid var(--line); }
+    /* De klok tikt per seconde; zelfde beeld als de aftelklok in de hero van
+       de hoofdsite: losse eenheden met lucht ertussen, geen lijntjes.
+       tabular-nums houdt de rij stil. */
+    .teaser-tel {
+      display: flex; justify-content: center; gap: 1.5rem;
+      padding: 1.3rem 0.5rem 0.4rem;
+    }
+    .teaser-cel {
+      display: flex; flex-direction: column; align-items: center;
+      min-width: 2.6ch;
+    }
     .teaser-cel b {
-      display: block;
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1;
+      font-size: clamp(1.6rem, 2.4vw, 2.4rem); line-height: 1;
       color: var(--ink); font-variant-numeric: tabular-nums;
     }
     .teaser-cel span {
-      display: block; margin-top: 0.35rem;
+      margin-top: 0.35rem;
       font-family: var(--subhead); font-size: 0.6rem; font-weight: 500;
-      letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
     }
 
     /* Geen socialsblok en geen footer op deze pagina: dit scherm gaat over
@@ -892,6 +898,7 @@
       .dag-body { padding: 1.15rem 1.15rem 1.5rem; }
       /* Beeld eerst, ook hier: staand kader, dichter bij een telefoonfoto. */
       .teaser-held { height: auto; aspect-ratio: 4/5; max-height: 62svh; }
+      .teaser-tel { gap: 1.15rem; }
     }
     @media (max-width: 760px) {
       .site-nav {
@@ -1027,11 +1034,7 @@
           </div>
 
           <div class="kop-rij">
-            <h1 id="heroTitle">Nog <em>even</em> geduld</h1>
-            <div class="dag-nav-groep" id="dagNav" hidden>
-              <button class="dag-nav" id="dagVorige" type="button" data-i18n-aria="nav.vorige" aria-label="Vorige dag">&larr;</button>
-              <button class="dag-nav" id="dagVolgende" type="button" data-i18n-aria="nav.volgende" aria-label="Volgende dag">&rarr;</button>
-            </div>
+            <h1 id="heroTitle">Volg hier onze <em>reis</em></h1>
           </div>
         </div>
       </div>
@@ -1051,7 +1054,9 @@
 
       <!-- Onderaan, als paginering onder de kaarten: metadata, geen kop. -->
       <div class="voortgang">
+        <button class="dag-nav" id="dagVorige" type="button" data-i18n-aria="nav.vorige" aria-label="Vorige dag"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M11 4 6 9l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="voortgang-bar" id="voortgangBar" role="group" aria-label="Etappes"></div>
+        <button class="dag-nav" id="dagVolgende" type="button" data-i18n-aria="nav.volgende" aria-label="Volgende dag"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m7 4 5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
     </div>
   </div>
@@ -1106,7 +1111,7 @@
         'dag.lees': 'Lees het verhaal',
         'titel.dag': 'Dag',
         'titel.van': 'van',
-        'titel.binnenkort': 'Binnenkort <em>lopen</em> we',
+        'titel.binnenkort': 'Volg hier onze <em>reis</em>',
         'titel.morgen': 'Morgen <em>beginnen</em> we',
         'titel.vandaag': 'Vandaag <em>beginnen</em> we',
         'dag.nietVertaald': '',
@@ -1151,7 +1156,7 @@
         'dag.lees': 'Read the story',
         'titel.dag': 'Day',
         'titel.van': 'of',
-        'titel.binnenkort': 'Soon we <em>walk</em>',
+        'titel.binnenkort': 'Follow our <em>journey</em> here',
         'titel.morgen': 'We start <em>tomorrow</em>',
         'titel.vandaag': 'We start <em>today</em>',
         'dag.nietVertaald': 'This update has not been translated yet.',
@@ -1408,13 +1413,14 @@
     function renderCarousel() {
       const carousel = document.getElementById('dagCarousel');
       const track = document.getElementById('dagTrack');
-      const nav = document.getElementById('dagNav');
       const pre = document.getElementById('preScroll');
       track.textContent = '';
 
       const dagen = dagenOplopend();
       carousel.hidden = dagen.length === 0;
-      nav.hidden = dagen.length < 2;
+      // Met één dag valt er niets te bladeren: dan alleen de stippenpil.
+      document.getElementById('dagVorige').hidden = dagen.length < 2;
+      document.getElementById('dagVolgende').hidden = dagen.length < 2;
       pre.hidden = dagen.length > 0;
 
       if (!dagen.length) {
