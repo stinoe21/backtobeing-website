@@ -499,16 +499,7 @@
     }
     .vandaag b { font-family: var(--subhead); font-weight: 600; color: var(--ink); }
 
-    /* ---------- SECTIES ---------- */
-    .volg-sectie { padding-top: var(--space-6); }
-    .volg-sectie > h2 {
-      font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.9rem, 3.4vw, 2.5rem); line-height: 1;
-      margin-bottom: var(--space-5);
-    }
-    .volg-sectie h2 em { font-style: italic; color: var(--display-accent); }
-
-    /* De kolom voor vertrek: aftellen en het plan. Scrollt gewoon. */
+    /* De kolom voor vertrek: aftellen. Scrollt gewoon. */
     .feed-scroll {
       flex: 1 1 auto; min-height: 0;
       overflow-y: auto; overscroll-behavior: contain;
@@ -808,25 +799,6 @@
       letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
     }
 
-    /* ---------- HET PLAN ---------- */
-    .plan-rij {
-      display: grid; grid-template-columns: 2.6rem 1fr auto;
-      align-items: baseline; gap: var(--space-3);
-      padding: 1rem 0; border-top: 1px solid var(--line);
-    }
-    .plan-rij:last-child { border-bottom: 1px solid var(--line); }
-    .plan-nr { font-family: var(--serif); font-size: 1.4rem; color: var(--route-main); }
-    .plan-route { font-family: var(--subhead); font-size: 0.98rem; font-weight: 500; }
-    .plan-datum {
-      display: block; margin-top: 0.2rem;
-      font-family: var(--subhead); font-size: 0.64rem; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
-    }
-    .plan-km {
-      font-family: var(--subhead); font-size: 0.78rem; font-weight: 500;
-      letter-spacing: 0.06em; color: var(--ink-soft); white-space: nowrap;
-    }
-
     /* Geen socialsblok en geen footer op deze pagina: dit scherm gaat over
        waar we zijn en wat we die dag meemaakten. Alles wat daarvan wegleidt
        staat op de hoofdsite, die via de nav bereikbaar blijft. */
@@ -845,7 +817,6 @@
       .map-pane {
         position: relative; top: auto;
         height: 100dvh;
-        border-right: 1px solid var(--line);
       }
       .map-wash {
         background:
@@ -1070,16 +1041,11 @@
         <div class="dag-track" id="dagTrack"></div>
       </div>
 
-      <!-- Voor vertrek: aftellen en het plan. -->
+      <!-- Voor vertrek: aftellen. -->
       <div class="feed-scroll" id="preScroll">
         <div class="slide-inner">
           <div id="teaserSlot"></div>
           <div id="vandaagSlot"></div>
-
-          <section class="volg-sectie" id="planSectie" hidden>
-            <h2 data-i18n="plan.heading">Het <em>plan</em></h2>
-            <div id="planList"></div>
-          </section>
         </div>
       </div>
 
@@ -1138,7 +1104,6 @@
         'dag.tijd': 'Onderweg',
         'dag.hoogte': 'Hoogte',
         'dag.lees': 'Lees het verhaal',
-        'plan.heading': 'Het <em>plan</em>',
         'titel.dag': 'Dag',
         'titel.van': 'van',
         'titel.binnenkort': 'Binnenkort <em>lopen</em> we',
@@ -1184,7 +1149,6 @@
         'dag.tijd': 'Moving time',
         'dag.hoogte': 'Elevation',
         'dag.lees': 'Read the story',
-        'plan.heading': 'The <em>plan</em>',
         'titel.dag': 'Day',
         'titel.van': 'of',
         'titel.binnenkort': 'Soon we <em>walk</em>',
@@ -2005,44 +1969,6 @@
       telTimer = setInterval(tik, 1000);
     }
 
-    /* ---------- het plan ---------- */
-    /* Alleen zichtbaar zolang er nog niets gelopen is. Zodra dag 1 er staat
-       verdwijnt deze lijst: vooruitkijken naar lege dagen is precies wat we
-       niet willen tonen. */
-    function renderPlan() {
-      const sectie = document.getElementById('planSectie');
-      const lijst = document.getElementById('planList');
-      lijst.textContent = '';
-
-      if (!route || dagenOplopend().length) { sectie.hidden = true; return; }
-      sectie.hidden = false;
-
-      for (const e of route.etappes) {
-        const rij = document.createElement('div');
-        rij.className = 'plan-rij';
-
-        const nr = document.createElement('span');
-        nr.className = 'plan-nr';
-        nr.textContent = String(e.dag).padStart(2, '0');
-
-        const mid = document.createElement('div');
-        const r = document.createElement('span');
-        r.className = 'plan-route';
-        r.textContent = e.van + ' → ' + e.naar;
-        const dt = document.createElement('span');
-        dt.className = 'plan-datum';
-        dt.textContent = e.datum ? fmtDatum(e.datum) : '';
-        mid.appendChild(r); mid.appendChild(dt);
-
-        const km = document.createElement('span');
-        km.className = 'plan-km';
-        km.textContent = e.km + ' km';
-
-        rij.appendChild(nr); rij.appendChild(mid); rij.appendChild(km);
-        lijst.appendChild(rij);
-      }
-    }
-
     /* ---------- kaart ---------- */
     const MAPLIBRE_VERSION = '5.9.0';
     const CARTO_STYLE = 'https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json';
@@ -2455,7 +2381,6 @@
       renderVandaag();
       renderTeaser();
       renderCarousel();
-      renderPlan();
     }
 
     function bindLangButtons() {
