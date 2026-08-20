@@ -541,6 +541,23 @@
        naar een zwart beeldmerk zonder onleesbaar te worden. Eigen kleur dus. */
     .press-logo-link img[src="haarlem105-logo.svg"] { height: 38px; filter: none; }
     .press-logo-link img[src="smarthealth-logo.png"] { height: 26px; }
+    .press-logo-link img[src="quote-logo.svg"] { height: 26px; }
+    /* Quote is nog niet gepubliceerd: logo zonder link, met een klein label.
+       Absoluut geplaatst zodat de rij logo's op dezelfde lijn blijft. */
+    .press-logo-soon { position: relative; display: inline-flex; align-items: center; }
+    .press-soon-tag {
+      position: absolute;
+      top: calc(100% + 7px);
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--subhead);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: rgba(22,22,22,0.5);
+    }
     a.press-logo-link { transition: opacity 0.2s; }
     a.press-logo-link:hover img { opacity: 1; }
     .press-name {
@@ -2882,8 +2899,12 @@
       <div class="partners-strip-inner">
         <div class="section-label" data-i18n="press.home.label">In de pers</div>
         <h2 class="partners-strip-heading" data-i18n="press.home.heading">Ze schreven er <em>al over.</em></h2>
-        <p class="press-lead" data-i18n="press.home.lead">Trouw, het Noordhollands Dagblad en Haarlem105 liepen al een stuk met ons mee. Lees hoe zij het plan beschrijven.</p>
+        <p class="press-lead" data-i18n="press.home.lead">Trouw, het Noordhollands Dagblad, Haarlem105 en SmartHealth schreven eerder over het plan. Hier lees je hun stukken.</p>
         <ul class="press-list">
+          <li class="press-logo-soon">
+            <span class="press-logo-link"><img src="quote-logo.svg" alt="Quote" loading="lazy" /></span>
+            <span class="press-soon-tag" data-i18n="press.home.soon">Binnenkort</span>
+          </li>
           <li>
             <a class="press-logo-link"
                href="https://www.noordhollandsdagblad.nl/regio/ijmond/caesar-21-stijn-24-en-max-26-gaan-de-camino-lopen-en-onderweg-met-ai-een-app-ontwikkelen-voor-mentale-gezondheid-de-wereld-wordt-ons-kantoor/152592259.html"
@@ -3536,6 +3557,7 @@
         'press.home.heading':     'Ze schreven er <em>al over.</em>',
         'press.home.cta':         'Alle artikelen &rarr;',
         'press.home.lead':        'Trouw, het Noordhollands Dagblad, Haarlem105 en SmartHealth schreven eerder over het plan. Hier lees je hun stukken.',
+        'press.home.soon':        'Binnenkort',
         'press.feature.label':    'Caesar op LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
         'press.feature.cta':      'Lees de volledige post op LinkedIn &rarr;',
@@ -3696,6 +3718,7 @@
         'press.home.heading':     'They wrote about <em>it already.</em>',
         'press.home.cta':         'All coverage &rarr;',
         'press.home.lead':        'Trouw, Noordhollands Dagblad, Haarlem105 and SmartHealth have written about the plan. Their pieces are here.',
+        'press.home.soon':        'Coming soon',
         'press.feature.label':    'Caesar on LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
         'press.feature.cta':      'Read the full post on LinkedIn (Dutch) &rarr;',
