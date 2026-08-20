@@ -805,9 +805,40 @@
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
     }
 
-    /* Geen socialsblok en geen footer op deze pagina: dit scherm gaat over
-       waar we zijn en wat we die dag meemaakten. Alles wat daarvan wegleidt
-       staat op de hoofdsite, die via de nav bereikbaar blijft. */
+    /* Onder de klok een klein socialsblok: zolang we niet vertrokken zijn
+       valt er op de kaart nog niets te volgen, en zijn dit de plekken waar
+       al wel iets staat. Verdwijnt samen met de teaser zodra dag 1 er is.
+       Geen footer op deze pagina: dit scherm gaat over waar we zijn en wat
+       we die dag meemaakten. Alles wat daarvan wegleidt staat op de
+       hoofdsite, die via de nav bereikbaar blijft. */
+    .teaser-socials {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0.75rem; padding: 1rem 0.5rem 0.2rem;
+    }
+    .teaser-socials-kop {
+      margin: 0;
+      font-family: var(--subhead); font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
+    }
+    .teaser-socials-rij {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;
+    }
+    .teaser-socials-rij a {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.5rem 0.95rem;
+      border: 1px solid var(--line); border-radius: var(--radius-pill);
+      font-family: var(--subhead); font-size: 0.78rem; font-weight: 500;
+      color: var(--ink); text-decoration: none;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .teaser-socials-rij a:hover,
+    .teaser-socials-rij a:focus-visible {
+      background: var(--route-wash); border-color: var(--grass); color: var(--tree);
+    }
+    .teaser-socials-rij svg { width: 15px; height: 15px; display: block; flex: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .teaser-socials-rij a { transition: none; }
+    }
 
     /* ============================================================
        DESKTOP: half kaart, half verhaal. Allebei schermhoog, en de enige
@@ -1126,6 +1157,7 @@
         'tel.uren': 'Uren',
         'tel.minuten': 'Minuten',
         'tel.seconden': 'Seconden',
+        'socials.kop': 'Volg ons ook op',
       },
       en: {
         'nav.story': 'Our story',
@@ -1171,6 +1203,7 @@
         'tel.uren': 'Hours',
         'tel.minuten': 'Minutes',
         'tel.seconden': 'Seconds',
+        'socials.kop': 'Follow us on',
       },
     };
 
@@ -1877,6 +1910,63 @@
       return el;
     }
 
+    /* ---------- socials ---------- */
+    /* De drie kanalen waar we de reis delen. Zelfde links en iconen als de
+       footer op de hoofdsite, zodat het een merk blijft. YouTube wijst naar
+       de film en niet naar een kanaal: dat is voorlopig wat er staat. */
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const SOCIALS = [
+      { naam: 'Instagram',
+        url: 'https://www.instagram.com/backtobeingtech/',
+        // Een vlak met gaten erin, dus evenodd; zonder die regel lopen de
+        // lens en de zoeker dicht.
+        even: true,
+        pad: 'M7.6 2h8.8A5.6 5.6 0 0 1 22 7.6v8.8a5.6 5.6 0 0 1-5.6 5.6H7.6A5.6 5.6 0 0 1 2 16.4V7.6A5.6 5.6 0 0 1 7.6 2Zm4.4 4.9a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2Zm0 2.35a2.75 2.75 0 1 1 0 5.5 2.75 2.75 0 0 1 0-5.5ZM17.5 5.2a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z' },
+      { naam: 'TikTok',
+        url: 'https://www.tiktok.com/@backtobeing.tech',
+        pad: 'M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z' },
+      { naam: 'YouTube',
+        url: 'https://www.youtube.com/watch?v=v32XZxS0QCA',
+        pad: 'M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z' }
+    ];
+
+    function bouwSocials() {
+      const blok = document.createElement('div');
+      blok.className = 'teaser-socials';
+
+      const kop = document.createElement('p');
+      kop.className = 'teaser-socials-kop';
+      kop.textContent = t('socials.kop');
+      blok.appendChild(kop);
+
+      const rij = document.createElement('div');
+      rij.className = 'teaser-socials-rij';
+      SOCIALS.forEach(kanaal => {
+        const a = document.createElement('a');
+        a.href = kanaal.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+
+        const svg = document.createElementNS(SVG_NS, 'svg');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('fill', 'currentColor');
+        svg.setAttribute('aria-hidden', 'true');
+        const p = document.createElementNS(SVG_NS, 'path');
+        p.setAttribute('d', kanaal.pad);
+        if (kanaal.even) {
+          p.setAttribute('fill-rule', 'evenodd');
+          p.setAttribute('clip-rule', 'evenodd');
+        }
+        svg.appendChild(p);
+
+        // De naam staat er als tekst naast, dus het icoon hoeft geen label.
+        a.append(svg, document.createTextNode(kanaal.naam));
+        rij.appendChild(a);
+      });
+      blok.appendChild(rij);
+      return blok;
+    }
+
     /* ---------- teaser (voor vertrek) ---------- */
     /* De reis die eraan komt als kaart, PolarSteps-achtig: foto, vertrek,
        route en een aftelklok die per seconde tikt. Verdwijnt zodra dag 1
@@ -1962,6 +2052,7 @@
         return b;
       });
       kaart.appendChild(rij);
+      kaart.appendChild(bouwSocials());
       slot.appendChild(kaart);
 
       const tik = () => {
