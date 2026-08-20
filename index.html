@@ -824,6 +824,7 @@
        beeldmerk wordt het onleesbaar. Eigen kleur dus. */
     .pers-outlet img[src="haarlem105-logo.svg"] { height: 30px; filter: none; opacity: 1; }
     .pers-outlet img[src="smarthealth-logo.png"] { height: 20px; }
+    .pers-outlet img[src="quote-logo.svg"] { height: 20px; }
     .pers-kind {
       font-family: var(--subhead);
       font-size: 0.66rem;
@@ -856,6 +857,20 @@
       transition: border-color 0.2s, gap 0.2s;
     }
     .pers-link:hover { border-bottom-color: var(--ink); gap: 0.8rem; }
+
+    /* Quote is aangekondigd maar nog niet online: zelfde ritme als de andere
+       items, alleen zonder link — niemand moet op dood hout klikken. */
+    .pers-soon {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--subhead);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: rgba(22,22,22,0.55);
+    }
+    .pers-item:nth-child(odd) .pers-soon { color: rgba(255,254,241,0.62); }
 
     /* Afsluiter voor journalisten: het enige donkere vlak op deze pagina. */
     .pers-kit {
@@ -3158,7 +3173,7 @@
     <section class="story-hero">
       <h1 data-i18n="pers.h1">Wat anderen<br><em>al schreven.</em></h1>
       <div class="story-hero-foot">
-        <p data-i18n="pers.lead">Kranten, radio en vakmedia pikten het plan op voordat we vertrokken. Hieronder staan de stukken die tot nu toe zijn verschenen.</p>
+        <p data-i18n="pers.lead">Kranten, magazines, de lokale omroep en vakmedia pikten het plan op voordat we vertrokken. Hieronder staan de stukken die tot nu toe zijn verschenen.</p>
         <p data-i18n="pers.note">Wil je ons spreken of beeldmateriaal gebruiken? Onderaan deze pagina staat hoe je ons bereikt.</p>
       </div>
     </section>
@@ -3207,6 +3222,20 @@
           <div class="pers-body">
             <h2 class="pers-title" data-i18n="pers.smarthealth.title">&ldquo;Drie makers bouwen al lopend app over hoe je je voelt&rdquo;</h2>
             <a class="pers-link" href="https://smarthealth.live/2026/07/30/drie-makers-bouwen-al-lopend-app-over-hoe-je-je-voelt/" target="_blank" rel="noopener noreferrer"><span data-i18n="pers.read">Lees het artikel</span> &rarr;</a>
+          </div>
+        </li>
+
+        <!-- Quote, augustus 2026. Kop is een citaat uit het stuk; zodra het
+             artikel online staat de <span class="pers-soon"> vervangen door een
+             <a class="pers-link" href="..."> zoals hierboven. -->
+        <li class="pers-item">
+          <div class="pers-outlet">
+            <img src="quote-logo.svg" alt="Quote" loading="lazy" />
+            <span class="pers-kind" data-i18n="pers.kind.magazine">Magazine</span>
+          </div>
+          <div class="pers-body">
+            <h2 class="pers-title" data-i18n="pers.quote.title">&ldquo;Mensen zitten de hele dag ongelukkig achter hun bureau, onder TL-licht naar hun laptop te staren&rdquo;</h2>
+            <span class="pers-soon" data-i18n="pers.soon">Verschijnt binnenkort</span>
           </div>
         </li>
       </ul>
@@ -3775,7 +3804,7 @@
     Object.assign(I18N.nl, {
       /* PAGINA: IN DE PERS */
       'pers.h1': 'Wat anderen<br><em>al schreven.</em>',
-      'pers.lead': 'Kranten, de lokale omroep en vakmedia pikten het plan op voordat we vertrokken. Hieronder staan de stukken die tot nu toe zijn verschenen.',
+      'pers.lead': 'Kranten, magazines, de lokale omroep en vakmedia pikten het plan op voordat we vertrokken. Hieronder staan de stukken die tot nu toe zijn verschenen.',
       'pers.note': 'Wil je ons spreken of beeldmateriaal gebruiken? Onderaan deze pagina staat hoe je ons bereikt.',
       'pers.kind.krant': 'Krant',
       'pers.kind.omroep': 'Lokale omroep',
@@ -3785,6 +3814,9 @@
       'pers.trouw.title': '&ldquo;Deze drie mannen maken een app tijdens de Camino: werken kan ook vanaf een bergpaadje in Spanje&rdquo;',
       'pers.h105.title': '&ldquo;Drie vrienden bouwen app voor mentale gezondheid tijdens Camino de Santiago&rdquo;',
       'pers.smarthealth.title': '&ldquo;Drie makers bouwen al lopend app over hoe je je voelt&rdquo;',
+      'pers.kind.magazine': 'Magazine',
+      'pers.soon': 'Verschijnt binnenkort',
+      'pers.quote.title': '&ldquo;Mensen zitten de hele dag ongelukkig achter hun bureau, onder TL-licht naar hun laptop te staren&rdquo;',
       'pers.kit.h': 'Meer weten over<br><em>ons verhaal?</em>',
       'pers.kit.p': 'We vertellen graag over de tocht, de app en het werk voor stichting MIND. Er staat een perskit voor je klaar met foto&rsquo;s in hoge resolutie, logo&rsquo;s, feiten over het project en citaten die je kunt gebruiken. Vraag hem aan en je hebt hem binnen een werkdag.',
       'pers.kit.cta': 'Naar contact &rarr;',
@@ -3832,7 +3864,7 @@
     Object.assign(I18N.en, {
       /* PAGE: PRESS */
       'pers.h1': 'What others<br><em>already wrote.</em>',
-      'pers.lead': 'Newspapers, local broadcasting and trade press picked up the plan before we left. The pieces published so far are listed below.',
+      'pers.lead': 'Newspapers, magazines, local broadcasting and trade press picked up the plan before we left. The pieces published so far are listed below.',
       'pers.note': 'Want to talk to us or use our images? The bottom of this page has how to reach us.',
       'pers.kind.krant': 'Newspaper',
       'pers.kind.omroep': 'Local broadcaster',
@@ -3842,6 +3874,9 @@
       'pers.trouw.title': '&ldquo;These three men are making an app during the Camino: you can work from a mountain path in Spain too&rdquo;',
       'pers.h105.title': '&ldquo;Three friends build a mental health app during the Camino de Santiago&rdquo;',
       'pers.smarthealth.title': '&ldquo;Three makers are building an app about how you feel, while walking&rdquo;',
+      'pers.kind.magazine': 'Magazine',
+      'pers.soon': 'Coming soon',
+      'pers.quote.title': '&ldquo;People sit at their desks unhappy all day, staring at a laptop under fluorescent light&rdquo;',
       'pers.kit.h': 'Want to know more<br><em>about our story?</em>',
       'pers.kit.p': 'We are happy to talk about the walk, the app and the work for the MIND foundation. A press kit is ready for you with high resolution photos, logos, project facts and quotes you can use. Ask for it and you will have it within one working day.',
       'pers.kit.cta': 'Go to contact &rarr;',
