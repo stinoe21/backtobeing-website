@@ -924,16 +924,32 @@
 
       /* De balk moet ruim boven de rand van het dagpaneel blijven: dat schuift
          34 px over de kaart heen en zou hem anders afknippen. */
+      /* En zo laag mogelijk: op een telefoon is de kaart maar 48svh en elke
+         regel die de balk neemt, gaat van de kaart af. Dus één regel, geen
+         omslag, kleinere cijfers, en de knop naast de cijfers in plaats van
+         eronder. De plaatsnaam mag afbreken met puntjes; de cijfers niet. */
       .map-balk {
-        left: 0.9rem; right: 0.9rem; bottom: 2.9rem;
-        gap: 0.7rem; padding: 0.55rem 0.6rem 0.55rem 0.9rem;
+        left: 0.75rem; right: 0.75rem; bottom: 2.6rem;
+        flex-wrap: nowrap; gap: 0.6rem;
+        padding: 0.45rem 0.45rem 0.45rem 0.8rem;
       }
-      .map-info { gap: 0.7rem; }
-      .map-info .eyebrow { margin-bottom: 0.2rem; font-size: 0.58rem; }
-      .map-info strong { font-size: 1.3rem; }
-      .map-cijfers { gap: 1rem; padding-left: 0.7rem; }
-      .map-cijfers b { font-size: 1.1rem; }
-      .map-reset { padding: 0.55rem 0.95rem; }
+      .map-info { flex: 1 1 auto; min-width: 0; gap: 0.6rem; }
+      .map-plek { flex: 1 1 auto; min-width: 0; }
+      .map-info .eyebrow {
+        margin-bottom: 0.1rem; font-size: 0.52rem; letter-spacing: 0.16em;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .map-info strong {
+        font-size: 1.05rem;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .map-info .distance { margin-top: 0.15rem; font-size: 0.58rem; }
+      .map-cijfers { flex: none; gap: 0.8rem; padding-left: 0.6rem; }
+      .map-cijfers > div { gap: 0.12rem; }
+      .map-cijfers b { font-size: 0.95rem; }
+      .map-cijfers i { font-size: 0.5rem; letter-spacing: 0.1em; }
+      .map-extra { gap: 0.5rem; }
+      .map-reset { padding: 0.5rem 0.7rem; font-size: 0.56rem; letter-spacing: 0.08em; }
       .map-reset .reset-lang { display: none; }
       .map-reset .reset-kort { display: inline; }
 
