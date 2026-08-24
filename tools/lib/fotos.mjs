@@ -45,8 +45,17 @@ export async function verwerkFotos(dagNr, projectRoot, { forceer = false } = {})
   let overgeslagen = 0;
 
   for (let i = 0; i < bestanden.length; i++) {
-    const nr = String(i + 1).padStart(2, '0');
-    const uitNaam = `${nr}.webp`;
+    // De naam volgt het origineel en niet de plek in de rij. Een volgnummer
+    // gaat mis zodra er een foto tussenuit valt: 03.webp wijst dan naar een
+    // andere foto, terwijl browsers hem een dag lang gecachet houden
+    // (vercel.json: max-age=86400 op afbeeldingen). Dan blijft de oude foto
+    // staan. Met deze naam hoort een URL voor altijd bij een foto; de
+    // volgorde staat in de lijst in camino-log.json.
+    const uitNaam = bestanden[i]
+      .replace(/\.[^.]+$/, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') + '.webp';
     const uitPad = join(doel, uitNaam);
     const relatief = `photos/dag-${dagNr}/${uitNaam}`;
 
