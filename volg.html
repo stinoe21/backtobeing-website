@@ -638,25 +638,6 @@
       transform: translateY(-1px);
       box-shadow: 0 10px 24px rgba(42, 55, 35, 0.22);
     }
-    /* Twee acties naast elkaar zolang ze passen, daaronder als de kaart
-       daar te smal voor is. */
-    .dag-acties {
-      margin-top: var(--space-3);
-      display: flex; flex-wrap: wrap; gap: 0.55rem;
-    }
-    .dag-lees { margin-top: 0; }
-    /* De foto's zijn de tweede keuze op deze kaart: zelfde pil, maar open,
-       zodat het verhaal de gevulde knop houdt. */
-    .dag-fotos-lees {
-      display: inline-flex; align-items: center;
-      padding: 0.72rem 1.25rem;
-      border: 1px solid var(--tree); border-radius: var(--radius-pill);
-      background: none; color: var(--tree); cursor: pointer;
-      font-family: var(--subhead); font-size: 0.68rem; font-weight: 600;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      transition: background 0.2s, color 0.2s;
-    }
-    .dag-fotos-lees:hover { background: var(--tree); color: var(--canvas); }
     .dag-lees .pijl { transition: transform 0.2s; }
     .dag-slide:hover .dag-lees .pijl { transform: translateX(3px); }
     @media (prefers-reduced-motion: reduce) {
@@ -964,13 +945,6 @@
          zodat de foto de ruimte houdt. */
       .dag-track { gap: 12px; padding: 4px clamp(14px, 5.5%, 28px) 22px; }
       .dag-slide .dag-cijfers { display: none; }
-      /* De foto krijgt op de kaart de resthoogte, dus alles eronder telt.
-         Twee knoppen onder elkaar drukten hem tot niets samen: hier passen
-         ze compacter naast elkaar. */
-      .dag-acties { gap: 0.4rem; }
-      .dag-slide .dag-lees, .dag-slide .dag-fotos-lees {
-        padding: 0.6rem 0.85rem; font-size: 0.6rem; letter-spacing: 0.1em;
-      }
       .dag-popup .dag-hero img { aspect-ratio: 16/9; }
       .dag-body { padding: 1.15rem 1.15rem 1.5rem; }
       /* Beeld eerst, ook hier: staand kader, dichter bij een telefoonfoto. */
@@ -1196,7 +1170,6 @@
         'dag.tijd': 'Onderweg',
         'dag.hoogte': 'Hoogte',
         'dag.lees': 'Lees het verhaal',
-        'dag.fotos': 'Bekijk de foto\'s',
         'titel.dag': 'Dag',
         'titel.van': 'van',
         'titel.dag0': 'De <em>reisdag</em>',
@@ -1241,7 +1214,6 @@
         'dag.tijd': 'Moving time',
         'dag.hoogte': 'Elevation',
         'dag.lees': 'Read the story',
-        'dag.fotos': 'See the photos',
         'titel.dag': 'Day',
         'titel.van': 'of',
         'titel.dag0': 'The <em>travel day</em>',
@@ -1635,19 +1607,7 @@
       leesPijl.textContent = '→';
       lees.appendChild(leesPijl);
 
-      const acties = document.createElement('div');
-      acties.className = 'dag-acties';
-      acties.appendChild(lees);
-
-      // Staat er altijd, ook bij een dag die nog geen foto's heeft: de kaart
-      // hoort er hetzelfde uit te zien, wat er verder al dan niet in de log
-      // staat. Zonder foto's doet een klik niets (zie de handler hieronder).
-      const fotoKnop = document.createElement('button');
-      fotoKnop.type = 'button';
-      fotoKnop.className = 'dag-fotos-lees';
-      fotoKnop.textContent = t('dag.fotos');
-      acties.appendChild(fotoKnop);
-      inner.appendChild(acties);
+      inner.appendChild(lees);
 
       // Eén klik, één betekenis: een buurkaart komt naar voren, de actieve
       // dag opent zijn verhaal. Capture-fase, zodat niets in de kaart er
@@ -1656,15 +1616,8 @@
         e.preventDefault();
         e.stopPropagation();
         const i = Number(slide.dataset.index);
-        if (i !== actieveDag) { toonDag(i); return; }
-        // Deze listener staat in de capture-fase en vangt dus ook kliks op de
-        // knoppen: welke van de twee het was, beslissen we hier.
-        if (e.target.closest('.dag-fotos-lees')) {
-          // Geen foto's: dan liever niets dan een leeg lichtvenster.
-          if (fotos.length) openFoto(fotos, 0, dagAlt(d, van, naar, 0));
-          return;
-        }
-        openDag(d);
+        if (i !== actieveDag) toonDag(i);
+        else openDag(d);
       }, true);
 
       return slide;
