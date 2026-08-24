@@ -249,20 +249,36 @@
     .map-pane:hover .map-gate, .map-gate:focus-visible { opacity: 1; }
     .map-pane.is-active .map-gate { display: none; }
 
-    /* Lichte variant van de kaart-kaart op Ons verhaal: zelfde opbouw
-       (eyebrow, plaats, afstand), maar in canvas zodat hij niet als een
-       zwart blok op een lichte kaart ligt. */
-    .map-info {
+    /* Eén doorlopende balk langs de onderrand van de kaart in plaats van drie
+       losse kaartjes die om dezelfde hoek vochten. Lichte variant van de
+       kaart-kaart op Ons verhaal: in canvas, zodat hij niet als een zwart blok
+       op een lichte kaart ligt. */
+    .map-balk {
       position: absolute; z-index: 4;
-      left: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem);
-      max-width: min(84%, 24rem);
-      padding: 0.85rem 1.1rem;
+      left: clamp(1rem, 3vw, 2rem);
+      right: clamp(1rem, 3vw, 2rem);
+      bottom: clamp(1rem, 3vw, 2rem);
+      display: flex; flex-wrap: wrap; align-items: center;
+      gap: 0.7rem clamp(0.9rem, 2.5vw, 1.8rem);
+      padding: 0.7rem 0.8rem 0.7rem 1.1rem;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: rgba(255,254,241,0.9);
       backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
       box-shadow: 0 12px 34px rgba(42,55,35,0.08);
+      /* De kaart blijft sleepbaar onder de balk door; alleen de knop vangt. */
       pointer-events: none;
+    }
+    /* Krimpt niet mee: liever de legenda en de knop een regel lager dan een
+       plaatsnaam die per letter afbreekt. */
+    .map-info {
+      display: flex; align-items: center; gap: clamp(0.9rem, 2.5vw, 1.6rem);
+      flex: 0 0 auto;
+    }
+    .map-plek { min-width: 0; }
+    .map-extra {
+      margin-left: auto; flex: none;
+      display: flex; align-items: center; gap: clamp(0.8rem, 2vw, 1.2rem);
     }
     .map-info .eyebrow {
       display: block; margin-bottom: 0.35rem;
@@ -281,11 +297,12 @@
     }
     .map-info .distance[hidden] { display: none; }
     /* De totalen stonden eerst als losse statregel naast de kaart. Daar zeiden
-       ze hetzelfde als dit kaartje eronder, dus ze wonen nu hier. */
+       ze hetzelfde als de plaatsnaam ernaast, dus ze wonen nu hier. In de balk
+       staan ze naast de plaats en niet eronder: de scheidslijn kantelt mee. */
     .map-cijfers {
-      display: flex; gap: 1.5rem;
-      margin-top: 0.8rem; padding-top: 0.8rem;
-      border-top: 1px solid var(--line);
+      display: flex; gap: clamp(1rem, 2vw, 1.5rem);
+      padding-left: clamp(0.9rem, 2vw, 1.4rem);
+      border-left: 1px solid var(--line);
     }
     .map-cijfers > div { display: flex; flex-direction: column; gap: 0.2rem; }
     .map-cijfers b {
@@ -299,18 +316,17 @@
     }
     .map-cijfers[hidden] { display: none; }
 
-    /* Rechtsonder, gespiegeld aan het kaartje links: de weg terug nadat de
-       kaart met je is meegezoomd naar één dag. */
+    /* Aan het eind van de balk: de weg terug nadat de kaart met je is
+       meegezoomd naar één dag. De enige plek in de balk die klikt. */
     .map-reset {
-      position: absolute; z-index: 4;
-      right: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem);
+      flex: none;
       display: inline-flex; align-items: center; gap: 0.5rem;
       padding: 0.65rem 1.1rem;
       border: 1px solid var(--line); border-radius: var(--radius-pill);
       background: rgba(255,254,241,0.94); color: var(--tree); cursor: pointer;
       font-family: var(--subhead); font-size: 0.64rem; font-weight: 600;
       letter-spacing: 0.12em; text-transform: uppercase;
-      box-shadow: 0 10px 28px rgba(42,55,35,0.12);
+      pointer-events: auto;
       transition: background 0.2s, color 0.2s, transform 0.2s;
     }
     .map-reset:hover { background: var(--tree); color: var(--canvas); transform: translateY(-2px); }
@@ -320,12 +336,11 @@
     .map-reset .reset-kort { display: none; }
 
     .map-legend {
-      position: absolute; z-index: 4;
-      right: clamp(1rem, 3vw, 2rem); bottom: calc(clamp(1rem, 3vw, 2rem) + 3.2rem);
+      flex: none;
       display: flex; flex-direction: column; gap: 0.4rem;
       font-family: var(--subhead); font-size: 0.62rem; font-weight: 500;
       letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
-      pointer-events: none; text-align: right;
+      text-align: right;
     }
     .map-legend > span { display: inline-flex; align-items: center; justify-content: flex-end; gap: 0.5rem; }
     .map-legend i { width: 20px; height: 0; display: block; flex: 0 0 20px; }
@@ -911,20 +926,18 @@
          inzoomt, en zou hier alleen maar over elkaar heen vallen. */
       .map-place.is-tussen { display: none; }
 
-      /* Het kaartje moet ruim boven de rand van het dagpaneel blijven: dat
-         schuift 34 px over de kaart heen en zou het anders afknippen. Niet de
-         volle breedte: dan bedekt het de halve kaart, en de kaart is hier al
-         klein genoeg. */
-      .map-info {
-        left: 0.9rem; right: auto; bottom: 2.9rem;
-        max-width: min(62vw, 244px); padding: 0.7rem 1rem;
+      /* De balk moet ruim boven de rand van het dagpaneel blijven: dat schuift
+         34 px over de kaart heen en zou hem anders afknippen. */
+      .map-balk {
+        left: 0.9rem; right: 0.9rem; bottom: 2.9rem;
+        gap: 0.7rem; padding: 0.55rem 0.6rem 0.55rem 0.9rem;
       }
+      .map-info { gap: 0.7rem; }
       .map-info .eyebrow { margin-bottom: 0.2rem; font-size: 0.58rem; }
       .map-info strong { font-size: 1.3rem; }
-      .map-cijfers { gap: 1.75rem; margin-top: 0.5rem; padding-top: 0.5rem; }
+      .map-cijfers { gap: 1rem; padding-left: 0.7rem; }
       .map-cijfers b { font-size: 1.1rem; }
-      /* Op één lijn met het kaartje links, in de vrije rechteronderhoek. */
-      .map-reset { right: 0.9rem; bottom: 2.9rem; padding: 0.55rem 0.95rem; }
+      .map-reset { padding: 0.55rem 0.95rem; }
       .map-reset .reset-lang { display: none; }
       .map-reset .reset-kort { display: inline; }
 
@@ -1023,30 +1036,41 @@
 
       <div class="map-loading" id="mapLoading" data-i18n="map.loading">Kaart laden</div>
 
-      <div class="map-info">
-        <span class="eyebrow" id="mapEyebrow" data-i18n="map.eyebrowPre">De route</span>
-        <strong id="mapPlaats">Valença &rarr; Santiago de Compostela</strong>
-        <span class="distance" id="mapAfstand">123 km</span>
-        <div class="map-cijfers" id="mapCijfers" hidden>
-          <!-- Het label is "van 123 km" en wordt in JS gezet: het totaal komt
-               uit camino-route.json en "van" moet meevertalen. -->
-          <div><b id="mapKm">0</b><i id="mapKmLabel">van 123 km</i></div>
-          <div><b id="mapEtappes">0 / 6</b><i data-i18n="stat.dagen">Etappes af</i></div>
+      <!-- Alles wat over de kaart heen staat zit in een balk langs de
+           onderrand: waar we zijn en de cijfers links, de legenda en de weg
+           terug rechts. -->
+      <div class="map-balk">
+        <div class="map-info">
+          <div class="map-plek">
+            <span class="eyebrow" id="mapEyebrow" data-i18n="map.eyebrowPre">De route</span>
+            <strong id="mapPlaats">Valença &rarr; Santiago de Compostela</strong>
+            <span class="distance" id="mapAfstand">123 km</span>
+          </div>
+          <div class="map-cijfers" id="mapCijfers" hidden>
+            <!-- Het label is "van 123 km" en wordt in JS gezet: het totaal komt
+                 uit camino-route.json en "van" moet meevertalen. -->
+            <div><b id="mapKm">0</b><i id="mapKmLabel">van 123 km</i></div>
+            <div><b id="mapEtappes">0 / 6</b><i data-i18n="stat.dagen">Etappes af</i></div>
+          </div>
+        </div>
+
+        <!-- Legenda en knop horen bij elkaar: als de balk te smal wordt gaan
+             ze samen naar een tweede regel, in plaats van los van elkaar. -->
+        <div class="map-extra">
+          <div class="map-legend" aria-hidden="true">
+            <span><span data-i18n="legend.gelopen">Gelopen</span><i class="lg-done"></i></span>
+            <span><span data-i18n="legend.plan">Te gaan</span><i class="lg-plan"></i></span>
+          </div>
+
+          <!-- De kaart volgt de dag die je leest; deze knop zoomt weer uit naar
+               de hele route. Alleen zichtbaar zodra er gelopen wordt: daarvoor
+               staat de kaart al op de hele route. -->
+          <button class="map-reset" id="mapReset" type="button" hidden>
+            <span class="reset-lang" data-i18n="map.reset">Bekijk de hele route</span>
+            <span class="reset-kort" data-i18n="map.resetKort">Hele route</span>
+          </button>
         </div>
       </div>
-
-      <div class="map-legend" aria-hidden="true">
-        <span><span data-i18n="legend.gelopen">Gelopen</span><i class="lg-done"></i></span>
-        <span><span data-i18n="legend.plan">Te gaan</span><i class="lg-plan"></i></span>
-      </div>
-
-      <!-- De kaart volgt de dag die je leest; deze knop zoomt weer uit naar
-           de hele route. Alleen zichtbaar zodra er gelopen wordt: daarvoor
-           staat de kaart al op de hele route. -->
-      <button class="map-reset" id="mapReset" type="button" hidden>
-        <span class="reset-lang" data-i18n="map.reset">Bekijk de hele route</span>
-        <span class="reset-kort" data-i18n="map.resetKort">Hele route</span>
-      </button>
 
       <button class="map-gate" id="mapGate" type="button">
         <span data-i18n="map.activate">Kaart gebruiken</span>
