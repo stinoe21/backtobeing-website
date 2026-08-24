@@ -964,6 +964,13 @@
          zodat de foto de ruimte houdt. */
       .dag-track { gap: 12px; padding: 4px clamp(14px, 5.5%, 28px) 22px; }
       .dag-slide .dag-cijfers { display: none; }
+      /* De foto krijgt op de kaart de resthoogte, dus alles eronder telt.
+         Twee knoppen onder elkaar drukten hem tot niets samen: hier passen
+         ze compacter naast elkaar. */
+      .dag-acties { gap: 0.4rem; }
+      .dag-slide .dag-lees, .dag-slide .dag-fotos-lees {
+        padding: 0.6rem 0.85rem; font-size: 0.6rem; letter-spacing: 0.1em;
+      }
       .dag-popup .dag-hero img { aspect-ratio: 16/9; }
       .dag-body { padding: 1.15rem 1.15rem 1.5rem; }
       /* Beeld eerst, ook hier: staand kader, dichter bij een telefoonfoto. */

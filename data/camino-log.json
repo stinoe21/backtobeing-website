@@ -10,7 +10,18 @@
       "titel_en": "Getting to the start",
       "van": "Schiphol",
       "naar": "Valença",
-      "fotos": [],
+      "fotos": [
+        "photos/dag-0/01.webp",
+        "photos/dag-0/02.webp",
+        "photos/dag-0/03.webp",
+        "photos/dag-0/04.webp",
+        "photos/dag-0/05.webp",
+        "photos/dag-0/06.webp",
+        "photos/dag-0/07.webp",
+        "photos/dag-0/08.webp",
+        "photos/dag-0/09.webp",
+        "photos/dag-0/10.webp"
+      ],
       "tekst_nl": "Onze reis begon vroeg. Heel vroeg…\n\nOm **02:00 uur** vertrokken we van huis richting Schiphol, waarna we rond **05:00 uur** het vliegtuig naar Porto namen.\n\nEenmaal aangekomen in Porto hadden we nog ongeveer vijf uur voordat onze trein vertrok. Genoeg tijd dus om rustig door de straatjes van de stad te lopen en alvast een beetje van Portugal te genieten. Daarna stapten we op de trein richting **Valença**, een plaatsje helemaal in het noorden van Portugal, vlak bij de Spaanse grens.\n\nNa ongeveer twee uur in de trein (en hier en daar wat slaap ingehaald te hebben) kwamen we aan in Valença. Daar maakten we ons klaar voor de eerste echte wandeldag. We bespraken onze strategie, bekeken de weersvoorspelling en zagen dat er later in de ochtend veel regen werd verwacht.\n\nHet plan was daarom simpel: **vroeg vertrekken en proberen vóór de regen uit te lopen.** We hebben besloten om de wekker om **04:45 uur** te zetten. Morgen kan het avontuur beginnen.",
       "tekst_en": "Our journey started early. Very early…\n\nAt **02:00** we left home for Schiphol, and by **05:00** we were on the plane to Porto.\n\nOnce in Porto we had about five hours before our train left. Plenty of time to wander through the streets of the city and get a first taste of Portugal. After that we boarded the train to **Valença**, a small town right in the north of Portugal, close to the Spanish border.\n\nSome two hours later (and a bit of sleep caught up on along the way) we arrived in Valença. There we got ready for the first real walking day. We talked through our strategy, checked the forecast and saw that a lot of rain was expected later in the morning.\n\nSo the plan was simple: **leave early and try to stay ahead of the rain.** We decided to set the alarm for **04:45**. Tomorrow the adventure can begin."
     },
@@ -1682,5 +1693,5 @@
       "naar": "O Porriño"
     }
   ],
-  "laatsteUpdate": "2026-08-24T16:15:49.785Z"
+  "laatsteUpdate": "2026-08-24T16:57:04.389Z"
 }
