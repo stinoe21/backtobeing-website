@@ -458,6 +458,7 @@
       display: grid; place-items: center;
       border: 0; border-radius: 50%;
       background: rgba(42, 55, 35, 0.08); color: var(--tree);
+      box-shadow: inset 0 0 0 1px rgba(42, 55, 35, 0.16);
       cursor: pointer;
       transition: background 0.2s, color 0.2s, opacity 0.2s;
     }
@@ -466,30 +467,30 @@
     .dag-nav:disabled { opacity: 0.28; cursor: default; }
     .dag-nav[hidden] { display: none; }
     .voortgang-bar {
-      display: flex; align-items: center;
-      height: 44px; padding: 0 0.6rem;
+      display: flex; align-items: center; gap: 0.1rem;
+      height: 44px; padding: 0 0.35rem;
       background: rgba(42, 55, 35, 0.08);
       border-radius: var(--radius-pill);
     }
+    /* De dagen staan als cijfer in de balk en niet als bolletje: dan zie je
+       meteen waar je bent, hoeveel dagen er zijn en waar je heen klikt. Een
+       dag die er nog niet is blijft staan, maar grijs en niet aanklikbaar. */
     .voortgang-bar button {
-      width: 24px; height: 100%; padding: 0; border: 0;
-      position: relative; background: none; cursor: pointer;
+      min-width: 28px; height: 32px; padding: 0 0.3rem;
+      border: 0; border-radius: var(--radius-pill);
+      background: none; color: var(--tree); cursor: pointer;
+      font-family: var(--subhead); font-size: 0.76rem; font-weight: 600;
+      font-variant-numeric: tabular-nums; line-height: 1;
+      transition: background 0.2s ease, color 0.2s ease;
     }
-    .voortgang-bar button::before {
-      content: ''; position: absolute; top: 50%; left: 50%;
-      width: 8px; height: 8px; transform: translate(-50%, -50%);
-      border-radius: 50%;
-      background: rgba(42, 55, 35, 0.14);
-      transition: background 0.25s ease, transform 0.25s ease;
-    }
-    .voortgang-bar button:disabled { cursor: default; }
-    .voortgang-bar button.is-done::before { background: rgba(151, 160, 129, 0.5); }
-    .voortgang-bar button.is-now::before  { background: rgba(151, 160, 129, 0.3); }
-    .voortgang-bar button.is-tot::before  { background: rgba(42, 55, 35, 0.78); }
-    .voortgang-bar button.is-actief::before,
-    .voortgang-bar button:not(:disabled):hover::before { transform: translate(-50%, -50%) scale(1.3); }
+    .voortgang-bar button:disabled { color: rgba(42, 55, 35, 0.32); cursor: default; }
+    .voortgang-bar button:not(:disabled):hover { background: rgba(42, 55, 35, 0.14); }
+    /* De dag die vandaag gelopen wordt maar nog niet gepost is: een randje,
+       zodat hij zich onderscheidt van de dagen die nog moeten komen. */
+    .voortgang-bar button.is-now { box-shadow: inset 0 0 0 1px rgba(42, 55, 35, 0.24); }
+    .voortgang-bar button.is-actief { background: var(--tree); color: var(--canvas); }
     @media (prefers-reduced-motion: reduce) {
-      .voortgang-bar button::before { transition: background 0.25s ease; }
+      .voortgang-bar button { transition: color 0.2s ease; }
     }
 
     /* Statusregel voor de dag die nu bezig is. Bewust één regel en geen
@@ -897,7 +898,14 @@
       .voortgang {
         padding: 0.35rem clamp(14px, 5.5%, 28px)
                  calc(0.85rem + env(safe-area-inset-bottom, 0px));
+        gap: 0.5rem;
       }
+      /* Zeven cijfers plus twee pijlen is krap op een smalle telefoon: daar
+         schuiven de knoppen dichter op elkaar en worden ze een maat kleiner.
+         Nog steeds ruim boven de 24 px die een vinger nodig heeft, want de
+         hele knop is raakvlak en niet alleen het cijfer. */
+      .voortgang-bar { gap: 0; padding: 0 0.25rem; }
+      .voortgang-bar button { min-width: 26px; padding: 0 0.2rem; font-size: 0.72rem; }
 
       /* Alleen begin- en eindpunt: de rest wordt leesbaar zodra je op een dag
          inzoomt, en zou hier alleen maar over elkaar heen vallen. */
@@ -1346,16 +1354,30 @@
       bar.closest('.voortgang').hidden = !gelopen.length;
       bar.textContent = '';
       const nu = huidigeEtappe();
+
+      // De reisdag heeft geen etappenummer, maar hoort wel in de balk: anders
+      // is hij alleen met de pijl terug te vinden.
+      const reisdag = dagen.findIndex(d => d.dag === 0);
+      if (reisdag !== -1) {
+        const seg = document.createElement('button');
+        seg.type = 'button';
+        seg.dataset.index = String(reisdag);
+        seg.textContent = '0';
+        seg.setAttribute('aria-label', t('titel.dag0Kort'));
+        seg.addEventListener('click', () => toonDag(reisdag));
+        bar.appendChild(seg);
+      }
+
       for (let i = 1; i <= totaalDagen(); i++) {
         const index = dagen.findIndex(d => d.dag === i);
         const seg = document.createElement('button');
         seg.type = 'button';
         seg.dataset.index = String(index);
+        seg.textContent = String(i);
         const etappe = etappeVoorDag(i);
         seg.setAttribute('aria-label',
           t('nav.etappe') + ' ' + i + (etappe ? ': ' + etappe.van + ' → ' + etappe.naar : ''));
         if (index !== -1) {
-          seg.className = 'is-done';
           seg.addEventListener('click', () => toonDag(index));
         } else {
           seg.disabled = true;
@@ -1824,9 +1846,6 @@
       document.querySelectorAll('.voortgang-bar button').forEach(b => {
         const idx = Number(b.dataset.index);
         b.classList.toggle('is-actief', idx === actieveDag);
-        // Donker tot en met de dag die je leest; de balk vertelt hetzelfde
-        // als de titel. Gelopen dagen erna houden hun lichte tint (is-done).
-        b.classList.toggle('is-tot', idx !== -1 && idx <= actieveDag);
       });
 
       document.querySelectorAll('.dag-track > .dag-slide').forEach((s, i) => {
