@@ -604,16 +604,30 @@
     .dag-slide .dag-body { flex: 0 0 auto; }
 
     /* Geen knop-doos maar een stille wenk: de hele kaart is al klikbaar. */
+    /* De hele kaart opent het verhaal, maar dat zie je niet. Daarom staat de
+       actie er als een echte knop: gevuld in het donkergroen, dezelfde pil
+       als elders op de site. */
     .dag-lees {
       margin-top: var(--space-3);
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0; border: 0; background: none; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      padding: 0.72rem 1.25rem;
+      border: 1px solid var(--tree); border-radius: var(--radius-pill);
+      background: var(--tree); color: var(--canvas); cursor: pointer;
       font-family: var(--subhead); font-size: 0.68rem; font-weight: 600;
-      letter-spacing: 0.14em; text-transform: uppercase; color: var(--tree);
+      letter-spacing: 0.14em; text-transform: uppercase;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    /* Hover op de kaart, niet alleen op de knop: de kaart is de knop. */
+    .dag-slide:hover .dag-lees, .dag-lees:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(42, 55, 35, 0.22);
     }
     .dag-lees .pijl { transition: transform 0.2s; }
     .dag-slide:hover .dag-lees .pijl { transform: translateX(3px); }
-    @media (prefers-reduced-motion: reduce) { .dag-slide:hover .dag-lees .pijl { transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .dag-slide:hover .dag-lees, .dag-lees:hover { transform: none; }
+      .dag-slide:hover .dag-lees .pijl { transform: none; }
+    }
 
     .dag-datum {
       font-family: var(--subhead); font-size: 0.66rem; font-weight: 500;
