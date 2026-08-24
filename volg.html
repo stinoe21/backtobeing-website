@@ -721,7 +721,20 @@
       from { opacity: 0; transform: translateY(16px) scale(0.98); }
     }
     @media (prefers-reduced-motion: reduce) { .popup-paneel { animation: none; } }
-    .popup-sluit { top: clamp(0.75rem, 3vw, 2rem); right: clamp(0.75rem, 3vw, 2rem); }
+    /* Anders dan in de lightbox staat dit kruisje niet op een donkere
+       overlay maar (zeker op mobiel, waar het paneel bijna het hele scherm
+       vult) op het lichte paneel of op de foto. Een doorschijnend licht rondje
+       verdwijnt daar; dus massief in het donkergroen, met schaduw, en boven
+       het paneel. */
+    .popup-sluit {
+      top: calc(clamp(0.75rem, 3vw, 2rem) + env(safe-area-inset-top, 0px));
+      right: clamp(0.75rem, 3vw, 2rem);
+      z-index: 1;
+      background: var(--tree); color: var(--canvas);
+      border-color: rgba(255,254,241,0.35);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    .popup-sluit:hover { background: var(--ink); }
 
     /* ---------- FOTO SCHERMVULLEND ---------- */
     .lightbox {
