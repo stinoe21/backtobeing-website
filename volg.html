@@ -503,7 +503,7 @@
     }
     .vandaag b { font-family: var(--subhead); font-weight: 600; color: var(--ink); }
 
-    /* De kolom voor vertrek: aftellen. Scrollt gewoon. */
+    /* De kolom voor vertrek: de teaser. Scrollt gewoon. */
     .feed-scroll {
       flex: 1 1 auto; min-height: 0;
       overflow-y: auto; overscroll-behavior: contain;
@@ -740,8 +740,7 @@
     /* ---------- TEASER (voor vertrek) ---------- */
     /* De reis die eraan komt, beeld eerst: de vertrekregel en de route staan
        op de foto. Geen kaartrand of schaduw: de foto staat in de pagina zoals
-       elk beeld op de hoofdsite (afgerond, verder niets), met de aftelklok
-       er rustig onder. */
+       elk beeld op de hoofdsite (afgerond, verder niets). */
     .teaser-kaart { margin-top: var(--space-4); }
     .teaser-held {
       position: relative; height: clamp(320px, 52vh, 560px);
@@ -783,29 +782,7 @@
       font-family: var(--subhead); font-size: 0.82rem; font-weight: 500;
       letter-spacing: 0.02em; color: rgba(255, 254, 241, 0.85);
     }
-    /* De klok tikt per seconde; zelfde beeld als de aftelklok in de hero van
-       de hoofdsite: losse eenheden met lucht ertussen, geen lijntjes.
-       tabular-nums houdt de rij stil. */
-    .teaser-tel {
-      display: flex; justify-content: center; gap: 1.5rem;
-      padding: 1.3rem 0.5rem 0.4rem;
-    }
-    .teaser-cel {
-      display: flex; flex-direction: column; align-items: center;
-      min-width: 2.6ch;
-    }
-    .teaser-cel b {
-      font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.6rem, 2.4vw, 2.4rem); line-height: 1;
-      color: var(--ink); font-variant-numeric: tabular-nums;
-    }
-    .teaser-cel span {
-      margin-top: 0.35rem;
-      font-family: var(--subhead); font-size: 0.6rem; font-weight: 500;
-      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
-    }
-
-    /* Onder de klok een klein socialsblok: zolang we niet vertrokken zijn
+    /* Onder de kaart een klein socialsblok: zolang we niet vertrokken zijn
        valt er op de kaart nog niets te volgen, en zijn dit de plekken waar
        al wel iets staat. Verdwijnt samen met de teaser zodra dag 1 er is.
        Geen footer op deze pagina: dit scherm gaat over waar we zijn en wat
@@ -929,7 +906,6 @@
       .dag-body { padding: 1.15rem 1.15rem 1.5rem; }
       /* Beeld eerst, ook hier: staand kader, dichter bij een telefoonfoto. */
       .teaser-held { height: auto; aspect-ratio: 4/5; max-height: 62svh; }
-      .teaser-tel { gap: 1.15rem; }
     }
     @media (max-width: 760px) {
       .site-nav {
@@ -1075,7 +1051,7 @@
         <div class="dag-track" id="dagTrack"></div>
       </div>
 
-      <!-- Voor vertrek: aftellen. -->
+      <!-- Voor vertrek: de teaser. -->
       <div class="feed-scroll" id="preScroll">
         <div class="slide-inner">
           <div id="teaserSlot"></div>
@@ -1153,10 +1129,6 @@
         'map.resetKort': 'Hele route',
         'teaser.vertrek': 'Vertrek uit {plaats}',
         'teaser.feiten': '{km} km · {n} dagen · te voet',
-        'tel.dagen': 'Dagen',
-        'tel.uren': 'Uren',
-        'tel.minuten': 'Minuten',
-        'tel.seconden': 'Seconden',
         'socials.kop': 'Volg ons ook op',
       },
       en: {
@@ -1199,10 +1171,6 @@
         'map.resetKort': 'Whole route',
         'teaser.vertrek': 'Departure from {plaats}',
         'teaser.feiten': '{km} km · {n} days · on foot',
-        'tel.dagen': 'Days',
-        'tel.uren': 'Hours',
-        'tel.minuten': 'Minutes',
-        'tel.seconden': 'Seconds',
         'socials.kop': 'Follow us on',
       },
     };
@@ -1378,8 +1346,8 @@
         if (n === null) titel.innerHTML = t('hero.labelPre');
         else if (n <= 0) titel.innerHTML = t('titel.vandaag');
         else if (n === 1) titel.innerHTML = t('titel.morgen');
-        // Geen dagenteller in de titel: de aftelklok in de teaser telt exact
-        // en twee net verschillende getallen boven elkaar lezen als een fout.
+        // Verder weg dan morgen blijft het bij 'binnenkort': een exact aantal
+        // dagen boven de kaart voegt niets toe aan wat er al staat.
         else titel.innerHTML = t('titel.binnenkort');
         return;
       }
@@ -1968,22 +1936,16 @@
     }
 
     /* ---------- teaser (voor vertrek) ---------- */
-    /* De reis die eraan komt als kaart, PolarSteps-achtig: foto, vertrek,
-       route en een aftelklok die per seconde tikt. Verdwijnt zodra dag 1
-       er staat, dan neemt de carrousel het over. */
-    let telTimer = 0;
+    /* De reis die eraan komt als kaart, PolarSteps-achtig: foto, vertrek en
+       route. Verdwijnt zodra dag 1 er staat, dan neemt de carrousel het
+       over. */
     function renderTeaser() {
       const slot = document.getElementById('teaserSlot');
       slot.textContent = '';
-      clearInterval(telTimer);
       if (!route || !route.punten.length || dagenOplopend().length) return;
 
       const start = (log && log.startDatum) || (route.etappes[0] && route.etappes[0].datum);
       if (!start) return;
-      // De starttijd staat in camino-log.json (startTijd), zodat de klok op
-      // nul staat als we echt gaan lopen en niet al om middernacht.
-      const doel = new Date(start + 'T' + ((log && log.startTijd) || '08:00') + ':00');
-      if (isNaN(doel)) return;
 
       const kaart = document.createElement('div');
       kaart.className = 'teaser-kaart';
@@ -2038,32 +2000,8 @@
       held.appendChild(tekst);
       kaart.appendChild(held);
 
-      const rij = document.createElement('div');
-      rij.className = 'teaser-tel';
-      const cellen = ['tel.dagen', 'tel.uren', 'tel.minuten', 'tel.seconden'].map(key => {
-        const cel = document.createElement('div');
-        cel.className = 'teaser-cel';
-        const b = document.createElement('b');
-        b.textContent = '0';
-        const label = document.createElement('span');
-        label.textContent = t(key);
-        cel.append(b, label);
-        rij.appendChild(cel);
-        return b;
-      });
-      kaart.appendChild(rij);
       kaart.appendChild(bouwSocials());
       slot.appendChild(kaart);
-
-      const tik = () => {
-        const s = Math.max(0, Math.floor((doel - new Date()) / 1000));
-        cellen[0].textContent = String(Math.floor(s / 86400));
-        cellen[1].textContent = String(Math.floor((s % 86400) / 3600)).padStart(2, '0');
-        cellen[2].textContent = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
-        cellen[3].textContent = String(s % 60).padStart(2, '0');
-      };
-      tik();
-      telTimer = setInterval(tik, 1000);
     }
 
     /* ---------- kaart ---------- */
