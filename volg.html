@@ -1632,15 +1632,14 @@
       acties.className = 'dag-acties';
       acties.appendChild(lees);
 
-      // Alleen als er ook echt foto's zijn: een knop die een leeg venster
-      // opent is erger dan geen knop.
-      if (fotos.length) {
-        const fotoKnop = document.createElement('button');
-        fotoKnop.type = 'button';
-        fotoKnop.className = 'dag-fotos-lees';
-        fotoKnop.textContent = t('dag.fotos');
-        acties.appendChild(fotoKnop);
-      }
+      // Staat er altijd, ook bij een dag die nog geen foto's heeft: de kaart
+      // hoort er hetzelfde uit te zien, wat er verder al dan niet in de log
+      // staat. Zonder foto's doet een klik niets (zie de handler hieronder).
+      const fotoKnop = document.createElement('button');
+      fotoKnop.type = 'button';
+      fotoKnop.className = 'dag-fotos-lees';
+      fotoKnop.textContent = t('dag.fotos');
+      acties.appendChild(fotoKnop);
       inner.appendChild(acties);
 
       // Eén klik, één betekenis: een buurkaart komt naar voren, de actieve
@@ -1653,8 +1652,12 @@
         if (i !== actieveDag) { toonDag(i); return; }
         // Deze listener staat in de capture-fase en vangt dus ook kliks op de
         // knoppen: welke van de twee het was, beslissen we hier.
-        if (e.target.closest('.dag-fotos-lees')) openFoto(fotos, 0, dagAlt(d, van, naar, 0));
-        else openDag(d);
+        if (e.target.closest('.dag-fotos-lees')) {
+          // Geen foto's: dan liever niets dan een leeg lichtvenster.
+          if (fotos.length) openFoto(fotos, 0, dagAlt(d, van, naar, 0));
+          return;
+        }
+        openDag(d);
       }, true);
 
       return slide;
