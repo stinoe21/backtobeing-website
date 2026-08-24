@@ -231,23 +231,6 @@
       letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
     }
 
-    /* Klik om te gebruiken. Zonder dit kaapt de kaart op mobiel de scroll. */
-    .map-gate {
-      position: absolute; inset: 0; z-index: 5;
-      border: 0; background: transparent; cursor: pointer;
-      display: grid; place-items: center;
-      opacity: 0; transition: opacity 0.25s ease;
-    }
-    .map-gate span {
-      font-family: var(--subhead); font-size: 0.68rem; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      background: rgba(255,254,241,0.94); color: var(--tree);
-      padding: 0.55rem 0.9rem; border-radius: var(--radius-ctrl);
-      border: 1px solid var(--line);
-      box-shadow: 0 10px 28px rgba(42,55,35,0.12);
-    }
-    .map-pane:hover .map-gate, .map-gate:focus-visible { opacity: 1; }
-    .map-pane.is-active .map-gate { display: none; }
 
     /* Eén doorlopende balk langs de onderrand van de kaart in plaats van drie
        losse kaartjes die om dezelfde hoek vochten. Lichte variant van de
@@ -1072,10 +1055,6 @@
         </div>
       </div>
 
-      <button class="map-gate" id="mapGate" type="button">
-        <span data-i18n="map.activate">Kaart gebruiken</span>
-      </button>
-
       <div class="map-attr">
         <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">&copy; OpenStreetMap</a>
         &nbsp;·&nbsp;
@@ -1161,7 +1140,6 @@
         'foto.open': 'Bekijk foto {n} groot',
         'map.loading': 'Kaart laden',
         'map.error': 'Kaart kon niet laden',
-        'map.activate': 'Kaart gebruiken',
         'map.eyebrowPre': 'De route',
         'map.eyebrowLive': 'Waar we nu zijn',
         'legend.gelopen': 'Gelopen',
@@ -1205,7 +1183,6 @@
         'foto.open': 'View photo {n} full size',
         'map.loading': 'Loading map',
         'map.error': 'Map could not load',
-        'map.activate': 'Use the map',
         'map.eyebrowPre': 'The route',
         'map.eyebrowLive': 'Where we are now',
         'legend.gelopen': 'Walked',
@@ -2228,7 +2205,6 @@
     }
 
     async function initMap() {
-      const pane = document.getElementById('mapPane');
       const el = document.getElementById('volgMap');
       const loading = document.getElementById('mapLoading');
 
@@ -2248,14 +2224,17 @@
           attributionControl: false,
           dragRotate: false,
           pitchWithRotate: false,
-          touchZoomRotate: false,
+          touchPitch: false,
         });
+        // Knijpen om te zoomen mag; draaien met twee vingers niet, want een
+        // gekantelde kaart leest niet en er is geen knop om hem recht te zetten.
+        map.touchZoomRotate.disableRotation();
 
-        // Op mobiel plakt de kaart achter een scrollende feed: daar mag hij de
-        // scroll niet kapen, dus alles staat uit tot je hem aanklikt. Op
-        // desktop is de kaart een eigen kolom die zelf niet scrollt, dus daar
-        // is een gebaar op de kaart nooit een gebaar voor de pagina.
-        zetInteractie(false);
+        // De kaart is nergens een deel van een scrollende pagina: op desktop
+        // een eigen kolom, op mobiel een vast blok boven de feed die zelf
+        // scrolt. Een gebaar op de kaart is dus nooit een gebaar voor de
+        // pagina, en de kaart kan meteen aan.
+        zetInteractie(true);
 
         let gebouwd = false;
         // Watchdog: op trage wifi (of als unpkg/CARTO onbereikbaar is) mag de
@@ -2270,11 +2249,6 @@
           gebouwd = true;
           clearTimeout(watchdog);
           loading.remove();
-
-          if (breed.matches) {
-            zetInteractie(true);
-            pane.classList.add('is-active');
-          }
 
           // De volle route ligt eronder als lichte stippellijn: dat is het
           // plan. De GPS-track ligt er donkergroen overheen: dat is wat we
@@ -2361,9 +2335,10 @@
 
     function zetInteractie(aan) {
       if (!map) return;
-      ['scrollZoom', 'dragPan', 'doubleClickZoom', 'keyboard'].forEach(n => {
+      ['scrollZoom', 'dragPan', 'doubleClickZoom', 'keyboard', 'touchZoomRotate'].forEach(n => {
         if (map[n]) aan ? map[n].enable() : map[n].disable();
       });
+      if (aan && map.touchZoomRotate) map.touchZoomRotate.disableRotation();
     }
 
     /* Alleen de plaatsen die een etappe beginnen of eindigen krijgen een
@@ -2528,14 +2503,6 @@
       });
     }
 
-    function bindMapGate() {
-      const pane = document.getElementById('mapPane');
-      document.getElementById('mapGate').addEventListener('click', () => {
-        pane.classList.add('is-active');
-        zetInteractie(true);
-      });
-    }
-
     function bindMapReset() {
       document.getElementById('mapReset').addEventListener('click', () => {
         // Een nog wachtende dag-zoom zou dit meteen weer ongedaan maken.
@@ -2548,7 +2515,6 @@
       applyStaticText();
       bindNav();
       bindLangButtons();
-      bindMapGate();
       bindMapReset();
       bindCarousel();
       bindPopup();
