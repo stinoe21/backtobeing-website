@@ -1319,6 +1319,19 @@
       }
       return out;
     }
+    /* Het geplande stuk dat nog voor ons ligt: vanaf het eindpunt van de
+       laatst gelogde etappe tot Santiago. Wat al gelopen is, staat als
+       GPS-track op de kaart en hoeft er niet nog eens als stippellijn onder;
+       die twee lopen net niet gelijk en dat oogt als een fout. */
+    function teGaanCoords() {
+      if (!route) return [];
+      let vanaf = 0;
+      for (const d of etappeDagen()) {
+        const e = etappeVoorDag(d.dag);
+        if (e) vanaf = Math.max(vanaf, e.totIndex - 1);
+      }
+      return route.punten.slice(vanaf).map(p => p.lngLat);
+    }
     function totalen() {
       let km = 0, hoogte = 0;
       for (const d of dagenOplopend()) {
@@ -2242,7 +2255,7 @@
         await waitForLayout(el);
         const style = await huisstijlStyle();
 
-        const geplandeCoords = route.punten.map(p => p.lngLat);
+        const geplandeCoords = teGaanCoords();
         const gelopen = gelopenCoords();
 
         map = new maplibregl.Map({
@@ -2279,9 +2292,9 @@
           clearTimeout(watchdog);
           loading.remove();
 
-          // De volle route ligt eronder als lichte stippellijn: dat is het
-          // plan. De GPS-track ligt er donkergroen overheen: dat is wat we
-          // echt gelopen hebben.
+          // Het nog te lopen deel ligt er als lichte stippellijn: dat is het
+          // plan. De GPS-track staat donkergroen: dat is wat we echt gelopen
+          // hebben. Samen vormen ze de route; ze overlappen niet.
           map.addSource('route-gepland', lijnBron(geplandeCoords));
           map.addLayer({
             id: 'route-gepland-line',
@@ -2339,7 +2352,8 @@
           plaatsPositie(gelopen);
 
           map.resize();
-          fitOp(geplandeCoords);
+          // De hele route in beeld, gelopen én te gaan.
+          fitOp(route.punten.map(p => p.lngLat));
           syncDag();
 
           let frame = 0;
