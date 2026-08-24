@@ -647,6 +647,9 @@
     }
     .dag-tekst { font-size: 0.98rem; line-height: 1.75; color: var(--ink-soft); }
     .dag-tekst + .dag-tekst { margin-top: 0.85rem; }
+    /* Vet in een dagtekst is een accent, geen kop: zelfde grootte, alleen
+       zwaarder en in de donkere inkt. */
+    .dag-tekst strong { font-weight: 600; color: var(--ink); }
     .dag-nietvertaald {
       margin-top: 0.7rem;
       font-family: var(--subhead); font-size: 0.64rem; font-weight: 500;
@@ -1118,6 +1121,8 @@
         'dag.lees': 'Lees het verhaal',
         'titel.dag': 'Dag',
         'titel.van': 'van',
+        'titel.dag0': 'De <em>reisdag</em>',
+        'titel.dag0Kort': 'De reisdag',
         'titel.binnenkort': 'Volg hier onze <em>reis</em>',
         'titel.morgen': 'Morgen <em>beginnen</em> we',
         'titel.vandaag': 'Vandaag <em>beginnen</em> we',
@@ -1160,6 +1165,8 @@
         'dag.lees': 'Read the story',
         'titel.dag': 'Day',
         'titel.van': 'of',
+        'titel.dag0': 'The <em>travel day</em>',
+        'titel.dag0Kort': 'The travel day',
         'titel.binnenkort': 'Follow our <em>journey</em> here',
         'titel.morgen': 'We start <em>tomorrow</em>',
         'titel.vandaag': 'We start <em>today</em>',
@@ -1236,6 +1243,12 @@
       return (log && Array.isArray(log.dagen) ? log.dagen.slice() : [])
         .sort((a, b) => a.dag - b.dag);
     }
+    /* Dag 0 is de reisdag naartoe: een post als elke andere, maar er is niets
+       gelopen. Overal waar we etappes tellen (voortgang, kaart, titel) telt
+       hij dus niet mee. */
+    function etappeDagen() {
+      return dagenOplopend().filter(d => d.dag >= 1);
+    }
     /* Alle daadwerkelijk gelopen coordinaten aaneengeregen. Dagen zonder
        GPX vallen terug op de geplande etappe, zodat de lijn niet onderbroken
        raakt als er een dag mist. */
@@ -1301,16 +1314,17 @@
 
     function renderKop() {
       const dagen = dagenOplopend();
+      const gelopen = etappeDagen();
       const label = document.getElementById('heroLabel');
 
-      if (dagen.length >= totaalDagen()) label.textContent = t('hero.labelKlaar');
+      if (gelopen.length >= totaalDagen()) label.textContent = t('hero.labelKlaar');
       else if (dagen.length) label.textContent = t('hero.labelLive');
       else label.textContent = t('hero.labelPre');
 
       // Voortgangsbalk: één knop per etappe. Een dag die er is, is klikbaar.
       // Voor vertrek is er niets om door te bladeren, dus ook geen balk.
       const bar = document.getElementById('voortgangBar');
-      bar.closest('.voortgang').hidden = !dagen.length;
+      bar.closest('.voortgang').hidden = !gelopen.length;
       bar.textContent = '';
       const nu = huidigeEtappe();
       for (let i = 1; i <= totaalDagen(); i++) {
@@ -1331,7 +1345,9 @@
         bar.appendChild(seg);
       }
 
-      renderMapInfo(dagen.length ? dagen[dagen.length - 1] : null);
+      // Op de reisdag is er nog geen kilometer gelopen, dus dan blijft de
+      // kaart de hele route tonen in plaats van 'waar we nu zijn'.
+      renderMapInfo(gelopen.length ? gelopen[gelopen.length - 1] : null);
     }
 
     /* De titel volgt de dag die je op dat moment leest, niet de laatste dag. */
@@ -1353,6 +1369,7 @@
       }
 
       const d = dagen[Math.min(actieveDag, dagen.length - 1)];
+      if (d.dag === 0) { titel.innerHTML = t('titel.dag0'); return; }
       titel.innerHTML = t('titel.dag') + ' <em>' + d.dag + '</em> ' + t('titel.van') + ' ' + totaalDagen();
     }
 
@@ -1366,7 +1383,7 @@
       const totaal = route.totaalKm || 123;
 
       const cijfers = document.getElementById('mapCijfers');
-      const dagen = dagenOplopend();
+      const dagen = etappeDagen();
 
       if (laatste) {
         const e = etappeVoorDag(laatste.dag);
@@ -1540,8 +1557,28 @@
       return slide;
     }
 
+    /* De dagteksten uit de JSON zijn platte tekst, met één uitzondering:
+       **zo** wordt vet. Bewust met losse tekstknopen en niet met innerHTML,
+       want die tekst mag nooit als HTML gelezen worden. Staat er een oneven
+       aantal sterretjes, dan is het geen opmaak en blijft alles zoals het is. */
+    function vulMetVet(el, tekst) {
+      const stukken = tekst.split('**');
+      if (stukken.length % 2 === 0) { el.textContent = tekst; return; }
+      stukken.forEach((stuk, i) => {
+        if (!stuk) return;
+        if (i % 2 === 1) {
+          const b = document.createElement('strong');
+          b.textContent = stuk;
+          el.appendChild(b);
+        } else {
+          el.appendChild(document.createTextNode(stuk));
+        }
+      });
+    }
+
     function dagAlt(d, van, naar, i) {
-      return t('titel.dag') + ' ' + d.dag
+      const kop = d.dag === 0 ? t('titel.dag0Kort') : t('titel.dag') + ' ' + d.dag;
+      return kop
         + (van && naar ? ' — ' + van + ' naar ' + naar : '') + ' (' + (i + 1) + ')';
     }
 
@@ -1629,7 +1666,7 @@
           if (!s) return;
           const p = document.createElement('p');
           p.className = 'dag-tekst';
-          p.textContent = s;
+          vulMetVet(p, s);
           body.appendChild(p);
         });
         // Mislukte de vertaling, dan tonen we het Nederlands: beter dan een
