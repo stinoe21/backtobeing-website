@@ -107,7 +107,10 @@ zelf hebt neergezet blijft staan.
    De `#`-regel wordt de titel. Lege regel tussen alinea's.
 
 3. Zet de foto's van die dag in `photos-origineel/dag-3/`
-   (die map blijft lokaal; alleen de verkleinde versies gaan mee in git)
+   (die map blijft lokaal; alleen de verkleinde versies gaan mee in git).
+   Een video (`.mp4`/`.mov`) mag er gewoon tussen: hij wordt verkleind tot
+   720p (ffmpeg komt mee met `npm install`) en krijgt een poster-beeld;
+   op de site speelt hij af zodra je hem groot opent.
 
 4. Draai vanuit de projectroot:
    ```
@@ -169,7 +172,7 @@ etappe zodat de lijn doorloopt.
 | `data/sporen/dag-N.tcx` | de ruwe export uit Garmin Connect (wel in git, niet gedeployed) |
 | `data/teksten/dag-N.md` | jouw ruwe tekst (wordt niet gedeployed) |
 | `photos-origineel/dag-N/` | onbewerkte telefoonfoto's (niet in git) |
-| `photos/dag-N/` | verkleinde webp's, EXIF en GPS gestript (wel in git) |
+| `photos/dag-N/` | verkleinde webp's, EXIF en GPS gestript (wel in git); video's als 720p-mp4 met een poster-webp ernaast |
 
 ---
 

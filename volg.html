@@ -593,6 +593,20 @@
       transition: background 0.3s ease, transform 0.3s ease;
     }
     .hero-stip.is-zicht { background: var(--canvas); transform: scale(1.15); }
+    /* Een video staat in de kaart als zijn poster, met een afspeelteken erop
+       zodat je weet dat hij beweegt zodra je hem groot opent. */
+    .hero-play {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: 58px; height: 58px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: rgba(18, 20, 16, 0.55); color: var(--canvas);
+      border: 1px solid rgba(255, 254, 241, 0.4);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      pointer-events: none; opacity: 0; transition: opacity 0.9s ease;
+    }
+    .hero-play.is-zicht { opacity: 1; }
+    .hero-play svg { width: 22px; height: 22px; margin-left: 3px; fill: currentColor; }
+    .dag-popup .dag-hero { position: relative; }
     .dag-popup .dag-hero { cursor: zoom-in; }
     .dag-popup .dag-hero img { aspect-ratio: 21/10; }
     .dag-popup .dag-hero:hover img { transform: scale(1.03); }
@@ -747,10 +761,11 @@
       backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     }
     .lightbox[hidden] { display: none; }
-    .lightbox img {
+    .lightbox img, .lightbox video {
       max-width: 100%; max-height: 84vh; width: auto;
       border-radius: var(--radius); box-shadow: 0 30px 80px rgba(0,0,0,0.4);
     }
+    .lightbox img[hidden], .lightbox video[hidden] { display: none; }
     .lb-knop {
       position: absolute; width: 46px; height: 46px;
       display: grid; place-items: center;
@@ -1139,6 +1154,7 @@
   <!-- Foto schermvullend -->
   <div class="lightbox" id="lightbox" hidden>
     <img id="lbImg" alt="" />
+    <video id="lbVid" controls playsinline preload="metadata" hidden></video>
     <button class="lb-knop lb-sluit" id="lbSluit" type="button" data-i18n-aria="foto.sluit" aria-label="Sluiten">&times;</button>
     <button class="lb-knop lb-prev" id="lbPrev" type="button" data-i18n-aria="foto.vorige" aria-label="Vorige foto">&larr;</button>
     <button class="lb-knop lb-next" id="lbNext" type="button" data-i18n-aria="foto.volgende" aria-label="Volgende foto">&rarr;</button>
@@ -1563,7 +1579,8 @@
         stippen.setAttribute('aria-hidden', 'true');
         fotos.forEach((src, i) => {
           const img = document.createElement('img');
-          img.src = src;
+          img.src = isVideo(src) ? posterVan(src) : src;
+          if (isVideo(src)) img.dataset.video = '1';
           img.decoding = 'async';
           if (i === 0) img.classList.add('is-zicht');
           img.alt = i === 0 ? dagAlt(d, van, naar, 0) : '';
@@ -1573,6 +1590,7 @@
           held.appendChild(img);
           stippen.appendChild(stip);
         });
+        if (fotos.some(isVideo)) held.appendChild(playBadge(isVideo(fotos[0])));
         if (fotos.length > 1) held.appendChild(stippen);
         slide.appendChild(held);
       }
@@ -1661,6 +1679,18 @@
       });
     }
 
+    /* Een video staat in camino-log.json gewoon tussen de foto's, als .mp4.
+       Zijn poster heeft dezelfde naam met .webp; dag.cmd maakt die aan. */
+    function isVideo(src) { return /\.mp4$/i.test(src); }
+    function posterVan(src) { return src.replace(/\.mp4$/i, '.webp'); }
+    function playBadge(zicht) {
+      const el = document.createElement('span');
+      el.className = 'hero-play' + (zicht ? ' is-zicht' : '');
+      el.setAttribute('aria-hidden', 'true');
+      el.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg>';
+      return el;
+    }
+
     function dagAlt(d, van, naar, i) {
       const kop = d.dag === 0 ? t('titel.dag0Kort') : t('titel.dag') + ' ' + d.dag;
       return kop
@@ -1699,11 +1729,12 @@
         held.className = 'dag-hero';
         held.setAttribute('aria-label', t('foto.open').replace('{n}', 1));
         const img = document.createElement('img');
-        img.src = fotos[0];
+        img.src = isVideo(fotos[0]) ? posterVan(fotos[0]) : fotos[0];
         img.decoding = 'async';
         img.alt = dagAlt(d, van, naar, 0);
         img.addEventListener('error', () => held.remove(), { once: true });
         held.appendChild(img);
+        if (isVideo(fotos[0])) held.appendChild(playBadge(true));
         held.addEventListener('click', () => openFoto(fotos, 0, img.alt));
         paneel.appendChild(held);
       }
@@ -1830,6 +1861,8 @@
         held.querySelectorAll('.hero-stip').forEach((s, n) => {
           s.classList.toggle('is-zicht', n === volgende);
         });
+        const badge = held.querySelector('.hero-play');
+        if (badge) badge.classList.toggle('is-zicht', beelden[volgende].dataset.video === '1');
       }, 4000);
     }
 
@@ -1958,15 +1991,45 @@
     function toonFoto(i) {
       if (!lbFotos.length) return;
       lbIndex = (i + lbFotos.length) % lbFotos.length;
-      document.getElementById('lbImg').src = lbFotos[lbIndex];
+      const src = lbFotos[lbIndex];
+      const img = document.getElementById('lbImg');
+      const vid = document.getElementById('lbVid');
+      if (isVideo(src)) {
+        img.hidden = true;
+        img.removeAttribute('src');
+        vid.hidden = false;
+        if (vid.getAttribute('src') !== src) {
+          vid.src = src;
+          vid.poster = posterVan(src);
+        }
+        // Speelt zodra hij in beeld is; wie geluid wil zet het zelf aan via de
+        // bediening. Zonder muted blokkeert de browser het automatisch starten.
+        vid.muted = true;
+        vid.play().catch(() => {});
+      } else {
+        stopVideo();
+        img.hidden = false;
+        img.src = src;
+      }
       document.getElementById('lbTeller').textContent = (lbIndex + 1) + ' / ' + lbFotos.length;
       const eenFoto = lbFotos.length < 2;
       document.getElementById('lbPrev').hidden = eenFoto;
       document.getElementById('lbNext').hidden = eenFoto;
     }
+    function stopVideo() {
+      const vid = document.getElementById('lbVid');
+      if (!vid.hidden || vid.getAttribute('src')) {
+        vid.pause();
+        vid.removeAttribute('src');
+        vid.removeAttribute('poster');
+        vid.load();
+      }
+      vid.hidden = true;
+    }
     function sluitFoto() {
       document.getElementById('lightbox').hidden = true;
       document.getElementById('lbImg').removeAttribute('src');
+      stopVideo();
       // Terug naar de foto waar je vandaan kwam, anders staat de focus na het
       // sluiten weer helemaal bovenaan de pagina.
       if (lbVanaf && document.contains(lbVanaf)) lbVanaf.focus();
