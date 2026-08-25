@@ -16,7 +16,7 @@ Ondanks het weer vlogen de kilometers voorbij en kwam Redondela langzaam in zich
 
 Toen kwamen we ergens achter.
 
-Een paar weken geleden hadden we onze boeking aangepast. We sliepen helemaal niet meer in Redondela. Ons hotel stond in **Arcade — nog eens 9 kilometer verderop**.
+Een paar weken geleden hadden we onze boeking aangepast. We sliepen helemaal niet meer in Redondela. Ons hotel stond in **Arcade, nog eens 9 kilometer verderop**.
 
 Niet precies wat je wilt ontdekken nadat je het grootste deel van de ochtend al door de regen hebt gelopen.
 
