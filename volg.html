@@ -4,6 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
+  <!-- Watermelon chatbot-widget. Zelfde widget en instellingen als op de
+       hoofdsite (index.html), zodat een gesprek dat hier begint in dezelfde
+       inbox terechtkomt. -->
+  <script async
+          type="module"
+          src="https://chatwidget-prod.web.app/embed/init.iife.js"
+          data-watermelon-widget-id="GKgMkGIWAy5"
+          data-watermelon-settings-id="17335"></script>
+
   <title>Volg ons · Back to Being</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon-512.png" type="image/png" sizes="512x512" />
@@ -1022,6 +1031,17 @@
       .nav-cta-btn { margin-top: 0.25rem; justify-content: center; background: var(--tree) !important; color: var(--canvas) !important; }
       .map-legend { display: none; }
     }
+    /* De chatknop van Watermelon hangt standaard 20 px boven de onderrand.
+       Daar staat op een telefoon de dagnavigatie, en dan is de pijl naar de
+       volgende dag niet meer te raken. Zijn eigen stylesheet wordt door het
+       script na deze ingevoegd, dus !important is hier nodig. */
+    @media (max-width: 1023px) {
+      :root {
+        --watermelon-yg-widget-vertical-offset:
+          calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+      }
+    }
+
     @media (max-width: 560px) {
       .dag-nav { width: 40px; height: 40px; flex-basis: 40px; }
       .dag-foto.wide img { aspect-ratio: 4/3; }
