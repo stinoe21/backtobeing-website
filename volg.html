@@ -408,12 +408,22 @@
       margin-top: -34px;
       box-shadow: 0 -18px 40px rgba(42,55,35,0.07);
     }
+    /* Het streepje is op een telefoon een echte greep: slepen of tikken
+       maakt de kaart groot (de dagen zakken naar beneden) en weer klein. */
     .feed-grip {
-      flex: 0 0 auto;
-      width: 42px; height: 4px; border-radius: var(--radius-pill);
-      background: rgba(42,55,35,0.28);
-      margin: 0.7rem auto 0;
+      flex: 0 0 auto; display: block;
+      width: 100%; height: 28px; padding: 0.4rem 0 0; border: 0;
+      background: none; cursor: grab; touch-action: none;
+      -webkit-tap-highlight-color: transparent;
     }
+    .feed-grip span {
+      display: block; width: 42px; height: 4px; margin: 0 auto;
+      border-radius: var(--radius-pill); background: rgba(42,55,35,0.28);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .feed-grip:active span, .feed-grip:hover span { background: rgba(42,55,35,0.5); }
+    .feed-grip:focus-visible { outline: none; }
+    .feed-grip:focus-visible span { background: var(--green); transform: scaleX(1.3); }
     .feed-kop {
       flex: 0 0 auto;
       padding: var(--space-4) var(--pane-x) var(--space-3);
@@ -924,13 +934,19 @@
         position: relative; top: auto;
         flex: 0 0 auto; height: 42svh;
         padding-top: var(--nav-h);
+        transition: height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
       }
       .feed-pane { flex: 1 1 auto; min-height: 0; }
+      /* Kaart groot: de dagen zakken tot alleen de greep en de kop, zodat
+         je weet dat ze er nog zijn en ze zo weer omhoog kunt halen. */
+      .shell.kaart-groot .map-pane { height: calc(100dvh - 118px); }
+      .shell.kaart-groot .feed-pane { overflow: hidden; }
+      .shell.kaart-groot .feed-grip { cursor: grab; }
+      @media (prefers-reduced-motion: reduce) { .map-pane { transition: none; } }
       /* De kop is hier zo compact mogelijk: elke pixel die hij niet neemt is
          een pixel die de dagkaart eronder wel krijgt, en die moet minstens de
          foto plus de titel laten zien. */
-      .feed-grip { margin-top: 0.45rem; }
-      .feed-kop { padding: 0.25rem var(--pane-x) var(--space-2); }
+      .feed-kop { padding: 0.25rem var(--pane-x) var(--space-2); touch-action: none; }
       .feed-kop h1 { font-size: clamp(1.6rem, 6vw, 2rem); margin-top: 0.1rem; }
       .voortgang {
         padding: 0.35rem clamp(14px, 5.5%, 28px)
@@ -1142,7 +1158,7 @@
 
     <!-- ============ FEED ============ -->
     <div class="feed-pane" id="feedPane">
-      <div class="feed-grip" aria-hidden="true"></div>
+      <button class="feed-grip" id="feedGrip" type="button" data-i18n-aria="map.groter" aria-label="Kaart groter tonen" aria-expanded="false"><span aria-hidden="true"></span></button>
 
       <div class="feed-kop">
         <div class="kop-inner">
@@ -1221,6 +1237,8 @@
         'map.error': 'Kaart kon niet laden',
         'map.eyebrowPre': 'De route',
         'map.eyebrowLive': 'Waar we nu zijn',
+        'map.groter': 'Kaart groter tonen',
+        'map.kleiner': 'Dagen weer omhoog halen',
         'legend.gelopen': 'Gelopen',
         'legend.plan': 'Te gaan',
         'dag.afstand': 'Afstand',
@@ -1264,6 +1282,8 @@
         'map.error': 'Map could not load',
         'map.eyebrowPre': 'The route',
         'map.eyebrowLive': 'Where we are now',
+        'map.groter': 'Show a bigger map',
+        'map.kleiner': 'Bring the days back up',
         'legend.gelopen': 'Walked',
         'legend.plan': 'To go',
         'dag.afstand': 'Distance',
@@ -1997,6 +2017,8 @@
       document.getElementById('dagVorige').addEventListener('click', () => toonDag(actieveDag - 1));
       document.getElementById('dagVolgende').addEventListener('click', () => toonDag(actieveDag + 1));
 
+      bindGrip();
+
       // Bij het draaien van een telefoon of het verslepen van een venster
       // klopt de scrollpositie niet meer: die is in pixels, niet in dagen.
       window.addEventListener('resize', () => {
@@ -2631,6 +2653,61 @@
       const pauze = eersteFocus ? 1600 : 550;
       eersteFocus = false;
       volgTimer = setTimeout(() => zoomNaarDag(dag, 1300), pauze);
+    }
+
+    /* ---------- greep: kaart groot / dagen omhoog (mobiel) ---------- */
+    function kaartGroot() { return document.querySelector('.shell').classList.contains('kaart-groot'); }
+    function zetKaartGroot(aan) {
+      const shell = document.querySelector('.shell');
+      if (aan === kaartGroot()) return;
+      shell.classList.toggle('kaart-groot', aan);
+      const grip = document.getElementById('feedGrip');
+      grip.setAttribute('aria-expanded', String(aan));
+      grip.setAttribute('aria-label', t(aan ? 'map.kleiner' : 'map.groter'));
+      // Na de hoogte-overgang past de kaart zich aan (ResizeObserver) en
+      // zoomt hij opnieuw op de dag die je aan het lezen bent.
+      const pane = document.getElementById('mapPane');
+      let klaar = false;
+      const herpas = () => {
+        if (klaar) return; klaar = true;
+        pane.removeEventListener('transitionend', herpas);
+        if (map) map.resize();
+        const dag = dagenOplopend()[actieveDag];
+        if (dag) zoomNaarDag(dag, 700);
+      };
+      pane.addEventListener('transitionend', herpas);
+      setTimeout(herpas, 520);
+    }
+    function bindGrip() {
+      const grip = document.getElementById('feedGrip');
+      const kop = document.querySelector('.feed-kop');
+      let startY = null, verplaatst = 0, bezig = false;
+      const begin = e => {
+        if (breed.matches || e.button > 0) return;
+        startY = e.clientY; verplaatst = 0; bezig = true;
+        try { e.currentTarget.setPointerCapture(e.pointerId); } catch {}
+      };
+      const beweeg = e => { if (bezig) verplaatst = e.clientY - startY; };
+      const einde = e => {
+        if (!bezig) return;
+        bezig = false;
+        const dy = verplaatst;
+        if (dy > 28) zetKaartGroot(true);
+        else if (dy < -28) zetKaartGroot(false);
+        else if (Math.abs(dy) < 8 && e.currentTarget === grip) zetKaartGroot(!kaartGroot());
+      };
+      [grip, kop].forEach(el => {
+        el.addEventListener('pointerdown', begin);
+        el.addEventListener('pointermove', beweeg);
+        el.addEventListener('pointerup', einde);
+        el.addEventListener('pointercancel', () => { bezig = false; });
+      });
+      grip.addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); zetKaartGroot(true); }
+        if (e.key === 'ArrowUp') { e.preventDefault(); zetKaartGroot(false); }
+      });
+      // Terug naar desktop: de stand heeft daar geen betekenis.
+      breed.addEventListener('change', () => { if (breed.matches) zetKaartGroot(false); });
     }
 
     /* ---------- nav ---------- */
