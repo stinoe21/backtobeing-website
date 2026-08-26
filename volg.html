@@ -686,7 +686,7 @@
       font-family: var(--subhead); font-size: 0.58rem; font-weight: 500;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
     }
-    .dag-tekst { font-size: 0.98rem; line-height: 1.75; color: var(--ink-soft); }
+    .dag-tekst { font-size: 0.98rem; line-height: 1.75; color: rgba(22, 22, 22, 0.8); }
     .dag-tekst + .dag-tekst { margin-top: 0.85rem; }
     /* Vet in een dagtekst is een accent, geen kop: zelfde grootte, alleen
        zwaarder en in de donkere inkt. */
@@ -922,7 +922,7 @@
       .shell { display: flex; flex-direction: column; height: 100dvh; }
       .map-pane {
         position: relative; top: auto;
-        flex: 0 0 auto; height: 48svh;
+        flex: 0 0 auto; height: 42svh;
         padding-top: var(--nav-h);
       }
       .feed-pane { flex: 1 1 auto; min-height: 0; }
@@ -930,8 +930,8 @@
          een pixel die de dagkaart eronder wel krijgt, en die moet minstens de
          foto plus de titel laten zien. */
       .feed-grip { margin-top: 0.45rem; }
-      .feed-kop { padding: var(--space-2) var(--pane-x) var(--space-2); }
-      .feed-kop h1 { font-size: clamp(1.8rem, 7vw, 2.2rem); margin-top: 0.15rem; }
+      .feed-kop { padding: 0.25rem var(--pane-x) var(--space-2); }
+      .feed-kop h1 { font-size: clamp(1.6rem, 6vw, 2rem); margin-top: 0.1rem; }
       .voortgang {
         padding: 0.35rem clamp(14px, 5.5%, 28px)
                  calc(0.85rem + env(safe-area-inset-bottom, 0px));
@@ -981,8 +981,16 @@
 
       /* De kaarten zijn hier laag: de cijfers verhuizen naar het leesvenster
          zodat de foto de ruimte houdt. */
-      .dag-track { gap: 12px; padding: 4px clamp(14px, 5.5%, 28px) 22px; }
+      .dag-track { gap: 12px; padding: 4px clamp(14px, 5.5%, 28px) 12px; }
       .dag-slide .dag-cijfers { display: none; }
+      /* De foto is hier het belangrijkst en krijgt gegarandeerd ruimte; de
+         tekst in de kaart is compact: de route staat al in de titel, de
+         knop is lager. Het volledige verhaal zit toch in het leesvenster. */
+      .dag-slide .dag-hero { min-height: 128px; }
+      .dag-slide .dag-route { display: none; }
+      .dag-slide .dag-body { padding: 0.85rem 1.05rem 1rem; }
+      .dag-slide .dag-titel { font-size: 1.2rem; margin: 0.3rem 0 0; }
+      .dag-slide .dag-lees { margin-top: 0.7rem; padding: 0.55rem 1rem; }
       .dag-popup .dag-hero img { aspect-ratio: 16/9; }
       .dag-body { padding: 1.15rem 1.15rem 1.5rem; }
       /* Beeld eerst, ook hier: staand kader, dichter bij een telefoonfoto. */
@@ -1037,6 +1045,10 @@
        Daar staat op een telefoon de dagnavigatie, en dan is de pijl naar de
        volgende dag niet meer te raken. Zijn eigen stylesheet wordt door het
        script na deze ingevoegd, dus !important is hier nodig. */
+    /* Zolang het verhaal of een foto open staat, ligt de chatknop midden in
+       de tekst (op mobiel rechtsonder in de alinea's). Dan even weg. */
+    body.is-lezen watermelon-widget-button,
+    body.is-lezen #watermelon-widget-wrapper { display: none !important; }
     @media (max-width: 1023px) {
       :root {
         --watermelon-yg-widget-vertical-offset:
@@ -1853,6 +1865,7 @@
 
       popupVanaf = document.activeElement;
       document.getElementById('dagPopup').hidden = false;
+      document.body.classList.add('is-lezen');
       document.getElementById('popupPaneel').scrollTop = 0;
       document.getElementById('popupSluit').focus();
     }
@@ -1861,6 +1874,7 @@
       const popup = document.getElementById('dagPopup');
       if (popup.hidden) return;
       popup.hidden = true;
+      document.body.classList.remove('is-lezen');
       if (popupVanaf && document.contains(popupVanaf)) popupVanaf.focus();
       popupVanaf = null;
     }
@@ -2010,6 +2024,7 @@
       lbVanaf = document.activeElement;
       const box = document.getElementById('lightbox');
       box.hidden = false;
+      document.body.classList.add('is-lezen');
       document.getElementById('lbImg').alt = alt || '';
       toonFoto(i);
       document.getElementById('lbSluit').focus();
@@ -2054,6 +2069,7 @@
     }
     function sluitFoto() {
       document.getElementById('lightbox').hidden = true;
+      if (document.getElementById('dagPopup').hidden) document.body.classList.remove('is-lezen');
       document.getElementById('lbImg').removeAttribute('src');
       stopVideo();
       // Terug naar de foto waar je vandaan kwam, anders staat de focus na het
@@ -2271,9 +2287,20 @@
       // overblijven dan boven. Op mobiel beslaat dat kaartje de volle breedte.
       // Boven moet in beide gevallen de navbalk (72 px) eruit blijven, plus
       // ruimte voor het label van Santiago dat op het bovenste punt hangt.
-      return breed.matches
-        ? { top: 110, bottom: 150, left: 120, right: 150 }
-        : { top: 105, bottom: 170, left: 44, right: 44 };
+      if (breed.matches) return { top: 110, bottom: 150, left: 120, right: 150 };
+      // Op mobiel is de kaart laag. Vaste getallen (105 boven, 170 onder)
+      // waren samen groter dan de kaart zelf, en dan negeert MapLibre de
+      // fit en toont hij heel Europa. Daarom meten: de balk onderin plus
+      // wat lucht, en nooit meer dan de helft van de hoogte samen.
+      const holder = document.getElementById('volgMap');
+      const balk = document.querySelector('.map-balk');
+      const hoogte = holder ? holder.clientHeight : 0;
+      const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72;
+      let top = nav + 34;
+      let bottom = (balk ? balk.offsetHeight : 0) + 24;
+      const max = Math.max(80, hoogte * 0.55);
+      if (top + bottom > max) { const f = max / (top + bottom); top = Math.round(top * f); bottom = Math.round(bottom * f); }
+      return { top, bottom, left: 40, right: 40 };
     }
 
     /* Zet de juiste paint-property afhankelijk van het layertype. */
