@@ -2476,6 +2476,21 @@
     function plaatsMarkers() {
       const belangrijk = new Set();
       route.etappes.forEach(e => { belangrijk.add(e.vanIndex); belangrijk.add(e.totIndex - 1); });
+      // Loopt een dag anders dan gepland (dag 2 eindigde in Arcade, niet in
+      // Redondela), dan krijgt de echte plaats het label en de geplande niet:
+      // twee namen zo dicht op elkaar botsen op de kaart.
+      const indexVan = naam => route.punten.findIndex(p => p.naam === naam);
+      dagenOplopend().forEach(d => {
+        const e = etappeVoorDag(d.dag);
+        if (!e) return;
+        [[d.van, e.van, e.vanIndex], [d.naar, e.naar, e.totIndex - 1]].forEach(([echt, plan, planIdx]) => {
+          if (!echt || echt === plan) return;
+          const idx = indexVan(echt);
+          if (idx < 0) return;
+          belangrijk.delete(planIdx);
+          belangrijk.add(idx);
+        });
+      });
 
       route.punten.forEach((punt, i) => {
         if (!belangrijk.has(i)) return;
