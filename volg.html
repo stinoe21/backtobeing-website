@@ -749,7 +749,7 @@
        vult) op het lichte paneel of op de foto. Een doorschijnend licht rondje
        verdwijnt daar; dus massief in het donkergroen, met schaduw, en boven
        het paneel. */
-    .popup-sluit {
+    .lb-knop.popup-sluit {
       top: calc(clamp(0.75rem, 3vw, 2rem) + env(safe-area-inset-top, 0px));
       right: clamp(0.75rem, 3vw, 2rem);
       z-index: 1;
@@ -757,7 +757,7 @@
       border-color: rgba(255,254,241,0.35);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
-    .popup-sluit:hover { background: var(--ink); }
+    .lb-knop.popup-sluit:hover { background: var(--ink); }
 
     /* ---------- FOTO SCHERMVULLEND ---------- */
     .lightbox {
@@ -784,6 +784,8 @@
       transition: background 0.2s, transform 0.2s;
     }
     .lb-knop:hover { background: rgba(255,254,241,0.26); }
+    /* De generieke focusring zet border-radius op 4px; het rondje blijft rond. */
+    .lb-knop:focus-visible { border-radius: var(--radius-pill); }
     .lb-sluit { top: clamp(0.75rem, 3vw, 2rem); right: clamp(0.75rem, 3vw, 2rem); }
     .lb-prev { left: clamp(0.5rem, 2vw, 2rem); top: 50%; transform: translateY(-50%); }
     .lb-next { right: clamp(0.5rem, 2vw, 2rem); top: 50%; transform: translateY(-50%); }
