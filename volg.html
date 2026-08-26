@@ -704,7 +704,7 @@
       gap: 10px; margin-top: var(--space-4);
     }
     .dag-foto {
-      display: block; padding: 0; border: 0; background: none;
+      display: block; position: relative; padding: 0; border: 0; background: none;
       border-radius: var(--radius-ctrl); overflow: hidden;
       cursor: zoom-in; -webkit-tap-highlight-color: transparent;
     }
@@ -1300,8 +1300,10 @@
       });
     }
     function fmtTijd(sec) {
-      const u = Math.floor(sec / 3600);
-      const m = Math.round((sec % 3600) / 60);
+      // Eerst op hele minuten afronden, anders wordt 2u59m59s "2u 60m".
+      const totMin = Math.round(sec / 60);
+      const u = Math.floor(totMin / 60);
+      const m = totMin % 60;
       return lang === 'en' ? u + 'h ' + m + 'm' : u + 'u ' + m + 'm';
     }
     function fmtDatum(iso) {
@@ -1830,7 +1832,8 @@
           knop.setAttribute('aria-label', t('foto.open').replace('{n}', i + 2));
 
           const img = document.createElement('img');
-          img.src = src;
+          // Een video krijgt zijn poster als tegel, met een afspeelbadge.
+          img.src = isVideo(src) ? posterVan(src) : src;
           img.loading = 'lazy';
           img.decoding = 'async';
           // Mist een foto (verkeerd pad, niet meegecommit), haal hem dan weg
@@ -1839,6 +1842,7 @@
           img.alt = dagAlt(d, van, naar, i + 1);
 
           knop.appendChild(img);
+          if (isVideo(src)) knop.appendChild(playBadge(true));
           knop.addEventListener('click', () => openFoto(fotos, i + 1, img.alt));
           grid.appendChild(knop);
         });
