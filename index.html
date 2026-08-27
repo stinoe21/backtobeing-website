@@ -1949,7 +1949,8 @@
       .contact-box:last-child { border-bottom: none; }
       .hero-foot { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
       .hero-countdown { text-align: left; }
-      .hero-live { align-items: flex-start; text-align: left; }
+      /* Links en smal, zodat de Watermelon-knop plus ballon rechtsonder er niet overheen valt. */
+      .hero-live { align-items: flex-start; text-align: left; max-width: 56%; }
       .hero-cd-unit { align-items: flex-start; }
       .hero-countdown-units { gap: 1.15rem; }
     }
@@ -2043,7 +2044,7 @@
         height: 100svh;
       }
       .hero-video video { object-position: center; }
-      .hero-content { padding: 0 max(1.25rem, 5vw) 4.5rem; }
+      .hero-content { padding: 0 max(1.25rem, 5vw) 7rem; }
       .hero-title {
         font-size: clamp(3rem, 16vw, 5.8rem);
         line-height: 0.98;
@@ -2190,7 +2191,7 @@
       #page-contact .story-hero h1 {
         font-size: clamp(2.6rem, 16vw, 4.4rem);
       }
-      .hero-content { padding-bottom: 3.5rem; }
+      .hero-content { padding-bottom: 6.5rem; }
       .section-label,
       .photo-ph,
       .home-journey-stat .l,
