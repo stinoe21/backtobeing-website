@@ -348,7 +348,8 @@
         rgba(22,22,22,0.62) 75%,
         rgba(22,22,22,0.9) 100%);
     }
-    .hero-content { position: relative; z-index: 2; padding: 0 6vw 7vh; }
+    /* Onderaan extra ruimte: rechtsonder staat de Watermelon-knop met ballon (±170px hoog). */
+    .hero-content { position: relative; z-index: 2; padding: 0 6vw calc(7vh + 8rem); }
     .hero-eyebrow {
       font-family: var(--subhead);
       font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
