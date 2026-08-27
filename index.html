@@ -388,6 +388,45 @@
       letter-spacing: 0.14em; text-transform: uppercase;
       color: rgba(255,254,241,0.8);
     }
+    /* Live-blok: neemt na vertrek de plek van het aftellen over en linkt naar /volg. */
+    .hero-live {
+      flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end;
+      text-align: right; text-decoration: none; color: var(--cream);
+    }
+    .hero-live-label {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--subhead); font-size: 0.66rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,254,241,0.84);
+    }
+    .hero-live-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--display-accent);
+      box-shadow: 0 0 0 0 rgba(151,160,129,0.7);
+      animation: hero-live-puls 2s ease-out infinite;
+    }
+    @keyframes hero-live-puls {
+      0%   { box-shadow: 0 0 0 0 rgba(151,160,129,0.7); }
+      70%  { box-shadow: 0 0 0 9px rgba(151,160,129,0); }
+      100% { box-shadow: 0 0 0 0 rgba(151,160,129,0); }
+    }
+    @media (prefers-reduced-motion: reduce) { .hero-live-dot { animation: none; } }
+    .hero-live-dag {
+      margin-top: 0.55rem;
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(1.6rem, 2.4vw, 2.4rem); line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .hero-live-cta {
+      margin-top: 0.8rem;
+      font-family: var(--subhead); font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.5rem 1rem; border-radius: 999px;
+      border: 1px solid rgba(255,254,241,0.55);
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .hero-live:hover .hero-live-cta,
+    .hero-live:focus-visible .hero-live-cta { background: var(--cream); color: var(--tree); border-color: var(--cream); }
+    .hero-live:focus-visible { outline: none; }
     .hero-tagline {
       font-family: var(--subhead); font-style: normal; font-weight: 400;
       font-size: clamp(1rem, 1.3vw, 1.25rem);
@@ -1910,6 +1949,7 @@
       .contact-box:last-child { border-bottom: none; }
       .hero-foot { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
       .hero-countdown { text-align: left; }
+      .hero-live { align-items: flex-start; text-align: left; }
       .hero-cd-unit { align-items: flex-start; }
       .hero-countdown-units { gap: 1.15rem; }
     }
@@ -2760,6 +2800,11 @@
               <div class="hero-cd-unit"><strong id="cdSeconds">--</strong><span data-i18n="hero.cd.seconds">sec</span></div>
             </div>
           </div>
+          <a class="hero-live" id="heroLive" href="/volg" hidden>
+            <span class="hero-live-label"><span class="hero-live-dot" aria-hidden="true"></span><span id="heroLiveLabel">Live vanaf de Camino</span></span>
+            <strong class="hero-live-dag" id="heroLiveDag">Dag 4 van 6</strong>
+            <span class="hero-live-cta" id="heroLiveCta">Volg ons &rarr;</span>
+          </a>
         </div>
       </div>
     </section>
@@ -4502,6 +4547,7 @@
 
       localStorage.setItem('b2b-lang', lang);
       updateCaminoControlLanguage();
+      updateHeroLive();
     }
 
     /* ---------- Aftellen naar het vertrek ---------- */
@@ -4528,6 +4574,42 @@
 
     tickCountdown();
     setInterval(tickCountdown, 1000);
+
+    /* ---------- Live-blok: "Dag N van 6", gevoed door de volg-pagina ---------- */
+    const TOTAAL_DAGEN = 6;
+    let heroLiveStand = null; // { dag }
+
+    function updateHeroLive() {
+      const el = document.getElementById('heroLive');
+      if (!el || !heroLiveStand) return;
+      const en = currentLang() === 'en';
+      const { dag } = heroLiveStand;
+      const klaar = dag >= TOTAAL_DAGEN;
+      document.getElementById('heroLiveLabel').textContent = klaar
+        ? (en ? 'Arrived in Santiago' : 'Aangekomen in Santiago')
+        : (en ? 'Live from the Camino' : 'Live vanaf de Camino');
+      document.getElementById('heroLiveDag').textContent = dag > 0
+        ? (en ? `Day ${dag} of ${TOTAAL_DAGEN}` : `Dag ${dag} van ${TOTAAL_DAGEN}`)
+        : (en ? 'On our way to the start' : 'Onderweg naar de start');
+      document.getElementById('heroLiveCta').innerHTML = (en ? 'Follow us' : 'Volg ons') + ' &rarr;';
+      el.hidden = false;
+    }
+
+    async function laadHeroLive() {
+      if (DEPARTURE - Date.now() > 0) return;
+      try {
+        const res = await fetch('/data/camino-log.json', { cache: 'no-cache' });
+        if (!res.ok) return;
+        const log = await res.json();
+        const dagen = Array.isArray(log.dagen) ? log.dagen : [];
+        const dag = dagen.reduce((m, d) => Math.max(m, Number(d.dag) || 0), 0);
+        heroLiveStand = { dag };
+        updateHeroLive();
+      } catch (err) {
+        // Geen logboek bereikbaar: dan blijft het blok gewoon verborgen.
+      }
+    }
+    laadHeroLive();
 
     async function copyContactValue(button) {
       const value = button.getAttribute('data-copy');
