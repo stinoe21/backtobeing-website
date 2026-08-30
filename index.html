@@ -582,7 +582,6 @@
     .press-logo-link img[src="haarlem105-logo.svg"] { height: 38px; filter: none; }
     .press-logo-link img[src="smarthealth-logo.png"] { height: 26px; }
     .press-logo-link img[src="quote-logo.svg"] { height: 26px; }
-    /* Quote: logo zonder link zolang het artikel niet online staat. */
     a.press-logo-link { transition: opacity 0.2s; }
     a.press-logo-link:hover img { opacity: 1; }
     .press-name {
@@ -899,20 +898,6 @@
       transition: border-color 0.2s, gap 0.2s;
     }
     .pers-link:hover { border-bottom-color: var(--ink); gap: 0.8rem; }
-
-    /* Quote is aangekondigd maar nog niet online: zelfde ritme als de andere
-       items, alleen zonder link — niemand moet op dood hout klikken. */
-    .pers-soon {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: var(--subhead);
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      color: rgba(22,22,22,0.55);
-    }
-    .pers-item:nth-child(odd) .pers-soon { color: rgba(255,254,241,0.62); }
 
     /* Afsluiter voor journalisten: het enige donkere vlak op deze pagina. */
     .pers-kit {
@@ -2931,9 +2916,9 @@
       <div class="partners-strip-inner">
         <div class="section-label" data-i18n="press.home.label">In de pers</div>
         <h2 class="partners-strip-heading" data-i18n="press.home.heading">Ze schreven er <em>al over.</em></h2>
-        <p class="press-lead" data-i18n="press.home.lead">Trouw, het Noordhollands Dagblad, Haarlem105 en SmartHealth schreven eerder over het plan. Hier lees je hun stukken.</p>
+        <p class="press-lead" data-i18n="press.home.lead">Quote, Trouw, het Noordhollands Dagblad, Haarlem105 en SmartHealth schreven over het plan. Hier lees je hun stukken.</p>
         <ul class="press-list">
-          <li><span class="press-logo-link"><img src="quote-logo.svg" alt="Quote" loading="lazy" /></span></li>
+          <li><a class="press-logo-link" href="https://www.quotenet.nl/zakelijk/a73482165/app-bouwen-stichting-mind-max-helmantel-stijn-smit-caesar-schoorl/" target="_blank" rel="noopener" aria-label="Quote: Drie whizzkids bouwen een app terwijl ze 120 kilometer wandelen"><img src="quote-logo.svg" alt="Quote" loading="lazy" /></a></li>
           <li>
             <a class="press-logo-link"
                href="https://www.noordhollandsdagblad.nl/regio/ijmond/caesar-21-stijn-24-en-max-26-gaan-de-camino-lopen-en-onderweg-met-ai-een-app-ontwikkelen-voor-mentale-gezondheid-de-wereld-wordt-ons-kantoor/152592259.html"
@@ -3231,17 +3216,15 @@
     <section class="pers-list-section" aria-label="Artikelen">
       <ul class="pers-list">
 
-        <!-- Quote, augustus 2026. Kop is de openingszin van het stuk; zodra het
-             artikel online staat de <span class="pers-soon"> vervangen door een
-             <a class="pers-link" href="..."> zoals hieronder. -->
+        <!-- Quote, 21 augustus 2026 (Nadine Hoen). -->
         <li class="pers-item">
           <div class="pers-outlet">
             <img src="quote-logo.svg" alt="Quote" loading="lazy" />
             <span class="pers-kind" data-i18n="pers.kind.magazine">Magazine</span>
           </div>
           <div class="pers-body">
-            <h2 class="pers-title" data-i18n="pers.quote.title">&ldquo;Deze zondag vertrekken Max Helmantel (26), Stijn Smit (24) en Caesar Schoorl (21) naar Spanje om de befaamde Camino te lopen.&rdquo;</h2>
-            <span class="pers-soon" data-i18n="pers.soon">Verschijnt binnenkort</span>
+            <h2 class="pers-title" data-i18n="pers.quote.title">&ldquo;Drie whizzkids bouwen een app terwijl ze 120 kilometer wandelen: &lsquo;Toffe actie, hoeveel geld heb je nodig?&rsquo;&rdquo;</h2>
+            <a class="pers-link" href="https://www.quotenet.nl/zakelijk/a73482165/app-bouwen-stichting-mind-max-helmantel-stijn-smit-caesar-schoorl/" target="_blank" rel="noopener noreferrer"><span data-i18n="pers.read">Lees het artikel</span> &rarr;</a>
           </div>
         </li>
 
@@ -3585,7 +3568,7 @@
         'press.home.label':       'In de pers',
         'press.home.heading':     'Ze schreven er <em>al over.</em>',
         'press.home.cta':         'Alle artikelen &rarr;',
-        'press.home.lead':        'Trouw, het Noordhollands Dagblad, Haarlem105 en SmartHealth schreven eerder over het plan. Hier lees je hun stukken.',
+        'press.home.lead':        'Quote, Trouw, het Noordhollands Dagblad, Haarlem105 en SmartHealth schreven over het plan. Hier lees je hun stukken.',
         'press.feature.label':    'Caesar op LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
         'press.feature.cta':      'Lees de volledige post op LinkedIn &rarr;',
@@ -3745,7 +3728,7 @@
         'press.home.label':       'Featured in',
         'press.home.heading':     'They wrote about <em>it already.</em>',
         'press.home.cta':         'All coverage &rarr;',
-        'press.home.lead':        'Trouw, Noordhollands Dagblad, Haarlem105 and SmartHealth have written about the plan. Their pieces are here.',
+        'press.home.lead':        'Quote, Trouw, the Noordhollands Dagblad, Haarlem105 and SmartHealth wrote about the plan. Read their pieces here.',
         'press.feature.label':    'Caesar on LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
         'press.feature.cta':      'Read the full post on LinkedIn (Dutch) &rarr;',
@@ -3865,8 +3848,7 @@
       'pers.h105.title': '&ldquo;Drie vrienden bouwen app voor mentale gezondheid tijdens Camino de Santiago&rdquo;',
       'pers.smarthealth.title': '&ldquo;Drie makers bouwen al lopend app over hoe je je voelt&rdquo;',
       'pers.kind.magazine': 'Magazine',
-      'pers.soon': 'Verschijnt binnenkort',
-      'pers.quote.title': '&ldquo;Deze zondag vertrekken Max Helmantel (26), Stijn Smit (24) en Caesar Schoorl (21) naar Spanje om de befaamde Camino te lopen.&rdquo;',
+      'pers.quote.title': '&ldquo;Drie whizzkids bouwen een app terwijl ze 120 kilometer wandelen: &lsquo;Toffe actie, hoeveel geld heb je nodig?&rsquo;&rdquo;',
       'pers.kit.h': 'Meer weten over<br><em>ons verhaal?</em>',
       'pers.kit.p': 'We vertellen graag over de tocht, de app en het werk voor stichting MIND. Er staat een perskit voor je klaar met foto&rsquo;s in hoge resolutie, logo&rsquo;s, feiten over het project en citaten die je kunt gebruiken. Vraag hem aan en je hebt hem binnen een werkdag.',
       'pers.kit.cta': 'Naar contact &rarr;',
@@ -3925,8 +3907,7 @@
       'pers.h105.title': '&ldquo;Three friends build a mental health app during the Camino de Santiago&rdquo;',
       'pers.smarthealth.title': '&ldquo;Three makers are building an app about how you feel, while walking&rdquo;',
       'pers.kind.magazine': 'Magazine',
-      'pers.soon': 'Coming soon',
-      'pers.quote.title': '&ldquo;This Sunday Max Helmantel (26), Stijn Smit (24) and Caesar Schoorl (21) leave for Spain to walk the famous Camino.&rdquo;',
+      'pers.quote.title': '&ldquo;Three whizz kids build an app while walking 120 kilometres: &lsquo;Cool move, how much money do you need?&rsquo;&rdquo;',
       'pers.kit.h': 'Want to know more<br><em>about our story?</em>',
       'pers.kit.p': 'We are happy to talk about the walk, the app and the work for the MIND foundation. A press kit is ready for you with high resolution photos, logos, project facts and quotes you can use. Ask for it and you will have it within one working day.',
       'pers.kit.cta': 'Go to contact &rarr;',
