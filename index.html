@@ -18,12 +18,12 @@
   <link rel="icon" href="favicon-512.png" type="image/png" sizes="512x512" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="canonical" href="https://backtobeing.tech/" />
-  <meta name="description" id="metaDesc" content="Max, Caesar en Stijn lopen 123 kilometer over de Camino en bouwen in zes dagen een app die mentale gezondheid bespreekbaar maakt. Voor stichting MIND." />
+  <meta name="description" id="metaDesc" content="Max, Caesar en Stijn liepen 127 kilometer over de Camino en bouwden in zes dagen een app die mentale gezondheid bespreekbaar maakt. De documentaire gaat in november in première." />
 
   <!-- Open Graph / sociale previews -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Back to Being: The World as our Office" />
-  <meta property="og:description" id="ogDesc" content="Max, Caesar en Stijn lopen 123 kilometer over de Camino en bouwen in zes dagen een app die mentale gezondheid bespreekbaar maakt. Voor stichting MIND." />
+  <meta property="og:description" id="ogDesc" content="Max, Caesar en Stijn liepen 127 kilometer over de Camino en bouwden in zes dagen een app die mentale gezondheid bespreekbaar maakt. De documentaire gaat in november in première." />
   <meta property="og:locale" id="ogLocale" content="nl_NL" />
   <meta property="og:site_name" content="Back to Being" />
   <meta property="og:url" content="https://backtobeing.tech/" />
@@ -34,7 +34,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Back to Being: The World as our Office" />
   <meta name="twitter:image" content="https://backtobeing.tech/founders-group.jpg" />
-  <meta name="twitter:description" id="twDesc" content="123 kilometer lopen. In zes dagen een app bouwen die mentale gezondheid bespreekbaar maakt. Kosteloos voor stichting MIND." />
+  <meta name="twitter:description" id="twDesc" content="127 kilometer gelopen. In zes dagen een app gebouwd voor stichting MIND. De documentaire gaat in november in première." />
   <meta name="theme-color" content="#3d5a3d" />
 
 
@@ -366,30 +366,10 @@
     .hero-foot {
       display: flex; align-items: flex-end; justify-content: space-between; gap: 3rem;
     }
-    .hero-countdown { flex: 0 0 auto; text-align: right; }
-    .hero-countdown-label {
-      margin-bottom: 0.7rem;
-      font-family: var(--subhead);
-      font-size: 0.66rem; font-weight: 600;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: rgba(255,254,241,0.84);
-    }
-    .hero-countdown-units { display: flex; gap: 1.5rem; }
-    .hero-cd-unit { display: flex; flex-direction: column; align-items: flex-end; min-width: 2.6ch; }
-    .hero-cd-unit strong {
-      font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.6rem, 2.4vw, 2.4rem); line-height: 1;
-      font-variant-numeric: tabular-nums;
-      color: var(--cream);
-    }
-    .hero-cd-unit span {
-      margin-top: 0.35rem;
-      font-family: var(--subhead);
-      font-size: 0.6rem; font-weight: 500;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: rgba(255,254,241,0.8);
-    }
-    /* Live-blok: neemt na vertrek de plek van het aftellen over en linkt naar /volg. */
+    /* Rechts in de hero staan twee blokken naast elkaar: de reis die
+       gelopen is (stil) en de première die eraan komt (met puntje). */
+    .hero-blokken { flex: 0 0 auto; display: flex; align-items: flex-end; gap: 3.5rem; }
+    .hero-live-stil { opacity: 0.86; }
     .hero-live {
       flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end;
       text-align: right; text-decoration: none; color: var(--cream);
@@ -451,6 +431,30 @@
     }
     .intro-strip p:last-of-type { margin-bottom: 0; }
     .intro-actions { display: flex; gap: 0.85rem; flex-wrap: wrap; margin-top: 2rem; }
+
+    /* DOCUMENTAIRE — zelfde opzet als de intro-strip: kop links, tekst en
+       knoppen rechts. Geen kader en geen tweede donkere sectie. */
+    .docu-tease {
+      padding: var(--section-y-sm) 6vw var(--section-y);
+      max-width: 1200px; margin: 0 auto;
+    }
+    .docu-tease-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: start;
+    }
+    .docu-tease h2 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: var(--h-block); line-height: 1.04; letter-spacing: 0;
+    }
+    .docu-tease h2 em { font-style: italic; color: var(--display-accent); }
+    .docu-tease p {
+      font-size: clamp(0.95rem, 1.05vw, 1.05rem); line-height: 1.7;
+      color: var(--ink-soft);
+    }
+    .docu-actions { display: flex; gap: 0.85rem; flex-wrap: wrap; margin-top: 2rem; }
+    @media (max-width: 960px) {
+      .docu-tease { padding: var(--section-y-sm) 6vw; }
+      .docu-tease-inner { grid-template-columns: 1fr; gap: 3rem; }
+    }
 
 /* PARTNERS — credibility strip (homepage + sponsoring) */
     .partners-strip {
@@ -1934,11 +1938,10 @@
       .contact-box { min-height: 0; border-right: none; border-bottom: 1px solid var(--line); }
       .contact-box:last-child { border-bottom: none; }
       .hero-foot { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
-      .hero-countdown { text-align: left; }
       /* Links en smal, zodat de Watermelon-knop plus ballon rechtsonder er niet overheen valt. */
-      .hero-live { align-items: flex-start; text-align: left; max-width: 56%; }
-      .hero-cd-unit { align-items: flex-start; }
-      .hero-countdown-units { gap: 1.15rem; }
+      .hero-blokken { flex-wrap: wrap; align-items: flex-start; gap: 1.25rem 2.5rem; max-width: 72%; }
+      .hero-live { align-items: flex-start; text-align: left; }
+      .hero-live-dag { font-size: clamp(1.3rem, 4.2vw, 1.6rem); }
     }
     @media (max-width: 760px) {
       :root { --nav-h: 72px; }
@@ -2721,6 +2724,7 @@
       } catch (e) { /* private mode / disabled storage — show preloader anyway */ }
     })();
   </script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -2744,9 +2748,10 @@
     </button>
     <div class="nav-links" id="navLinks">
       <button class="nav-link" data-page="verhaal"    data-i18n="nav.story"      onclick="showPage('verhaal')"    type="button">Ons verhaal</button>
+      <!-- Echte links, geen showPage(): /reis (volg.html) en /premiere zijn aparte pagina's. -->
+      <a class="nav-link" href="/reis" data-i18n="nav.reis">Dag voor dag</a>
       <button class="nav-link" data-page="pers"       data-i18n="nav.press"      onclick="showPage('pers')"       type="button">In de pers</button>
-      <!-- Echte link, geen showPage(): /volg is een aparte pagina (volg.html). -->
-      <a class="nav-link" href="/volg" data-i18n="nav.volg">Volg ons</a>
+      <a class="nav-link" href="/premiere" data-i18n="nav.premiere">Première</a>
       <div class="lang-toggle" role="group" aria-label="Language">
         <button class="lang-btn" data-lang="nl" type="button" aria-label="Nederlands">NL</button>
         <span class="lang-sep" aria-hidden="true">·</span>
@@ -2776,34 +2781,35 @@
         </h1>
         <div class="hero-foot">
           <p class="hero-tagline" data-i18n="hero.tagline">
-            Drie AI-founders maken van de Camino hun kantoor en bouwen onderweg een app voor MIND.
+            Drie AI-founders maakten van de Camino hun kantoor en bouwden onderweg een app voor MIND. Nu komt de documentaire.
           </p>
-          <div class="hero-countdown" id="heroCountdown">
-            <div class="hero-countdown-label" data-i18n="hero.cd.label">Vertrek 23 augustus</div>
-            <div class="hero-countdown-units">
-              <div class="hero-cd-unit"><strong id="cdDays">--</strong><span data-i18n="hero.cd.days">dagen</span></div>
-              <div class="hero-cd-unit"><strong id="cdHours">--</strong><span data-i18n="hero.cd.hours">uur</span></div>
-              <div class="hero-cd-unit"><strong id="cdMinutes">--</strong><span data-i18n="hero.cd.minutes">min</span></div>
-              <div class="hero-cd-unit"><strong id="cdSeconds">--</strong><span data-i18n="hero.cd.seconds">sec</span></div>
-            </div>
+          <div class="hero-blokken">
+            <!-- De reis is gelopen: dit blok linkt naar het dagverslag. -->
+            <a class="hero-live hero-live-stil" href="/reis">
+              <span class="hero-live-label"><span data-i18n="hero.reis.label">Aangekomen in Santiago</span></span>
+              <strong class="hero-live-dag" data-i18n="hero.reis.dag">127 km in 6 dagen</strong>
+              <span class="hero-live-cta" data-i18n="hero.reis.cta">Dag voor dag &rarr;</span>
+            </a>
+            <!-- Wat er nog komt: de première. Het pulsende puntje hoort hier. -->
+            <a class="hero-live" href="/premiere">
+              <span class="hero-live-label"><span class="hero-live-dot" aria-hidden="true"></span><span data-i18n="hero.prem.label">Documentaire</span></span>
+              <strong class="hero-live-dag" data-i18n="hero.prem.dag">Première in november</strong>
+              <span class="hero-live-cta" data-i18n="hero.prem.cta">Meld je aan &rarr;</span>
+            </a>
           </div>
-          <a class="hero-live" id="heroLive" href="/volg" hidden>
-            <span class="hero-live-label"><span class="hero-live-dot" aria-hidden="true"></span><span id="heroLiveLabel">Live vanaf de Camino</span></span>
-            <strong class="hero-live-dag" id="heroLiveDag">Dag 4 van 6</strong>
-            <span class="hero-live-cta" id="heroLiveCta">Volg ons &rarr;</span>
-          </a>
         </div>
       </div>
     </section>
 
     <section class="intro-strip">
       <div>
-        <h2 data-i18n="intro.heading">Ons kantoor past deze zomer<br><em>in een rugzak.</em></h2>
+        <h2 data-i18n="intro.heading">Ons kantoor paste deze zomer<br><em>in een rugzak.</em></h2>
       </div>
       <div>
-        <p data-i18n="intro.body">We lopen 123 kilometer van Valença naar Santiago en bouwen onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype.</p>
+        <p data-i18n="intro.body">We liepen 127 kilometer van Valença naar Santiago en bouwden onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype. Alles is gefilmd. De documentaire gaat in november in première.</p>
         <div class="intro-actions">
           <button class="btn"         data-i18n="intro.cta1" onclick="showPage('verhaal')"    type="button">Ons verhaal &rarr;</button>
+          <a class="btn btn-outline"  data-i18n="intro.cta2" href="/reis">Bekijk de reis &rarr;</a>
         </div>
       </div>
     </section>
@@ -2815,7 +2821,7 @@
              alt="Max, Caesar en Stijn zittend tegen een bewolkte lucht"
              width="2000" height="1333" loading="lazy" />
         <figcaption class="group-portrait-cap">
-          <span data-i18n="home.group.cap">Max, Caesar en Stijn gaan het doen: in zes dagen een app bouwen die mentale gezondheid beter bespreekbaar maakt.</span>
+          <span data-i18n="home.group.cap">Max, Caesar en Stijn deden het: in zes dagen een app gebouwd die mentale gezondheid beter bespreekbaar maakt.</span>
           <span class="group-portrait-credit" data-i18n="home.group.credit">&copy; <a href="https://femkejuffermans.com/" target="_blank" rel="noopener noreferrer">Femke Juffermans</a></span>
         </figcaption>
         <div class="group-portrait-actions">
@@ -2828,9 +2834,9 @@
       <div class="announcement-inner">
         <div class="announcement-header">
           <div>
-            <h2 class="announcement-heading" id="announcementTitle" data-i18n="announcement.heading">Waarom we ons kantoor <em>123 kilometer verplaatsen.</em></h2>
+            <h2 class="announcement-heading" id="announcementTitle" data-i18n="announcement.heading">Waarom we ons kantoor <em>123 kilometer verplaatsten.</em></h2>
           </div>
-          <p class="announcement-copy" data-i18n="announcement.copy">We willen laten zien dat werken ook anders kan: de oudste pelgrimsroute van Europa als kantoor, de nieuwste technologie in onze rugzak. Wat we onderweg bouwen dragen we kosteloos over aan stichting MIND, zodat hun impact verder reikt dan wat wij in zes dagen kunnen doen.</p>
+          <p class="announcement-copy" data-i18n="announcement.copy">We wilden laten zien dat werken ook anders kan: de oudste pelgrimsroute van Europa als kantoor, de nieuwste technologie in onze rugzak. Wat we onderweg bouwden dragen we kosteloos over aan stichting MIND, zodat hun impact verder reikt dan wat wij in zes dagen konden doen. Dit is de film waarmee het begon.</p>
         </div>
       </div>
 
@@ -2856,6 +2862,23 @@
         </div>
       </div>
 
+    </section>
+
+    <!-- HOME — de documentaire komt eraan -->
+    <section class="docu-tease" aria-labelledby="docuTitle">
+      <div class="docu-tease-inner">
+        <div>
+          <div class="section-label" data-i18n="docu.label">Documentaire &middot; november 2026</div>
+          <h2 id="docuTitle" data-i18n="docu.h">We hebben alles<br><em>vastgelegd.</em></h2>
+        </div>
+        <div>
+          <p data-i18n="docu.p">Zes dagen lopen, bouwen en filmen, van Valença tot het plein in Santiago. Daar maken we nu een documentaire van. In november gaat hij in première, daarna is hij voor iedereen te zien op YouTube. Wil je erbij zijn? Meld je aan, dan hoor je als eerste de datum en de locatie.</p>
+          <div class="docu-actions">
+            <a class="btn" href="/premiere" data-i18n="docu.cta1">Naar de première &rarr;</a>
+            <a class="btn btn-outline" href="/reis" data-i18n="docu.cta2">Bekijk de reis &rarr;</a>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- HOME — partners credibility strip -->
@@ -3032,11 +3055,11 @@
     <!-- HOME — closing CTA -->
     <section class="closing-cta-section">
       <div class="closing-cta-inner">
-        <h2 data-i18n="home.closing.h">Loop je<br><em>mee?</em></h2>
-        <p data-i18n="home.closing.p">Volg de tocht vanaf dag &eacute;&eacute;n, lees het hele verhaal, of stuur ons gewoon een bericht.</p>
+        <h2 data-i18n="home.closing.h">Kom je naar<br><em>de première?</em></h2>
+        <p data-i18n="home.closing.p">In november laten we de documentaire voor het eerst zien. Meld je aan, lees het hele verhaal, of stuur ons gewoon een bericht.</p>
         <div class="closing-cta-actions">
-          <button class="btn closing-cta-btn" data-i18n="home.closing.cta1" onclick="showPage('verhaal')" type="button">Ons verhaal &rarr;</button>
-          <button class="btn btn-outline closing-cta-outline" data-i18n="home.closing.cta2" onclick="showPage('contact')" type="button">Contact &rarr;</button>
+          <a class="btn closing-cta-btn" data-i18n="home.closing.cta1" href="/premiere">Meld je aan &rarr;</a>
+          <button class="btn btn-outline closing-cta-outline" data-i18n="home.closing.cta2" onclick="showPage('verhaal')" type="button">Ons verhaal &rarr;</button>
         </div>
       </div>
     </section>
@@ -3054,7 +3077,7 @@
         <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
         <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
       </div>
-      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
+      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; 2026</div>
     </footer>
   </div>
 
@@ -3063,12 +3086,12 @@
 
     <section class="story-editorial-hero">
       <div class="story-editorial-inner">
-        <h1 data-i18n="verhaal.h1" data-story-reveal>123 kilometer lopen.<br><em>Eén app bouwen.</em></h1>
+        <h1 data-i18n="verhaal.h1" data-story-reveal>Werken terwijl <em>we liepen.</em></h1>
         <div class="story-editorial-foot" data-story-reveal>
-          <p class="story-editorial-lead" data-i18n="story.hero.lead">We verplaatsen ons kantoor naar de Camino. Zes dagen lang lopen, bouwen en documenteren we. Het resultaat: een werkende app die we kosteloos aan stichting MIND overdragen.</p>
+          <p class="story-editorial-lead" data-i18n="story.hero.lead">We verplaatsten ons kantoor naar de Camino. Zes dagen lang liepen, bouwden en filmden we. Het resultaat: een werkende app die we kosteloos aan stichting MIND overdragen, en een documentaire die in november in première gaat.</p>
           <div class="story-hero-facts" aria-label="Project in cijfers">
-            <div class="story-hero-fact"><strong>123</strong><span data-i18n="story.fact.km">kilometer lopen</span></div>
-            <div class="story-hero-fact"><strong>6</strong><span data-i18n="story.fact.days">dagen bouwen</span></div>
+            <div class="story-hero-fact"><strong>127</strong><span data-i18n="story.fact.km">kilometer gelopen</span></div>
+            <div class="story-hero-fact"><strong>6</strong><span data-i18n="story.fact.days">dagen gebouwd</span></div>
             <div class="story-hero-fact"><strong>1</strong><span data-i18n="story.fact.product">product voor MIND</span></div>
           </div>
         </div>
@@ -3079,9 +3102,9 @@
       <section class="story-mind-explainer">
         <div class="story-mind-inner">
           <div class="story-mind-copy">
-            <h2 class="story-mind-heading" data-i18n="story.mind.heading" data-story-reveal>De app die we<br><em>gaan bouwen.</em></h2>
+            <h2 class="story-mind-heading" data-i18n="story.mind.heading" data-story-reveal>De app die we<br><em>onderweg bouwden.</em></h2>
             <div class="story-mind-aside" data-story-reveal>
-            <p class="story-mind-summary" data-i18n="story.mind.summary">Als Nederlanders praten we (te) makkelijk over het weer, maar over onze mentale gezondheid heerst nog altijd een taboe. Dat willen we doorbreken door het gesprek normaal te maken. Samen met stichting MIND bouwen we een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met het weertype dat bij je past. Je weer wordt niet opgeslagen, het is er om te delen.</p>
+            <p class="story-mind-summary" data-i18n="story.mind.summary">Als Nederlanders praten we (te) makkelijk over het weer, maar over onze mentale gezondheid heerst nog altijd een taboe. Dat willen we doorbreken door het gesprek normaal te maken. Samen met stichting MIND bouwden we een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met het weertype dat bij je past. Je weer wordt niet opgeslagen, het is er om te delen.</p>
             </div>
           </div>
 
@@ -3106,7 +3129,7 @@
                de volle sectiemarge ertussen. -->
           <div class="story-mind-credit">
             <img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" />
-            <p data-i18n="story.mind.credit">Dit doen we in nauwe samenwerking met stichting MIND.</p>
+            <p data-i18n="story.mind.credit">Dit deden we in nauwe samenwerking met stichting MIND.</p>
           </div>
           </div>
         </div>
@@ -3120,7 +3143,7 @@
       <div class="founders-inner">
         <div class="founders-header">
           <h2 data-i18n="founders.h">Team<br><em>Back to Being.</em></h2>
-          <p class="founders-intro" data-i18n="founders.intro">We zijn alle drie een startup begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.ai" target="_blank" rel="noopener noreferrer">Waise ai</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being is de proef op de som: in zes dagen een werkende app, onderweg gebouwd. Wat er aan het eind staat, dragen we kosteloos over aan stichting MIND.</p>
+          <p class="founders-intro" data-i18n="founders.intro">We zijn alle drie een startup begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.ai" target="_blank" rel="noopener noreferrer">Waise ai</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being was de proef op de som: in zes dagen een werkende app, onderweg gebouwd. Wat er aan het eind stond, dragen we kosteloos over aan stichting MIND.</p>
         </div>
         <div class="founders-grid">
 
@@ -3151,9 +3174,9 @@
       <div class="story-route-inner">
         <div class="story-route-copy">
           <div data-story-reveal>
-            <h2 class="story-route-heading" data-i18n="story.route.heading">Welke route <em>lopen we?</em></h2>
+            <h2 class="story-route-heading" data-i18n="story.route.heading">Welke route <em>liepen we?</em></h2>
           </div>
-          <p data-i18n="story.route.p" data-story-reveal>Zes dagen, zes etappes: van Valença naar Santiago de Compostela, 123 kilometer over de Camino Portugu&eacute;s. Elke etappe is ook een bouwsprint. Onderweg luisteren we, bij aankomst maken we keuzes, en aan het eind van de dag laten we zien wat er is veranderd.</p>
+          <p data-i18n="story.route.p" data-story-reveal>Zes dagen, zes etappes: van Valença naar Santiago de Compostela, 127 kilometer over de Camino Portugu&eacute;s. Elke etappe was ook een bouwsprint. Onderweg luisterden we, bij aankomst maakten we keuzes, en aan het eind van de dag lieten we zien wat er was veranderd. Het verslag per dag, met foto's en de gelopen route, staat op <a href="/reis">Dag voor dag</a>.</p>
         </div>
         <div class="camino-map-wrap" aria-label="Kaart van de Camino-route van Valença naar Santiago de Compostela" data-story-reveal>
           <div id="caminoMap" class="camino-map"></div>
@@ -3166,7 +3189,7 @@
               <span id="caminoMapLabel" class="eyebrow" data-i18n="verhaal.map.label">De route</span>
               <strong id="caminoMapTitle" data-i18n="verhaal.map.title">Valença naar Santiago de Compostela</strong>
             </div>
-            <span id="caminoMapDistance" class="distance" data-i18n="verhaal.map.distance">123 km / 6 dagen</span>
+            <span id="caminoMapDistance" class="distance" data-i18n="verhaal.map.distance">127 km / 6 dagen</span>
           </div>
         </div>
       </div>
@@ -3198,7 +3221,7 @@
         <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
         <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
       </div>
-      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
+      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; 2026</div>
     </footer>
   </div>
 
@@ -3298,7 +3321,7 @@
         <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
         <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
       </div>
-      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
+      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; 2026</div>
     </footer>
   </div>
 
@@ -3393,7 +3416,7 @@
         <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
         <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
       </div>
-      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; Zomer 2026</div>
+      <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; 2026</div>
     </footer>
   </div>
 
@@ -3486,7 +3509,6 @@
         // nav
         'nav.story':        'Ons verhaal',
         'nav.press':        'In de pers',
-        'nav.volg':         'Volg ons',
         'nav.contact':      'Contact',
 
         // hero
@@ -3646,7 +3668,6 @@
         // nav
         'nav.story':        'Our story',
         'nav.press':        'Press',
-        'nav.volg':         'Follow us',
         'nav.contact':      'Contact',
 
         // hero (tagline + meta)
@@ -3950,6 +3971,96 @@
       'press.feature.summary1': 'The Camino stands for slowing down and reflection; AI for speed and productivity. We bring those worlds together in one live experiment.',
       'press.feature.summary2': 'On the trail, we build an app for the MIND foundation and capture the honest process: the heat, the technology, the conversations and everything that goes differently than planned.',
       'verhaal.closing.p': "We are happy to share images, figures, and the latest state of the app.",
+    });
+
+    /* September 2026: de reis is gelopen, de documentaire komt eraan. Alles
+       wat over het plan ging staat nu in de verleden tijd; de première en de
+       reispagina zijn de twee dingen waar de site naartoe wijst. Deze blokken
+       staan als laatste en winnen dus van alles hierboven. */
+    Object.assign(I18N.nl, {
+      'meta.desc': 'Max, Caesar en Stijn liepen 127 kilometer over de Camino en bouwden in zes dagen een app die mentale gezondheid bespreekbaar maakt. De documentaire gaat in november in première.',
+      'meta.descShort': '127 kilometer gelopen. In zes dagen een app gebouwd voor stichting MIND. De documentaire gaat in november in première.',
+      'nav.reis': 'Dag voor dag',
+      'nav.premiere': 'Première',
+      'hero.tagline': 'Drie AI-founders maakten van de Camino hun kantoor en bouwden onderweg een app voor MIND. Nu komt de documentaire.',
+      'hero.reis.label': 'Aangekomen in Santiago',
+      'hero.reis.dag': '127 km in 6 dagen',
+      'hero.reis.cta': 'Dag voor dag &rarr;',
+      'hero.prem.label': 'Documentaire',
+      'hero.prem.dag': 'Première in november',
+      'hero.prem.cta': 'Meld je aan &rarr;',
+      'intro.heading': "Ons kantoor paste deze zomer<br><em>in een rugzak.</em>",
+      'intro.body': "We liepen 127 kilometer van Valença naar Santiago en bouwden onderweg een app voor stichting MIND: elke dag &eacute;&eacute;n vraag over hoe het met je gaat, beantwoord met een weertype. Alles is gefilmd. De documentaire gaat in november in première.",
+      'intro.cta2': 'Bekijk de reis &rarr;',
+      'home.group.cap': 'Max, Caesar en Stijn deden het: in zes dagen een app gebouwd die mentale gezondheid beter bespreekbaar maakt.',
+      'announcement.heading': 'Waarom we ons kantoor <em>123 kilometer verplaatsten.</em>',
+      'announcement.copy': 'We wilden laten zien dat werken ook anders kan: de oudste pelgrimsroute van Europa als kantoor, de nieuwste technologie in onze rugzak. Wat we onderweg bouwden dragen we kosteloos over aan stichting MIND, zodat hun impact verder reikt dan wat wij in zes dagen konden doen. Dit is de film waarmee het begon.',
+      'docu.label': 'Documentaire &middot; november 2026',
+      'docu.h': 'We hebben alles<br><em>vastgelegd.</em>',
+      'docu.p': 'Zes dagen lopen, bouwen en filmen, van Valença tot het plein in Santiago. Daar maken we nu een documentaire van. In november gaat hij in première, daarna is hij voor iedereen te zien op YouTube. Wil je erbij zijn? Meld je aan, dan hoor je als eerste de datum en de locatie.',
+      'docu.cta1': 'Naar de première &rarr;',
+      'docu.cta2': 'Bekijk de reis &rarr;',
+      'home.closing.h': 'Kom je naar<br><em>de première?</em>',
+      'home.closing.p': 'In november laten we de documentaire voor het eerst zien. Meld je aan, lees het hele verhaal, of stuur ons gewoon een bericht.',
+      'home.closing.cta1': 'Meld je aan &rarr;',
+      'home.closing.cta2': 'Ons verhaal &rarr;',
+      'footer.right': 'backtobeing.tech &nbsp;·&nbsp; 2026',
+      'verhaal.h1': 'Werken terwijl <em>we liepen.</em>',
+      'story.hero.lead': 'We verplaatsten ons kantoor naar de Camino. Zes dagen lang liepen, bouwden en filmden we. Het resultaat: een werkende app die we kosteloos aan stichting MIND overdragen, en een documentaire die in november in première gaat.',
+      'story.fact.km': 'kilometer gelopen',
+      'story.fact.days': 'dagen gebouwd',
+      'story.mind.heading': 'De app die we<br><em>onderweg bouwden.</em>',
+      'story.mind.summary': "Als Nederlanders praten we (te) makkelijk over het weer, maar over onze mentale gezondheid heerst nog altijd een taboe. Dat willen we doorbreken door het gesprek normaal te maken. Samen met stichting MIND bouwden we een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met het weertype dat bij je past. Je weer wordt niet opgeslagen, het is er om te delen.",
+      'story.mind.credit': 'Dit deden we in nauwe samenwerking met stichting MIND.',
+      'founders.intro': 'We zijn alle drie een startup begonnen, waaronder <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> en <a href="https://waise.ai" target="_blank" rel="noopener noreferrer">Waise ai</a>. Uit dat bouwen, en uit het dagelijks werken met AI, merken we alle drie hoeveel er inmiddels mogelijk is. Back to Being was de proef op de som: in zes dagen een werkende app, onderweg gebouwd. Wat er aan het eind stond, dragen we kosteloos over aan stichting MIND.',
+      'story.route.heading': 'Welke route <em>liepen we?</em>',
+      'story.route.p': 'Zes dagen, zes etappes: van Valença naar Santiago de Compostela, 127 kilometer over de Camino Portugu&eacute;s. Elke etappe was ook een bouwsprint. Onderweg luisterden we, bij aankomst maakten we keuzes, en aan het eind van de dag lieten we zien wat er was veranderd. Het verslag per dag, met foto\'s en de gelopen route, staat op <a href="/reis">Dag voor dag</a>.',
+      'verhaal.map.distance': '127 km / 6 dagen',
+      'route.map': '127 KM · 6 DAGEN',
+      'contact.lead': "We vertellen graag over de tocht, de documentaire, de app en het werk voor stichting MIND. Beeldmateriaal en achtergrondinformatie sturen we op aanvraag toe.",
+    });
+
+    Object.assign(I18N.en, {
+      'meta.desc': 'Max, Caesar and Stijn walked 127 kilometres of the Camino and built an app in six days that makes mental health easier to talk about. The documentary premieres in November.',
+      'meta.descShort': '127 kilometres walked. An app built in six days for the MIND foundation. The documentary premieres in November.',
+      'nav.reis': 'Day by day',
+      'nav.premiere': 'Premiere',
+      'hero.tagline': 'Three AI founders turned the Camino into their office and built an app for MIND along the way. Now comes the documentary.',
+      'hero.reis.label': 'Arrived in Santiago',
+      'hero.reis.dag': '127 km in 6 days',
+      'hero.reis.cta': 'Day by day &rarr;',
+      'hero.prem.label': 'Documentary',
+      'hero.prem.dag': 'Premiere in November',
+      'hero.prem.cta': 'Sign up &rarr;',
+      'intro.heading': "This summer our office fit<br><em>in a backpack.</em>",
+      'intro.body': "We walked 127 kilometres from Valença to Santiago and built an app for the MIND foundation along the way: one question a day about how you are doing, answered with a weather type. All of it was filmed. The documentary premieres in November.",
+      'intro.cta2': 'See the journey &rarr;',
+      'home.group.cap': 'Max, Caesar and Stijn did it: an app built in six days that makes mental health easier to talk about.',
+      'announcement.heading': 'Why we moved our office <em>123 kilometres.</em>',
+      'announcement.copy': 'We wanted to show that work can be done differently: Europe\'s oldest pilgrim route as our office, the newest technology in our backpacks. Whatever we built along the way we hand over to the MIND foundation free of charge, so their impact reaches further than the six days we put in. This is the film it all started with.',
+      'docu.label': 'Documentary &middot; November 2026',
+      'docu.h': 'We captured<br><em>all of it.</em>',
+      'docu.p': 'Six days of walking, building and filming, from Valença to the square in Santiago. We are turning that into a documentary. It premieres in November and will be on YouTube for everyone afterwards. Want to be there? Sign up and be the first to hear the date and venue.',
+      'docu.cta1': 'To the premiere &rarr;',
+      'docu.cta2': 'See the journey &rarr;',
+      'home.closing.h': 'Coming to<br><em>the premiere?</em>',
+      'home.closing.p': 'In November we show the documentary for the first time. Sign up, read the whole story, or just send us a message.',
+      'home.closing.cta1': 'Sign up &rarr;',
+      'home.closing.cta2': 'Our story &rarr;',
+      'footer.right': 'backtobeing.tech &nbsp;·&nbsp; 2026',
+      'verhaal.h1': 'Working while <em>we walked.</em>',
+      'story.hero.lead': 'We moved our office to the Camino. For six days we walked, built and filmed. The result: a working app that we hand over to the MIND foundation for free, and a documentary that premieres in November.',
+      'story.fact.km': 'kilometres walked',
+      'story.fact.days': 'days building',
+      'story.mind.heading': 'The app we built<br><em>along the way.</em>',
+      'story.mind.summary': "In the Netherlands we talk about the weather (too) easily, but our mental health is still a taboo. We want to break that open by making the conversation normal. Together with the MIND foundation we built an app around one fixed question: what is the weather in your head? You answer in five seconds with the weather type that fits you. Your weather is not stored, it is there to share.",
+      'story.mind.credit': 'We did this in close collaboration with the MIND foundation.',
+      'founders.intro': 'All three of us started a startup, among them <a href="https://kaires.nl" target="_blank" rel="noopener noreferrer">Kaires</a> and <a href="https://waise.ai" target="_blank" rel="noopener noreferrer">Waise ai</a>. From building those, and from working with AI every day, all three of us notice how much is possible now. Back to Being was where we put that to the test: a working app in six days, built along the way. Whatever stood at the end, we hand over to the MIND foundation free of charge.',
+      'story.route.heading': 'Which route <em>did we walk?</em>',
+      'story.route.p': 'Six days, six stages: from Valença to Santiago de Compostela, 127 kilometres on the Camino Portugu&eacute;s. Every stage doubled as a build sprint. We listened along the way, decided on arrival, and showed what had changed by the end of the day. The day-by-day report, with photos and the route we walked, is on <a href="/reis">Day by day</a>.',
+      'verhaal.map.distance': '127 km / 6 days',
+      'route.map': '127 KM · 6 DAYS',
+      'contact.lead': "We are happy to talk about the walk, the documentary, the app, and the work for the MIND foundation. Images and background information are available on request.",
     });
 
     let caminoMapInstance = null;
@@ -4530,69 +4641,7 @@
 
       localStorage.setItem('b2b-lang', lang);
       updateCaminoControlLanguage();
-      updateHeroLive();
     }
-
-    /* ---------- Aftellen naar het vertrek ---------- */
-    // 23 augustus 2026, 00:00 in Amsterdam (CEST, UTC+2).
-    const DEPARTURE = new Date('2026-08-23T00:00:00+02:00').getTime();
-
-    function tickCountdown() {
-      const el = document.getElementById('heroCountdown');
-      if (!el) return;
-      let left = Math.max(0, DEPARTURE - Date.now());
-      const day = 86400000, hour = 3600000, minute = 60000;
-      const d = Math.floor(left / day);   left -= d * day;
-      const h = Math.floor(left / hour);  left -= h * hour;
-      const m = Math.floor(left / minute);
-      const sec = Math.floor((left - m * minute) / 1000);
-      const pad = n => String(n).padStart(2, '0');
-      document.getElementById('cdDays').textContent    = String(d);
-      document.getElementById('cdHours').textContent   = pad(h);
-      document.getElementById('cdMinutes').textContent = pad(m);
-      document.getElementById('cdSeconds').textContent = pad(sec);
-      // Na vertrek heeft aftellen geen betekenis meer; dan verbergen we het blok.
-      if (DEPARTURE - Date.now() <= 0) el.hidden = true;
-    }
-
-    tickCountdown();
-    setInterval(tickCountdown, 1000);
-
-    /* ---------- Live-blok: "Dag N van 6", gevoed door de volg-pagina ---------- */
-    const TOTAAL_DAGEN = 6;
-    let heroLiveStand = null; // { dag }
-
-    function updateHeroLive() {
-      const el = document.getElementById('heroLive');
-      if (!el || !heroLiveStand) return;
-      const en = currentLang() === 'en';
-      const { dag } = heroLiveStand;
-      const klaar = dag >= TOTAAL_DAGEN;
-      document.getElementById('heroLiveLabel').textContent = klaar
-        ? (en ? 'Arrived in Santiago' : 'Aangekomen in Santiago')
-        : (en ? 'Live from the Camino' : 'Live vanaf de Camino');
-      document.getElementById('heroLiveDag').textContent = dag > 0
-        ? (en ? `Day ${dag} of ${TOTAAL_DAGEN}` : `Dag ${dag} van ${TOTAAL_DAGEN}`)
-        : (en ? 'On our way to the start' : 'Onderweg naar de start');
-      document.getElementById('heroLiveCta').innerHTML = (en ? 'Follow us' : 'Volg ons') + ' &rarr;';
-      el.hidden = false;
-    }
-
-    async function laadHeroLive() {
-      if (DEPARTURE - Date.now() > 0) return;
-      try {
-        const res = await fetch('/data/camino-log.json', { cache: 'no-cache' });
-        if (!res.ok) return;
-        const log = await res.json();
-        const dagen = Array.isArray(log.dagen) ? log.dagen : [];
-        const dag = dagen.reduce((m, d) => Math.max(m, Number(d.dag) || 0), 0);
-        heroLiveStand = { dag };
-        updateHeroLive();
-      } catch (err) {
-        // Geen logboek bereikbaar: dan blijft het blok gewoon verborgen.
-      }
-    }
-    laadHeroLive();
 
     async function copyContactValue(button) {
       const value = button.getAttribute('data-copy');

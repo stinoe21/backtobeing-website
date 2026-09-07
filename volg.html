@@ -13,18 +13,18 @@
           data-watermelon-widget-id="GKgMkGIWAy5"
           data-watermelon-settings-id="17335"></script>
 
-  <title>Volg ons · Back to Being</title>
+  <title>Dag voor dag · Back to Being</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon-512.png" type="image/png" sizes="512x512" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="canonical" href="https://backtobeing.tech/volg" />
-  <meta name="description" id="metaDesc" content="Volg Caesar, Stijn en Max live op de Camino. Elke dag de gelopen route, foto's en een korte update, van Valença naar Santiago de Compostela." />
+  <meta name="description" id="metaDesc" content="De Camino, dag voor dag: de gelopen route, foto's en een kort verslag per etappe, van Valença naar Santiago de Compostela." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#fffef1" />
 
   <meta property="og:type" content="article" />
-  <meta property="og:title" content="Volg ons op de Camino · Back to Being" />
-  <meta property="og:description" id="ogDesc" content="123 kilometer van Valença naar Santiago. Elke dag de route, foto's en een korte update." />
+  <meta property="og:title" content="De Camino, dag voor dag · Back to Being" />
+  <meta property="og:description" id="ogDesc" content="127 kilometer van Valença naar Santiago, dag voor dag: de route, foto's en een kort verslag." />
   <meta property="og:locale" id="ogLocale" content="nl_NL" />
   <meta property="og:site_name" content="Back to Being" />
   <meta property="og:url" content="https://backtobeing.tech/volg" />
@@ -1077,6 +1077,7 @@
       .dag-foto.wide img { aspect-ratio: 4/3; }
     }
   </style>
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -1093,8 +1094,9 @@
       <!-- index.html is een SPA zonder router, dus vanaf hier linken we met
            een hash die index.html bij het laden oppakt. -->
       <a class="nav-link" href="/#verhaal" data-i18n="nav.story">Ons verhaal</a>
+      <a class="nav-link active" href="/reis" data-i18n="nav.reis" aria-current="page">Dag voor dag</a>
       <a class="nav-link" href="/#pers" data-i18n="nav.press">In de pers</a>
-      <a class="nav-link active" href="/volg" data-i18n="nav.volg" aria-current="page">Volg ons</a>
+      <a class="nav-link" href="/premiere" data-i18n="nav.premiere">Première</a>
       <div class="lang-toggle" role="group" aria-label="Language">
         <button class="lang-btn" data-lang="nl" type="button" aria-label="Nederlands">NL</button>
         <span class="lang-sep" aria-hidden="true">·</span>
@@ -1220,7 +1222,8 @@
       nl: {
         'nav.story': 'Ons verhaal',
         'nav.press': 'In de pers',
-        'nav.volg': 'Volg ons',
+        'nav.reis': 'Dag voor dag',
+        'nav.premiere': 'Première',
         'nav.contact': 'Contact',
         'hero.labelLive': 'Live vanaf de Camino',
         'hero.labelPre': 'Nog niet vertrokken',
@@ -1237,6 +1240,8 @@
         'map.error': 'Kaart kon niet laden',
         'map.eyebrowPre': 'De route',
         'map.eyebrowLive': 'Waar we nu zijn',
+        'map.eyebrowKlaar': 'Aangekomen',
+        'km.gelopen': 'km gelopen',
         'map.groter': 'Kaart groter tonen',
         'map.kleiner': 'Dagen weer omhoog halen',
         'legend.gelopen': 'Gelopen',
@@ -1265,7 +1270,8 @@
       en: {
         'nav.story': 'Our story',
         'nav.press': 'Press',
-        'nav.volg': 'Follow us',
+        'nav.reis': 'Day by day',
+        'nav.premiere': 'Premiere',
         'nav.contact': 'Contact',
         'hero.labelLive': 'Live from the Camino',
         'hero.labelPre': 'Not on the road yet',
@@ -1282,6 +1288,8 @@
         'map.error': 'Map could not load',
         'map.eyebrowPre': 'The route',
         'map.eyebrowLive': 'Where we are now',
+        'map.eyebrowKlaar': 'Arrived',
+        'km.gelopen': 'km walked',
         'map.groter': 'Show a bigger map',
         'map.kleiner': 'Bring the days back up',
         'legend.gelopen': 'Walked',
@@ -1543,7 +1551,8 @@
 
       if (laatste) {
         const e = etappeVoorDag(laatste.dag);
-        eyebrow.textContent = t('map.eyebrowLive');
+        const klaar = dagen.length >= totaalDagen();
+        eyebrow.textContent = klaar ? t('map.eyebrowKlaar') : t('map.eyebrowLive');
         plaats.textContent = laatste.naar || (e && e.naar) || '';
         // De totalen stonden hiervoor als losse statregel rechts. Die staan nu
         // hier, en dan zou de regel eronder hetzelfde nog eens zeggen: de
@@ -1551,7 +1560,11 @@
         afstand.hidden = true;
         cijfers.hidden = false;
         document.getElementById('mapKm').textContent = fmtKm(totalen().km);
-        document.getElementById('mapKmLabel').textContent = t('van.km') + ' ' + totaal + ' km';
+        // Na aankomst is "126,9 van 123 km" alleen maar verwarrend: het
+        // geplande totaal doet er dan niet meer toe.
+        document.getElementById('mapKmLabel').textContent = klaar
+          ? t('km.gelopen')
+          : t('van.km') + ' ' + totaal + ' km';
         document.getElementById('mapEtappes').textContent = dagen.length + ' / ' + totaalDagen();
         document.getElementById('mapReset').hidden = false;
       } else {
