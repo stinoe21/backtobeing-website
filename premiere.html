@@ -4,25 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-  <!-- Watermelon chatbot-widget, zelfde inbox als de hoofdsite. -->
-  <script async
-          type="module"
-          src="https://chatwidget-prod.web.app/embed/init.iife.js"
-          data-watermelon-widget-id="GKgMkGIWAy5"
-          data-watermelon-settings-id="17335"></script>
-
   <title>Première · Back to Being</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon-512.png" type="image/png" sizes="512x512" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="canonical" href="https://backtobeing.tech/premiere" />
-  <meta name="description" id="metaDesc" content="De documentaire over onze Camino gaat in november 2026 in première en is daarna te zien op YouTube. Meld je aan en hoor als eerste wanneer en waar." />
+  <meta name="description" content="In november gaat Back to Being in première: zes dagen Camino, 129 kilometer en een app gebouwd onderweg. Meld je aan en hoor als eerste waar en hoe laat." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#fffef1" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="De première · Back to Being" />
-  <meta property="og:description" id="ogDesc" content="De documentaire over onze Camino gaat in november 2026 in première en is daarna te zien op YouTube. Meld je aan en hoor als eerste wanneer en waar." />
+  <meta property="og:title" content="Back to Being gaat in première" />
+  <meta property="og:description" content="Zes dagen Camino, 129 kilometer en een app gebouwd onderweg. In november op één avond te zien. Meld je aan." />
   <meta property="og:locale" id="ogLocale" content="nl_NL" />
   <meta property="og:site_name" content="Back to Being" />
   <meta property="og:url" content="https://backtobeing.tech/premiere" />
@@ -34,18 +27,19 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Exact dezelfde fontregel als index.html. -->
+  <!-- Exact dezelfde fontregel als index.html en volg.html. -->
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <style>
     /* ============================================================
-       Deze pagina hoort bij index.html: dezelfde tokens en dezelfde nav.
-       Wijzig je daar iets aan de huisstijl, doe het hier ook.
+       Deze pagina hoort bij index.html en volg.html: dezelfde tokens en
+       dezelfde nav. Wijzig je daar iets aan de huisstijl, doe het hier ook.
 
-       Eén onderwerp: de première van de documentaire. Datum en locatie
-       zijn nog niet bekend, dus de pagina vraagt alleen om een naam en
-       een mailadres. De app voor MIND krijgt een eigen website en wordt
-       hier bewust alleen genoemd, niet uitgelegd.
+       Opzet: één scherm, bewust zonder scrollen op desktop. Links de
+       aankondiging (november, plaats en tijd volgen), rechts het formulier
+       om je in te schrijven. Op mobiel staan ze onder elkaar en scrolt de
+       pagina wél, want een formulier met vijf namen past niet op een
+       telefoonscherm.
        ============================================================ */
     :root {
       --tree:        #2a3723;
@@ -61,33 +55,24 @@
       --ink-soft:    rgba(22, 22, 22, 0.62);
       --line:        rgba(42, 55, 35, 0.18);
       --green:       var(--grass);
-      --cream:       var(--canvas);
       --nav-h:       72px;
 
-      --section-y:     clamp(5rem, 10vw, 9rem);
-      --section-y-sm:  clamp(3rem, 6vw, 5rem);
-      --gutter-x:      max(1.25rem, 6vw);
-
-      --space-3: 1rem;
-      --space-5: 2rem;
-      --space-6: 3rem;
-
-      --h-hero:    clamp(3.4rem, 8.8vw, 9rem);
-      --h-section: clamp(2.6rem, 5.3vw, 4.75rem);
-      --h-block:   clamp(2.2rem, 3.95vw, 3.55rem);
-      --h-card:    clamp(1.85rem, 2.9vw, 2.6rem);
-
-      --display-accent: var(--grass);
       --radius:      28px;
-      --radius-ctrl: 10px;
+      --radius-lg:   34px;
+      --radius-ctrl: 18px;
+      --radius-pill: 999px;
 
       --serif:       "Instrument Serif", Georgia, serif;
       --subhead:     "Inter Tight", Inter, -apple-system, BlinkMacSystemFont, sans-serif;
       --sans:        Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --pane-x: clamp(1.25rem, 4vw, 3.5rem);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
     body {
+      min-height: 100%;
       background: var(--bg);
       font-family: var(--sans);
       color: var(--ink);
@@ -97,36 +82,13 @@
     }
     img { display: block; max-width: 100%; }
     a { color: inherit; text-decoration: none; }
-    button, input, select, textarea { font-family: inherit; }
+    button, input, select { font-family: inherit; font-size: inherit; color: inherit; }
     a:focus-visible, button:focus-visible {
       outline: 2px solid var(--green);
       outline-offset: 3px; border-radius: 4px;
     }
 
-    .section-label {
-      font-family: var(--subhead);
-      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em;
-      text-transform: uppercase; color: inherit; opacity: 0.62;
-      margin-bottom: 1.25rem;
-    }
-    .btn {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      padding: 0.95rem 1.8rem;
-      background: var(--tree); color: var(--canvas);
-      border-radius: var(--radius-ctrl); font-family: var(--subhead);
-      font-size: 0.92rem; font-weight: 500; letter-spacing: 0.01em;
-      border: none; cursor: pointer;
-      transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s; text-decoration: none;
-    }
-    .btn:hover { background: #1F2A19; color: var(--canvas); transform: translateY(-1px); }
-    /* display:inline-flex wint anders van het hidden-attribuut. */
-    .btn[hidden] { display: none; }
-    .btn-outline {
-      background: transparent; border: 1px solid rgba(22,22,22,0.32); color: var(--ink);
-    }
-    .btn-outline:hover { background: rgba(22,22,22,0.06); color: var(--ink); border-color: var(--ink); }
-
-    /* ---------- NAV (gelijk aan index.html, altijd in de 'scrolled'-staat) ---------- */
+    /* ---------- NAV (gelijk aan volg.html) ---------- */
     .site-nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       height: var(--nav-h);
@@ -195,222 +157,166 @@
     .lang-btn:hover, .lang-btn.active { color: var(--ink); }
     .lang-sep { color: var(--ink-soft); opacity: 0.35; font-size: 0.7rem; user-select: none; }
 
-    /* ---------- HERO (gelijk aan .story-editorial-hero op Ons verhaal) ---------- */
-    .prem-hero {
-      position: relative; overflow: clip; display: grid; align-content: start;
-      padding: calc(var(--nav-h) + clamp(2.25rem, 4.5vw, 4rem)) var(--gutter-x) clamp(3rem, 6vw, 5rem);
-      background: var(--canvas); color: var(--ink); isolation: isolate;
-    }
-    .prem-hero::before {
-      content: '';
-      position: absolute; inset: -12%; z-index: -2;
-      background-image: url("LOGOMARK_B2B.svg");
-      background-repeat: repeat;
-      background-size: clamp(130px, 14vw, 220px) auto;
-      opacity: 0.055;
-      transform: rotate(-8deg);
-    }
-    .prem-hero-inner { width: min(100%, 1440px); margin-inline: auto; }
-    .prem-hero h1 {
-      max-width: 12ch; margin: 0;
-      font-family: var(--serif); font-size: var(--h-hero); font-weight: 400;
-      font-variation-settings: "opsz" 144;
-      line-height: 0.87; letter-spacing: -0.02em; text-wrap: balance;
-    }
-    .prem-hero h1 em { color: var(--display-accent); font-style: italic; }
-    .prem-hero-foot {
-      display: grid; gap: 2rem; align-items: start;
-      margin-top: clamp(2.25rem, 4.5vw, 3.5rem);
-    }
-    @media (min-width: 800px) {
-      .prem-hero-foot { grid-template-columns: minmax(0, 1fr) minmax(25rem, 0.7fr); gap: clamp(3rem, 7vw, 7rem); }
-    }
-    .prem-lead {
-      max-width: 58ch;
-      font-size: clamp(1rem, 1.25vw, 1.2rem); line-height: 1.65;
-      color: rgba(22,22,22,0.78);
-    }
-    .prem-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
-    .prem-fact strong {
-      display: block; font-family: var(--serif);
-      font-size: clamp(1.7rem, 3vw, 2.8rem); font-weight: 400; line-height: 1; color: var(--ink);
-    }
-    .prem-fact span {
-      display: block; margin-top: 0.4rem;
-      font-family: var(--subhead); font-size: 0.6rem; font-weight: 500;
-      letter-spacing: 0.14em; line-height: 1.35; text-transform: uppercase;
-      color: rgba(22,22,22,0.68);
-    }
-    @media (max-width: 799px) {
-      .prem-hero h1 { font-size: clamp(2.45rem, 13vw, 4.8rem); line-height: 0.92; }
-      .prem-facts { grid-template-columns: 1fr; gap: 0.75rem; }
-      .prem-fact { display: grid; grid-template-columns: 5rem 1fr; align-items: baseline; gap: 0.75rem; }
-      .prem-fact strong { font-size: 1.8rem; }
+    /* ============================================================
+       SCHERM
+       ============================================================ */
+    .shell {
+      min-height: 100svh;
+      padding: calc(var(--nav-h) + clamp(1.5rem, 4vh, 3rem)) var(--pane-x) clamp(1.5rem, 4vh, 3rem);
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: center;
+      max-width: 1240px;
+      margin: 0 auto;
     }
 
-    /* ---------- BEELD (gelijk aan .group-portrait op de home) ---------- */
-    .prem-beeld { padding: var(--section-y-sm) var(--gutter-x); }
-    .prem-beeld figure {
-      margin: 0 auto; max-width: 1180px;
-      display: flex; flex-direction: column; gap: var(--space-3);
-    }
-    .prem-beeld img { width: 100%; height: auto; display: block; border-radius: var(--radius); background: var(--tree); }
-    .prem-beeld figcaption {
-      display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
-      gap: 0.5rem var(--space-5);
-      font-family: var(--sans); font-size: clamp(0.92rem, 1vw, 1rem); line-height: 1.6;
-      color: var(--ink-soft);
-    }
-    .prem-beeld figcaption > span:first-child { max-width: 62ch; }
-    .prem-beeld-datum { flex: 0 0 auto; font-size: 0.82rem; white-space: nowrap; }
-
-    /* ---------- DETAILS (gelijk aan de rijen op Contact) ---------- */
-    .prem-details {
-      padding: var(--section-y-sm) var(--gutter-x) var(--section-y);
-      max-width: 1440px; margin: 0 auto;
-    }
-    .prem-list { list-style: none; margin: 0; padding: 0; }
-    .prem-row {
-      display: grid; grid-template-columns: 1fr; gap: var(--space-3);
-      padding: var(--space-5) 0; border-bottom: 1px solid var(--line);
-    }
-    .prem-row:last-child { border-bottom: none; }
-    @media (min-width: 800px) {
-      .prem-row {
-        grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
-        gap: var(--space-6); align-items: start; padding: var(--space-6) 0;
-      }
-    }
-    .prem-row-label {
-      display: flex; align-items: center; gap: 0.6rem;
-      font-family: var(--subhead); font-size: 0.68rem; font-weight: 600;
-      letter-spacing: 0.18em; text-transform: uppercase; color: rgba(22,22,22,0.62);
-    }
-    .prem-row-label svg { width: 16px; height: 16px; flex: 0 0 auto; }
-    .prem-row-main { display: grid; gap: 0.6rem; justify-items: start; }
-    .prem-row-value {
-      display: block; margin: 0;
+    /* ---------- links: de aankondiging ---------- */
+    .intro { max-width: 34rem; }
+    .intro h1 {
       font-family: var(--serif); font-weight: 400;
-      font-size: var(--h-card); line-height: 1.06; color: var(--ink);
+      font-size: clamp(2.4rem, 4.6vw, 3.8rem);
+      line-height: 0.98; letter-spacing: -0.01em;
+      margin-bottom: 1.2rem;
     }
-    .prem-row-value em { font-style: italic; color: var(--display-accent); }
-    .prem-row-note {
-      max-width: 52ch; margin: 0;
-      font-size: clamp(0.94rem, 1.05vw, 1.05rem); line-height: 1.7; color: var(--ink-soft);
+    .intro h1 em { font-style: italic; color: var(--tree); }
+    .intro p {
+      font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+      line-height: 1.55; color: var(--ink-soft);
+      max-width: 32rem;
+    }
+    .intro p + p { margin-top: 0.8rem; }
+    .intro p.cta { color: var(--ink); font-weight: 600; margin-top: 1.1rem; }
+    .intro p.cta strong { font-weight: 600; color: var(--tree); }
+    .intro p.klein { font-size: 0.85rem; margin-top: 0.6rem; }
+
+    /* ---------- rechts: het formulier ---------- */
+    .kaart {
+      position: relative;
+      padding: clamp(1.4rem, 2.6vw, 2.2rem);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: rgba(255,254,241,0.9);
+      box-shadow: 0 18px 50px rgba(42,55,35,0.08);
+    }
+    .kaart h2 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(1.5rem, 2.2vw, 1.9rem); line-height: 1.05;
+      margin-bottom: 0.4rem;
+    }
+    .kaart .sub {
+      font-size: 0.9rem; line-height: 1.5; color: var(--ink-soft);
+      margin-bottom: 1.4rem;
     }
 
-    /* ---------- AANMELDEN (gelijk aan .pers-kit op In de pers) ---------- */
-    .prem-aanmelden {
-      padding: var(--section-y) var(--gutter-x);
-      background: var(--tree); color: var(--canvas);
-    }
-    .prem-aanmelden-inner { max-width: 1440px; margin: 0 auto; display: grid; gap: var(--space-6); }
-    @media (min-width: 800px) {
-      .prem-aanmelden-inner {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        gap: clamp(3rem, 7vw, 7rem); align-items: start;
-      }
-    }
-    .prem-aanmelden h2 {
-      max-width: 14ch; margin: 0;
-      font-family: var(--serif); font-weight: 400;
-      font-size: var(--h-section); line-height: 0.94; letter-spacing: -0.015em;
-      color: var(--canvas);
-    }
-    .prem-aanmelden h2 em { font-style: italic; color: var(--grass); }
-    .prem-aside { display: grid; gap: 1.5rem; justify-items: start; padding-top: 0.6rem; }
-    .prem-aside > p {
-      max-width: 46ch; margin: 0;
-      font-size: clamp(0.98rem, 1.2vw, 1.12rem); line-height: 1.75;
-      color: rgba(255,254,241,0.72);
-    }
-    .prem-form { display: grid; gap: 1.1rem; width: 100%; max-width: 40rem; }
-    .prem-rij { display: grid; grid-template-columns: 1fr; gap: 1.1rem; }
-    @media (min-width: 560px) { .prem-rij.twee { grid-template-columns: 1fr 1fr; } }
-    .veld { display: grid; gap: 0.5rem; }
+    .rij { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .veld { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+    .veld + .veld, .rij + .veld, .veld + .rij, .rij + .rij { margin-top: 0.75rem; }
+    .rij > .veld { margin-top: 0; }
     .veld label {
-      font-family: var(--subhead); font-size: 0.66rem; font-weight: 600;
-      letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,254,241,0.72);
+      font-family: var(--subhead); font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
     }
-    .veld input, .veld select, .veld textarea {
-      width: 100%;
-      padding: 0.95rem 1.1rem;
-      background: rgba(255,254,241,0.06);
-      border: 1px solid rgba(255,254,241,0.28);
+    .veld input, .veld select {
+      width: 100%; min-height: 48px;
+      padding: 0.7rem 1rem;
+      border: 1px solid rgba(42,55,35,0.22);
       border-radius: var(--radius-ctrl);
-      color: var(--canvas); font-size: 1rem; line-height: 1.4;
-      transition: border-color 0.2s, background 0.2s;
-      -webkit-appearance: none; appearance: none;
+      background: #fff; color: var(--ink);
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none; -webkit-appearance: none;
     }
-    .veld select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23fffef1' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 1rem center;
-      padding-right: 2.6rem; cursor: pointer;
+    .veld input::placeholder { color: rgba(22,22,22,0.32); }
+    .veld input:focus, .veld select:focus {
+      outline: none; border-color: var(--tree);
+      box-shadow: 0 0 0 3px rgba(151,160,129,0.28);
     }
-    .veld select option { color: var(--ink); background: var(--canvas); }
-    .veld textarea { min-height: 6.5rem; resize: vertical; }
-    .veld input::placeholder, .veld textarea::placeholder { color: rgba(255,254,241,0.38); }
-    .veld input:focus, .veld select:focus, .veld textarea:focus {
-      outline: none; border-color: var(--grass); background: rgba(255,254,241,0.09);
+    .veld input:user-invalid { border-color: #a4462b; }
+    .veld.select { position: relative; }
+    .veld.select::after {
+      content: ""; position: absolute; right: 1.05rem; bottom: 20px;
+      width: 8px; height: 8px;
+      border-right: 1.5px solid var(--ink-soft); border-bottom: 1.5px solid var(--ink-soft);
+      transform: rotate(45deg); pointer-events: none;
     }
-    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-    .prem-form-acties { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; margin-top: 0.5rem; }
-    /* Zelfde knop als "Naar contact" op In de pers (.closing-cta-btn). */
-    .prem-form .btn { background: var(--grass); color: var(--charcoal); }
-    .prem-form .btn:hover { background: var(--canvas); color: var(--charcoal); transform: translateY(-1px); }
-    .prem-form .btn[disabled] { opacity: 0.6; cursor: wait; transform: none; }
-    .prem-form-note { font-size: 0.8rem; line-height: 1.55; color: rgba(255,254,241,0.5); margin: 0; }
-    .prem-form-note a { border-bottom: 1px solid rgba(255,254,241,0.4); padding-bottom: 2px; transition: border-color 0.2s; }
-    .prem-form-note a:hover { border-bottom-color: var(--canvas); }
-    .prem-status {
-      margin: 0; padding: 1.1rem 1.25rem;
-      border: 1px solid rgba(151,160,129,0.6); border-radius: var(--radius-ctrl);
-      background: rgba(151,160,129,0.14);
-      font-size: 0.98rem; line-height: 1.6; color: var(--canvas);
-    }
-    .prem-status.is-fout { border-color: rgba(215,169,138,0.7); background: rgba(215,169,138,0.12); }
-    .prem-status a { border-bottom: 1px solid rgba(255,254,241,0.5); }
-    .prem-status[hidden] { display: none; }
-    .prem-klaar { display: grid; gap: 1rem; justify-items: start; }
-    .prem-klaar[hidden] { display: none; }
-    .prem-klaar strong { font-family: var(--serif); font-weight: 400; font-size: var(--h-card); line-height: 1.06; }
-    .prem-klaar p { max-width: 46ch; margin: 0; font-size: clamp(0.98rem, 1.2vw, 1.12rem); line-height: 1.75; color: rgba(255,254,241,0.72); }
 
-    /* ---------- DE APP (gelijk aan .story-final-cta op Ons verhaal) ---------- */
-    .prem-app {
-      max-width: 1440px; margin: 0 auto;
-      padding: var(--section-y) var(--gutter-x);
-      display: grid; grid-template-columns: 1fr; gap: 2rem;
+    /* Extra namen: pas zichtbaar als er meer dan één persoon komt. Ze
+       staan in een licht vlak zodat duidelijk is dat het bij elkaar hoort. */
+    .extra {
+      margin-top: 0.9rem;
+      padding: 0.9rem 1rem 1rem;
+      border-radius: var(--radius-ctrl);
+      background: rgba(151,160,129,0.12);
     }
-    @media (min-width: 900px) { .prem-app { grid-template-columns: 1fr 1fr; align-items: end; gap: 5rem; } }
-    .prem-app h2 {
-      font-family: var(--serif); font-weight: 400;
-      font-size: var(--h-block); line-height: 1.04; letter-spacing: 0;
-    }
-    .prem-app h2 em { font-style: italic; color: var(--display-accent); }
-    .prem-app p {
-      max-width: 48ch; color: var(--ink-soft);
-      font-size: clamp(0.95rem, 1.05vw, 1.075rem); line-height: 1.75;
-    }
-    .prem-app-acties { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 1.5rem; }
+    .extra[hidden] { display: none; }
+    .extra .veld label { color: var(--tree); }
+    .extra .veld:first-child { margin-top: 0; }
+    .extra .veld[hidden] { display: none; }
 
-    /* ---------- FOOTER (gelijk aan index.html) ---------- */
-    .site-footer {
-      padding: 2.25rem 6vw; border-top: 1px solid var(--line);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .footer-logo { display: flex; align-items: center; }
-    .footer-logo-mark { width: auto; height: 1.75rem; flex: 0 0 auto; }
-    .footer-right { font-family: var(--subhead); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
-    .footer-legal { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-    .footer-legal a { font-family: var(--subhead); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); transition: color 0.2s; }
-    .footer-legal a:hover { color: var(--tree); }
-    .footer-social { display: flex; align-items: center; gap: 1.1rem; }
-    .footer-social a { display: inline-flex; color: var(--ink); opacity: 0.7; transition: opacity 0.2s, color 0.2s; }
-    .footer-social a:hover { opacity: 1; color: var(--tree); }
-    .footer-social svg { width: 18px; height: 18px; display: block; }
+    /* Honeypot: voor mensen onzichtbaar, bots vullen hem in. */
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
 
-    /* ---------- RESPONSIVE ---------- */
+    .voet {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem 1.25rem;
+      margin-top: 1.4rem;
+    }
+    .knop {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+      min-height: 52px; padding: 0.85rem 1.7rem;
+      border: none; border-radius: var(--radius-pill);
+      background: var(--tree); color: var(--canvas); cursor: pointer;
+      font-family: var(--subhead); font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      transition: background 0.2s, transform 0.2s, opacity 0.2s;
+    }
+    .knop:hover { background: #1F2A19; transform: translateY(-1px); }
+    .knop[disabled] { opacity: 0.55; cursor: progress; transform: none; }
+    .privacy {
+      font-size: 0.78rem; line-height: 1.5; color: var(--ink-soft);
+      max-width: 18rem;
+    }
+    .privacy a { text-decoration: underline; text-underline-offset: 3px; }
+
+    .fout {
+      margin-top: 0.9rem; padding: 0.75rem 1rem;
+      border-radius: var(--radius-ctrl);
+      background: rgba(164,70,43,0.1); color: #7d3320;
+      font-size: 0.85rem; line-height: 1.45;
+    }
+    .fout[hidden] { display: none; }
+
+    /* Na versturen: hetzelfde vlak, andere inhoud. Geen redirect. */
+    .klaar { text-align: left; }
+    .klaar[hidden] { display: none; }
+    .klaar .vink {
+      width: 52px; height: 52px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: var(--grass); color: var(--canvas);
+      margin-bottom: 1.2rem;
+    }
+    .klaar h2 { margin-bottom: 0.6rem; }
+    .klaar p { font-size: 0.95rem; line-height: 1.55; color: var(--ink-soft); }
+    .klaar p + p { margin-top: 0.6rem; }
+    .klaar p b { color: var(--ink); font-weight: 500; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .intro, .kaart { animation: op 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+      .kaart { animation-delay: 0.12s; }
+      @keyframes op { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    }
+
+    /* ---------- mobiel ---------- */
+    @media (max-width: 900px) {
+      .shell {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        align-items: start;
+        min-height: 0;
+        padding-top: calc(var(--nav-h) + 2rem);
+      }
+      .intro h1 { font-size: clamp(2.4rem, 10vw, 3.4rem); }
+    }
     @media (max-width: 760px) {
       .site-nav {
         flex-wrap: nowrap; align-content: center; gap: 1rem;
@@ -454,19 +360,18 @@
       .lang-btn.active, .lang-btn:hover { color: var(--tree) !important; }
       .lang-sep { color: var(--ink-soft) !important; }
       .nav-cta-btn { margin-top: 0.25rem; justify-content: center; background: var(--tree) !important; color: var(--canvas) !important; }
-
-      .site-footer { flex-direction: column; align-items: flex-start; gap: 1rem; padding: 1.75rem max(1.25rem, 5vw); }
     }
-    @media (max-width: 600px) {
-      .btn { width: 100%; justify-content: center; }
-      .prem-form-acties { flex-direction: column; align-items: stretch; }
+    @media (max-width: 480px) {
+      .rij { grid-template-columns: 1fr; gap: 0.75rem; }
+      .kaart { padding: 1.25rem; border-radius: var(--radius); }
+      .voet { flex-direction: column; align-items: stretch; }
+      .knop { width: 100%; }
+      .privacy { max-width: none; }
     }
   </style>
-  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
-  <!-- NAV -->
   <nav class="site-nav" id="siteNav">
     <a class="nav-logo" href="/" aria-label="Back to Being">
       <img class="nav-logo-mark" src="b2b_horizontal banner.svg" alt="Back to Being" />
@@ -476,8 +381,6 @@
       <img class="nav-menu-logo" src="LOGOMARK_B2B.svg" alt="" aria-hidden="true" />
     </button>
     <div class="nav-links" id="navLinks">
-      <!-- index.html is een SPA zonder router, dus vanaf hier linken we met
-           een hash die index.html bij het laden oppakt. -->
       <a class="nav-link" href="/#verhaal" data-i18n="nav.story">Ons verhaal</a>
       <a class="nav-link" href="/reis" data-i18n="nav.reis">Dag voor dag</a>
       <a class="nav-link" href="/#pers" data-i18n="nav.press">In de pers</a>
@@ -491,401 +394,333 @@
     </div>
   </nav>
 
-  <main>
+  <main class="shell">
 
-    <!-- ============ HERO ============ -->
-    <section class="prem-hero">
-      <div class="prem-hero-inner">
-        <h1 data-i18n="hero.h1">We hebben alles<br><em>vastgelegd.</em></h1>
-        <div class="prem-hero-foot">
-          <p class="prem-lead" data-i18n="hero.lead">Zes dagen lopen, bouwen en filmen, van Valença tot het plein in Santiago de Compostela. Daar maken we nu een documentaire van. In november 2026 gaat hij in première, daarna is hij voor iedereen te zien op YouTube.</p>
-          <div class="prem-facts" aria-label="In cijfers">
-            <div class="prem-fact"><strong>127</strong><span data-i18n="fact.km">kilometer gelopen</span></div>
-            <div class="prem-fact"><strong>6</strong><span data-i18n="fact.days">dagen gefilmd</span></div>
-            <div class="prem-fact"><strong>1</strong><span data-i18n="fact.doc">documentaire</span></div>
-          </div>
-        </div>
+    <section class="intro">
+      <h1 data-i18n="intro.titel">Back to Being gaat <em>in première.</em></h1>
+      <p data-i18n="intro.p1">We hebben in zes dagen 129 kilometer over de Camino gelopen en onderweg ook nog een app gebouwd.</p>
+      <p data-i18n="intro.p2">In die zes dagen hebben we veel meegemaakt. Lange dagen, heel veel regen, goede gesprekken, momenten waarop alles lekker liep en momenten waarop het juist even tegenzat. We hebben de hele reis gefilmd en alles vastgelegd.</p>
+      <p data-i18n="intro.p3">In november nemen we je een avond mee op onze reis. Binnen een half uur zie je wat we in die zes dagen hebben meegemaakt, waar we tegenaan liepen en wat er onderweg is ontstaan.</p>
+      <p class="cta" data-i18n="intro.p4">En jij kan erbij zijn. <strong>Meld je nu aan voor de première!</strong></p>
+      <p class="klein" data-i18n="intro.p5">De plek en tijd maken we later bekend.</p>
       </div>
     </section>
 
-    <section class="prem-beeld">
-      <figure>
-        <img src="photos/dag-6/dsc00563.webp" width="1600" height="1069"
-             alt="Max, Caesar en Stijn op de Praza do Obradoiro in Santiago de Compostela, met de kathedraal achter hen"
-             fetchpriority="high" />
-        <figcaption>
-          <span data-i18n="beeld.cap">Aangekomen op de Praza do Obradoiro in Santiago de Compostela: het eind van de reis, en het begin van de documentaire.</span>
-          <span class="prem-beeld-datum" data-i18n="beeld.datum">29 augustus 2026</span>
-        </figcaption>
-      </figure>
-    </section>
+    <section class="kaart" aria-labelledby="formTitel">
+      <form id="premiereForm" novalidate>
+        <h2 id="formTitel" data-i18n="form.titel">Ik wil erbij zijn</h2>
+        <p class="sub" data-i18n="form.sub">Je krijgt een mail zodra de plaats en tijd bekend zijn.</p>
 
-    <!-- ============ DETAILS ============ -->
-    <section class="prem-details" aria-label="Datum, locatie en daarna">
-      <ul class="prem-list">
-        <li class="prem-row">
-          <div class="prem-row-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span data-i18n="details.when.head">Wanneer</span></div>
-          <div class="prem-row-main">
-            <span class="prem-row-value" data-i18n="details.when.value">November 2026. <em>Exacte datum volgt.</em></span>
-            <p class="prem-row-note" data-i18n="details.when.note">We prikken de datum binnenkort. Wie zich aanmeldt, hoort het als eerste.</p>
+        <div class="rij">
+          <div class="veld">
+            <label for="voornaam" data-i18n="form.voornaam">Voornaam</label>
+            <input id="voornaam" name="Voornaam" type="text" autocomplete="given-name" required maxlength="80" />
           </div>
-        </li>
-        <li class="prem-row">
-          <div class="prem-row-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.78a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span data-i18n="details.where.head">Waar</span></div>
-          <div class="prem-row-main">
-            <span class="prem-row-value" data-i18n="details.where.value">Locatie <em>volgt.</em></span>
-            <p class="prem-row-note" data-i18n="details.where.note">Een zaal met een groot scherm en genoeg stoelen. We maken de plek bekend zodra die vaststaat.</p>
-          </div>
-        </li>
-        <li class="prem-row">
-          <div class="prem-row-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg><span data-i18n="details.after.head">Daarna</span></div>
-          <div class="prem-row-main">
-            <span class="prem-row-value" data-i18n="details.after.value">Voor iedereen <em>op YouTube.</em></span>
-            <p class="prem-row-note" data-i18n="details.after.note">Na de première zetten we de documentaire online. Wie er niet bij kon zijn, kijkt hem thuis.</p>
-          </div>
-        </li>
-      </ul>
-    </section>
-
-    <!-- ============ AANMELDEN ============ -->
-    <section class="prem-aanmelden" id="aanmelden" aria-labelledby="aanmeldTitel">
-      <div class="prem-aanmelden-inner">
-        <h2 id="aanmeldTitel" data-i18n="form.h">Wil je<br><em>erbij zijn?</em></h2>
-        <div class="prem-aside">
-          <p data-i18n="form.p">Laat je naam en e-mailadres achter. Zodra de datum en de locatie vaststaan, krijg je als eerste bericht en een uitnodiging. Geen nieuwsbrief, alleen dit.</p>
-          <form class="prem-form" id="aanmeldForm" novalidate>
-            <div class="prem-rij twee">
-              <div class="veld">
-                <label for="fNaam" data-i18n="form.name">Naam</label>
-                <input id="fNaam" name="naam" type="text" autocomplete="name" required maxlength="120" />
-              </div>
-              <div class="veld">
-                <label for="fEmail" data-i18n="form.email">E-mail</label>
-                <input id="fEmail" name="email" type="email" autocomplete="email" required maxlength="200" inputmode="email" />
-              </div>
-            </div>
-            <div class="veld">
-              <label for="fPersonen" data-i18n="form.people">Met hoeveel personen kom je?</label>
-              <select id="fPersonen" name="personen">
-                <option value="1" data-i18n="form.people.1">Alleen ik</option>
-                <option value="2" data-i18n="form.people.2">Met z'n tweeën</option>
-                <option value="3" data-i18n="form.people.3">Met z'n drieën</option>
-                <option value="4" data-i18n="form.people.4">Met vier of meer</option>
-              </select>
-            </div>
-            <div class="veld">
-              <label for="fBericht" data-i18n="form.message">Bericht (optioneel)</label>
-              <textarea id="fBericht" name="bericht" maxlength="1000" data-i18n-ph="form.message.ph" placeholder="Bijvoorbeeld: hoe je bij Back to Being betrokken bent"></textarea>
-            </div>
-            <!-- Honeypot: mensen zien dit veld niet, bots vullen het in. -->
-            <div class="hp" aria-hidden="true">
-              <label for="fWebsite">Website</label>
-              <input id="fWebsite" name="website" type="text" tabindex="-1" autocomplete="off" />
-            </div>
-            <div class="prem-form-acties">
-              <button class="btn" id="aanmeldKnop" type="submit" data-i18n="form.submit">Houd me op de hoogte &rarr;</button>
-            </div>
-            <p class="prem-form-note" data-i18n="form.note">Je gegevens gebruiken we alleen voor de première. Zie ons <a href="privacybeleid.html">privacybeleid</a>.</p>
-            <p class="prem-status" id="aanmeldStatus" hidden role="status" aria-live="polite"></p>
-          </form>
-
-          <div class="prem-klaar" id="aanmeldKlaar" hidden>
-            <strong data-i18n="form.done.h">Je staat op de lijst.</strong>
-            <p data-i18n="form.done.p">We mailen je zodra de datum en de locatie vaststaan. Tot in november.</p>
+          <div class="veld">
+            <label for="achternaam" data-i18n="form.achternaam">Achternaam</label>
+            <input id="achternaam" name="Achternaam" type="text" autocomplete="family-name" required maxlength="80" />
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- ============ DE APP ============ -->
-    <section class="prem-app" aria-labelledby="appTitel">
-      <div>
-        <div class="section-label" data-i18n="app.label">En de app?</div>
-        <h2 id="appTitel" data-i18n="app.h">De app krijgt<br><em>een eigen plek.</em></h2>
-      </div>
-      <div>
-        <p data-i18n="app.p">De app die we onderweg voor stichting MIND bouwden, staat los van Back to Being en krijgt binnenkort een eigen website. Zodra die live is, vind je hier de link.</p>
-        <div class="prem-app-acties">
-          <a class="btn" id="appLink" href="#" hidden target="_blank" rel="noopener noreferrer" data-i18n="app.cta">Naar de app &rarr;</a>
-          <a class="btn btn-outline" href="/reis" data-i18n="app.reis">Bekijk onze reis &rarr;</a>
+        <div class="rij">
+          <div class="veld">
+            <label for="mail" data-i18n="form.mail">Mailadres</label>
+            <input id="mail" name="Mailadress" type="email" autocomplete="email" inputmode="email" required maxlength="160" />
+          </div>
+          <div class="veld select">
+            <label for="aantal" data-i18n="form.aantal">Aantal personen</label>
+            <select id="aantal" name="Aantal personen" required>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
         </div>
+
+        <div class="extra" id="extraNamen" hidden>
+          <div class="veld">
+            <label for="extra1" data-i18n="form.extra1">Naam persoon 2</label>
+            <input id="extra1" name="Naam persoon (extra 1)" type="text" autocomplete="off" maxlength="120" />
+          </div>
+          <div class="veld" hidden>
+            <label for="extra2" data-i18n="form.extra2">Naam persoon 3</label>
+            <input id="extra2" name="Naam persoon (extra 2)" type="text" autocomplete="off" maxlength="120" />
+          </div>
+          <div class="veld" hidden>
+            <label for="extra3" data-i18n="form.extra3">Naam persoon 4</label>
+            <input id="extra3" name="Naam persoon (extra 3)" type="text" autocomplete="off" maxlength="120" />
+          </div>
+          <div class="veld" hidden>
+            <label for="extra4" data-i18n="form.extra4">Naam persoon 5</label>
+            <input id="extra4" name="Naam persoon (extra 4)" type="text" autocomplete="off" maxlength="120" />
+          </div>
+        </div>
+
+        <!-- Honeypot. Niet in het woordenboek en niet in de sheet. -->
+        <div class="hp" aria-hidden="true">
+          <label for="website">Website</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="fout" id="formFout" hidden role="alert"></div>
+
+        <div class="voet">
+          <button class="knop" id="verstuur" type="submit">
+            <span data-i18n="form.knop">Zet mij op de lijst</span>
+          </button>
+          <p class="privacy" data-i18n="form.privacy">We gebruiken je gegevens alleen voor deze uitnodiging. <a href="privacybeleid.html">Privacybeleid</a>.</p>
+        </div>
+      </form>
+
+      <div class="klaar" id="klaar" hidden>
+        <div class="vink" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="m5 11.5 4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2 data-i18n="klaar.titel">Je staat op de lijst.</h2>
+        <p id="klaarTekst"></p>
+        <p data-i18n="klaar.p2">Zodra de plaats en tijd vaststaan krijg je een mail. Tot in november.</p>
       </div>
     </section>
 
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-logo">
-      <img class="footer-logo-mark" src="b2b_horizontal banner.svg" alt="Back to Being" />
-    </div>
-    <nav class="footer-legal">
-      <a href="privacybeleid.html" data-i18n="footer.privacy">Privacybeleid</a>
-      <a href="algemene-voorwaarden.html" data-i18n="footer.terms">Algemene voorwaarden</a>
-    </nav>
-    <div class="footer-social">
-      <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 2h8.8A5.6 5.6 0 0 1 22 7.6v8.8a5.6 5.6 0 0 1-5.6 5.6H7.6A5.6 5.6 0 0 1 2 16.4V7.6A5.6 5.6 0 0 1 7.6 2Zm4.4 4.9a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2Zm0 2.35a2.75 2.75 0 1 1 0 5.5 2.75 2.75 0 0 1 0-5.5ZM17.5 5.2a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z"/></svg></a>
-      <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
-      <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
-    </div>
-    <div class="footer-right" data-i18n="footer.right">backtobeing.tech &nbsp;·&nbsp; 2026</div>
-  </footer>
-
   <script>
-  (function () {
-    'use strict';
-
     /* ---------- instellingen ---------- */
-    // Web app-URL van premiere-aanmeldingen/aanmeldingen.gs (eindigt op /exec).
-    // Leeg: het formulier opent een mail met de gegevens al ingevuld.
-    const AANMELD_ENDPOINT = '';
-    // Website van de app zodra die live is; leeg = knop verborgen.
-    const APP_URL = '';
-    const MAIL = 'Caesar.schoorl@gmail.com';
+    // Web-app-URL van het Apps Script dat aan de Google Sheet hangt. Dat zet
+    // de inschrijving in de sheet en stuurt de bevestigingsmail.
+    // Zie premiere/apps-script.gs en premiere/README.md voor het deployen.
+    const INSCHRIJF_URL = 'https://script.google.com/macros/s/AKfycbxgvGKEzELZlS_vZ0w08MLE_f3Gw6Zi38gbvltGE8h8_tvsuJOfjK5QgoCqkF2RX8PC/exec';
 
-    /* ---------- i18n ---------- */
+    /* ---------- woordenboek ---------- */
     const I18N = {
       nl: {
-        'meta.desc': 'De documentaire over onze Camino gaat in november 2026 in première en is daarna te zien op YouTube. Meld je aan en hoor als eerste wanneer en waar.',
-        'meta.locale': 'nl_NL',
         'nav.story': 'Ons verhaal',
-        'nav.reis': 'Dag voor dag',
         'nav.press': 'In de pers',
+        'nav.reis': 'Dag voor dag',
         'nav.premiere': 'Première',
         'nav.contact': 'Contact',
-        'hero.h1': 'We hebben alles<br><em>vastgelegd.</em>',
-        'hero.lead': 'Zes dagen lopen, bouwen en filmen, van Valença tot het plein in Santiago de Compostela. Daar maken we nu een documentaire van. In november 2026 gaat hij in première, daarna is hij voor iedereen te zien op YouTube.',
-        'fact.km': 'kilometer gelopen',
-        'fact.days': 'dagen gefilmd',
-        'fact.doc': 'documentaire',
-        'beeld.cap': 'Aangekomen op de Praza do Obradoiro in Santiago de Compostela: het eind van de reis, en het begin van de documentaire.',
-        'beeld.datum': '29 augustus 2026',
-        'details.when.head': 'Wanneer',
-        'details.when.value': 'November 2026. <em>Exacte datum volgt.</em>',
-        'details.when.note': 'We prikken de datum binnenkort. Wie zich aanmeldt, hoort het als eerste.',
-        'details.where.head': 'Waar',
-        'details.where.value': 'Locatie <em>volgt.</em>',
-        'details.where.note': 'Een zaal met een groot scherm en genoeg stoelen. We maken de plek bekend zodra die vaststaat.',
-        'details.after.head': 'Daarna',
-        'details.after.value': 'Voor iedereen <em>op YouTube.</em>',
-        'details.after.note': 'Na de première zetten we de documentaire online. Wie er niet bij kon zijn, kijkt hem thuis.',
-        'form.h': 'Wil je<br><em>erbij zijn?</em>',
-        'form.p': 'Laat je naam en e-mailadres achter. Zodra de datum en de locatie vaststaan, krijg je als eerste bericht en een uitnodiging. Geen nieuwsbrief, alleen dit.',
-        'form.name': 'Naam',
-        'form.email': 'E-mail',
-        'form.people': 'Met hoeveel personen kom je?',
-        'form.people.1': 'Alleen ik',
-        'form.people.2': "Met z'n tweeën",
-        'form.people.3': "Met z'n drieën",
-        'form.people.4': 'Met vier of meer',
-        'form.message': 'Bericht (optioneel)',
-        'form.message.ph': 'Bijvoorbeeld: hoe je bij Back to Being betrokken bent',
-        'form.submit': 'Houd me op de hoogte &rarr;',
-        'form.sending': 'Versturen&hellip;',
-        'form.note': 'Je gegevens gebruiken we alleen voor de première. Zie ons <a href="privacybeleid.html">privacybeleid</a>.',
-        'form.invalid': 'Vul je naam en een geldig e-mailadres in.',
-        'form.error': 'Versturen lukte niet. Mail ons dan even op <a href="mailto:{mail}">{mail}</a>, dan zetten we je op de lijst.',
-        'form.mailto': 'Je mailprogramma opent met je aanmelding. Verstuur de mail en je staat op de lijst.',
-        'form.done.h': 'Je staat op de lijst.',
-        'form.done.p': 'We mailen je zodra de datum en de locatie vaststaan. Tot in november.',
-        'mail.subject': 'Aanmelding première Back to Being',
-        'mail.body': 'Hoi Max, Caesar en Stijn,\n\nIk wil graag naar de première van de documentaire.\n\nNaam: {naam}\nE-mail: {email}\nAantal personen: {personen}\n{bericht}',
-        'app.label': 'En de app?',
-        'app.h': 'De app krijgt<br><em>een eigen plek.</em>',
-        'app.p': 'De app die we onderweg voor stichting MIND bouwden, staat los van Back to Being en krijgt binnenkort een eigen website. Zodra die live is, vind je hier de link.',
-        'app.cta': 'Naar de app &rarr;',
-        'app.reis': 'Bekijk onze reis &rarr;',
-        'footer.right': 'backtobeing.tech &nbsp;·&nbsp; 2026',
-        'footer.privacy': 'Privacybeleid',
-        'footer.terms': 'Algemene voorwaarden',
+        'intro.titel': 'Back to Being gaat <em>in première.</em>',
+        'intro.p1': 'We hebben in zes dagen 129 kilometer over de Camino gelopen en onderweg ook nog een app gebouwd.',
+        'intro.p2': 'In die zes dagen hebben we veel meegemaakt. Lange dagen, heel veel regen, goede gesprekken, momenten waarop alles lekker liep en momenten waarop het juist even tegenzat. We hebben de hele reis gefilmd en alles vastgelegd.',
+        'intro.p3': 'In november nemen we je een avond mee op onze reis. Binnen een half uur zie je wat we in die zes dagen hebben meegemaakt, waar we tegenaan liepen en wat er onderweg is ontstaan.',
+        'intro.p4': 'En jij kan erbij zijn. <strong>Meld je nu aan voor de première!</strong>',
+        'intro.p5': 'De plek en tijd maken we later bekend.',
+        'form.titel': 'Ik wil erbij zijn',
+        'form.sub': 'Je krijgt een mail zodra de plaats en tijd bekend zijn.',
+        'form.voornaam': 'Voornaam',
+        'form.achternaam': 'Achternaam',
+        'form.mail': 'Mailadres',
+        'form.aantal': 'Aantal personen',
+        'form.extra1': 'Naam persoon 2',
+        'form.extra2': 'Naam persoon 3',
+        'form.extra3': 'Naam persoon 4',
+        'form.extra4': 'Naam persoon 5',
+        'form.knop': 'Zet mij op de lijst',
+        'form.privacy': 'We gebruiken je gegevens alleen voor deze uitnodiging. <a href="privacybeleid.html">Privacybeleid</a>.',
+        'form.foutVelden': 'Vul je voor- en achternaam en een geldig mailadres in.',
+        'form.foutNamen': 'Vul de naam in van iedereen die meekomt.',
+        'form.foutNet': 'Versturen lukte niet. Probeer het zo nog eens, of mail ons via de contactpagina.',
+        'form.bezig': 'Even geduld',
+        'klaar.titel': 'Je staat op de lijst.',
+        'klaar.een': 'Dank je, <b>{naam}</b>. We hebben je inschrijving ontvangen op {mail}.',
+        'klaar.meer': 'Dank je, <b>{naam}</b>. We hebben je inschrijving voor {aantal} personen ontvangen op {mail}.',
+        'klaar.p2': 'Zodra de plaats en tijd vaststaan krijg je een mail. Tot in november.',
       },
       en: {
-        'meta.desc': 'The documentary about our Camino premieres in November 2026 and will be on YouTube afterwards. Sign up and be the first to hear when and where.',
-        'meta.locale': 'en_US',
         'nav.story': 'Our story',
-        'nav.reis': 'Day by day',
         'nav.press': 'Press',
+        'nav.reis': 'Day by day',
         'nav.premiere': 'Premiere',
         'nav.contact': 'Contact',
-        'hero.h1': 'We captured<br><em>all of it.</em>',
-        'hero.lead': 'Six days of walking, building and filming, from Valença to the square in Santiago de Compostela. We are turning that into a documentary. It premieres in November 2026 and will be on YouTube for everyone afterwards.',
-        'fact.km': 'kilometres walked',
-        'fact.days': 'days filmed',
-        'fact.doc': 'documentary',
-        'beeld.cap': 'Arrived on the Praza do Obradoiro in Santiago de Compostela: the end of the walk, and the start of the documentary.',
-        'beeld.datum': '29 August 2026',
-        'details.when.head': 'When',
-        'details.when.value': 'November 2026. <em>Exact date to follow.</em>',
-        'details.when.note': 'We will set the date soon. Those who sign up hear it first.',
-        'details.where.head': 'Where',
-        'details.where.value': 'Venue <em>to follow.</em>',
-        'details.where.note': 'A room with a big screen and enough chairs. We will announce the venue as soon as it is set.',
-        'details.after.head': 'Afterwards',
-        'details.after.value': 'For everyone <em>on YouTube.</em>',
-        'details.after.note': 'After the premiere we put the documentary online. If you could not make it, you can watch it at home.',
-        'form.h': 'Want to<br><em>be there?</em>',
-        'form.p': 'Leave your name and email address. As soon as the date and venue are set, you will be the first to hear and receive an invitation. No newsletter, just this.',
-        'form.name': 'Name',
-        'form.email': 'Email',
-        'form.people': 'How many people are you coming with?',
-        'form.people.1': 'Just me',
-        'form.people.2': 'Two of us',
-        'form.people.3': 'Three of us',
-        'form.people.4': 'Four or more',
-        'form.message': 'Message (optional)',
-        'form.message.ph': 'For example: how you are involved with Back to Being',
-        'form.submit': 'Keep me posted &rarr;',
-        'form.sending': 'Sending&hellip;',
-        'form.note': 'We only use your details for the premiere. See our <a href="privacybeleid.html">privacy policy</a> (Dutch).',
-        'form.invalid': 'Please fill in your name and a valid email address.',
-        'form.error': 'Sending failed. Email us at <a href="mailto:{mail}">{mail}</a> and we will put you on the list.',
-        'form.mailto': 'Your email app opens with your sign-up. Send the email and you are on the list.',
-        'form.done.h': 'You are on the list.',
-        'form.done.p': 'We will email you as soon as the date and venue are set. See you in November.',
-        'mail.subject': 'Sign-up for the Back to Being premiere',
-        'mail.body': 'Hi Max, Caesar and Stijn,\n\nI would like to come to the premiere of the documentary.\n\nName: {naam}\nEmail: {email}\nNumber of people: {personen}\n{bericht}',
-        'app.label': 'And the app?',
-        'app.h': 'The app gets<br><em>a home of its own.</em>',
-        'app.p': 'The app we built along the way for the MIND foundation is separate from Back to Being and will soon get its own website. As soon as it is live, you will find the link here.',
-        'app.cta': 'Go to the app &rarr;',
-        'app.reis': 'See our journey &rarr;',
-        'footer.right': 'backtobeing.tech &nbsp;·&nbsp; 2026',
-        'footer.privacy': 'Privacy policy',
-        'footer.terms': 'Terms &amp; conditions',
-      },
+        'intro.titel': 'Back to Being <em>premieres.</em>',
+        'intro.p1': 'In six days we walked 129 kilometres of the Camino and built an app along the way.',
+        'intro.p2': 'Those six days held a lot. Long days, plenty of rain, good conversations, moments when everything flowed and moments when it did not. We filmed the whole journey and captured all of it.',
+        'intro.p3': 'In November we take you along for an evening. In half an hour you see what we went through in those six days, what we ran into and what came out of it.',
+        'intro.p4': 'And you can be there. <strong>Sign up for the premiere now!</strong>',
+        'intro.p5': 'Venue and time will be announced later.',
+        'form.titel': 'I want to be there',
+        'form.sub': 'You will get an email as soon as the venue and time are set.',
+        'form.voornaam': 'First name',
+        'form.achternaam': 'Last name',
+        'form.mail': 'Email',
+        'form.aantal': 'Number of people',
+        'form.extra1': 'Name of person 2',
+        'form.extra2': 'Name of person 3',
+        'form.extra3': 'Name of person 4',
+        'form.extra4': 'Name of person 5',
+        'form.knop': 'Put me on the list',
+        'form.privacy': 'We only use your details for this invitation. <a href="privacybeleid.html">Privacy policy</a>.',
+        'form.foutVelden': 'Please fill in your first and last name and a valid email address.',
+        'form.foutNamen': 'Please fill in the name of everyone joining you.',
+        'form.foutNet': 'Sending failed. Please try again in a moment, or email us via the contact page.',
+        'form.bezig': 'One moment',
+        'klaar.titel': 'You are on the list.',
+        'klaar.een': 'Thank you, <b>{naam}</b>. We received your sign-up at {mail}.',
+        'klaar.meer': 'Thank you, <b>{naam}</b>. We received your sign-up for {aantal} people at {mail}.',
+        'klaar.p2': 'As soon as the venue and time are set you will get an email. See you in November.',
+      }
     };
 
     let lang = localStorage.getItem('b2b-lang') === 'en' ? 'en' : 'nl';
-    function t(key) {
-      const dict = I18N[lang];
-      if (dict && dict[key] !== undefined) return dict[key];
-      if (I18N.nl[key] !== undefined) return I18N.nl[key];
-      return key;
-    }
+    function t(key) { return (I18N[lang] && I18N[lang][key]) || I18N.nl[key] || key; }
 
-    function applyLang(next) {
-      lang = next === 'en' ? 'en' : 'nl';
-      const dict = I18N[lang];
-      // De teksten komen uit het I18N-literal hierboven, niet van buiten.
+    function applyStaticText() {
+      document.documentElement.lang = lang;
+      const ogLocale = document.getElementById('ogLocale');
+      if (ogLocale) ogLocale.setAttribute('content', lang === 'en' ? 'en_GB' : 'nl_NL');
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (dict[key] !== undefined) el.innerHTML = dict[key];
+        // Woordenboek staat inline en komt nooit van buiten, dus innerHTML
+        // is hier veilig. Invoer van de bezoeker gaat via textContent/escape.
+        if (I18N[lang] && I18N[lang][key] !== undefined) el.innerHTML = I18N[lang][key];
       });
-      document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-        const key = el.getAttribute('data-i18n-ph');
-        if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
+      document.querySelectorAll('.lang-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.lang === lang);
       });
-      document.documentElement.lang = lang;
-      const metaDesc = document.getElementById('metaDesc');
-      const ogDesc = document.getElementById('ogDesc');
-      const ogLocale = document.getElementById('ogLocale');
-      if (metaDesc) metaDesc.setAttribute('content', dict['meta.desc']);
-      if (ogDesc) ogDesc.setAttribute('content', dict['meta.desc']);
-      if (ogLocale) ogLocale.setAttribute('content', dict['meta.locale']);
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
+    }
+
+    function bindLang() {
+      document.querySelectorAll('.lang-btn').forEach(b => {
+        b.addEventListener('click', () => {
+          lang = b.dataset.lang === 'en' ? 'en' : 'nl';
+          localStorage.setItem('b2b-lang', lang);
+          applyStaticText();
+        });
       });
-      try { localStorage.setItem('b2b-lang', lang); } catch (e) { /* privémodus */ }
     }
 
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.addEventListener('click', () => applyLang(btn.dataset.lang));
-    });
-    applyLang(lang);
-
-    /* ---------- nav (mobiel) ---------- */
-    const nav = document.getElementById('siteNav');
-    const menuBtn = document.getElementById('navMenuBtn');
-    function setMenu(open) {
-      nav.classList.toggle('menu-open', open);
-      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
-    menuBtn.addEventListener('click', () => setMenu(!nav.classList.contains('menu-open')));
-    document.addEventListener('click', e => {
-      if (nav.classList.contains('menu-open') && !nav.contains(e.target)) setMenu(false);
-    });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
-
-    /* ---------- app-link ---------- */
-    const appLink = document.getElementById('appLink');
-    if (APP_URL) { appLink.href = APP_URL; appLink.hidden = false; }
-
-    /* ---------- aanmelden ---------- */
-    const form = document.getElementById('aanmeldForm');
-    const knop = document.getElementById('aanmeldKnop');
-    const status = document.getElementById('aanmeldStatus');
-    const klaar = document.getElementById('aanmeldKlaar');
-
-    function toonStatus(html, fout) {
-      status.innerHTML = html;
-      status.classList.toggle('is-fout', !!fout);
-      status.hidden = false;
-    }
-    function verbergStatus() { status.hidden = true; status.innerHTML = ''; }
-    function toonKlaar() {
-      form.hidden = true;
-      klaar.hidden = false;
-      klaar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-    function geldigEmail(v) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v); }
-
-    function lees() {
-      return {
-        naam: form.naam.value.trim(),
-        email: form.email.value.trim(),
-        personen: form.personen.value,
-        bericht: form.bericht.value.trim(),
-        taal: lang,
-        bron: 'backtobeing.tech/premiere',
-      };
+    /* ---------- nav ---------- */
+    function bindNav() {
+      const nav = document.getElementById('siteNav');
+      const btn = document.getElementById('navMenuBtn');
+      btn.addEventListener('click', () => {
+        const open = nav.classList.toggle('menu-open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+      document.addEventListener('click', e => {
+        if (!nav.contains(e.target)) {
+          nav.classList.remove('menu-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          nav.classList.remove('menu-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
     }
 
-    function viaMail(d) {
-      const body = t('mail.body')
-        .replace('{naam}', d.naam)
-        .replace('{email}', d.email)
-        .replace('{personen}', d.personen)
-        .replace('{bericht}', d.bericht ? '\n' + d.bericht : '');
-      const href = 'mailto:' + MAIL
-        + '?subject=' + encodeURIComponent(t('mail.subject'))
-        + '&body=' + encodeURIComponent(body);
-      toonStatus(t('form.mailto'), false);
-      window.location.href = href;
+    /* ---------- formulier ---------- */
+    const form = document.getElementById('premiereForm');
+    const aantalEl = document.getElementById('aantal');
+    const extraBlok = document.getElementById('extraNamen');
+    const extraVelden = Array.from(extraBlok.querySelectorAll('.veld'));
+    const foutEl = document.getElementById('formFout');
+    const knop = document.getElementById('verstuur');
+
+    // Zoveel naamvelden als er extra mensen meekomen. Verborgen velden
+    // worden leeggemaakt, zodat er geen oude naam in de sheet belandt.
+    function toonExtra() {
+      const n = parseInt(aantalEl.value, 10) || 1;
+      extraBlok.hidden = n < 2;
+      extraVelden.forEach((veld, i) => {
+        const zichtbaar = i < n - 1;
+        veld.hidden = !zichtbaar;
+        const input = veld.querySelector('input');
+        input.required = zichtbaar;
+        if (!zichtbaar) input.value = '';
+      });
     }
 
-    form.addEventListener('submit', async e => {
+    function toonFout(key) {
+      foutEl.textContent = t(key);
+      foutEl.hidden = false;
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    async function verstuur(e) {
       e.preventDefault();
-      verbergStatus();
+      foutEl.hidden = true;
 
-      // Honeypot gevuld: een bot. Doen alsof het gelukt is en verder niets.
-      if (form.website.value) { toonKlaar(); return; }
+      const data = Object.fromEntries(new FormData(form).entries());
+      for (const k in data) data[k] = String(data[k]).trim();
 
-      const d = lees();
-      if (!d.naam || !geldigEmail(d.email)) {
-        toonStatus(t('form.invalid'), true);
-        (d.naam ? form.email : form.naam).focus();
+      // Bots vullen het verborgen veld in. Doe dan alsof het gelukt is,
+      // zodat ze niet leren waar de drempel zit.
+      if (data.website) { toonKlaar(data); return; }
+
+      const mailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data['Mailadress']);
+      if (!data['Voornaam'] || !data['Achternaam'] || !mailOk) {
+        toonFout('form.foutVelden');
+        form.querySelector(':invalid')?.focus();
         return;
       }
-
-      if (!AANMELD_ENDPOINT) { viaMail(d); return; }
+      const n = parseInt(data['Aantal personen'], 10) || 1;
+      for (let i = 1; i < n; i++) {
+        if (!data['Naam persoon (extra ' + i + ')']) {
+          toonFout('form.foutNamen');
+          document.getElementById('extra' + i).focus();
+          return;
+        }
+      }
+      delete data.website;
+      data['Taal'] = lang;
+      data['Bron'] = location.href.split('?')[0];
 
       knop.disabled = true;
-      const label = knop.innerHTML;
-      knop.innerHTML = t('form.sending');
+      const knopTekst = knop.firstElementChild;
+      const oud = knopTekst.textContent;
+      knopTekst.textContent = t('form.bezig');
+
       try {
-        // Bewust zonder Content-Type-header: dan is het een 'simple request'
-        // en werkt de Apps Script-webapp zonder CORS-preflight.
-        const res = await fetch(AANMELD_ENDPOINT, { method: 'POST', body: JSON.stringify(d) });
-        const uit = await res.json();
-        if (!uit || !uit.ok) throw new Error(uit && uit.fout ? uit.fout : 'geen ok');
-        toonKlaar();
+        if (!/^https:\/\//.test(INSCHRIJF_URL)) throw new Error('INSCHRIJF_URL is nog niet ingevuld');
+        // Bewust geen JSON-header: Apps Script ondersteunt geen CORS-preflight,
+        // en een 'simple request' met text/plain heeft er geen nodig.
+        const r = await fetch(INSCHRIJF_URL, {
+          method: 'POST',
+          body: JSON.stringify(data),
+        });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        // Apps Script antwoordt altijd met 200; het echte resultaat staat in de body.
+        const uit = await r.json().catch(() => ({}));
+        if (!uit.ok) throw new Error(uit.fout || 'onbekende fout');
+        toonKlaar(data);
       } catch (err) {
-        toonStatus(t('form.error').split('{mail}').join(MAIL), true);
+        console.warn('Inschrijving mislukt', err);
+        toonFout('form.foutNet');
       } finally {
         knop.disabled = false;
-        knop.innerHTML = label;
+        knopTekst.textContent = oud;
       }
-    });
-  })();
+    }
+
+    function toonKlaar(data) {
+      const n = parseInt(data['Aantal personen'], 10) || 1;
+      const tekst = t(n > 1 ? 'klaar.meer' : 'klaar.een')
+        .replace('{naam}', escapeHtml(data['Voornaam']))
+        .replace('{mail}', escapeHtml(data['Mailadress']))
+        .replace('{aantal}', String(n));
+      document.getElementById('klaarTekst').innerHTML = tekst;
+      form.hidden = true;
+      const klaar = document.getElementById('klaar');
+      klaar.hidden = false;
+      klaar.querySelector('h2').setAttribute('tabindex', '-1');
+      klaar.querySelector('h2').focus();
+    }
+
+    /* ---------- init ---------- */
+    applyStaticText();
+    bindLang();
+    bindNav();
+    aantalEl.addEventListener('change', toonExtra);
+    toonExtra();
+    form.addEventListener('submit', verstuur);
   </script>
 </body>
 </html>
