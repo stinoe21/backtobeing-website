@@ -23,9 +23,49 @@ naam in rij 1.
 1. Het formulier POST een JSON-body naar `INSCHRIJF_URL` (bovenaan het script in
    `premiere.html`).
 2. `apps-script.gs`, gedeployed als web-app aan de sheet, valideert de velden,
-   schrijft een nieuwe rij en stuurt een bevestigingsmail (NL of EN) vanuit het
+   controleert of het mailadres nieuw is en of de limiet niet bereikt is, schrijft
+   dan een nieuwe rij en stuurt een bevestigingsmail (NL of EN) vanuit het
    Google-account dat het script deployt.
 3. De pagina toont de bedanktekst zodra het script `{ ok: true }` terugstuurt.
+
+## ⚠️ Delen van de sheet: altijd op "Beperkt"
+
+De sheet bevat namen en mailadressen. Het sheet-ID staat in dit bestand en in
+`apps-script.gs`, en deze repo is publiek. Staat de sheet op "Iedereen met de
+link", dan kan iedereen de hele lijst downloaden.
+
+Zet daarom in de sheet **Delen → Algemene toegang → Beperkt** en nodig alleen
+Stijn en Max persoonlijk uit. Het script draait als de eigenaar ("Execute as: Me")
+en heeft de linkdeling niet nodig; het formulier blijft gewoon werken.
+
+## Dubbele aanmeldingen en beveiliging
+
+Het script antwoordt met `{ ok: true }` of met `{ ok: false, code }`. De pagina
+toont bij elke code een eigen melding:
+
+| code | wanneer | wat de bezoeker ziet |
+| --- | --- | --- |
+| `bestaat` | het mailadres staat al in de sheet | "Je staat al op de lijst", met het contactadres voor wijzigingen en een link om een ander adres te gebruiken |
+| `druk` | meer dan `MAX_PER_VENSTER` verzoeken in `VENSTER_MINUTEN`, of het slot is 8 s bezet | "Het is nu erg druk, probeer het over een paar minuten opnieuw" |
+| `vol` | `MAX_TOTAAL_PERSONEN` zou worden overschreden | "De lijst is vol", met het contactadres voor de wachtlijst |
+| `ongeldig` | naam of mailadres ontbreekt, of de body is te groot | de gewone veldmelding |
+
+Bij geen van deze codes wordt er een rij geschreven of een mail gestuurd.
+
+Instellingen bovenaan `apps-script.gs`:
+
+- `MAX_PER_VENSTER = 50` en `VENSTER_MINUTEN = 10`: hooguit 50 verzoeken per tien
+  minuten. Elk verzoek telt mee, ook een dubbele. De teller staat in de
+  script-cache en wordt alleen binnen het slot gelezen en opgehoogd.
+- `MAX_TOTAAL_PERSONEN = 0`: plafond op het totaal aantal personen (hoofdpersoon
+  plus extra's). `0` is uit. Zet hier de zaalcapaciteit zodra die bekend is.
+
+Let op: wie een mailadres intypt dat al op de lijst staat, krijgt dat te zien. Dat
+is de bedoeling, maar het betekent ook dat iemand kan nagaan of een bepaald adres
+is aangemeld.
+
+De logica is lokaal te testen zonder Google: zie `test-apps-script.js`
+(`node premiere/test-apps-script.js`).
 
 ## Inrichten (eenmalig, ~5 minuten)
 

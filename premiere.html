@@ -308,6 +308,14 @@
     .klaar p { font-size: 0.95rem; line-height: 1.55; color: var(--ink-soft); }
     .klaar p + p { margin-top: 0.6rem; }
     .klaar p b { color: var(--ink); font-weight: 500; }
+    .klaar p a { text-decoration: underline; text-underline-offset: 3px; color: var(--ink); }
+    .tekstknop {
+      margin-top: 1.1rem; padding: 0.5rem 0; min-height: 44px;
+      background: none; border: none; cursor: pointer;
+      font-size: 0.9rem; font-weight: 500; color: var(--tree);
+      text-decoration: underline; text-underline-offset: 4px;
+    }
+    .tekstknop[hidden] { display: none; }
 
     /* ---------- FOOTER (gelijk aan index.html) ---------- */
     .site-footer {
@@ -568,9 +576,10 @@
         <div class="vink" aria-hidden="true">
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="m5 11.5 4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <h2 data-i18n="klaar.titel">Je staat op de lijst.</h2>
+        <h2 id="klaarTitel">Je staat op de lijst.</h2>
         <p id="klaarTekst"></p>
-        <p data-i18n="klaar.p2">Zodra de plaats en tijd vaststaan krijg je een mail. Tot in november.</p>
+        <p id="klaarP2"></p>
+        <button class="tekstknop" id="klaarAnder" type="button" hidden data-i18n="al.ander">Aanmelden met een ander mailadres</button>
       </div>
     </section>
 
@@ -601,6 +610,9 @@
     // de inschrijving in de sheet en stuurt de bevestigingsmail.
     // Zie premiere/apps-script.gs en premiere/README.md voor het deployen.
     const INSCHRIJF_URL = 'https://script.google.com/macros/s/AKfycbxgvGKEzELZlS_vZ0w08MLE_f3Gw6Zi38gbvltGE8h8_tvsuJOfjK5QgoCqkF2RX8PC/exec';
+
+    // Voor wijzigingen en de wachtlijst; hetzelfde adres als op de contactpagina.
+    const CONTACT_MAIL = 'caesar.schoorl@gmail.com';
 
     /* ---------- woordenboek ---------- */
     const I18N = {
@@ -639,6 +651,12 @@
         'klaar.een': 'Dank je, <b>{naam}</b>. We hebben je inschrijving ontvangen op {mail}.',
         'klaar.meer': 'Dank je, <b>{naam}</b>. We hebben je inschrijving voor {aantal} personen ontvangen op {mail}.',
         'klaar.p2': 'Zodra de plaats en tijd vaststaan krijg je een mail. Tot in november.',
+        'al.titel': 'Je staat al op de lijst.',
+        'al.tekst': 'Het adres <b>{mail}</b> is al aangemeld. Je hoeft niets meer te doen: zodra de plek en tijd vaststaan krijg je een mail.',
+        'al.p2': 'Wil je het aantal personen of een naam wijzigen? Mail ons op <a href="mailto:{contact}">{contact}</a>.',
+        'al.ander': 'Aanmelden met een ander mailadres',
+        'form.foutDruk': 'Het is nu erg druk met aanmeldingen. Probeer het over een paar minuten opnieuw, je gegevens blijven hier staan.',
+        'form.foutVol': 'De lijst is vol. Mail ons op {contact}, dan zetten we je op de wachtlijst.',
       },
       en: {
         'nav.story': 'Our story',
@@ -675,6 +693,12 @@
         'klaar.een': 'Thank you, <b>{naam}</b>. We received your sign-up at {mail}.',
         'klaar.meer': 'Thank you, <b>{naam}</b>. We received your sign-up for {aantal} people at {mail}.',
         'klaar.p2': 'As soon as the venue and time are set you will get an email. See you in November.',
+        'al.titel': 'You are already on the list.',
+        'al.tekst': 'The address <b>{mail}</b> has already signed up. There is nothing more to do: as soon as the venue and time are set you will get an email.',
+        'al.p2': 'Want to change the number of people or a name? Email us at <a href="mailto:{contact}">{contact}</a>.',
+        'al.ander': 'Sign up with a different email address',
+        'form.foutDruk': 'Sign-ups are very busy right now. Please try again in a few minutes, your details will stay here.',
+        'form.foutVol': 'The list is full. Email us at {contact} and we will put you on the waiting list.',
       }
     };
 
@@ -702,6 +726,7 @@
           lang = b.dataset.lang === 'en' ? 'en' : 'nl';
           localStorage.setItem('b2b-lang', lang);
           applyStaticText();
+          vulKlaar();
         });
       });
     }
@@ -756,7 +781,7 @@
     }
 
     function toonFout(key) {
-      foutEl.textContent = t(key);
+      foutEl.textContent = t(key).split('{contact}').join(CONTACT_MAIL);
       foutEl.hidden = false;
       // Op een telefoon staat de melding anders onder het toetsenbord.
       inBeeld(foutEl, 'center');
@@ -811,8 +836,13 @@
         if (!r.ok) throw new Error('HTTP ' + r.status);
         // Apps Script antwoordt altijd met 200; het echte resultaat staat in de body.
         const uit = await r.json().catch(() => ({}));
-        if (!uit.ok) throw new Error(uit.fout || 'onbekende fout');
-        toonKlaar(data);
+        if (uit.ok) { toonKlaar(data); return; }
+        // Het script schreef niets weg en zegt waarom.
+        if (uit.code === 'bestaat') { toonKlaar(data, 'al'); return; }
+        if (uit.code === 'druk') { toonFout('form.foutDruk'); return; }
+        if (uit.code === 'vol') { toonFout('form.foutVol'); return; }
+        if (uit.code === 'ongeldig') { toonFout('form.foutVelden'); return; }
+        throw new Error(uit.fout || 'onbekende fout');
       } catch (err) {
         console.warn('Inschrijving mislukt', err);
         toonFout('form.foutNet');
@@ -822,13 +852,11 @@
       }
     }
 
-    function toonKlaar(data) {
-      const n = parseInt(data['Aantal personen'], 10) || 1;
-      const tekst = t(n > 1 ? 'klaar.meer' : 'klaar.een')
-        .replace('{naam}', escapeHtml(data['Voornaam']))
-        .replace('{mail}', escapeHtml(data['Mailadress']))
-        .replace('{aantal}', String(n));
-      document.getElementById('klaarTekst').innerHTML = tekst;
+    // variant 'al': dit mailadres stond al in de sheet, er is niets geschreven.
+    let klaarStaat = null;
+    function toonKlaar(data, variant) {
+      klaarStaat = { data: data, variant: variant || 'nieuw' };
+      vulKlaar();
       form.hidden = true;
       const klaar = document.getElementById('klaar');
       klaar.hidden = false;
@@ -837,6 +865,43 @@
       document.getElementById('plak').hidden = true;
       // Het vlak is nu veel korter dan het formulier: breng het terug in beeld.
       inBeeld(document.querySelector('.kaart'), 'start');
+    }
+
+    // Los van toonKlaar, zodat een taalwissel de bevestiging mee kan vertalen.
+    function vulKlaar() {
+      if (!klaarStaat) return;
+      const data = klaarStaat.data, al = klaarStaat.variant === 'al';
+      const n = parseInt(data['Aantal personen'], 10) || 1;
+      const mail = escapeHtml(data['Mailadress']);
+      document.getElementById('klaarTitel').textContent = t(al ? 'al.titel' : 'klaar.titel');
+      document.getElementById('klaarTekst').innerHTML = al
+        ? t('al.tekst').replace('{mail}', mail)
+        : t(n > 1 ? 'klaar.meer' : 'klaar.een')
+            .replace('{naam}', escapeHtml(data['Voornaam']))
+            .replace('{mail}', mail)
+            .replace('{aantal}', String(n));
+      document.getElementById('klaarP2').innerHTML = al
+        ? t('al.p2').split('{contact}').join(CONTACT_MAIL)
+        : t('klaar.p2');
+      document.getElementById('klaarAnder').hidden = !al;
+    }
+
+    // Vanuit 'je staat al op de lijst' terug naar het formulier, met alleen
+    // het mailadres leeg: de rest hoeft niemand opnieuw te typen.
+    function anderAdres() {
+      klaarStaat = null;
+      document.getElementById('klaar').hidden = true;
+      form.hidden = false;
+      document.getElementById('plak').hidden = false;
+      // reset() wist ook de 'al eens verstuurd'-staat van de browser, anders
+      // krijgt het lege mailveld meteen een rode rand. Daarna alles terugzetten
+      // behalve het mailadres.
+      const bewaard = Array.from(form.elements).filter(el => el.name && el.id !== 'mail' && el.name !== 'website').map(el => [el, el.value]);
+      form.reset();
+      bewaard.forEach(([el, v]) => { el.value = v; });
+      toonExtra();
+      foutEl.hidden = true;
+      document.getElementById('mail').focus();
     }
 
     /* ---------- vaste aanmeldknop (mobiel) ---------- */
@@ -871,6 +936,7 @@
     aantalEl.addEventListener('change', toonExtra);
     toonExtra();
     form.addEventListener('submit', verstuur);
+    document.getElementById('klaarAnder').addEventListener('click', anderAdres);
   </script>
 </body>
 </html>

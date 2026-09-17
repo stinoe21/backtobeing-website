@@ -16,3 +16,6 @@ data/sporen/
 eslint.config.mjs
 postcss.config.mjs
 tsconfig*
+# Apps Script, test en README van de première-aanmeldingen: horen in git, niet op
+# de site. premiere.html zelf staat in de root en wordt wel geserveerd.
+premiere/

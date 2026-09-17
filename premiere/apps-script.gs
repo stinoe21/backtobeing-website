@@ -19,7 +19,11 @@
  * Wat het doet bij een POST vanaf premiere.html:
  *   - leest de kolomkoppen uit rij 1 en zet de velden op naam in de juiste kolom
  *     (extra kolommen of een andere volgorde in de sheet zijn dus geen probleem);
- *   - schrijft elke inschrijving als nieuwe rij, ook als het mailadres al voorkomt;
+ *   - staat het mailadres al in de sheet, dan komt er géén tweede rij en géén
+ *     tweede mail; de pagina meldt dat dit adres al op de lijst staat;
+ *   - laat hooguit MAX_PER_VENSTER aanmeldingen per VENSTER_MINUTEN door, zodat een
+ *     bot of een stortvloed de sheet en je mailquota niet kan vollopen;
+ *   - optioneel een plafond op het totaal aantal personen (MAX_TOTAAL_PERSONEN);
  *   - voegt de kolom "Ingeschreven op" toe als die nog niet bestaat;
  *   - stuurt een bevestigingsmail (NL of EN) vanuit het account dat het script deployt.
  */
@@ -28,6 +32,18 @@ const SHEET_ID = '14wJ1cTU1kKhApDBKljp58i5_3GTCEqmFmf7F6IFZVQE';
 const TAB_NAAM = ''; // leeg = eerste tabblad
 const AFZENDER_NAAM = 'Back to Being';
 const STUUR_BEVESTIGING = true;
+
+// Beveiliging tegen een stortvloed: zoveel verzoeken mogen er per tijdvenster
+// binnenkomen. Alles daarboven krijgt "het is druk, probeer het zo nog eens".
+const MAX_PER_VENSTER = 50;
+const VENSTER_MINUTEN = 10;
+
+// Plafond op het totaal aantal personen op de lijst (hoofdpersoon + extra's).
+// 0 = geen plafond. Zet hier de zaalcapaciteit zodra die bekend is.
+const MAX_TOTAAL_PERSONEN = 0;
+
+// Groter dan dit is geen echte aanmelding.
+const MAX_BODY_TEKENS = 4000;
 
 const VELDEN = [
   'Voornaam',
@@ -42,7 +58,9 @@ const VELDEN = [
 
 function doPost(e) {
   try {
-    const data = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    const ruw = (e && e.postData && e.postData.contents) || '{}';
+    if (ruw.length > MAX_BODY_TEKENS) return antwoord({ ok: false, code: 'ongeldig', fout: 'te groot' });
+    const data = JSON.parse(ruw);
 
     // Honeypot: bots vullen het verborgen veld in. Doe alsof het gelukt is.
     if (data.website) return antwoord({ ok: true });
@@ -56,21 +74,25 @@ function doPost(e) {
     for (let i = aantal; i <= 4; i++) rij['Naam persoon (extra ' + i + ')'] = '';
 
     if (!rij['Voornaam'] || !rij['Achternaam'] || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(rij['Mailadress'])) {
-      return antwoord({ ok: false, fout: 'ongeldige invoer' }, 400);
+      return antwoord({ ok: false, code: 'ongeldig', fout: 'ongeldige invoer' });
     }
 
     const taal = data['Taal'] === 'en' ? 'en' : 'nl';
     rij['Taal'] = taal;
     rij['Ingeschreven op'] = Utilities.formatDate(new Date(), 'Europe/Amsterdam', 'dd-MM-yyyy HH:mm');
 
-    try { schrijfRij(rij); }
+    let uitkomst;
+    try { uitkomst = schrijfRij(rij); }
     catch (err) { throw new Error('sheet: ' + err); }
-    if (STUUR_BEVESTIGING) stuurBevestiging(rij, taal);
 
+    // 'bestaat' | 'druk' | 'vol': niets geschreven, dus ook geen mail.
+    if (uitkomst !== 'ok') return antwoord({ ok: false, code: uitkomst });
+
+    if (STUUR_BEVESTIGING) stuurBevestiging(rij, taal);
     return antwoord({ ok: true });
   } catch (err) {
     console.error(err);
-    return antwoord({ ok: false, fout: String(err) }, 500);
+    return antwoord({ ok: false, code: 'fout', fout: String(err) });
   }
 }
 
@@ -79,10 +101,19 @@ function doGet() {
   return antwoord({ ok: true, info: 'Back to Being première — gebruik POST' });
 }
 
+/**
+ * Schrijft de rij, tenzij er een reden is om dat niet te doen.
+ * Geeft terug: 'ok' | 'bestaat' | 'druk' | 'vol'.
+ * Alles gebeurt binnen één slot, zodat twee aanmeldingen op hetzelfde moment
+ * niet allebei door de dubbelcheck of langs het plafond glippen.
+ */
 function schrijfRij(rij) {
   const lock = LockService.getScriptLock();
-  lock.waitLock(10000);
+  // Lukt het slot niet binnen 8 s, dan staan er te veel mensen tegelijk te wachten.
+  if (!lock.tryLock(8000)) return 'druk';
   try {
+    if (!binnenLimiet()) return 'druk';
+
     // Gebonden aan de sheet: getActive werkt dan altijd, openById is de
     // terugvaloptie als het script los van de sheet is aangemaakt.
     const ss = SpreadsheetApp.getActiveSpreadsheet() || SpreadsheetApp.openById(SHEET_ID);
@@ -100,11 +131,45 @@ function schrijfRij(rij) {
       }
     });
 
+    // Bestaande rijen: dubbel mailadres en totaal aantal personen.
+    const laatsteRij = sheet.getLastRow();
+    if (laatsteRij > 1) {
+      const kMail = koppen.indexOf('Mailadress');
+      const kAantal = koppen.indexOf('Aantal personen');
+      const rijen = sheet.getRange(2, 1, laatsteRij - 1, koppen.length).getValues();
+      let totaal = 0;
+      for (let i = 0; i < rijen.length; i++) {
+        if (kMail > -1 && String(rijen[i][kMail]).trim().toLowerCase() === rij['Mailadress']) return 'bestaat';
+        if (kAantal > -1) totaal += parseInt(rijen[i][kAantal], 10) || 0;
+      }
+      if (MAX_TOTAAL_PERSONEN > 0 && totaal + rij['Aantal personen'] > MAX_TOTAAL_PERSONEN) return 'vol';
+    } else if (MAX_TOTAAL_PERSONEN > 0 && rij['Aantal personen'] > MAX_TOTAAL_PERSONEN) {
+      return 'vol';
+    }
+
     const waarden = koppen.map(k => (k in rij ? rij[k] : ''));
     sheet.appendRow(waarden);
+    return 'ok';
   } finally {
     lock.releaseLock();
   }
+}
+
+/**
+ * Telt de verzoeken in het lopende tijdvenster. Wordt alleen binnen het slot
+ * aangeroepen, dus lezen-en-ophogen kan niet door elkaar lopen. Elk verzoek
+ * telt mee, ook een dubbele: het gaat om de druk op het script, niet om het
+ * aantal geslaagde aanmeldingen.
+ */
+function binnenLimiet() {
+  if (MAX_PER_VENSTER <= 0) return true;
+  const cache = CacheService.getScriptCache();
+  const vensterMs = VENSTER_MINUTEN * 60 * 1000;
+  const sleutel = 'teller_' + Math.floor(Date.now() / vensterMs);
+  const n = parseInt(cache.get(sleutel), 10) || 0;
+  if (n >= MAX_PER_VENSTER) return false;
+  cache.put(sleutel, String(n + 1), VENSTER_MINUTEN * 60 + 60);
+  return true;
 }
 
 function stuurBevestiging(rij, taal) {
@@ -138,7 +203,8 @@ function stuurBevestiging(rij, taal) {
 }
 
 function antwoord(obj) {
-  // Apps Script kan geen HTTP-statuscode zetten; de pagina leest `ok`.
+  // Apps Script kan geen HTTP-statuscode zetten; de pagina leest `ok` en `code`
+  // ('bestaat' | 'druk' | 'vol' | 'ongeldig' | 'fout').
   return ContentService
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
