@@ -35,7 +35,7 @@
        Deze pagina hoort bij index.html en volg.html: dezelfde tokens en
        dezelfde nav. Wijzig je daar iets aan de huisstijl, doe het hier ook.
 
-       Opzet: één scherm, bewust zonder scrollen op desktop. Links de
+       Opzet: één scherm op desktop, met de footer van de hoofdsite eronder. Links de
        aankondiging (november, plaats en tijd volgen), rechts het formulier
        om je in te schrijven. Op mobiel staan ze onder elkaar en scrolt de
        pagina wél, want een formulier met vijf namen past niet op een
@@ -72,7 +72,8 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { height: 100%; }
     body {
-      min-height: 100%;
+      min-height: 100svh;
+      display: flex; flex-direction: column;
       background: var(--bg);
       font-family: var(--sans);
       color: var(--ink);
@@ -129,6 +130,7 @@
 
     .nav-links { display: flex; align-items: center; gap: 2.5rem; }
     .nav-link {
+      white-space: nowrap;
       font-family: var(--subhead);
       font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--ink-soft); cursor: pointer; transition: color 0.2s;
@@ -161,7 +163,10 @@
        SCHERM
        ============================================================ */
     .shell {
-      min-height: 100svh;
+      /* Vult wat er tussen de nav en de footer overblijft; de inhoud staat
+         daar verticaal in het midden. */
+      flex: 1 0 auto; width: 100%;
+      align-content: center;
       padding: calc(var(--nav-h) + clamp(1.5rem, 4vh, 3rem)) var(--pane-x) clamp(1.5rem, 4vh, 3rem);
       display: grid;
       grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
@@ -193,6 +198,7 @@
     /* ---------- rechts: het formulier ---------- */
     .kaart {
       position: relative;
+      scroll-margin-top: calc(var(--nav-h) + 1rem);
       padding: clamp(1.4rem, 2.6vw, 2.2rem);
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
@@ -296,9 +302,39 @@
       margin-bottom: 1.2rem;
     }
     .klaar h2 { margin-bottom: 0.6rem; }
+    /* Krijgt focus vanuit het script zodat een schermlezer de bevestiging
+       voorleest; het is geen bedienbaar element, dus geen focusrand. */
+    .klaar h2:focus { outline: none; }
     .klaar p { font-size: 0.95rem; line-height: 1.55; color: var(--ink-soft); }
     .klaar p + p { margin-top: 0.6rem; }
     .klaar p b { color: var(--ink); font-weight: 500; }
+
+    /* ---------- FOOTER (gelijk aan index.html) ---------- */
+    .site-footer {
+      padding: 2.25rem 6vw; border-top: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+      /* Niet in index.html: rond tabletbreedte staan de onderdelen anders
+         tegen elkaar aan. Past het niet, dan breekt de rij af. */
+      gap: 1rem 2rem; flex-wrap: wrap;
+    }
+    .footer-logo { display: flex; align-items: center; }
+    .footer-logo-mark { width: auto; height: 1.75rem; flex: 0 0 auto; }
+    .footer-legal { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .footer-legal a { font-family: var(--subhead); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); transition: color 0.2s; }
+    .footer-legal a:hover { color: var(--tree); }
+    .footer-social { display: flex; align-items: center; gap: 1.1rem; }
+    .footer-social a {
+      display: inline-flex; color: var(--ink); opacity: 0.7;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .footer-social a:hover { opacity: 1; color: var(--tree); }
+    .footer-social svg { width: 18px; height: 18px; display: block; }
+
+    /* Vaste aanmeldknop onderin. Alleen op smalle schermen, en alleen zolang
+       het formulier zelf nog niet in beeld is: daar staat het onder het hele
+       verhaal, en zonder deze knop zie je op het eerste scherm geen enkele
+       manier om je aan te melden. */
+    .plak { display: none; }
 
     @media (prefers-reduced-motion: no-preference) {
       .intro, .kaart { animation: op 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
@@ -310,14 +346,49 @@
     @media (max-width: 900px) {
       .shell {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 1.75rem;
         align-items: start;
-        min-height: 0;
-        padding-top: calc(var(--nav-h) + 2rem);
+        /* Bovenaan beginnen: op een hoog scherm (tablet staand) geeft
+           centreren een gat onder het menu. */
+        align-content: start;
+        /* viewport-fit=cover: zelf ruimte houden voor notch en home-balk. */
+        padding:
+          calc(var(--nav-h) + 1.5rem)
+          max(var(--pane-x), env(safe-area-inset-right, 0px))
+          2.5rem
+          max(var(--pane-x), env(safe-area-inset-left, 0px));
       }
-      .intro h1 { font-size: clamp(2.4rem, 10vw, 3.4rem); }
+      .intro h1 { font-size: clamp(2.3rem, 9.5vw, 3.4rem); margin-bottom: 1rem; }
+      /* Op een tablet in staande stand niet over de volle breedte uitrekken. */
+      .intro, .kaart { max-width: 36rem; width: 100%; }
+
+      /* Onder de 16 px zoomt iOS Safari in zodra je een veld aantikt. */
+      .veld input, .veld select { font-size: 16px; min-height: 50px; }
+      .veld label { font-size: 0.68rem; }
+      .privacy { font-size: 0.8rem; }
+
+      .plak {
+        display: block;
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 150;
+        padding:
+          0.75rem
+          max(var(--pane-x), env(safe-area-inset-right, 0px))
+          calc(0.75rem + env(safe-area-inset-bottom, 0px))
+          max(var(--pane-x), env(safe-area-inset-left, 0px));
+        background: rgba(255,254,241,0.94);
+        backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+        border-top: 1px solid var(--line);
+        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+      }
+      .plak .knop { width: 100%; max-width: 36rem; }
+      .plak.is-weg { transform: translateY(110%); opacity: 0; pointer-events: none; }
+      .plak[hidden] { display: none; }
+      @media (prefers-reduced-motion: reduce) { .plak { transition: none; } }
     }
-    @media (max-width: 760px) {
+    /* Op index.html en volg.html ligt deze grens op 760px. Hier op 900px: met
+       vier links, de taalwissel en Contact breekt het menu daaronder in
+       meerdere regels en schuift het over het logo. */
+    @media (max-width: 900px) {
       .site-nav {
         flex-wrap: nowrap; align-content: center; gap: 1rem;
         padding: 0 max(1rem, 5vw);
@@ -356,14 +427,33 @@
         justify-content: flex-start; gap: 0.45rem;
         padding: 0.6rem 0.85rem; border-top: 1px solid var(--line);
       }
-      .lang-btn { color: var(--ink-soft) !important; font-size: 0.68rem; letter-spacing: 0.1em; }
+      /* Taalknoppen in het menu: een vinger heeft meer nodig dan 20 px. */
+      .lang-btn { color: var(--ink-soft) !important; font-size: 0.68rem; letter-spacing: 0.1em; min-width: 44px; min-height: 40px; }
       .lang-btn.active, .lang-btn:hover { color: var(--tree) !important; }
       .lang-sep { color: var(--ink-soft) !important; }
       .nav-cta-btn { margin-top: 0.25rem; justify-content: center; background: var(--tree) !important; color: var(--canvas) !important; }
     }
+    @media (max-width: 760px) {
+      .site-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding:
+          1.75rem
+          max(1.25rem, 5vw, env(safe-area-inset-right, 0px))
+          calc(1.75rem + env(safe-area-inset-bottom, 0px))
+          max(1.25rem, 5vw, env(safe-area-inset-left, 0px));
+      }
+      /* Iconen en links zijn hier raakvlakken: iets meer lucht. */
+      .footer-legal { gap: 0.5rem 1.5rem; }
+      .footer-legal a { padding: 0.35rem 0; }
+      .footer-social { gap: 1.4rem; }
+      .footer-social a { padding: 0.3rem; margin: -0.3rem; }
+    }
     @media (max-width: 480px) {
       .rij { grid-template-columns: 1fr; gap: 0.75rem; }
       .kaart { padding: 1.25rem; border-radius: var(--radius); }
+      .intro p + p { margin-top: 0.7rem; }
       .voet { flex-direction: column; align-items: stretch; }
       .knop { width: 100%; }
       .privacy { max-width: none; }
@@ -414,18 +504,18 @@
         <div class="rij">
           <div class="veld">
             <label for="voornaam" data-i18n="form.voornaam">Voornaam</label>
-            <input id="voornaam" name="Voornaam" type="text" autocomplete="given-name" required maxlength="80" />
+            <input id="voornaam" name="Voornaam" type="text" autocomplete="given-name" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" required maxlength="80" />
           </div>
           <div class="veld">
             <label for="achternaam" data-i18n="form.achternaam">Achternaam</label>
-            <input id="achternaam" name="Achternaam" type="text" autocomplete="family-name" required maxlength="80" />
+            <input id="achternaam" name="Achternaam" type="text" autocomplete="family-name" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" required maxlength="80" />
           </div>
         </div>
 
         <div class="rij">
           <div class="veld">
             <label for="mail" data-i18n="form.mail">Mailadres</label>
-            <input id="mail" name="Mailadress" type="email" autocomplete="email" inputmode="email" required maxlength="160" />
+            <input id="mail" name="Mailadress" type="email" autocomplete="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="next" required maxlength="160" />
           </div>
           <div class="veld select">
             <label for="aantal" data-i18n="form.aantal">Aantal personen</label>
@@ -442,19 +532,19 @@
         <div class="extra" id="extraNamen" hidden>
           <div class="veld">
             <label for="extra1" data-i18n="form.extra1">Naam persoon 2</label>
-            <input id="extra1" name="Naam persoon (extra 1)" type="text" autocomplete="off" maxlength="120" />
+            <input id="extra1" name="Naam persoon (extra 1)" type="text" autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" maxlength="120" />
           </div>
           <div class="veld" hidden>
             <label for="extra2" data-i18n="form.extra2">Naam persoon 3</label>
-            <input id="extra2" name="Naam persoon (extra 2)" type="text" autocomplete="off" maxlength="120" />
+            <input id="extra2" name="Naam persoon (extra 2)" type="text" autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" maxlength="120" />
           </div>
           <div class="veld" hidden>
             <label for="extra3" data-i18n="form.extra3">Naam persoon 4</label>
-            <input id="extra3" name="Naam persoon (extra 3)" type="text" autocomplete="off" maxlength="120" />
+            <input id="extra3" name="Naam persoon (extra 3)" type="text" autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" maxlength="120" />
           </div>
           <div class="veld" hidden>
             <label for="extra4" data-i18n="form.extra4">Naam persoon 5</label>
-            <input id="extra4" name="Naam persoon (extra 4)" type="text" autocomplete="off" maxlength="120" />
+            <input id="extra4" name="Naam persoon (extra 4)" type="text" autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" maxlength="120" />
           </div>
         </div>
 
@@ -486,6 +576,25 @@
 
   </main>
 
+  <footer class="site-footer">
+    <div class="footer-logo">
+      <img class="footer-logo-mark" src="b2b_horizontal banner.svg" alt="Back to Being" />
+    </div>
+    <nav class="footer-legal">
+      <a href="privacybeleid.html" data-i18n="footer.privacy">Privacybeleid</a>
+      <a href="algemene-voorwaarden.html" data-i18n="footer.terms">Algemene voorwaarden</a>
+    </nav>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 2h8.8A5.6 5.6 0 0 1 22 7.6v8.8a5.6 5.6 0 0 1-5.6 5.6H7.6A5.6 5.6 0 0 1 2 16.4V7.6A5.6 5.6 0 0 1 7.6 2Zm4.4 4.9a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2Zm0 2.35a2.75 2.75 0 1 1 0 5.5 2.75 2.75 0 0 1 0-5.5ZM17.5 5.2a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z"/></svg></a>
+      <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
+      <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
+    </div>
+  </footer>
+
+  <div class="plak is-weg" id="plak">
+    <button class="knop" id="plakKnop" type="button"><span data-i18n="plak.knop">Meld je aan</span></button>
+  </div>
+
   <script>
     /* ---------- instellingen ---------- */
     // Web-app-URL van het Apps Script dat aan de Google Sheet hangt. Dat zet
@@ -501,6 +610,8 @@
         'nav.reis': 'Dag voor dag',
         'nav.premiere': 'Première',
         'nav.contact': 'Contact',
+        'footer.privacy': 'Privacybeleid',
+        'footer.terms': 'Algemene voorwaarden',
         'intro.titel': 'Back to Being gaat <em>in première.</em>',
         'intro.p1': 'We hebben in zes dagen 129 kilometer over de Camino gelopen en onderweg ook nog een app gebouwd.',
         'intro.p2': 'In die zes dagen hebben we veel meegemaakt. Lange dagen, heel veel regen, goede gesprekken, momenten waarop alles lekker liep en momenten waarop het juist even tegenzat. We hebben de hele reis gefilmd en alles vastgelegd.',
@@ -518,6 +629,7 @@
         'form.extra3': 'Naam persoon 4',
         'form.extra4': 'Naam persoon 5',
         'form.knop': 'Zet mij op de lijst',
+        'plak.knop': 'Meld je aan',
         'form.privacy': 'We gebruiken je gegevens alleen voor deze uitnodiging. <a href="privacybeleid.html">Privacybeleid</a>.',
         'form.foutVelden': 'Vul je voor- en achternaam en een geldig mailadres in.',
         'form.foutNamen': 'Vul de naam in van iedereen die meekomt.',
@@ -534,6 +646,8 @@
         'nav.reis': 'Day by day',
         'nav.premiere': 'Premiere',
         'nav.contact': 'Contact',
+        'footer.privacy': 'Privacy policy',
+        'footer.terms': 'Terms &amp; conditions',
         'intro.titel': 'Back to Being <em>premieres.</em>',
         'intro.p1': 'In six days we walked 129 kilometres of the Camino and built an app along the way.',
         'intro.p2': 'Those six days held a lot. Long days, plenty of rain, good conversations, moments when everything flowed and moments when it did not. We filmed the whole journey and captured all of it.',
@@ -551,6 +665,7 @@
         'form.extra3': 'Name of person 4',
         'form.extra4': 'Name of person 5',
         'form.knop': 'Put me on the list',
+        'plak.knop': 'Sign up',
         'form.privacy': 'We only use your details for this invitation. <a href="privacybeleid.html">Privacy policy</a>.',
         'form.foutVelden': 'Please fill in your first and last name and a valid email address.',
         'form.foutNamen': 'Please fill in the name of everyone joining you.',
@@ -635,9 +750,16 @@
       });
     }
 
+    const rustig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function inBeeld(el, block) {
+      el.scrollIntoView({ behavior: rustig ? 'auto' : 'smooth', block: block || 'center' });
+    }
+
     function toonFout(key) {
       foutEl.textContent = t(key);
       foutEl.hidden = false;
+      // Op een telefoon staat de melding anders onder het toetsenbord.
+      inBeeld(foutEl, 'center');
     }
 
     function escapeHtml(s) {
@@ -711,13 +833,41 @@
       const klaar = document.getElementById('klaar');
       klaar.hidden = false;
       klaar.querySelector('h2').setAttribute('tabindex', '-1');
-      klaar.querySelector('h2').focus();
+      klaar.querySelector('h2').focus({ preventScroll: true });
+      document.getElementById('plak').hidden = true;
+      // Het vlak is nu veel korter dan het formulier: breng het terug in beeld.
+      inBeeld(document.querySelector('.kaart'), 'start');
+    }
+
+    /* ---------- vaste aanmeldknop (mobiel) ---------- */
+    function bindPlak() {
+      const plak = document.getElementById('plak');
+      const kaart = document.querySelector('.kaart');
+      document.getElementById('plakKnop').addEventListener('click', () => {
+        inBeeld(kaart, 'start');
+        // Focus zonder eigen sprong; het toetsenbord komt pas na het scrollen.
+        setTimeout(() => document.getElementById('voornaam').focus({ preventScroll: true }), rustig ? 0 : 450);
+      });
+      // Pas weg als er echt een stuk formulier te zien is (de kop plus het
+      // eerste veld), niet zodra de rand van het vlak onderin komt piepen.
+      // Bewust een positiemeting en geen IntersectionObserver: diens
+      // rootMargin wordt niet overal toegepast, en dit is één element.
+      let gepland = false;
+      function meet() {
+        gepland = false;
+        plak.classList.toggle('is-weg', kaart.getBoundingClientRect().top < window.innerHeight - 220);
+      }
+      function plan() { if (!gepland) { gepland = true; requestAnimationFrame(meet); } }
+      window.addEventListener('scroll', plan, { passive: true });
+      window.addEventListener('resize', plan);
+      meet();
     }
 
     /* ---------- init ---------- */
     applyStaticText();
     bindLang();
     bindNav();
+    bindPlak();
     aantalEl.addEventListener('change', toonExtra);
     toonExtra();
     form.addEventListener('submit', verstuur);
