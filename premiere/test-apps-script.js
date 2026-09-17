@@ -26,7 +26,8 @@ function maakWereld(opts = {}) {
   };
   vm.createContext(ctx);
   let code = bron;
-  if (opts.plafond) code = code.replace('const MAX_TOTAAL_PERSONEN = 0;', 'const MAX_TOTAAL_PERSONEN = ' + opts.plafond + ';');
+  // De test kiest zelf een plafond, los van wat er in het script is ingesteld.
+  code = code.replace(/const MAX_TOTAAL_PERSONEN = \d+;/, 'const MAX_TOTAAL_PERSONEN = ' + (opts.plafond || 0) + ';');
   vm.runInContext(code, ctx);
   const post = d => JSON.parse(vm.runInContext('doPost', ctx)({ postData: { contents: JSON.stringify(d) } }).getContent());
   return { post, rijen, mails };
@@ -64,6 +65,14 @@ check('plafond: 3 personen past', w.post(basis('a@v.nl', 3, { 'Naam persoon (ext
 r = w.post(basis('b@v.nl', 3, { 'Naam persoon (extra 1)': 'x', 'Naam persoon (extra 2)': 'y' }));
 check('plafond: 3 erbij gaat over 5 -> code vol', r.code === 'vol' && w.rijen.length === 2, r);
 check('plafond: 2 erbij past precies', w.post(basis('c@v.nl', 2, { 'Naam persoon (extra 1)': 'x' })).ok === true);
+
+// 4b. plafond 200: 40 groepen van 5 vullen de zaal precies, daarna is het vol
+w = maakWereld({ plafond: 200 });
+const vijf = { 'Naam persoon (extra 1)': 'a', 'Naam persoon (extra 2)': 'b', 'Naam persoon (extra 3)': 'c', 'Naam persoon (extra 4)': 'd' };
+ok = 0; for (let i = 0; i < 40; i++) if (w.post(basis('g' + i + '@v.nl', 5, vijf)).ok) ok++;
+check('plafond 200: 40 groepen van 5 passen', ok === 40, ok);
+r = w.post(basis('laatste@v.nl', 1));
+check('plafond 200: de 201e persoon -> code vol', r.code === 'vol', r);
 
 // 5. ongeldig, honeypot, te groot
 w = maakWereld();
