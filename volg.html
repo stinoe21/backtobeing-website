@@ -46,10 +46,12 @@
   <style>
     /* ============================================================
        Deze pagina hoort bij index.html: dezelfde tokens en dezelfde nav.
-       Wijzig je daar iets aan de huisstijl, doe het hier ook. Bewust geen
-       footer en geen socialsblok: dit scherm gaat over waar we zijn en wat
-       we die dag meemaakten, en alles wat daarvan wegleidt staat al op de
-       hoofdsite.
+       Wijzig je daar iets aan de huisstijl, doe het hier ook.
+
+       Footer: omdat het scherm niet scrollt, is de footer hier een smalle
+       balk onderin (tablet en desktop). Op een telefoon is daar geen plek
+       voor, de dagkaart heeft elke pixel nodig; daar staan dezelfde links
+       en iconen onderin het hamburgermenu.
 
        Opzet: één scherm dat niet als geheel scrollt. Links de kaart, rechts
        één dag tegelijk. Je gaat naar links en rechts door de dagen en scrollt
@@ -76,6 +78,8 @@
       --route-soft:  rgba(151, 160, 129, 0.22);
       --route-wash:  rgba(151, 160, 129, 0.12);
       --nav-h:       72px;
+      /* Hoogte van de footerbalk. 0 op een telefoon, waar hij niet getoond wordt. */
+      --footer-h:    0px;
 
       --space-1: 0.5rem;
       --space-2: 0.75rem;
@@ -896,11 +900,11 @@
       .shell {
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        height: 100dvh;
+        height: calc(100dvh - var(--footer-h));
       }
       .map-pane {
         position: relative; top: auto;
-        height: 100dvh;
+        height: calc(100dvh - var(--footer-h));
       }
       .map-wash {
         background:
@@ -908,7 +912,7 @@
           linear-gradient(90deg, rgba(255,254,241,0.88) 0%, rgba(255,254,241,0) 13%, rgba(255,254,241,0) 82%, rgba(255,254,241,0.95) 100%);
       }
       .feed-pane {
-        height: 100dvh;
+        height: calc(100dvh - var(--footer-h));
         border-radius: 0; margin-top: 0; box-shadow: none;
       }
       .feed-grip { display: none; }
@@ -929,7 +933,7 @@
        ============================================================ */
     @media (max-width: 1023px) {
       html, body { height: 100%; overflow: hidden; }
-      .shell { display: flex; flex-direction: column; height: 100dvh; }
+      .shell { display: flex; flex-direction: column; height: calc(100dvh - var(--footer-h)); }
       .map-pane {
         position: relative; top: auto;
         flex: 0 0 auto; height: 42svh;
@@ -939,7 +943,7 @@
       .feed-pane { flex: 1 1 auto; min-height: 0; }
       /* Kaart groot: de dagen zakken tot alleen de greep en de kop, zodat
          je weet dat ze er nog zijn en ze zo weer omhoog kunt halen. */
-      .shell.kaart-groot .map-pane { height: calc(100dvh - 118px); }
+      .shell.kaart-groot .map-pane { height: calc(100dvh - var(--footer-h) - 118px); }
       .shell.kaart-groot .feed-pane { overflow: hidden; }
       .shell.kaart-groot .feed-grip { cursor: grab; }
       @media (prefers-reduced-motion: reduce) { .map-pane { transition: none; } }
@@ -1057,6 +1061,59 @@
       .nav-cta-btn { margin-top: 0.25rem; justify-content: center; background: var(--tree) !important; color: var(--canvas) !important; }
       .map-legend { display: none; }
     }
+    /* ============================================================
+       FOOTER
+       Zelfde onderdelen als op index.html en premiere.html, maar als
+       smalle balk: hij staat binnen het scherm en gaat dus van de kaart
+       en de dagkaart af.
+       ============================================================ */
+    .site-footer { display: none; }
+    .nav-voet { display: none; }
+    .footer-logo { display: flex; align-items: center; }
+    .footer-logo-mark { width: auto; height: 1.5rem; flex: 0 0 auto; }
+    .footer-legal { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .footer-legal a { font-family: var(--subhead); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); transition: color 0.2s; white-space: nowrap; }
+    .footer-legal a:hover { color: var(--tree); }
+    .footer-social { display: flex; align-items: center; gap: 1.1rem; }
+    .footer-social a { display: inline-flex; color: var(--ink); opacity: 0.7; transition: opacity 0.2s, color 0.2s; }
+    .footer-social a:hover { opacity: 1; color: var(--tree); }
+    .footer-social svg { width: 18px; height: 18px; display: block; }
+
+    @media (min-width: 761px) {
+      :root { --footer-h: 60px; }
+      .site-footer {
+        position: relative; z-index: 2;
+        height: var(--footer-h);
+        display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+        padding: 0 6vw;
+        background: var(--canvas);
+        border-top: 1px solid var(--line);
+      }
+      /* De chatknop hangt anders over de iconen rechts in de balk. */
+      :root { --watermelon-yg-widget-vertical-offset: calc(var(--footer-h) + 16px) !important; }
+    }
+    /* Laag scherm (laptop in landschap): elke pixel footer gaat van de foto in
+       de dagkaart af, dus daar een smallere balk met een kleiner logo. */
+    @media (min-width: 761px) and (max-height: 760px) {
+      :root { --footer-h: 44px; }
+      .footer-logo-mark { height: 1.2rem; }
+      .footer-legal a { font-size: 0.64rem; }
+      .footer-social svg { width: 16px; height: 16px; }
+    }
+    /* Telefoon: de footer zit in het menu, onder Contact. */
+    @media (max-width: 760px) {
+      .nav-voet {
+        display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+        gap: 0.6rem 1rem;
+        margin-top: 0.45rem; padding: 0.85rem 0.85rem 0.5rem;
+        border-top: 1px solid var(--line);
+      }
+      .nav-voet .footer-legal { gap: 0.4rem 1.1rem; }
+      .nav-voet .footer-legal a { font-size: 0.64rem; padding: 0.4rem 0; }
+      .nav-voet .footer-social { gap: 1.3rem; }
+      .nav-voet .footer-social a { padding: 0.3rem; margin: -0.3rem; }
+    }
+
     /* De chatknop van Watermelon hangt standaard 20 px boven de onderrand.
        Daar staat op een telefoon de dagnavigatie, en dan is de pijl naar de
        volgende dag niet meer te raken. Zijn eigen stylesheet wordt door het
@@ -1068,7 +1125,7 @@
     @media (max-width: 1023px) {
       :root {
         --watermelon-yg-widget-vertical-offset:
-          calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+          calc(76px + var(--footer-h) + env(safe-area-inset-bottom, 0px)) !important;
       }
     }
 
@@ -1103,6 +1160,18 @@
         <button class="lang-btn" data-lang="en" type="button" aria-label="English">EN</button>
       </div>
       <a class="nav-link nav-cta-btn" href="/#contact" data-i18n="nav.contact">Contact</a>
+      <!-- Alleen op een telefoon zichtbaar: daar is onderin geen plek voor een footer. -->
+      <div class="nav-voet">
+        <nav class="footer-legal">
+      <a href="privacybeleid.html" data-i18n="footer.privacy">Privacybeleid</a>
+      <a href="algemene-voorwaarden.html" data-i18n="footer.terms">Algemene voorwaarden</a>
+        </nav>
+        <div class="footer-social">
+      <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 2h8.8A5.6 5.6 0 0 1 22 7.6v8.8a5.6 5.6 0 0 1-5.6 5.6H7.6A5.6 5.6 0 0 1 2 16.4V7.6A5.6 5.6 0 0 1 7.6 2Zm4.4 4.9a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2Zm0 2.35a2.75 2.75 0 1 1 0 5.5 2.75 2.75 0 0 1 0-5.5ZM17.5 5.2a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z"/></svg></a>
+      <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
+      <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -1197,6 +1266,21 @@
     </div>
   </div>
 
+  <footer class="site-footer">
+    <div class="footer-logo">
+      <img class="footer-logo-mark" src="b2b_horizontal banner.svg" alt="Back to Being" />
+    </div>
+    <nav class="footer-legal">
+      <a href="privacybeleid.html" data-i18n="footer.privacy">Privacybeleid</a>
+      <a href="algemene-voorwaarden.html" data-i18n="footer.terms">Algemene voorwaarden</a>
+    </nav>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/backtobeingtech/" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 2h8.8A5.6 5.6 0 0 1 22 7.6v8.8a5.6 5.6 0 0 1-5.6 5.6H7.6A5.6 5.6 0 0 1 2 16.4V7.6A5.6 5.6 0 0 1 7.6 2Zm4.4 4.9a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2Zm0 2.35a2.75 2.75 0 1 1 0 5.5 2.75 2.75 0 0 1 0-5.5ZM17.5 5.2a1.35 1.35 0 1 0 0 2.7 1.35 1.35 0 0 0 0-2.7Z"/></svg></a>
+      <a href="https://www.tiktok.com/@backtobeing.tech" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></a>
+      <a href="https://www.youtube.com/watch?v=v32XZxS0QCA" target="_blank" rel="noopener noreferrer" aria-label="Back to Being op YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81ZM9.55 15.57V8.43L15.82 12l-6.27 3.57Z"/></svg></a>
+    </div>
+  </footer>
+
   <!-- Het verhaal van een dag, in een eigen venster -->
   <div class="dag-popup" id="dagPopup" hidden>
     <div class="popup-paneel" id="popupPaneel" role="dialog" aria-modal="true"></div>
@@ -1225,6 +1309,8 @@
         'nav.reis': 'Dag voor dag',
         'nav.premiere': 'Première',
         'nav.contact': 'Contact',
+        'footer.privacy': 'Privacybeleid',
+        'footer.terms': 'Algemene voorwaarden',
         'hero.labelLive': 'Live vanaf de Camino',
         'hero.labelPre': 'Nog niet vertrokken',
         'hero.labelKlaar': 'We zijn aangekomen',
@@ -1273,6 +1359,8 @@
         'nav.reis': 'Day by day',
         'nav.premiere': 'Premiere',
         'nav.contact': 'Contact',
+        'footer.privacy': 'Privacy policy',
+        'footer.terms': 'Terms &amp; conditions',
         'hero.labelLive': 'Live from the Camino',
         'hero.labelPre': 'Not on the road yet',
         'hero.labelKlaar': 'We made it',
