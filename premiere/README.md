@@ -87,6 +87,18 @@ Wijzig je het script later, dan moet je opnieuw deployen:
 Het formulier heeft een verborgen veld `website`. Vult een bot dat in, dan toont
 de pagina de bedanktekst zonder dat er iets in de sheet komt.
 
+## Bevestigingsmail controleren
+
+Het script stuurt na elke geslaagde aanmelding een bevestigingsmail vanuit het
+Google-account dat het script deployt. Het antwoord van het script zegt of dat
+gelukt is: `{ ok: true, mail: true }`, of `{ ok: true, mail: false, mailFout: "..." }`.
+De aanmelding staat in beide gevallen in de sheet.
+
+Komt er geen mail aan, run dan in Apps Script de functie **`testMail`**. Die
+stuurt één mail naar jezelf, zonder iets in de sheet te zetten. Ontbreekt de
+toestemming om te mailen, dan vraagt Google er op dat moment om; elke andere
+fout staat in het Execution log. Daarna opnieuw deployen als New version.
+
 ## Mailquota
 
 `MailApp` mag vanuit een gewoon Gmail-account 100 mails per dag sturen, vanuit

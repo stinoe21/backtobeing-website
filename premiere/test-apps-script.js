@@ -19,7 +19,7 @@ function maakWereld(opts = {}) {
     SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheets: () => [sheet], getSheetByName: () => sheet }), openById: () => null },
     LockService: { getScriptLock: () => ({ tryLock: () => !opts.slotBezet, waitLock() {}, releaseLock() {} }) },
     CacheService: { getScriptCache: () => ({ get: k => cache[k] ?? null, put: (k, v) => { cache[k] = v; } }) },
-    MailApp: { sendEmail: m => mails.push(m) },
+    MailApp: { sendEmail: m => { if (opts.mailKapot) throw new Error('geen toestemming om te mailen'); mails.push(m); }, getRemainingDailyQuota: () => 100 },
     Utilities: { formatDate: () => '17-09-2026 16:00' },
     ContentService: { MimeType: { JSON: 'json' }, createTextOutput: t => ({ setMimeType() { return this; }, getContent: () => t }) },
     Session: { getActiveUser: () => ({ getEmail: () => 'ik@voorbeeld.nl' }) },
@@ -73,6 +73,14 @@ ok = 0; for (let i = 0; i < 40; i++) if (w.post(basis('g' + i + '@v.nl', 5, vijf
 check('plafond 200: 40 groepen van 5 passen', ok === 40, ok);
 r = w.post(basis('laatste@v.nl', 1));
 check('plafond 200: de 201e persoon -> code vol', r.code === 'vol', r);
+
+// 4c. mail mislukt: aanmelding telt wel, antwoord zegt dat de mail niet weg is
+w = maakWereld({ mailKapot: true });
+r = w.post(basis('m@v.nl'));
+check('mail mislukt: rij staat, ok=true, mail=false met reden', r.ok === true && r.mail === false && /toestemming/.test(r.mailFout) && w.rijen.length === 2, r);
+w = maakWereld();
+r = w.post(basis('m2@v.nl'));
+check('mail gelukt: antwoord meldt mail=true', r.ok === true && r.mail === true, r);
 
 // 5. ongeldig, honeypot, te groot
 w = maakWereld();

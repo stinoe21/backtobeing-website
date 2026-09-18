@@ -88,8 +88,11 @@ function doPost(e) {
     // 'bestaat' | 'druk' | 'vol': niets geschreven, dus ook geen mail.
     if (uitkomst !== 'ok') return antwoord({ ok: false, code: uitkomst });
 
-    if (STUUR_BEVESTIGING) stuurBevestiging(rij, taal);
-    return antwoord({ ok: true });
+    // De aanmelding staat; een mislukte mail mag die niet laten falen. Maar stil
+    // falen is erger: het antwoord zegt of de mail weg is, en zo niet waarom.
+    if (!STUUR_BEVESTIGING) return antwoord({ ok: true, mail: null });
+    const mail = stuurBevestiging(rij, taal);
+    return antwoord(mail.ok ? { ok: true, mail: true } : { ok: true, mail: false, mailFout: mail.fout });
   } catch (err) {
     console.error(err);
     return antwoord({ ok: false, code: 'fout', fout: String(err) });
@@ -195,11 +198,31 @@ function stuurBevestiging(rij, taal) {
   }
   try {
     MailApp.sendEmail({ to: rij['Mailadress'], subject: onderwerp, body: tekst, name: AFZENDER_NAAM });
+    return { ok: true };
   } catch (err) {
     // De rij staat al in de sheet; een mislukte mail mag de inschrijving niet
-    // laten falen. Zie Executions in Apps Script voor de reden.
+    // laten falen. De reden gaat mee terug in het antwoord en staat in Executions.
     console.error('Mail mislukt: ' + err);
+    return { ok: false, fout: String(err).slice(0, 300) };
   }
+}
+
+/**
+ * Handmatige test van alleen de mail: Run → testMail.
+ * Bewust zonder try/catch: ontbreekt de toestemming om te mailen, dan vraagt
+ * Google er nu om, en elke andere fout staat leesbaar in het Execution log.
+ * Schrijft niets in de sheet.
+ */
+function testMail() {
+  const aan = Session.getActiveUser().getEmail();
+  console.log('Nog te versturen vandaag: ' + MailApp.getRemainingDailyQuota());
+  MailApp.sendEmail({
+    to: aan,
+    subject: 'Test: bevestigingsmail première',
+    body: 'Als je dit leest, mag het script mailen vanuit ' + aan + '.',
+    name: AFZENDER_NAAM,
+  });
+  console.log('Testmail verstuurd naar ' + aan);
 }
 
 function antwoord(obj) {
