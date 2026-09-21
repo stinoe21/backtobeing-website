@@ -870,6 +870,25 @@
     .pers-outlet img[src="haarlem105-logo.svg"] { height: 30px; filter: none; opacity: 1; }
     .pers-outlet img[src="smarthealth-logo.png"] { height: 20px; }
     .pers-outlet img[src="quote-logo.svg"] { height: 20px; }
+    /* Media zonder beeldmerk (de podcast) krijgt de naam als tekst in de
+       kolom, in dezelfde kleine kapitalen als het soort medium. */
+    .pers-outlet-name {
+      font-family: var(--subhead);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+    }
+    .pers-item:nth-child(odd) .pers-outlet-name { color: var(--canvas); }
+    /* Ingesloten aflevering: 16:9, kleine ronding, niet breder dan de tekst. */
+    .pers-video {
+      width: 100%;
+      max-width: 40rem;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      border-radius: var(--radius-ctrl);
+      background: rgba(22,22,22,0.12);
+    }
     .pers-kind {
       font-family: var(--subhead);
       font-size: 0.66rem;
@@ -2939,7 +2958,7 @@
       <div class="partners-strip-inner">
         <div class="section-label" data-i18n="press.home.label">In de pers</div>
         <h2 class="partners-strip-heading" data-i18n="press.home.heading">Ze schreven er <em>al over.</em></h2>
-        <p class="press-lead" data-i18n="press.home.lead">Quote, Trouw, het Noordhollands Dagblad, Haarlem105 en SmartHealth schreven over het plan. Hier lees je hun stukken.</p>
+        <p class="press-lead" data-i18n="press.home.lead">Quote, Trouw, het Noordhollands Dagblad, Haarlem105 en SmartHealth schreven over het plan, en in de podcast Met Nerds om Tafel vertelden we erover. Hier vind je alles.</p>
         <ul class="press-list">
           <li><a class="press-logo-link" href="https://www.quotenet.nl/zakelijk/a73482165/app-bouwen-stichting-mind-max-helmantel-stijn-smit-caesar-schoorl/" target="_blank" rel="noopener" aria-label="Quote: Drie whizzkids bouwen een app terwijl ze 120 kilometer wandelen"><img src="quote-logo.svg" alt="Quote" loading="lazy" /></a></li>
           <li>
@@ -3231,13 +3250,26 @@
     <section class="story-hero">
       <h1 data-i18n="pers.h1">Wat anderen<br><em>al schreven.</em></h1>
       <div class="story-hero-foot">
-        <p data-i18n="pers.lead">Kranten, magazines, de lokale omroep en vakmedia pikten het plan op voordat we vertrokken. Hieronder staan de stukken die tot nu toe zijn verschenen.</p>
+        <p data-i18n="pers.lead">Kranten, magazines, de lokale omroep en vakmedia pikten het plan op voordat we vertrokken, en na afloop schoven we aan bij een podcast. Hieronder staat alles wat tot nu toe is verschenen.</p>
         <p data-i18n="pers.note">Wil je ons spreken of beeldmateriaal gebruiken? Onderaan deze pagina staat hoe je ons bereikt.</p>
       </div>
     </section>
 
     <section class="pers-list-section" aria-label="Artikelen">
       <ul class="pers-list">
+
+        <!-- Podcast Met Nerds om Tafel, september 2026. -->
+        <li class="pers-item">
+          <div class="pers-outlet">
+            <span class="pers-outlet-name">Met Nerds om Tafel</span>
+            <span class="pers-kind" data-i18n="pers.kind.podcast">Podcast</span>
+          </div>
+          <div class="pers-body">
+            <h2 class="pers-title" data-i18n="pers.mnot.title">Wij waren bij &ldquo;Met Nerds om Tafel&rdquo;</h2>
+            <iframe class="pers-video" src="https://www.youtube.com/embed/mNNS2PyNIWA" title="Met Nerds om Tafel: Back to Being over de Camino" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <a class="pers-link" href="https://www.youtube.com/watch?v=mNNS2PyNIWA" target="_blank" rel="noopener noreferrer"><span data-i18n="pers.watch">Bekijk de aflevering op YouTube</span> &rarr;</a>
+          </div>
+        </li>
 
         <!-- Quote, 21 augustus 2026 (Nadine Hoen). -->
         <li class="pers-item">
@@ -3590,7 +3622,7 @@
         'press.home.label':       'In de pers',
         'press.home.heading':     'Ze schreven er <em>al over.</em>',
         'press.home.cta':         'Alle artikelen &rarr;',
-        'press.home.lead':        'Quote, Trouw, het Noordhollands Dagblad, Haarlem105 en SmartHealth schreven over het plan. Hier lees je hun stukken.',
+        'press.home.lead':        'Quote, Trouw, het Noordhollands Dagblad, Haarlem105 en SmartHealth schreven over het plan, en in de podcast Met Nerds om Tafel vertelden we erover. Hier vind je alles.',
         'press.feature.label':    'Caesar op LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
         'press.feature.cta':      'Lees de volledige post op LinkedIn &rarr;',
@@ -3749,7 +3781,7 @@
         'press.home.label':       'Featured in',
         'press.home.heading':     'They wrote about <em>it already.</em>',
         'press.home.cta':         'All coverage &rarr;',
-        'press.home.lead':        'Quote, Trouw, the Noordhollands Dagblad, Haarlem105 and SmartHealth wrote about the plan. Read their pieces here.',
+        'press.home.lead':        'Quote, Trouw, the Noordhollands Dagblad, Haarlem105 and SmartHealth wrote about the plan, and we talked about it on the Met Nerds om Tafel podcast. Find it all here.',
         'press.feature.label':    'Caesar on LinkedIn',
         'press.feature.role':     'AI-founder · Back to Being',
         'press.feature.cta':      'Read the full post on LinkedIn (Dutch) &rarr;',
@@ -3858,7 +3890,7 @@
     Object.assign(I18N.nl, {
       /* PAGINA: IN DE PERS */
       'pers.h1': 'Wat anderen<br><em>al schreven.</em>',
-      'pers.lead': 'Kranten, magazines, de lokale omroep en vakmedia pikten het plan op voordat we vertrokken. Hieronder staan de stukken die tot nu toe zijn verschenen.',
+      'pers.lead': 'Kranten, magazines, de lokale omroep en vakmedia pikten het plan op voordat we vertrokken, en na afloop schoven we aan bij een podcast. Hieronder staat alles wat tot nu toe is verschenen.',
       'pers.note': 'Wil je ons spreken of beeldmateriaal gebruiken? Onderaan deze pagina staat hoe je ons bereikt.',
       'pers.kind.krant': 'Krant',
       'pers.kind.omroep': 'Lokale omroep',
@@ -3869,6 +3901,9 @@
       'pers.h105.title': '&ldquo;Drie vrienden bouwen app voor mentale gezondheid tijdens Camino de Santiago&rdquo;',
       'pers.smarthealth.title': '&ldquo;Drie makers bouwen al lopend app over hoe je je voelt&rdquo;',
       'pers.kind.magazine': 'Magazine',
+      'pers.kind.podcast': 'Podcast',
+      'pers.watch': 'Bekijk de aflevering op YouTube',
+      'pers.mnot.title': 'Wij waren bij &ldquo;Met Nerds om Tafel&rdquo;',
       'pers.quote.title': '&ldquo;Drie whizzkids bouwen een app terwijl ze 120 kilometer wandelen: &lsquo;Toffe actie, hoeveel geld heb je nodig?&rsquo;&rdquo;',
       'pers.kit.h': 'Meer weten over<br><em>ons verhaal?</em>',
       'pers.kit.p': 'We vertellen graag over de tocht, de app en het werk voor stichting MIND. Er staat een perskit voor je klaar met foto&rsquo;s in hoge resolutie, logo&rsquo;s, feiten over het project en citaten die je kunt gebruiken. Vraag hem aan en je hebt hem binnen een werkdag.',
@@ -3917,7 +3952,7 @@
     Object.assign(I18N.en, {
       /* PAGE: PRESS */
       'pers.h1': 'What others<br><em>already wrote.</em>',
-      'pers.lead': 'Newspapers, magazines, local broadcasting and trade press picked up the plan before we left. The pieces published so far are listed below.',
+      'pers.lead': 'Newspapers, magazines, local broadcasting and trade press picked up the plan before we left, and afterwards we sat down for a podcast. Everything published so far is listed below.',
       'pers.note': 'Want to talk to us or use our images? The bottom of this page has how to reach us.',
       'pers.kind.krant': 'Newspaper',
       'pers.kind.omroep': 'Local broadcaster',
@@ -3928,6 +3963,9 @@
       'pers.h105.title': '&ldquo;Three friends build a mental health app during the Camino de Santiago&rdquo;',
       'pers.smarthealth.title': '&ldquo;Three makers are building an app about how you feel, while walking&rdquo;',
       'pers.kind.magazine': 'Magazine',
+      'pers.kind.podcast': 'Podcast',
+      'pers.watch': 'Watch the episode on YouTube',
+      'pers.mnot.title': 'We were guests on &ldquo;Met Nerds om Tafel&rdquo;',
       'pers.quote.title': '&ldquo;Three whizz kids build an app while walking 120 kilometres: &lsquo;Cool move, how much money do you need?&rsquo;&rdquo;',
       'pers.kit.h': 'Want to know more<br><em>about our story?</em>',
       'pers.kit.p': 'We are happy to talk about the walk, the app and the work for the MIND foundation. A press kit is ready for you with high resolution photos, logos, project facts and quotes you can use. Ask for it and you will have it within one working day.',
