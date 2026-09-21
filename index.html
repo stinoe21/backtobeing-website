@@ -882,13 +882,49 @@
     .pers-item:nth-child(odd) .pers-outlet-name { color: var(--canvas); }
     /* Ingesloten aflevering: 16:9, kleine ronding, niet breder dan de tekst. */
     .pers-video {
+      position: relative;
       width: 100%;
       max-width: 40rem;
       aspect-ratio: 16 / 9;
-      border: 0;
       border-radius: var(--radius-ctrl);
+      overflow: hidden;
       background: rgba(22,22,22,0.12);
     }
+    .pers-video iframe,
+    .pers-video-play,
+    .pers-video-play img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .pers-video-play {
+      display: block;
+      padding: 0;
+      margin: 0;
+      background: none;
+      cursor: pointer;
+      color: var(--canvas);
+    }
+    .pers-video-play img { object-fit: cover; display: block; transition: transform 0.4s ease; }
+    .pers-video-play:hover img { transform: scale(1.02); }
+    .pers-video-icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 4.5rem;
+      height: 4.5rem;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(22,22,22,0.62);
+      backdrop-filter: blur(4px);
+      transition: background 0.2s;
+    }
+    .pers-video-icon svg { width: 2rem; height: 2rem; margin-left: 0.2rem; }
+    .pers-video-play:hover .pers-video-icon { background: rgba(22,22,22,0.85); }
     .pers-kind {
       font-family: var(--subhead);
       font-size: 0.66rem;
@@ -3258,19 +3294,6 @@
     <section class="pers-list-section" aria-label="Artikelen">
       <ul class="pers-list">
 
-        <!-- Podcast Met Nerds om Tafel, september 2026. -->
-        <li class="pers-item">
-          <div class="pers-outlet">
-            <span class="pers-outlet-name">Met Nerds om Tafel</span>
-            <span class="pers-kind" data-i18n="pers.kind.podcast">Podcast</span>
-          </div>
-          <div class="pers-body">
-            <h2 class="pers-title" data-i18n="pers.mnot.title">Wij waren bij &ldquo;Met Nerds om Tafel&rdquo;</h2>
-            <iframe class="pers-video" src="https://www.youtube.com/embed/mNNS2PyNIWA" title="Met Nerds om Tafel: Back to Being over de Camino" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <a class="pers-link" href="https://www.youtube.com/watch?v=mNNS2PyNIWA" target="_blank" rel="noopener noreferrer"><span data-i18n="pers.watch">Bekijk de aflevering op YouTube</span> &rarr;</a>
-          </div>
-        </li>
-
         <!-- Quote, 21 augustus 2026 (Nadine Hoen). -->
         <li class="pers-item">
           <div class="pers-outlet">
@@ -3324,6 +3347,25 @@
           <div class="pers-body">
             <h2 class="pers-title" data-i18n="pers.smarthealth.title">&ldquo;Drie makers bouwen al lopend app over hoe je je voelt&rdquo;</h2>
             <a class="pers-link" href="https://smarthealth.live/2026/07/30/drie-makers-bouwen-al-lopend-app-over-hoe-je-je-voelt/" target="_blank" rel="noopener noreferrer"><span data-i18n="pers.read">Lees het artikel</span> &rarr;</a>
+          </div>
+        </li>
+
+        <!-- Podcast Met Nerds om Tafel, september 2026. -->
+        <li class="pers-item">
+          <div class="pers-outlet">
+            <span class="pers-outlet-name">Met Nerds om Tafel</span>
+            <span class="pers-kind" data-i18n="pers.kind.podcast">Podcast</span>
+          </div>
+          <div class="pers-body">
+            <h2 class="pers-title" data-i18n="pers.mnot.title">Wij waren bij &ldquo;Met Nerds om Tafel&rdquo;</h2>
+            <!-- Eigen scherpe poster (1280x720); de YouTube-speler laadt pas bij klik. -->
+            <div class="pers-video">
+              <button class="pers-video-play" type="button" data-video="mNNS2PyNIWA" onclick="playPersVideo(this)" aria-label="Speel de aflevering af">
+                <img src="met-nerds-om-tafel-thumb.jpg" alt="Max, Stijn en Caesar aan tafel bij Met Nerds om Tafel: Kantoor in je rugzak" width="1280" height="720" loading="lazy" />
+                <span class="pers-video-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+              </button>
+            </div>
+            <a class="pers-link" href="https://www.youtube.com/watch?v=mNNS2PyNIWA" target="_blank" rel="noopener noreferrer"><span data-i18n="pers.watch">Bekijk de aflevering op YouTube</span> &rarr;</a>
           </div>
         </li>
       </ul>
@@ -4735,6 +4777,18 @@
         if (el) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
       };
       requestAnimationFrame(() => { jump(); setTimeout(jump, 400); });
+    }
+
+    /* Perspagina: vervang de poster door de YouTube-speler zodra iemand klikt. */
+    function playPersVideo(btn) {
+      var id = btn.getAttribute('data-video');
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1';
+      f.title = btn.querySelector('img').alt;
+      f.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+      f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      f.setAttribute('allowfullscreen', '');
+      btn.replaceWith(f);
     }
 
     function showPage(name) {
