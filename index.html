@@ -2558,6 +2558,8 @@
       border-radius: var(--radius-ctrl);
       background: var(--canvas);
     }
+    .story-mind-credit p a { color: var(--canvas); border-bottom: 1px solid rgba(255,254,241,0.4); }
+    .story-mind-credit p a:hover { border-bottom-color: var(--canvas); }
     .story-mind-credit p {
       max-width: 44ch;
       margin: 0;
@@ -3147,6 +3149,27 @@
         </div>
       </div>
     </section>
+
+    <main class="story-article">
+      <!-- Voor wie we het deden: stichting MIND. Compact blok, zelfde
+           donkere vlak als voorheen de app-uitleg. -->
+      <section class="story-mind-explainer">
+        <div class="story-mind-inner">
+          <div class="story-mind-copy">
+            <h2 class="story-mind-heading" data-i18n="story.mind.heading" data-story-reveal>Gebouwd voor<br><em>stichting MIND.</em></h2>
+            <div class="story-mind-aside" data-story-reveal>
+              <p class="story-mind-summary" data-i18n="story.mind.summary">Stichting MIND zet zich in voor mentale gezondheid in Nederland. Jaarlijks bereiken ze miljoenen mensen met informatie, tools en ondersteuning, en ze maken zich hard voor een samenleving waarin je over je mentale gezondheid net zo makkelijk praat als over het weer. De app die we onderweg bouwden, dragen we kosteloos aan MIND over. Zo reikt wat we in zes dagen maakten verder dan wijzelf.</p>
+            </div>
+          </div>
+          <div class="story-mind-bottom">
+            <div class="story-mind-credit">
+              <a href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer"><img src="mind-logo.webp" alt="Stichting MIND" loading="lazy" /></a>
+              <p data-i18n="story.mind.credit">Dit deden we in nauwe samenwerking met stichting MIND. Meer over hun werk lees je op <a href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer">wijzijnmind.nl</a>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
 
     <!-- TEAM -->
     <div class="founders-section" id="team">
@@ -4036,9 +4059,9 @@
       'story.hero.lead': 'We verplaatsten ons kantoor naar de Camino. Zes dagen lang liepen, bouwden en filmden we. Het resultaat: een werkende app die we kosteloos aan stichting MIND overdragen, en een documentaire die in november in première gaat.',
       'story.fact.km': 'kilometer gelopen',
       'story.fact.days': 'dagen gebouwd',
-      'story.mind.heading': 'De app die we<br><em>onderweg bouwden.</em>',
-      'story.mind.summary': "Als Nederlanders praten we (te) makkelijk over het weer, maar over onze mentale gezondheid heerst nog altijd een taboe. Dat willen we doorbreken door het gesprek normaal te maken. Samen met stichting MIND bouwden we een app rond &eacute;&eacute;n vaste vraag: hoe is het weer in je hoofd? Je antwoordt in vijf seconden met het weertype dat bij je past. Je weer wordt niet opgeslagen, het is er om te delen.",
-      'story.mind.credit': 'Dit deden we in nauwe samenwerking met stichting MIND.',
+      'story.mind.heading': 'Gebouwd voor<br><em>stichting MIND.</em>',
+      'story.mind.summary': 'Stichting MIND zet zich in voor mentale gezondheid in Nederland. Jaarlijks bereiken ze miljoenen mensen met informatie, tools en ondersteuning, en ze maken zich hard voor een samenleving waarin je over je mentale gezondheid net zo makkelijk praat als over het weer. De app die we onderweg bouwden, dragen we kosteloos aan MIND over. Zo reikt wat we in zes dagen maakten verder dan wijzelf.',
+      'story.mind.credit': 'Dit deden we in nauwe samenwerking met stichting MIND. Meer over hun werk lees je op <a href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer">wijzijnmind.nl</a>.',
       'founders.intro': 'We werken alle drie dagelijks met AI en bouwen er dingen mee. Daardoor merken we hoeveel er inmiddels mogelijk is. Back to Being was de proef op de som: in zes dagen een werkende app, onderweg gebouwd. Wat er aan het eind stond, dragen we kosteloos over aan stichting MIND.',
       'story.route.heading': 'Welke route <em>liepen we?</em>',
       'story.route.p': 'Zes dagen, zes etappes: van Valença naar Santiago de Compostela, 127 kilometer over de Camino Portugu&eacute;s. Elke etappe was ook een bouwsprint. Onderweg luisterden we, bij aankomst maakten we keuzes, en aan het eind van de dag lieten we zien wat er was veranderd. Het verslag per dag, met foto\'s en de gelopen route, staat op <a href="/reis">Dag voor dag</a>.',
@@ -4079,9 +4102,9 @@
       'story.hero.lead': 'We moved our office to the Camino. For six days we walked, built and filmed. The result: a working app that we hand over to the MIND foundation for free, and a documentary that premieres in November.',
       'story.fact.km': 'kilometres walked',
       'story.fact.days': 'days building',
-      'story.mind.heading': 'The app we built<br><em>along the way.</em>',
-      'story.mind.summary': "In the Netherlands we talk about the weather (too) easily, but our mental health is still a taboo. We want to break that open by making the conversation normal. Together with the MIND foundation we built an app around one fixed question: what is the weather in your head? You answer in five seconds with the weather type that fits you. Your weather is not stored, it is there to share.",
-      'story.mind.credit': 'We did this in close collaboration with the MIND foundation.',
+      'story.mind.heading': 'Built for the<br><em>MIND foundation.</em>',
+      'story.mind.summary': 'The MIND foundation works for mental health in the Netherlands. Every year it reaches millions of people with information, tools and support, and it pushes for a society where talking about your mental health is as easy as talking about the weather. The app we built along the way is handed over to MIND free of charge, so what we made in six days reaches further than ourselves.',
+      'story.mind.credit': 'We did this in close collaboration with the MIND foundation. Read more about their work at <a href="https://wijzijnmind.nl/" target="_blank" rel="noopener noreferrer">wijzijnmind.nl</a>.',
       'founders.intro': 'All three of us work with AI every day and build things with it. That is how we notice how much is possible now. Back to Being was where we put that to the test: a working app in six days, built along the way. Whatever stood at the end, we hand over to the MIND foundation free of charge.',
       'story.route.heading': 'Which route <em>did we walk?</em>',
       'story.route.p': 'Six days, six stages: from Valença to Santiago de Compostela, 127 kilometres on the Camino Portugu&eacute;s. Every stage doubled as a build sprint. We listened along the way, decided on arrival, and showed what had changed by the end of the day. The day-by-day report, with photos and the route we walked, is on <a href="/reis">Day by day</a>.',
