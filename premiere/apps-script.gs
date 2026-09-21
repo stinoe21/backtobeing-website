@@ -25,7 +25,9 @@
  *     bot of een stortvloed de sheet en je mailquota niet kan vollopen;
  *   - optioneel een plafond op het totaal aantal personen (MAX_TOTAAL_PERSONEN);
  *   - voegt de kolom "Ingeschreven op" toe als die nog niet bestaat;
- *   - stuurt een bevestigingsmail (NL of EN) vanuit het account dat het script deployt.
+ *   - stuurt een HTML-bevestigingsmail (NL of EN, ontwerpen uit Figma "back-to-being-
+ *     mailing-nl" en "-en") met naam en aantal personen ingevuld, vanuit het
+ *     account dat het script deployt.
  */
 
 const SHEET_ID = '14wJ1cTU1kKhApDBKljp58i5_3GTCEqmFmf7F6IFZVQE';
@@ -175,29 +177,156 @@ function binnenLimiet() {
   return true;
 }
 
+// Kleuren en lettertypes van de site (premiere.html / Figma "back-to-being-mailing-nl" en "-en").
+const MAIL_KLEUR = {
+  canvas: '#fffef1', kaart: '#faf8f2', sand: '#b9a26e', tree: '#2a3723',
+  ink: '#161616', inkZacht: '#5c5c5c', inkLicht: '#737373', lijn: '#e8e2d2',
+};
+const MAIL_SERIF = "'Instrument Serif', Georgia, 'Times New Roman', serif";
+const MAIL_SANS = "Inter, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif";
+const MAIL_LINKS = {
+  instagram: 'https://www.instagram.com/backtobeingtech/',
+  tiktok: 'https://www.tiktok.com/@backtobeing.tech',
+  youtube: 'https://www.youtube.com/watch?v=v32XZxS0QCA',
+  website: 'https://backtobeing.tech',
+  contact: 'caesar.schoorl@gmail.com',
+};
+
+const MAIL_TEKST = {
+  nl: {
+    onderwerp: 'Je bent aangemeld voor de première van Back to Being',
+    preheader: 'Je aanmelding is binnen. Zodra datum en locatie vaststaan, hoor je van ons.',
+    titel: 'Je bent aangemeld voor de première van Back to Being',
+    aanhef: 'Beste {{naam}},',
+    intro: 'Wat ontzettend fijn dat je erbij bent. We kijken er enorm naar uit om dit bijzondere moment samen te beleven en de documentaire voor het eerst met jou te delen.',
+    kaartTitel: 'Aanmeldingsgegevens',
+    bezoeker: 'Bezoeker',
+    aantal: 'Aantal personen',
+    noot: '* De datum en locatie zijn nog niet 100% definitief. Zodra we hier meer zekerheid over hebben, sturen we je alle praktische informatie per e-mail.',
+    groet: 'Tot snel,',
+    team: 'Team Back to Being',
+    reden: 'Je ontvangt deze e-mail omdat je je hebt aangemeld voor de première van Back to Being.',
+    voorkeuren: 'Voorkeuren aanpassen',
+    website: 'Website',
+  },
+  en: {
+    onderwerp: 'You are registered for the premiere of Back to Being',
+    preheader: 'Your registration is in. As soon as the date and location are confirmed, we will let you know.',
+    titel: 'You are registered for the premiere of Back to Being',
+    aanhef: 'Dear {{naam}},',
+    intro: "We're really looking forward to experiencing this special moment together and sharing the documentary with you for the first time.",
+    kaartTitel: 'Registration Information',
+    bezoeker: 'Visitor',
+    aantal: 'Number of people',
+    noot: "* The date and location are not yet 100% confirmed. As soon as we have more certainty about these details, we'll send you all the practical information by email.",
+    groet: 'See you soon,',
+    team: 'Team Back to Being',
+    reden: 'You are receiving this email because you signed up for the premiere of Back to Being.',
+    voorkeuren: 'Change Preferences',
+    website: 'Website',
+  },
+};
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+/**
+ * Bouwt de bevestigingsmail (onderwerp, platte tekst en HTML) uit de rij.
+ * Placeholders: {{naam}} = voornaam in de aanhef, volledige naam op het kaartje;
+ * {{aantal_personen}} = het aantal uit het formulier.
+ */
+function bouwMail(rij, taal) {
+  const t = MAIL_TEKST[taal === 'en' ? 'en' : 'nl'];
+  const voornaam = rij['Voornaam'];
+  const volledigeNaam = (rij['Voornaam'] + ' ' + rij['Achternaam']).trim();
+  const aantal = String(rij['Aantal personen']);
+  const k = MAIL_KLEUR;
+
+  const tekst =
+    t.aanhef.replace('{{naam}}', voornaam) + '\n\n' +
+    t.intro + '\n\n' +
+    t.kaartTitel + '\n' +
+    t.bezoeker + ': ' + volledigeNaam + '\n' +
+    t.aantal + ': ' + aantal + '\n\n' +
+    t.noot + '\n\n' +
+    t.groet + '\n' + t.team + '\n\n' +
+    t.reden + '\n' + MAIL_LINKS.website;
+
+  const link = (href, label) =>
+    '<a href="' + href + '" style="color:' + k.inkLicht + ';font-family:' + MAIL_SANS + ';font-size:11px;text-decoration:underline;">' + label + '</a>';
+  const bolletje = '<span style="display:inline-block;width:4px;height:4px;border-radius:2px;background:#cbd0c0;vertical-align:middle;margin:0 8px;"></span>';
+
+  const html =
+    '<!DOCTYPE html><html lang="' + (taal === 'en' ? 'en' : 'nl') + '"><head><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light">' +
+    '<title>' + escapeHtml(t.onderwerp) + '</title>' +
+    '<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">' +
+    '</head>' +
+    '<body style="margin:0;padding:0;background:' + k.canvas + ';">' +
+    // Preheader: de regel die de inbox naast het onderwerp toont, onzichtbaar in de mail zelf.
+    '<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:' + k.canvas + ';opacity:0;">' + escapeHtml(t.preheader) + '</div>' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:' + k.canvas + ';">' +
+    '<tr><td align="center" style="padding:48px 14px 40px;">' +
+    '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;">' +
+
+    // Hero
+    '<tr><td align="center" style="padding:40px 32px 56px;">' +
+    '<div style="max-width:444px;font-family:' + MAIL_SERIF + ';font-size:32px;line-height:1.15;color:' + k.tree + ';">' + escapeHtml(t.titel) + '</div>' +
+    '</td></tr>' +
+
+    // Bericht
+    '<tr><td style="padding:0 32px 24px;">' +
+    '<p style="margin:0 0 20px;font-family:' + MAIL_SANS + ';font-size:15px;font-weight:500;color:' + k.ink + ';">' + escapeHtml(t.aanhef.replace('{{naam}}', voornaam)) + '</p>' +
+    '<p style="margin:0 0 20px;font-family:' + MAIL_SANS + ';font-size:14px;line-height:1.6;color:' + k.ink + ';">' + escapeHtml(t.intro) + '</p>' +
+
+    // Kaartje met aanmeldingsgegevens
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:' + k.kaart + ';border:1px solid ' + k.sand + ';border-radius:11px;">' +
+    '<tr><td style="padding:24px;">' +
+    '<div style="margin:0 0 16px;font-family:' + MAIL_SERIF + ';font-style:italic;font-size:20px;color:' + k.tree + ';">' + escapeHtml(t.kaartTitel) + '</div>' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family:' + MAIL_SANS + ';font-size:13px;color:' + k.ink + ';">' +
+    '<tr><td style="padding:0 0 8px;color:' + k.inkLicht + ';">' + escapeHtml(t.bezoeker) + '</td><td align="right" style="padding:0 0 8px;font-weight:600;">' + escapeHtml(volledigeNaam) + '</td></tr>' +
+    '<tr><td colspan="2" style="border-top:1px solid ' + k.lijn + ';font-size:0;line-height:0;">&nbsp;</td></tr>' +
+    '<tr><td style="padding:8px 0 0;color:' + k.inkLicht + ';">' + escapeHtml(t.aantal) + '</td><td align="right" style="padding:8px 0 0;font-weight:600;">' + escapeHtml(aantal) + '</td></tr>' +
+    '</table>' +
+    '</td></tr></table>' +
+
+    '<p style="margin:20px 0 0;font-family:' + MAIL_SANS + ';font-size:13px;line-height:1.6;color:' + k.inkZacht + ';">' + escapeHtml(t.noot) + '</p>' +
+    '<p style="margin:36px 0 0;font-family:' + MAIL_SANS + ';font-size:14px;color:' + k.ink + ';">' + escapeHtml(t.groet) + '</p>' +
+    '<p style="margin:4px 0 0;font-family:' + MAIL_SERIF + ';font-style:italic;font-size:18px;color:' + k.tree + ';">' + escapeHtml(t.team) + '</p>' +
+    '</td></tr>' +
+
+    // Footer
+    '<tr><td style="padding:76px 0 0;">' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:' + k.kaart + ';border:1px solid ' + k.sand + ';border-radius:11px;">' +
+    '<tr><td align="center" style="padding:40px 32px 48px;">' +
+    '<div style="font-family:' + MAIL_SERIF + ';font-size:22px;color:' + k.tree + ';">back to being</div>' +
+    '<p style="margin:20px 0 0;font-family:' + MAIL_SANS + ';font-size:11px;line-height:1.5;color:' + k.inkLicht + ';">' + escapeHtml(t.reden) + '</p>' +
+    '<p style="margin:20px 0 0;line-height:1;">' + link('mailto:' + MAIL_LINKS.contact, t.voorkeuren) + '</p>' +
+    '<p style="margin:20px 0 0;line-height:1;white-space:nowrap;">' +
+    link(MAIL_LINKS.instagram, 'Instagram') + bolletje + link(MAIL_LINKS.tiktok, 'TikTok') + bolletje +
+    link(MAIL_LINKS.youtube, 'YouTube') + bolletje + link(MAIL_LINKS.website, t.website) +
+    '</p>' +
+    '</td></tr></table>' +
+    '</td></tr>' +
+
+    '</table></td></tr></table></body></html>';
+
+  return { onderwerp: t.onderwerp, tekst: tekst, html: html };
+}
+
 function stuurBevestiging(rij, taal) {
-  const naam = rij['Voornaam'];
-  const n = rij['Aantal personen'];
-  let onderwerp, tekst;
-  if (taal === 'en') {
-    onderwerp = 'You are on the list for the premiere';
-    tekst =
-      'Hi ' + naam + ',\n\n' +
-      'Thank you for signing up for the premiere of Back to Being in November 2026.\n\n' +
-      'We have your name on the list' + (n > 1 ? ' for ' + n + ' people' : '') + '. ' +
-      'As soon as the venue and time are set, you will get an email from us.\n\n' +
-      'See you in November,\nCaesar, Stijn and Max\nBack to Being';
-  } else {
-    onderwerp = 'Je staat op de lijst voor de première';
-    tekst =
-      'Hoi ' + naam + ',\n\n' +
-      'Dank voor je inschrijving voor de première van Back to Being in november 2026.\n\n' +
-      'Je naam staat op de lijst' + (n > 1 ? ' voor ' + n + ' personen' : '') + '. ' +
-      'Zodra de plek en tijd vaststaan, krijg je een mail van ons.\n\n' +
-      'Tot in november,\nCaesar, Stijn en Max\nBack to Being';
-  }
+  const mail = bouwMail(rij, taal);
   try {
-    MailApp.sendEmail({ to: rij['Mailadress'], subject: onderwerp, body: tekst, name: AFZENDER_NAAM });
+    // Verstuurd vanuit het account dat het script deployt, met de naam hieronder.
+    MailApp.sendEmail({
+      to: rij['Mailadress'],
+      subject: mail.onderwerp,
+      body: mail.tekst,
+      htmlBody: mail.html,
+      name: AFZENDER_NAAM,
+    });
     return { ok: true };
   } catch (err) {
     // De rij staat al in de sheet; een mislukte mail mag de inschrijving niet
@@ -209,19 +338,16 @@ function stuurBevestiging(rij, taal) {
 
 /**
  * Handmatige test van alleen de mail: Run → testMail.
- * Bewust zonder try/catch: ontbreekt de toestemming om te mailen, dan vraagt
- * Google er nu om, en elke andere fout staat leesbaar in het Execution log.
- * Schrijft niets in de sheet.
+ * Stuurt de echte HTML-bevestiging (NL) naar jezelf, zonder iets in de sheet te
+ * zetten. Bewust zonder try/catch: ontbreekt de toestemming om te mailen, dan
+ * vraagt Google er nu om, en elke andere fout staat leesbaar in het Execution log.
  */
 function testMail() {
   const aan = Session.getActiveUser().getEmail();
   console.log('Nog te versturen vandaag: ' + MailApp.getRemainingDailyQuota());
-  MailApp.sendEmail({
-    to: aan,
-    subject: 'Test: bevestigingsmail première',
-    body: 'Als je dit leest, mag het script mailen vanuit ' + aan + '.',
-    name: AFZENDER_NAAM,
-  });
+  const rij = { 'Voornaam': 'Test', 'Achternaam': 'Persoon', 'Mailadress': aan, 'Aantal personen': 2 };
+  const mail = bouwMail(rij, 'nl');
+  MailApp.sendEmail({ to: aan, subject: 'Test: ' + mail.onderwerp, body: mail.tekst, htmlBody: mail.html, name: AFZENDER_NAAM });
   console.log('Testmail verstuurd naar ' + aan);
 }
 

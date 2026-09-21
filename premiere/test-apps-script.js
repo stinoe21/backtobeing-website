@@ -93,4 +93,22 @@ w = maakWereld();
 w.post(basis('n@v.nl', 1, { 'Naam persoon (extra 1)': 'mag niet' }));
 check('naam van niet-meekomend persoon gewist', w.rijen[1][4] === '', w.rijen[1]);
 
+// 7. de bevestigingsmail: HTML uit het Figma-ontwerp, placeholders ingevuld, NL of EN
+w = maakWereld();
+w.post(basis('anna@v.nl', 3, { Voornaam: 'Anna', Achternaam: 'de Vries', 'Naam persoon (extra 1)': 'x', 'Naam persoon (extra 2)': 'y' }));
+let m = w.mails[0];
+check('mail heeft onderwerp, tekst en HTML', m.subject && m.body && /^<!DOCTYPE html>/.test(m.htmlBody), Object.keys(m));
+check('NL: onderwerp in het Nederlands', /aangemeld voor de première/.test(m.subject), m.subject);
+check('NL: aanhef met voornaam', /Beste Anna,/.test(m.htmlBody), m.htmlBody.slice(0, 200));
+check('NL: volledige naam en aantal op het kaartje', /Anna de Vries/.test(m.htmlBody) && />3<\/td>/.test(m.htmlBody));
+check('NL: geen placeholder blijven staan', !/\{\{/.test(m.htmlBody) && !/\{\{/.test(m.body), m.body);
+check('NL: tekstversie bevat naam en aantal', /Beste Anna,/.test(m.body) && /Aantal personen: 3/.test(m.body), m.body);
+w.post(basis('tom@v.nl', 1, { Voornaam: 'Tom', Achternaam: "O'Brien <b>", Taal: 'en' }));
+m = w.mails[1];
+check('EN: onderwerp en aanhef in het Engels', /premiere of Back to Being/.test(m.subject) && /Dear Tom,/.test(m.htmlBody), m.subject);
+check('EN: HTML in de naam wordt onschadelijk gemaakt', /O&#39;Brien &lt;b&gt;/.test(m.htmlBody) && !/<b>/.test(m.htmlBody));
+check('EN: Nederlandse tekst komt niet voor', !/Aanmeldingsgegevens|Bezoeker|Tot snel/.test(m.htmlBody));
+w.post(basis('geen-taal@v.nl', 1, { Taal: 'xx' }));
+check('onbekende taal -> Nederlands', /aangemeld voor de première/.test(w.mails[2].subject), w.mails[2].subject);
+
 console.log(fouten ? '\n' + fouten + ' FOUT(EN)' : '\nalles ok'); process.exit(fouten ? 1 : 0);

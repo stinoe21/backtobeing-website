@@ -24,8 +24,8 @@ naam in rij 1.
    `premiere.html`).
 2. `apps-script.gs`, gedeployed als web-app aan de sheet, valideert de velden,
    controleert of het mailadres nieuw is en of de limiet niet bereikt is, schrijft
-   dan een nieuwe rij en stuurt een bevestigingsmail (NL of EN) vanuit het
-   Google-account dat het script deployt.
+   dan een nieuwe rij en stuurt de bevestigingsmail (NL of EN, zie hieronder)
+   vanuit het Google-account dat het script deployt.
 3. De pagina toont de bedanktekst zodra het script `{ ok: true }` terugstuurt.
 
 ## ⚠️ Delen van de sheet: altijd op "Beperkt"
@@ -87,17 +87,40 @@ Wijzig je het script later, dan moet je opnieuw deployen:
 Het formulier heeft een verborgen veld `website`. Vult een bot dat in, dan toont
 de pagina de bedanktekst zonder dat er iets in de sheet komt.
 
+## Bevestigingsmail
+
+Na elke geslaagde aanmelding stuurt het script direct een HTML-mail vanuit het
+Google-account dat het script deployt (afzendernaam `AFZENDER_NAAM`). De ontwerpen
+staan in Figma, frames `back-to-being-mailing-nl` en `back-to-being-mailing-en`:
+- NL: https://www.figma.com/design/sAa0ga3n6JuO2OyhgKcuqp/Untitled?node-id=6-5
+- EN: https://www.figma.com/design/sAa0ga3n6JuO2OyhgKcuqp/Untitled?node-id=15-57
+
+- De taal volgt de kolom `Taal` (de taalknop op de pagina): `nl` krijgt de
+  Nederlandse mail, `en` de Engelse.
+- Placeholders: `{{naam}}` is de voornaam in de aanhef en de volledige naam op het
+  kaartje "Aanmeldingsgegevens"; `{{aantal_personen}}` is het aantal uit het
+  formulier. Namen worden HTML-veilig gemaakt.
+- Elke mail heeft ook een platte-tekstversie voor clients zonder HTML.
+- Teksten, kleuren en links staan bovenaan het mailgedeelte van `apps-script.gs`
+  (`MAIL_TEKST`, `MAIL_KLEUR`, `MAIL_LINKS`). "Voorkeuren aanpassen" is een
+  mailto naar het contactadres; er is geen voorkeurenpagina.
+- Lettertypes (Instrument Serif, Inter) laden via Google Fonts. Gmail toont in
+  plaats daarvan Georgia en Arial; de opmaak blijft verder gelijk.
+
+Lokaal bekijken zonder te versturen: `node premiere/test-apps-script.js` test de
+inhoud; wil je de mail zien, run dan in Apps Script `testMail` (stuurt de
+Nederlandse versie naar jezelf, zonder rij in de sheet).
+
 ## Bevestigingsmail controleren
 
-Het script stuurt na elke geslaagde aanmelding een bevestigingsmail vanuit het
-Google-account dat het script deployt. Het antwoord van het script zegt of dat
-gelukt is: `{ ok: true, mail: true }`, of `{ ok: true, mail: false, mailFout: "..." }`.
+Het antwoord van het script zegt of het versturen gelukt is. Het antwoord is
+`{ ok: true, mail: true }`, of `{ ok: true, mail: false, mailFout: "..." }`.
 De aanmelding staat in beide gevallen in de sheet.
 
 Komt er geen mail aan, run dan in Apps Script de functie **`testMail`**. Die
-stuurt één mail naar jezelf, zonder iets in de sheet te zetten. Ontbreekt de
-toestemming om te mailen, dan vraagt Google er op dat moment om; elke andere
-fout staat in het Execution log. Daarna opnieuw deployen als New version.
+stuurt de echte bevestigingsmail één keer naar jezelf, zonder iets in de sheet te
+zetten. Ontbreekt de toestemming om te mailen, dan vraagt Google er op dat
+moment om; elke andere fout staat in het Execution log. Daarna opnieuw deployen als New version.
 
 ## Mailquota
 
