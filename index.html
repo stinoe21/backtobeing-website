@@ -366,8 +366,7 @@
     .hero-foot {
       display: flex; align-items: flex-end; justify-content: space-between; gap: 3rem;
     }
-    /* Rechts in de hero staan twee blokken naast elkaar: de reis die
-       gelopen is (stil) en de première die eraan komt (met puntje). */
+    /* Rechts in de hero staat het première-blok (met puntje). */
     .hero-blokken { flex: 0 0 auto; display: flex; align-items: flex-end; gap: 3.5rem; }
     .hero-live-stil { opacity: 0.86; }
     .hero-live {
@@ -2841,12 +2840,6 @@
             Drie AI-founders maakten van de Camino hun kantoor en bouwden onderweg een app voor MIND. Nu komt de documentaire.
           </p>
           <div class="hero-blokken">
-            <!-- De reis is gelopen: dit blok linkt naar het dagverslag. -->
-            <a class="hero-live hero-live-stil" href="/reis">
-              <span class="hero-live-label"><span data-i18n="hero.reis.label">Aangekomen in Santiago</span></span>
-              <strong class="hero-live-dag" data-i18n="hero.reis.dag">127 km in 6 dagen</strong>
-              <span class="hero-live-cta" data-i18n="hero.reis.cta">Dag voor dag &rarr;</span>
-            </a>
             <!-- Wat er nog komt: de première. Het pulsende puntje hoort hier. -->
             <a class="hero-live" href="/premiere">
               <span class="hero-live-label"><span class="hero-live-dot" aria-hidden="true"></span><span data-i18n="hero.prem.label">Documentaire</span></span>
