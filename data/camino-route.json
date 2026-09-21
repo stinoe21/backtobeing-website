@@ -1,7 +1,7 @@
 {
   "_bron": "Spiegelt caminoRoute en caminoStages in index.html (~regel 3930-3960). Bij een wijziging beide bijwerken. index.html schrijft de arrays zonder accenten in de comments; de getoonde namen hebben wel accenten.",
   "_km": "Etappe 1 en totaalKm zijn geschat vanaf Valença: de brug over de Minho naar Tui is ongeveer 3 km. Vanaf Tui was het 18 en 120. Controleer voor vertrek.",
-  "totaalKm": 123,
+  "totaalKm": 127,
   "punten": [
     { "naam": "Valença", "lngLat": [-8.644, 42.0296] },
     { "naam": "Tui", "lngLat": [-8.644, 42.0471] },

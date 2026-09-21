@@ -1192,12 +1192,12 @@
           <div class="map-plek">
             <span class="eyebrow" id="mapEyebrow" data-i18n="map.eyebrowPre">De route</span>
             <strong id="mapPlaats">Valença &rarr; Santiago de Compostela</strong>
-            <span class="distance" id="mapAfstand">123 km</span>
+            <span class="distance" id="mapAfstand">127 km</span>
           </div>
           <div class="map-cijfers" id="mapCijfers" hidden>
-            <!-- Het label is "van 123 km" en wordt in JS gezet: het totaal komt
+            <!-- Het label is "van 127 km" en wordt in JS gezet: het totaal komt
                  uit camino-route.json en "van" moet meevertalen. -->
-            <div><b id="mapKm">0</b><i id="mapKmLabel">van 123 km</i></div>
+            <div><b id="mapKm">0</b><i id="mapKmLabel">van 127 km</i></div>
             <div><b id="mapEtappes">0 / 6</b><i data-i18n="stat.dagen">Etappes af</i></div>
           </div>
         </div>
@@ -1632,7 +1632,7 @@
       const eyebrow = document.getElementById('mapEyebrow');
       const plaats = document.getElementById('mapPlaats');
       const afstand = document.getElementById('mapAfstand');
-      const totaal = route.totaalKm || 123;
+      const totaal = route.totaalKm || 127;
 
       const cijfers = document.getElementById('mapCijfers');
       const dagen = etappeDagen();
@@ -1648,7 +1648,7 @@
         afstand.hidden = true;
         cijfers.hidden = false;
         document.getElementById('mapKm').textContent = fmtKm(totalen().km);
-        // Na aankomst is "126,9 van 123 km" alleen maar verwarrend: het
+        // Na aankomst is "126,9 van 127 km" alleen maar verwarrend: het
         // geplande totaal doet er dan niet meer toe.
         document.getElementById('mapKmLabel').textContent = klaar
           ? t('km.gelopen')
@@ -2340,7 +2340,7 @@
       const feiten = document.createElement('p');
       feiten.className = 'teaser-feiten';
       feiten.textContent = t('teaser.feiten')
-        .replace('{km}', route.totaalKm || 123)
+        .replace('{km}', route.totaalKm || 127)
         .replace('{n}', totaalDagen());
       tekst.appendChild(feiten);
 
@@ -2892,7 +2892,7 @@
       } catch (err) {
         // Bij file:// blokkeert de browser fetch. Draai een lokale server.
         console.error('[volg] data laden mislukt:', err);
-        route = { punten: [], etappes: [], totaalKm: 123 };
+        route = { punten: [], etappes: [], totaalKm: 127 };
         log = { dagen: [] };
       }
 
