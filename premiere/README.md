@@ -57,7 +57,7 @@ Instellingen bovenaan `apps-script.gs`:
 - `MAX_PER_VENSTER = 50` en `VENSTER_MINUTEN = 10`: hooguit 50 verzoeken per tien
   minuten. Elk verzoek telt mee, ook een dubbele. De teller staat in de
   script-cache en wordt alleen binnen het slot gelezen en opgehoogd.
-- `MAX_TOTAAL_PERSONEN = 200`: plafond op het totaal aantal personen (hoofdpersoon
+- `MAX_TOTAAL_PERSONEN = 70`: plafond op het totaal aantal personen (hoofdpersoon
   plus extra's), nu de zaalcapaciteit. `0` zet het plafond uit. Testrijen in de
   sheet tellen ook mee, dus gooi die weg.
 

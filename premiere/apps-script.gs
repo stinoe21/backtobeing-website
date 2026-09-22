@@ -41,8 +41,8 @@ const MAX_PER_VENSTER = 50;
 const VENSTER_MINUTEN = 10;
 
 // Plafond op het totaal aantal personen op de lijst (hoofdpersoon + extra's).
-// 0 = geen plafond. Nu de zaalcapaciteit: 200 personen.
-const MAX_TOTAAL_PERSONEN = 200;
+// 0 = geen plafond. Nu de zaalcapaciteit: 70 personen.
+const MAX_TOTAAL_PERSONEN = 70;
 
 // Groter dan dit is geen echte aanmelding.
 const MAX_BODY_TEKENS = 4000;

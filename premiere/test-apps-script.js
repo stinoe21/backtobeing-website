@@ -66,13 +66,13 @@ r = w.post(basis('b@v.nl', 3, { 'Naam persoon (extra 1)': 'x', 'Naam persoon (ex
 check('plafond: 3 erbij gaat over 5 -> code vol', r.code === 'vol' && w.rijen.length === 2, r);
 check('plafond: 2 erbij past precies', w.post(basis('c@v.nl', 2, { 'Naam persoon (extra 1)': 'x' })).ok === true);
 
-// 4b. plafond 200: 40 groepen van 5 vullen de zaal precies, daarna is het vol
-w = maakWereld({ plafond: 200 });
+// 4b. plafond 70: 14 groepen van 5 vullen de zaal precies, daarna is het vol
+w = maakWereld({ plafond: 70 });
 const vijf = { 'Naam persoon (extra 1)': 'a', 'Naam persoon (extra 2)': 'b', 'Naam persoon (extra 3)': 'c', 'Naam persoon (extra 4)': 'd' };
-ok = 0; for (let i = 0; i < 40; i++) if (w.post(basis('g' + i + '@v.nl', 5, vijf)).ok) ok++;
-check('plafond 200: 40 groepen van 5 passen', ok === 40, ok);
+ok = 0; for (let i = 0; i < 14; i++) if (w.post(basis('g' + i + '@v.nl', 5, vijf)).ok) ok++;
+check('plafond 70: 14 groepen van 5 passen', ok === 14, ok);
 r = w.post(basis('laatste@v.nl', 1));
-check('plafond 200: de 201e persoon -> code vol', r.code === 'vol', r);
+check('plafond 70: de 71e persoon -> code vol', r.code === 'vol', r);
 
 // 4c. mail mislukt: aanmelding telt wel, antwoord zegt dat de mail niet weg is
 w = maakWereld({ mailKapot: true });
