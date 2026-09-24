@@ -509,7 +509,7 @@
     <section class="kaart" aria-labelledby="formTitel">
       <form id="premiereForm" novalidate>
         <h2 id="formTitel" data-i18n="form.titel">Ik wil erbij zijn</h2>
-        <p class="sub" data-i18n="form.sub">Je krijgt een mail zodra de plaats en tijd bekend zijn.</p>
+        <p class="sub" data-i18n="form.sub">Je komt eerst in de wachtrij. Zodra je plek bevestigd is, krijg je een mail.</p>
 
         <div class="rij">
           <div class="veld">
@@ -568,7 +568,7 @@
 
         <div class="voet">
           <button class="knop" id="verstuur" type="submit">
-            <span data-i18n="form.knop">Zet mij op de lijst</span>
+            <span data-i18n="form.knop">Meld mij aan</span>
           </button>
           <p class="privacy" data-i18n="form.privacy">We gebruiken je gegevens alleen voor deze uitnodiging. <a href="privacybeleid.html">Privacybeleid</a>.</p>
         </div>
@@ -578,7 +578,7 @@
         <div class="vink" aria-hidden="true">
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="m5 11.5 4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <h2 id="klaarTitel">Je staat op de lijst.</h2>
+        <h2 id="klaarTitel">Je staat in de wachtrij.</h2>
         <p id="klaarTekst"></p>
         <p id="klaarP2"></p>
         <button class="tekstknop" id="klaarAnder" type="button" hidden data-i18n="al.ander">Aanmelden met een ander mailadres</button>
@@ -613,7 +613,7 @@
     // Zie premiere/apps-script.gs en premiere/README.md voor het deployen.
     const INSCHRIJF_URL = 'https://script.google.com/macros/s/AKfycbxgvGKEzELZlS_vZ0w08MLE_f3Gw6Zi38gbvltGE8h8_tvsuJOfjK5QgoCqkF2RX8PC/exec';
 
-    // Voor wijzigingen en de wachtlijst; hetzelfde adres als op de contactpagina.
+    // Voor wijzigingen; hetzelfde adres als op de contactpagina.
     const CONTACT_MAIL = 'caesar.schoorl@gmail.com';
 
     /* ---------- woordenboek ---------- */
@@ -634,7 +634,7 @@
         'intro.plekken': 'Er is plek voor <strong>70 deelnemers</strong>. Wees er snel bij, want vol is écht vol!',
         'intro.p5': 'De plek en tijd maken we later bekend.',
         'form.titel': 'Ik wil erbij zijn',
-        'form.sub': 'Je krijgt een mail zodra de plaats en tijd bekend zijn.',
+        'form.sub': 'Je komt eerst in de wachtrij. Zodra je plek bevestigd is, krijg je een mail.',
         'form.voornaam': 'Voornaam',
         'form.achternaam': 'Achternaam',
         'form.mail': 'Mailadres',
@@ -643,23 +643,23 @@
         'form.extra2': 'Naam persoon 3',
         'form.extra3': 'Naam persoon 4',
         'form.extra4': 'Naam persoon 5',
-        'form.knop': 'Zet mij op de lijst',
+        'form.knop': 'Meld mij aan',
         'plak.knop': 'Meld je aan',
         'form.privacy': 'We gebruiken je gegevens alleen voor deze uitnodiging. <a href="privacybeleid.html">Privacybeleid</a>.',
         'form.foutVelden': 'Vul je voor- en achternaam en een geldig mailadres in.',
         'form.foutNamen': 'Vul de naam in van iedereen die meekomt.',
         'form.foutNet': 'Versturen lukte niet. Probeer het zo nog eens, of mail ons via de contactpagina.',
         'form.bezig': 'Even geduld',
-        'klaar.titel': 'Je staat op de lijst.',
-        'klaar.een': 'Dank je, <b>{naam}</b>. We hebben je inschrijving ontvangen op {mail}.',
-        'klaar.meer': 'Dank je, <b>{naam}</b>. We hebben je inschrijving voor {aantal} personen ontvangen op {mail}.',
-        'klaar.p2': 'Zodra de plaats en tijd vaststaan krijg je een mail. Tot in november.',
-        'al.titel': 'Je staat al op de lijst.',
-        'al.tekst': 'Het adres <b>{mail}</b> is al aangemeld. Je hoeft niets meer te doen: zodra de plek en tijd vaststaan krijg je een mail.',
+        'klaar.titel': 'Je staat in de wachtrij.',
+        'klaar.een': 'Dank je, <b>{naam}</b>. We hebben je aanmelding ontvangen op {mail}.',
+        'klaar.meer': 'Dank je, <b>{naam}</b>. We hebben je aanmelding voor {aantal} personen ontvangen op {mail}.',
+        'klaar.p2': 'We bekijken de aanmeldingen één voor één. Zodra je plek bevestigd is, krijg je een mail. Tot in november.',
+        'al.titel': 'Je bent al aangemeld.',
+        'al.tekst': 'Het adres <b>{mail}</b> is al aangemeld. Je hoeft niets meer te doen: zodra je plek bevestigd is, krijg je een mail.',
         'al.p2': 'Wil je het aantal personen of een naam wijzigen? Mail ons op <a href="mailto:{contact}">{contact}</a>.',
         'al.ander': 'Aanmelden met een ander mailadres',
         'form.foutDruk': 'Het is nu erg druk met aanmeldingen. Probeer het over een paar minuten opnieuw, je gegevens blijven hier staan.',
-        'form.foutVol': 'De lijst is vol. Mail ons op {contact}, dan zetten we je op de wachtlijst.',
+        'form.foutVol': 'De wachtrij is vol. Mail ons op {contact}, dan kijken we wat er nog kan.',
       },
       en: {
         'nav.story': 'Our story',
@@ -677,7 +677,7 @@
         'intro.plekken': 'There is room for <strong>70 guests</strong>. Be quick, because full really means full!',
         'intro.p5': 'Venue and time will be announced later.',
         'form.titel': 'I want to be there',
-        'form.sub': 'You will get an email as soon as the venue and time are set.',
+        'form.sub': 'You go on the waiting list first. As soon as your place is confirmed, you will get an email.',
         'form.voornaam': 'First name',
         'form.achternaam': 'Last name',
         'form.mail': 'Email',
@@ -686,23 +686,23 @@
         'form.extra2': 'Name of person 3',
         'form.extra3': 'Name of person 4',
         'form.extra4': 'Name of person 5',
-        'form.knop': 'Put me on the list',
+        'form.knop': 'Sign me up',
         'plak.knop': 'Sign up',
         'form.privacy': 'We only use your details for this invitation. <a href="privacybeleid.html">Privacy policy</a>.',
         'form.foutVelden': 'Please fill in your first and last name and a valid email address.',
         'form.foutNamen': 'Please fill in the name of everyone joining you.',
         'form.foutNet': 'Sending failed. Please try again in a moment, or email us via the contact page.',
         'form.bezig': 'One moment',
-        'klaar.titel': 'You are on the list.',
+        'klaar.titel': 'You are on the waiting list.',
         'klaar.een': 'Thank you, <b>{naam}</b>. We received your sign-up at {mail}.',
         'klaar.meer': 'Thank you, <b>{naam}</b>. We received your sign-up for {aantal} people at {mail}.',
-        'klaar.p2': 'As soon as the venue and time are set you will get an email. See you in November.',
-        'al.titel': 'You are already on the list.',
-        'al.tekst': 'The address <b>{mail}</b> has already signed up. There is nothing more to do: as soon as the venue and time are set you will get an email.',
+        'klaar.p2': 'We go through the sign-ups one by one. As soon as your place is confirmed, you will get an email. See you in November.',
+        'al.titel': 'You have already signed up.',
+        'al.tekst': 'The address <b>{mail}</b> has already signed up. There is nothing more to do: as soon as your place is confirmed, you will get an email.',
         'al.p2': 'Want to change the number of people or a name? Email us at <a href="mailto:{contact}">{contact}</a>.',
         'al.ander': 'Sign up with a different email address',
         'form.foutDruk': 'Sign-ups are very busy right now. Please try again in a few minutes, your details will stay here.',
-        'form.foutVol': 'The list is full. Email us at {contact} and we will put you on the waiting list.',
+        'form.foutVol': 'The waiting list is full. Email us at {contact} and we will see what we can do.',
       }
     };
 
