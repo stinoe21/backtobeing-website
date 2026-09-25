@@ -15,8 +15,8 @@ Kolommen in rij 1 (de veldnamen in het formulier zijn hier exact gelijk aan):
 Voornaam | Achternaam | Mailadress | Aantal personen | Naam persoon (extra 1) | Naam persoon (extra 2) | Naam persoon (extra 3) | Naam persoon (extra 4)
 ```
 
-Het script zet er zelf `Taal`, `Ingeschreven op`, `Status`, `Goedkeuren` en
-`Goedgekeurd op` achter. Kolommen mogen van plek wisselen: het script zoekt op
+Het script zet er zelf `Taal`, `Ingeschreven op`, `Status`, `Goedkeuren`,
+`Goedgekeurd op` en `Uitnodiging` achter. Kolommen mogen van plek wisselen: het script zoekt op
 naam in rij 1.
 
 ## Hoe een aanmelding loopt
@@ -51,6 +51,37 @@ naam in rij 1.
   Executions.
 
 Handig: filter of sorteer op de kolom `Status` om de wachtrij te zien.
+
+## Uitnodigingslinks: wachtrij overslaan
+
+Caesar, Stijn en Max hebben elk een persoonlijke link waarmee tot 10 personen
+zonder wachtrij binnenkomen. De codes staan in het tabblad **Uitnodigingen** van
+de sheet, niet in de repo (die is publiek):
+
+```
+Code | Van | Max personen | Gebruikt
+```
+
+- `installeren` maakt het tabblad aan met een code per persoon, bijvoorbeeld
+  `max-k7p4`. De link is dan `https://backtobeing.tech/premiere?code=max-k7p4`.
+  Codes mag je in de sheet aanpassen; ook `Max personen` en extra rijen.
+- Opent iemand de pagina met zo'n code, dan vraagt de pagina het script of de
+  code klopt en toont een banner: "Persoonlijke uitnodiging van Max, je slaat
+  de wachtrij over", of "al volgeboekt" / "niet (meer) geldig" met de gewone
+  wachtrij als uitweg.
+- Bij het aanmelden gaat de code mee. Is die geldig en past het aantal nog
+  binnen `Max personen`, dan komt de rij meteen op `Goedgekeurd` (vinkje aan,
+  datum, kolom `Uitnodiging` = naam van de uitnodiger) en krijgt de bezoeker
+  direct de "je bent erbij"-mail. De pagina zegt "Je bent erbij".
+- Is de code vol of onbekend, dan komt de aanmelding gewoon in de wachtrij met
+  de wachtrij-mail; het antwoord bevat `uitnodiging: 'vol'` of `'onbekend'`.
+- `Gebruikt` is ter info; de echte telling komt uit de aanmeldlijst (kolom
+  `Uitnodiging`), dus een verwijderde rij telt vanzelf niet meer mee.
+- Uitgenodigde gasten tellen mee in de 70 (`MAX_TOTAAL_PERSONEN`) bij het
+  goedkeuren vanuit de wachtrij, maar worden zelf nooit geweigerd door dat
+  plafond: reken dus met 30 gereserveerde plekken.
+
+Wie de link doorstuurt, geeft de uitnodiging door: de code is het enige slot.
 
 ## ⚠️ Delen van de sheet: altijd op "Beperkt"
 
@@ -103,9 +134,10 @@ De logica is lokaal te testen zonder Google: zie `test-apps-script.js`
 1. Open de sheet → **Extensions → Apps Script**.
 2. Vervang de inhoud van `Code.gs` door `apps-script.gs` → Save.
 3. Kies bovenin de functie **`installeren`** → **Run** → toestemmingen toestaan.
-   Dit maakt de kolommen `Status`, `Goedkeuren` en `Goedgekeurd op`, zet vinkjes
-   bij bestaande rijen (die komen in `Wachtrij`; vink aan wie er al bij hoort) en
-   installeert de trigger die op het vinkje reageert. Herlaad de sheet: het menu
+   Dit maakt de kolommen `Status`, `Goedkeuren`, `Goedgekeurd op` en
+   `Uitnodiging`, zet vinkjes bij bestaande rijen (die komen in `Wachtrij`; vink
+   aan wie er al bij hoort), installeert de trigger die op het vinkje reageert en
+   maakt het tabblad `Uitnodigingen` met de drie codes. Herlaad de sheet: het menu
    **Première** staat nu naast Help.
 4. **Deploy → New deployment** → type **Web app** → *Execute as: Me* ·
    *Who has access: Anyone* → Deploy.

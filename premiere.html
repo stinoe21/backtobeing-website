@@ -293,6 +293,16 @@
     }
     .fout[hidden] { display: none; }
 
+    /* Persoonlijke uitnodigingslink (?code=...): banner boven de velden. */
+    .uitnodiging {
+      margin: -0.6rem 0 1.4rem; padding: 0.75rem 1rem;
+      border-radius: var(--radius-ctrl);
+      border: 1px solid var(--sand); background: rgba(185,162,110,0.12);
+      font-size: 0.9rem; line-height: 1.5; color: var(--ink);
+    }
+    .uitnodiging.is-niet { border-color: rgba(164,70,43,0.35); background: rgba(164,70,43,0.07); }
+    .uitnodiging[hidden] { display: none; }
+
     /* Na versturen: hetzelfde vlak, andere inhoud. Geen redirect. */
     .klaar { text-align: left; }
     .klaar[hidden] { display: none; }
@@ -509,7 +519,8 @@
     <section class="kaart" aria-labelledby="formTitel">
       <form id="premiereForm" novalidate>
         <h2 id="formTitel" data-i18n="form.titel">Ik wil erbij zijn</h2>
-        <p class="sub" data-i18n="form.sub">Je komt eerst in de wachtrij. Zodra je plek bevestigd is, krijg je een mail.</p>
+        <p class="sub" id="formSub" data-i18n="form.sub">Je komt eerst in de wachtrij. Zodra je plek bevestigd is, krijg je een mail.</p>
+        <p class="uitnodiging" id="uitnodiging" hidden></p>
 
         <div class="rij">
           <div class="veld">
@@ -660,6 +671,15 @@
         'al.ander': 'Aanmelden met een ander mailadres',
         'form.foutDruk': 'Het is nu erg druk met aanmeldingen. Probeer het over een paar minuten opnieuw, je gegevens blijven hier staan.',
         'form.foutVol': 'De wachtrij is vol. Mail ons op {contact}, dan kijken we wat er nog kan.',
+        'uit.geldig': 'Persoonlijke uitnodiging van <b>{van}</b>. Je slaat de wachtrij over: na je aanmelding is je plek meteen bevestigd.',
+        'uit.vol': 'De uitnodiging van <b>{van}</b> is helaas al volgeboekt. Je kunt je wel aanmelden voor de wachtrij.',
+        'uit.onbekend': 'Deze uitnodigingslink is niet (meer) geldig. Je kunt je wel aanmelden voor de wachtrij.',
+        'form.subUit': 'Na je aanmelding is je plek meteen bevestigd.',
+        'intro.plekkenUit': 'Er is plek voor <strong>70 deelnemers</strong>. Jij hebt een persoonlijke uitnodiging van <strong>{van}</strong>: je plek is gereserveerd en je slaat de wachtrij over.',
+        'direct.titel': 'Je bent erbij.',
+        'direct.een': 'Dank je, <b>{naam}</b>. Je plek is bevestigd via de uitnodiging van {van}. We hebben je een mail gestuurd op {mail}.',
+        'direct.meer': 'Dank je, <b>{naam}</b>. Jullie plekken voor {aantal} personen zijn bevestigd via de uitnodiging van {van}. We hebben je een mail gestuurd op {mail}.',
+        'direct.p2': 'Zodra de plaats en tijd vaststaan krijg je een mail. Tot in november.',
       },
       en: {
         'nav.story': 'Our story',
@@ -703,6 +723,15 @@
         'al.ander': 'Sign up with a different email address',
         'form.foutDruk': 'Sign-ups are very busy right now. Please try again in a few minutes, your details will stay here.',
         'form.foutVol': 'The waiting list is full. Email us at {contact} and we will see what we can do.',
+        'uit.geldig': 'Personal invitation from <b>{van}</b>. You skip the waiting list: your place is confirmed as soon as you sign up.',
+        'uit.vol': "Unfortunately {van}'s invitation is fully booked. You can still sign up for the waiting list.",
+        'uit.onbekend': 'This invitation link is not (or no longer) valid. You can still sign up for the waiting list.',
+        'form.subUit': 'Your place is confirmed as soon as you sign up.',
+        'intro.plekkenUit': 'There is room for <strong>70 guests</strong>. You have a personal invitation from <strong>{van}</strong>: your place is reserved and you skip the waiting list.',
+        'direct.titel': 'You are in.',
+        'direct.een': "Thank you, <b>{naam}</b>. Your place is confirmed through {van}'s invitation. We have sent you an email at {mail}.",
+        'direct.meer': "Thank you, <b>{naam}</b>. Your places for {aantal} people are confirmed through {van}'s invitation. We have sent you an email at {mail}.",
+        'direct.p2': 'As soon as the venue and time are set you will get an email. See you in November.',
       }
     };
 
@@ -722,6 +751,45 @@
       document.querySelectorAll('.lang-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.lang === lang);
       });
+      vulUitnodiging();
+    }
+
+    /* ---------- persoonlijke uitnodiging (?code=...) ---------- */
+    // Max, Stijn en Caesar delen elk een eigen link. Het script kent de codes
+    // (tabblad "Uitnodigingen" in de sheet); de pagina vraagt alleen na of de
+    // code geldig is, van wie, en of die al vol is. Zonder antwoord gaat de
+    // code gewoon mee met de aanmelding en beslist het script alsnog.
+    const UIT_CODE = (new URLSearchParams(location.search).get('code') || '').trim();
+    let uitStaat = null; // { staat: 'geldig' | 'vol' | 'onbekend', van }
+
+    function vulUitnodiging() {
+      const el = document.getElementById('uitnodiging');
+      const plekken = document.querySelector('[data-i18n="intro.plekken"]');
+      const sub = document.getElementById('formSub');
+      if (!uitStaat) { el.hidden = true; return; }
+      const van = escapeHtml(uitStaat.van || '');
+      const geldig = uitStaat.staat === 'geldig';
+      el.innerHTML = t('uit.' + uitStaat.staat).split('{van}').join(van);
+      el.classList.toggle('is-niet', !geldig);
+      el.hidden = false;
+      if (geldig) {
+        if (plekken) plekken.innerHTML = t('intro.plekkenUit').split('{van}').join(van);
+        if (sub) sub.textContent = t('form.subUit');
+      }
+    }
+
+    async function checkUitnodiging() {
+      if (!UIT_CODE || !/^https:\/\//.test(INSCHRIJF_URL)) return;
+      try {
+        const r = await fetch(INSCHRIJF_URL + '?code=' + encodeURIComponent(UIT_CODE));
+        const uit = await r.json();
+        if (!uit.ok) return;
+        uitStaat = uit.geldig ? { staat: uit.vol ? 'vol' : 'geldig', van: uit.van } : { staat: 'onbekend' };
+      } catch (err) {
+        console.warn('Uitnodiging controleren lukte niet', err);
+        return;
+      }
+      vulUitnodiging();
     }
 
     function bindLang() {
@@ -823,6 +891,7 @@
       delete data.website;
       data['Taal'] = lang;
       data['Bron'] = location.href.split('?')[0];
+      if (UIT_CODE) data['Code'] = UIT_CODE;
 
       knop.disabled = true;
       const knopTekst = knop.firstElementChild;
@@ -840,7 +909,7 @@
         if (!r.ok) throw new Error('HTTP ' + r.status);
         // Apps Script antwoordt altijd met 200; het echte resultaat staat in de body.
         const uit = await r.json().catch(() => ({}));
-        if (uit.ok) { toonKlaar(data); return; }
+        if (uit.ok) { toonKlaar(data, uit.uitnodiging === true ? 'direct' : 'nieuw', uit.via); return; }
         // Het script schreef niets weg en zegt waarom.
         if (uit.code === 'bestaat') { toonKlaar(data, 'al'); return; }
         if (uit.code === 'druk') { toonFout('form.foutDruk'); return; }
@@ -857,9 +926,10 @@
     }
 
     // variant 'al': dit mailadres stond al in de sheet, er is niets geschreven.
+    // variant 'direct': via een geldige uitnodigingslink, meteen goedgekeurd.
     let klaarStaat = null;
-    function toonKlaar(data, variant) {
-      klaarStaat = { data: data, variant: variant || 'nieuw' };
+    function toonKlaar(data, variant, via) {
+      klaarStaat = { data: data, variant: variant || 'nieuw', via: via || '' };
       vulKlaar();
       form.hidden = true;
       const klaar = document.getElementById('klaar');
@@ -874,19 +944,21 @@
     // Los van toonKlaar, zodat een taalwissel de bevestiging mee kan vertalen.
     function vulKlaar() {
       if (!klaarStaat) return;
-      const data = klaarStaat.data, al = klaarStaat.variant === 'al';
+      const data = klaarStaat.data, al = klaarStaat.variant === 'al', direct = klaarStaat.variant === 'direct';
       const n = parseInt(data['Aantal personen'], 10) || 1;
       const mail = escapeHtml(data['Mailadress']);
-      document.getElementById('klaarTitel').textContent = t(al ? 'al.titel' : 'klaar.titel');
+      const soort = direct ? 'direct' : 'klaar';
+      document.getElementById('klaarTitel').textContent = t(al ? 'al.titel' : soort + '.titel');
       document.getElementById('klaarTekst').innerHTML = al
         ? t('al.tekst').replace('{mail}', mail)
-        : t(n > 1 ? 'klaar.meer' : 'klaar.een')
+        : t(soort + (n > 1 ? '.meer' : '.een'))
             .replace('{naam}', escapeHtml(data['Voornaam']))
             .replace('{mail}', mail)
-            .replace('{aantal}', String(n));
+            .replace('{aantal}', String(n))
+            .replace('{van}', escapeHtml(klaarStaat.via));
       document.getElementById('klaarP2').innerHTML = al
         ? t('al.p2').split('{contact}').join(CONTACT_MAIL)
-        : t('klaar.p2');
+        : t(soort + '.p2');
       document.getElementById('klaarAnder').hidden = !al;
     }
 
@@ -941,6 +1013,7 @@
     toonExtra();
     form.addEventListener('submit', verstuur);
     document.getElementById('klaarAnder').addEventListener('click', anderAdres);
+    checkUitnodiging();
   </script>
 </body>
 </html>

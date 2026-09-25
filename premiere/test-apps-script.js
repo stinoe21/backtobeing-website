@@ -3,27 +3,42 @@ const fs = require('fs'), vm = require('vm');
 const bron = fs.readFileSync(process.argv[2] || require('path').join(__dirname, 'apps-script.gs'), 'utf8');
 
 function maakWereld(opts = {}) {
-  const rijen = [['Voornaam','Achternaam','Mailadress','Aantal personen ','Naam persoon (extra 1)','Naam persoon (extra 2)','Naam persoon (extra 3)','Naam persoon (extra 4)']];
   const mails = []; const cache = {}; const triggers = []; const toasts = [];
-  const cel = (r, c) => { while (rijen.length < r) rijen.push([]); return rijen[r - 1]; };
-  const sheet = {
-    getSheetId: () => 1,
-    getLastColumn: () => Math.max(...rijen.map(x => x.length)),
-    getLastRow: () => rijen.length,
-    getActiveRange: () => opts.selectie ? range(opts.selectie[0], 1, opts.selectie[1] - opts.selectie[0] + 1, 1) : null,
-    getRange: (r, c, nr = 1, nc = 1) => range(r, c, nr, nc),
-    appendRow: w => rijen.push(w),
-  };
-  function range(r, c, nr, nc) {
-    return {
-      getSheet: () => sheet, getRow: () => r, getColumn: () => c, getNumRows: () => nr, getNumColumns: () => nc,
-      getValues: () => rijen.slice(r - 1, r - 1 + nr).map(x => Array.from({ length: nc }, (_, i) => x[c - 1 + i] ?? '')),
-      getValue: () => rijen[r - 1]?.[c - 1] ?? '',
-      setValue: v => { cel(r, c)[c - 1] = v; },
-      insertCheckboxes: () => { for (let i = 0; i < nr; i++) { const rr = cel(r + i, c); if (rr[c - 1] !== true) rr[c - 1] = false; } },
+  const tabs = {};
+  let volgendId = 1;
+  function maakTab(naam, rijen) {
+    const id = volgendId++;
+    const cel = (r, c) => { while (rijen.length < r) rijen.push([]); return rijen[r - 1]; };
+    const sheet = {
+      rijen, getName: () => naam,
+      getSheetId: () => id,
+      getLastColumn: () => Math.max(1, ...rijen.map(x => x.length)),
+      getLastRow: () => rijen.length,
+      getActiveRange: () => opts.selectie ? range(opts.selectie[0], 1, opts.selectie[1] - opts.selectie[0] + 1, 1) : null,
+      getRange: (r, c, nr = 1, nc = 1) => range(r, c, nr, nc),
+      appendRow: w => rijen.push(w),
     };
+    function range(r, c, nr, nc) {
+      return {
+        getSheet: () => sheet, getRow: () => r, getColumn: () => c, getNumRows: () => nr, getNumColumns: () => nc,
+        getValues: () => rijen.slice(r - 1, r - 1 + nr).map(x => Array.from({ length: nc }, (_, i) => x[c - 1 + i] ?? '')),
+        setValues: vs => vs.forEach((rijW, i) => rijW.forEach((v, j) => { cel(r + i, c + j)[c + j - 1] = v; })),
+        getValue: () => rijen[r - 1]?.[c - 1] ?? '',
+        setValue: v => { cel(r, c)[c - 1] = v; },
+        insertCheckboxes: () => { for (let i = 0; i < nr; i++) { const rr = cel(r + i, c); if (rr[c - 1] !== true) rr[c - 1] = false; } },
+      };
+    }
+    tabs[naam] = sheet;
+    return sheet;
   }
-  const ss = { getSheets: () => [sheet], getSheetByName: () => sheet, toast: t => toasts.push(t) };
+  const sheet = maakTab('Blad1', [['Voornaam','Achternaam','Mailadress','Aantal personen ','Naam persoon (extra 1)','Naam persoon (extra 2)','Naam persoon (extra 3)','Naam persoon (extra 4)']]);
+  const rijen = sheet.rijen;
+  if (opts.uitnodigingen) maakTab('Uitnodigingen', [['Code','Van','Max personen','Gebruikt'], ...opts.uitnodigingen]);
+  const range = (r, c, nr, nc) => sheet.getRange(r, c, nr, nc);
+  const ss = {
+    getSheets: () => [sheet], getSheetByName: n => tabs[n] || null, toast: t => toasts.push(t),
+    insertSheet: n => maakTab(n, []),
+  };
   const menu = { addItem() { return this; }, addSeparator() { return this; }, addToUi() {} };
   const ctx = {
     console: { log() {}, error() {} },
@@ -46,6 +61,7 @@ function maakWereld(opts = {}) {
   code = code.replace(/const MAX_AANMELDINGEN_PERSONEN = \d+;/, 'const MAX_AANMELDINGEN_PERSONEN = ' + (opts.plafondAanmeldingen || 0) + ';');
   vm.runInContext(code, ctx);
   const post = d => JSON.parse(vm.runInContext('doPost', ctx)({ postData: { contents: JSON.stringify(d) } }).getContent());
+  const get = code => JSON.parse(vm.runInContext('doGet', ctx)({ parameter: code ? { code } : {} }).getContent());
   const kol = naam => rijen[0].findIndex(k => String(k).trim() === naam);
   // Nabootsing van het vinkje in de sheet: waarde zetten en de trigger afvuren.
   const vink = (rijNr, aan) => {
@@ -57,7 +73,7 @@ function maakWereld(opts = {}) {
   const bewerk = (rijNr, c, v) => vm.runInContext('bijBewerking', ctx)({ range: range(rijNr, c, 1, 1), value: v });
   const run = naam => vm.runInContext(naam, ctx)();
   const status = rijNr => rijen[rijNr - 1][kol('Status')];
-  return { post, rijen, mails, triggers, toasts, kol, vink, bewerk, run, status };
+  return { post, get, rijen, mails, triggers, toasts, kol, vink, bewerk, run, status, tabs };
 }
 const basis = (mail, n = 1, extra = {}) => ({ Voornaam: 'A', Achternaam: 'B', Mailadress: mail, 'Aantal personen': String(n), Taal: 'nl', ...extra });
 const vijf = { 'Naam persoon (extra 1)': 'a', 'Naam persoon (extra 2)': 'b', 'Naam persoon (extra 3)': 'c', 'Naam persoon (extra 4)': 'd' };
@@ -158,6 +174,45 @@ check('installeren: kolommen erbij, bestaande rij in Wachtrij met vinkje', w.sta
 check('installeren: trigger geïnstalleerd', w.triggers.length === 1 && w.triggers[0].getHandlerFunction() === 'bijBewerking');
 w.run('installeren');
 check('installeren nog eens: geen tweede trigger', w.triggers.length === 1 && w.rijen[0].filter(k => k === 'Status').length === 1);
+
+// 7b. uitnodigingscodes: wachtrij overslaan
+const codes = [['max-k7p4', 'Max', 3, 0], ['stijn-abcd', 'Stijn', 10, 0]];
+w = maakWereld({ plafond: 70, uitnodigingen: codes });
+r = w.get('MAX-K7P4');
+check('GET met geldige code: geldig, van, niet vol (hoofdletters mogen)', r.ok && r.geldig === true && r.van === 'Max' && r.vol === false, r);
+check('GET met onbekende code: ongeldig, zonder lijst', w.get('nep').geldig === false && !('van' in w.get('nep')), w.get('nep'));
+check('GET zonder code: gewone levensteken', /gebruik POST/.test(w.get().info));
+r = w.post(basis('gast1@v.nl', 2, { 'Naam persoon (extra 1)': 'x', Code: 'max-k7p4', Voornaam: 'Gast' }));
+check('aanmelding met code: ok, uitnodiging true, via Max', r.ok === true && r.uitnodiging === true && r.via === 'Max', r);
+check('code: rij meteen Goedgekeurd, vinkje aan, datum, Uitnodiging=Max', w.status(2) === 'Goedgekeurd' && w.rijen[1][w.kol('Goedkeuren')] === true && w.rijen[1][w.kol('Goedgekeurd op')] === '17-09-2026 16:00' && w.rijen[1][w.kol('Uitnodiging')] === 'Max', w.rijen[1]);
+check('code: meteen de "je bent erbij"-mail, geen wachtrij-mail', w.mails.length === 1 && /Je bent erbij/.test(w.mails[0].subject), w.mails.map(m => m.subject));
+check('code: kolom Gebruikt in het tabblad bijgewerkt', w.tabs['Uitnodigingen'].rijen[1][3] === 2, w.tabs['Uitnodigingen'].rijen);
+r = w.post(basis('gast2@v.nl', 2, { 'Naam persoon (extra 1)': 'x', Code: 'max-k7p4' }));
+check('code vol (2+2 > 3): ok, uitnodiging=vol, rij in de wachtrij met wachtrij-mail', r.ok === true && r.uitnodiging === 'vol' && r.via === 'Max' && w.status(3) === 'Wachtrij' && w.rijen[2][w.kol('Uitnodiging')] === '' && /is ontvangen/.test(w.mails[1].subject), [r, w.rijen[2]]);
+check('GET na vol: vol=true', w.get('max-k7p4').vol === false && w.post(basis('gast3@v.nl', 1, { Code: 'max-k7p4' })).uitnodiging === true && w.get('max-k7p4').vol === true, w.get('max-k7p4'));
+r = w.post(basis('gast4@v.nl', 1, { Code: 'bestaat-niet' }));
+check('onbekende code: ok, uitnodiging=onbekend, gewoon wachtrij', r.ok === true && r.uitnodiging === 'onbekend' && w.status(5) === 'Wachtrij', r);
+r = w.post(basis('gast5@v.nl', 1));
+check('zonder code: geen uitnodiging-veld in het antwoord', r.ok === true && !('uitnodiging' in r), r);
+r = w.post(basis('gast1@v.nl', 1, { Code: 'stijn-abcd' }));
+check('dubbel adres met code: nog steeds code bestaat', r.code === 'bestaat', r);
+w.vink(2, false); w.vink(2, true);
+check('uitgenodigde rij uit- en aanvinken werkt als gewone rij', w.status(2) === 'Goedgekeurd' && w.rijen[1][w.kol('Uitnodiging')] === 'Max');
+// zonder tabblad: codes doen niets, aanmelden werkt gewoon
+w = maakWereld();
+r = w.post(basis('a@v.nl', 1, { Code: 'max-k7p4' }));
+check('geen tabblad Uitnodigingen: code onbekend, wachtrij', r.uitnodiging === 'onbekend' && w.status(2) === 'Wachtrij', r);
+check('geen tabblad: GET zegt ongeldig', w.get('max-k7p4').geldig === false);
+// installeren maakt het tabblad met drie codes
+w.run('installeren');
+let tab = w.tabs['Uitnodigingen'];
+check('installeren: tabblad Uitnodigingen met Caesar, Stijn en Max, 10 elk', tab && tab.rijen.length === 4 && tab.rijen.slice(1).map(x => x[1]).join() === 'Caesar,Stijn,Max' && tab.rijen.slice(1).every(x => x[2] === 10), tab && tab.rijen);
+check('installeren: codes zien eruit als naam-xxxx', tab.rijen.slice(1).every(x => /^(caesar|stijn|max)-[a-z0-9]{4}$/.test(x[0])), tab.rijen);
+const codeCaesar = tab.rijen[1][0];
+w.run('installeren');
+check('installeren nog eens: tabblad blijft, codes blijven', w.tabs['Uitnodigingen'].rijen.length === 4 && w.tabs['Uitnodigingen'].rijen[1][0] === codeCaesar);
+check('gegenereerde code werkt meteen', w.get(codeCaesar).geldig === true && w.get(codeCaesar).van === 'Caesar');
+check('kolom Uitnodiging aangemaakt door installeren', w.rijen[0].includes('Uitnodiging'), w.rijen[0]);
 
 // 8. mail mislukt: aanmelding en goedkeuring tellen wel
 w = maakWereld({ mailKapot: true, plafond: 70 });

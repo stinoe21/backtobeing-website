@@ -31,6 +31,11 @@
  *     die al verstuurd is, kun je natuurlijk niet terughalen.
  *   - Menu "Première" in de sheet: geselecteerde rijen in één keer goedkeuren,
  *     en opnieuw installeren als de kolommen of de trigger ontbreken.
+ *   - Uitnodigingen: het tabblad "Uitnodigingen" heeft per persoon een code
+ *     (Code | Van | Max personen | Gebruikt). Wie aanmeldt via
+ *     premiere.html?code=<code> slaat de wachtrij over en is meteen
+ *     goedgekeurd, zolang het maximum van die code niet vol is. De kolom
+ *     "Uitnodiging" in de aanmeldlijst zegt via wie iemand binnenkwam.
  *
  * Verder bij een POST vanaf premiere.html:
  *   - leest de kolomkoppen uit rij 1 en zet de velden op naam in de juiste kolom
@@ -83,7 +88,16 @@ const KOL_GOEDKEUREN = 'Goedkeuren';
 const KOL_GOEDGEKEURD_OP = 'Goedgekeurd op';
 const STATUS_WACHTRIJ = 'Wachtrij';
 const STATUS_GOEDGEKEURD = 'Goedgekeurd';
-const WACHTRIJ_KOPPEN = [KOL_STATUS, KOL_GOEDKEUREN, KOL_GOEDGEKEURD_OP];
+const KOL_UITNODIGING = 'Uitnodiging';
+const WACHTRIJ_KOPPEN = [KOL_STATUS, KOL_GOEDKEUREN, KOL_GOEDGEKEURD_OP, KOL_UITNODIGING];
+
+// Persoonlijke uitnodigingslinks: premiere.html?code=<code>. De codes staan in
+// dit tabblad van de sheet (niet in de repo, die is publiek). installeren maakt
+// het tabblad aan met een code voor iedereen hieronder; pas de codes daarna
+// gerust aan in de sheet.
+const TAB_UITNODIGINGEN = 'Uitnodigingen';
+const UITNODIGING_KOPPEN = ['Code', 'Van', 'Max personen', 'Gebruikt'];
+const UITNODIGING_STANDAARD = [['Caesar', 10], ['Stijn', 10], ['Max', 10]];
 
 function doPost(e) {
   try {
@@ -112,38 +126,68 @@ function doPost(e) {
     rij[KOL_STATUS] = STATUS_WACHTRIJ;
     rij[KOL_GOEDKEUREN] = false;
     rij[KOL_GOEDGEKEURD_OP] = '';
+    rij[KOL_UITNODIGING] = '';
+    const code = String(data['Code'] || '').trim();
 
     let uitkomst;
-    try { uitkomst = schrijfRij(rij); }
+    try { uitkomst = schrijfRij(rij, code); }
     catch (err) { throw new Error('sheet: ' + err); }
 
     // 'bestaat' | 'druk' | 'vol': niets geschreven, dus ook geen mail.
-    if (uitkomst !== 'ok') return antwoord({ ok: false, code: uitkomst });
+    if (uitkomst.status !== 'ok') return antwoord({ ok: false, code: uitkomst.status });
+
+    // Bij een geldige uitnodiging is de rij al goedgekeurd: dan meteen de
+    // "je bent erbij"-mail. Het antwoord zegt de pagina wat er met de code gebeurde:
+    // true (geen wachtrij), 'vol' of 'onbekend' (gewoon in de wachtrij).
+    const uit = { ok: true };
+    if (code) { uit.uitnodiging = uitkomst.uitnodiging; uit.via = uitkomst.van || ''; }
+    const direct = uitkomst.uitnodiging === true;
 
     // De aanmelding staat; een mislukte mail mag die niet laten falen. Maar stil
     // falen is erger: het antwoord zegt of de mail weg is, en zo niet waarom.
-    if (!STUUR_BEVESTIGING) return antwoord({ ok: true, mail: null });
-    const mail = stuurMail(rij, taal, 'wachtrij');
-    return antwoord(mail.ok ? { ok: true, mail: true } : { ok: true, mail: false, mailFout: mail.fout });
+    if (!STUUR_BEVESTIGING) { uit.mail = null; return antwoord(uit); }
+    const mail = stuurMail(rij, taal, direct ? 'goedgekeurd' : 'wachtrij');
+    uit.mail = mail.ok;
+    if (!mail.ok) uit.mailFout = mail.fout;
+    return antwoord(uit);
   } catch (err) {
     console.error(err);
     return antwoord({ ok: false, code: 'fout', fout: String(err) });
   }
 }
 
-// Zodat je in de browser kunt zien dat de deployment leeft.
-function doGet() {
-  return antwoord({ ok: true, info: 'Back to Being première — gebruik POST' });
+// Zodat je in de browser kunt zien dat de deployment leeft. Met ?code=<code>
+// controleert de pagina een uitnodigingslink vóór het invullen: geldig of niet,
+// van wie, en of die al vol is. De lijst zelf gaat nooit naar buiten.
+function doGet(e) {
+  const code = String((e && e.parameter && e.parameter.code) || '').trim();
+  if (!code) return antwoord({ ok: true, info: 'Back to Being première — gebruik POST' });
+  try {
+    const ss = openSpreadsheet();
+    const uit = zoekUitnodiging(ss, code);
+    if (!uit) return antwoord({ ok: true, geldig: false });
+    const sheet = openSheet();
+    const koppen = koppenVan(sheet);
+    const gebruikt = gebruiktVia(sheet, koppen, uit.van);
+    return antwoord({ ok: true, geldig: true, van: uit.van, vol: gebruikt >= uit.max });
+  } catch (err) {
+    console.error(err);
+    return antwoord({ ok: false, code: 'fout', fout: String(err) });
+  }
 }
 
 function nu() {
   return Utilities.formatDate(new Date(), 'Europe/Amsterdam', 'dd-MM-yyyy HH:mm');
 }
 
-function openSheet() {
+function openSpreadsheet() {
   // Gebonden aan de sheet: getActive werkt dan altijd, openById is de
   // terugvaloptie als het script los van de sheet is aangemaakt.
-  const ss = SpreadsheetApp.getActiveSpreadsheet() || SpreadsheetApp.openById(SHEET_ID);
+  return SpreadsheetApp.getActiveSpreadsheet() || SpreadsheetApp.openById(SHEET_ID);
+}
+
+function openSheet() {
+  const ss = openSpreadsheet();
   const sheet = TAB_NAAM ? ss.getSheetByName(TAB_NAAM) : ss.getSheets()[0];
   if (!sheet) throw new Error('Tabblad niet gevonden');
   return sheet;
@@ -167,19 +211,44 @@ function koppenVan(sheet, gewenst) {
 
 /**
  * Schrijft de rij, tenzij er een reden is om dat niet te doen.
- * Geeft terug: 'ok' | 'bestaat' | 'druk' | 'vol'.
+ * Geeft terug { status: 'ok' | 'bestaat' | 'druk' | 'vol', uitnodiging, van }.
+ * uitnodiging: true als de code geldig was en de rij meteen is goedgekeurd,
+ * 'vol' als de code op is, 'onbekend' als de code niet bestaat; anders leeg.
  * Alles gebeurt binnen één slot, zodat twee aanmeldingen op hetzelfde moment
- * niet allebei door de dubbelcheck of langs het plafond glippen.
+ * niet allebei door de dubbelcheck, langs het plafond of langs het maximum van
+ * een uitnodiging glippen.
  */
-function schrijfRij(rij) {
+function schrijfRij(rij, code) {
   const lock = LockService.getScriptLock();
   // Lukt het slot niet binnen 8 s, dan staan er te veel mensen tegelijk te wachten.
-  if (!lock.tryLock(8000)) return 'druk';
+  if (!lock.tryLock(8000)) return { status: 'druk' };
   try {
-    if (!binnenLimiet()) return 'druk';
+    if (!binnenLimiet()) return { status: 'druk' };
 
     const sheet = openSheet();
     const koppen = koppenVan(sheet, Object.keys(rij));
+    const uitkomst = { status: 'ok' };
+
+    // Uitnodigingslink: geldig en nog niet vol, dan meteen goedgekeurd.
+    if (code) {
+      const uit = zoekUitnodiging(openSpreadsheet(), code);
+      if (!uit) {
+        uitkomst.uitnodiging = 'onbekend';
+      } else {
+        uitkomst.van = uit.van;
+        const gebruikt = gebruiktVia(sheet, koppen, uit.van);
+        if (gebruikt + rij['Aantal personen'] > uit.max) {
+          uitkomst.uitnodiging = 'vol';
+        } else {
+          uitkomst.uitnodiging = true;
+          rij[KOL_STATUS] = STATUS_GOEDGEKEURD;
+          rij[KOL_GOEDKEUREN] = true;
+          rij[KOL_GOEDGEKEURD_OP] = nu();
+          rij[KOL_UITNODIGING] = uit.van;
+          schrijfGebruikt(uit, gebruikt + rij['Aantal personen']);
+        }
+      }
+    }
 
     // Bestaande rijen: dubbel mailadres en totaal aantal personen.
     const laatsteRij = sheet.getLastRow();
@@ -189,23 +258,79 @@ function schrijfRij(rij) {
       const rijen = sheet.getRange(2, 1, laatsteRij - 1, koppen.length).getValues();
       let totaal = 0;
       for (let i = 0; i < rijen.length; i++) {
-        if (kMail > -1 && String(rijen[i][kMail]).trim().toLowerCase() === rij['Mailadress']) return 'bestaat';
+        if (kMail > -1 && String(rijen[i][kMail]).trim().toLowerCase() === rij['Mailadress']) return { status: 'bestaat' };
         if (kAantal > -1) totaal += parseInt(rijen[i][kAantal], 10) || 0;
       }
-      if (MAX_AANMELDINGEN_PERSONEN > 0 && totaal + rij['Aantal personen'] > MAX_AANMELDINGEN_PERSONEN) return 'vol';
+      if (MAX_AANMELDINGEN_PERSONEN > 0 && totaal + rij['Aantal personen'] > MAX_AANMELDINGEN_PERSONEN) return { status: 'vol' };
     } else if (MAX_AANMELDINGEN_PERSONEN > 0 && rij['Aantal personen'] > MAX_AANMELDINGEN_PERSONEN) {
-      return 'vol';
+      return { status: 'vol' };
     }
 
     const waarden = koppen.map(k => (k in rij ? rij[k] : ''));
     sheet.appendRow(waarden);
-    // Het vinkje: een echte checkbox in plaats van het woord FALSE.
+    // Het vinkje: een echte checkbox in plaats van het woord TRUE/FALSE.
     const kVink = koppen.indexOf(KOL_GOEDKEUREN);
     if (kVink > -1) sheet.getRange(sheet.getLastRow(), kVink + 1).insertCheckboxes();
-    return 'ok';
+    return uitkomst;
   } finally {
     lock.releaseLock();
   }
+}
+
+/* ---------- uitnodigingen: wachtrij overslaan met een code ---------- */
+
+/** Zoekt de code (hoofdletterongevoelig) in het tabblad Uitnodigingen.
+ *  Geeft { van, max, rijNr } of null. */
+function zoekUitnodiging(ss, code) {
+  const tab = ss.getSheetByName(TAB_UITNODIGINGEN);
+  if (!tab || tab.getLastRow() < 2) return null;
+  const gezocht = String(code).trim().toLowerCase();
+  if (!gezocht) return null;
+  const rijen = tab.getRange(2, 1, tab.getLastRow() - 1, 3).getValues();
+  for (let i = 0; i < rijen.length; i++) {
+    if (String(rijen[i][0]).trim().toLowerCase() === gezocht && String(rijen[i][1]).trim()) {
+      return { van: String(rijen[i][1]).trim(), max: parseInt(rijen[i][2], 10) || 0, rijNr: i + 2 };
+    }
+  }
+  return null;
+}
+
+/** Telt hoeveel personen al via deze uitnodiger binnen zijn (kolom "Uitnodiging"). */
+function gebruiktVia(sheet, koppen, van) {
+  const kVia = koppen.indexOf(KOL_UITNODIGING), kAantal = koppen.indexOf('Aantal personen');
+  const laatsteRij = sheet.getLastRow();
+  if (kVia < 0 || kAantal < 0 || laatsteRij < 2) return 0;
+  const rijen = sheet.getRange(2, 1, laatsteRij - 1, koppen.length).getValues();
+  let n = 0;
+  for (let i = 0; i < rijen.length; i++) {
+    if (String(rijen[i][kVia]).trim().toLowerCase() === van.toLowerCase()) n += parseInt(rijen[i][kAantal], 10) || 0;
+  }
+  return n;
+}
+
+// Ter info in het tabblad: de kolom "Gebruikt". De echte telling komt altijd
+// uit de aanmeldlijst, dus een verwijderde rij telt vanzelf niet meer mee.
+function schrijfGebruikt(uit, n) {
+  try {
+    openSpreadsheet().getSheetByName(TAB_UITNODIGINGEN).getRange(uit.rijNr, 4).setValue(n);
+  } catch (err) { console.error('Gebruikt bijwerken mislukt: ' + err); }
+}
+
+/** Maakt het tabblad Uitnodigingen met een code per persoon, als het nog niet bestaat. */
+function maakUitnodigingenTab(ss) {
+  if (ss.getSheetByName(TAB_UITNODIGINGEN)) return false;
+  const tab = ss.insertSheet(TAB_UITNODIGINGEN);
+  tab.getRange(1, 1, 1, UITNODIGING_KOPPEN.length).setValues([UITNODIGING_KOPPEN]);
+  UITNODIGING_STANDAARD.forEach(([van, max]) => tab.appendRow([nieuweCode(van), van, max, 0]));
+  return true;
+}
+
+// bijv. "max-k7p4": leesbaar, maar niet te raden. Zonder 0/o/1/l-verwarring.
+function nieuweCode(van) {
+  const tekens = 'abcdefghjkmnpqrstuvwxyz23456789';
+  let s = '';
+  for (let i = 0; i < 4; i++) s += tekens.charAt(Math.floor(Math.random() * tekens.length));
+  return String(van).toLowerCase().replace(/[^a-z0-9]+/g, '') + '-' + s;
 }
 
 /* ---------- wachtrij: goedkeuren vanuit de sheet ---------- */
@@ -234,7 +359,9 @@ function installeren() {
   if (!al) {
     ScriptApp.newTrigger('bijBewerking').forSpreadsheet(SpreadsheetApp.getActiveSpreadsheet()).onEdit().create();
   }
-  melding('Wachtrij staat klaar: vink "' + KOL_GOEDKEUREN + '" aan om iemand toe te laten.');
+  const nieuwTab = maakUitnodigingenTab(openSpreadsheet());
+  melding('Wachtrij staat klaar: vink "' + KOL_GOEDKEUREN + '" aan om iemand toe te laten.' +
+    (nieuwTab ? ' Tabblad "' + TAB_UITNODIGINGEN + '" aangemaakt met de uitnodigingscodes.' : ''));
 }
 
 // Menu in de sheet.
@@ -242,7 +369,7 @@ function onOpen() {
   SpreadsheetApp.getUi().createMenu('Première')
     .addItem('Geselecteerde rijen goedkeuren', 'keurSelectieGoed')
     .addSeparator()
-    .addItem('Wachtrij installeren / herstellen', 'installeren')
+    .addItem('Wachtrij en uitnodigingen installeren / herstellen', 'installeren')
     .addToUi();
 }
 
