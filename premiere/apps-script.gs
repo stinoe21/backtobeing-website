@@ -8,8 +8,9 @@
  *   1. Open de sheet → Extensions → Apps Script.
  *   2. Vervang de inhoud van Code.gs door dit bestand → Save.
  *   3. Run → installeren (eenmalig): maakt de kolommen Status / Goedkeuren /
- *      Goedgekeurd op, zet vinkjes bij bestaande rijen en installeert de
- *      trigger die op het vinkje reageert. Sta de toestemmingen toe.
+ *      Goedgekeurd op / Afwijzen / Afgewezen op, zet vinkjes bij bestaande
+ *      rijen en installeert de trigger die op de vinkjes reageert. Sta de
+ *      toestemmingen toe.
  *   4. Deploy → New deployment → type "Web app":
  *        Execute as: Me
  *        Who has access: Anyone
@@ -29,8 +30,14 @@
  *     vinkje weer uit en zie je onderin een melding.
  *   - Vink je het weer uit, dan gaat de Status terug naar "Wachtrij"; de mail
  *     die al verstuurd is, kun je natuurlijk niet terughalen.
- *   - Menu "Première" in de sheet: geselecteerde rijen in één keer goedkeuren,
- *     en opnieuw installeren als de kolommen of de trigger ontbreken.
+ *   - Vink je "Afwijzen" aan, dan zet het script de Status op "Afgewezen",
+ *     vult "Afgewezen op" en stuurt de mail "de première zit helaas vol", met
+ *     de verwijzing naar de documentaire die daarna online komt. Een rij die al
+ *     goedgekeurd is, wijs je niet per ongeluk af: haal daar eerst het vinkje
+ *     bij "Goedkeuren" weg. Vinkje weer uit = terug naar "Wachtrij".
+ *   - Menu "Première" in de sheet: geselecteerde rijen in één keer goedkeuren
+ *     of afwijzen, en opnieuw installeren als de kolommen of de trigger
+ *     ontbreken.
  *   - Uitnodigingen: het tabblad "Uitnodigingen" heeft per persoon een code
  *     (Code | Van | Max personen | Gebruikt). Wie aanmeldt via
  *     premiere.html?code=<code> slaat de wachtrij over en is meteen
@@ -89,7 +96,11 @@ const KOL_GOEDGEKEURD_OP = 'Goedgekeurd op';
 const STATUS_WACHTRIJ = 'Wachtrij';
 const STATUS_GOEDGEKEURD = 'Goedgekeurd';
 const KOL_UITNODIGING = 'Uitnodiging';
-const WACHTRIJ_KOPPEN = [KOL_STATUS, KOL_GOEDKEUREN, KOL_GOEDGEKEURD_OP, KOL_UITNODIGING];
+// Afwijzen: wie er niet bij kan zijn. Een eigen vinkje, los van Goedkeuren.
+const KOL_AFWIJZEN = 'Afwijzen';
+const KOL_AFGEWEZEN_OP = 'Afgewezen op';
+const STATUS_AFGEWEZEN = 'Afgewezen';
+const WACHTRIJ_KOPPEN = [KOL_STATUS, KOL_GOEDKEUREN, KOL_GOEDGEKEURD_OP, KOL_UITNODIGING, KOL_AFWIJZEN, KOL_AFGEWEZEN_OP];
 
 // Persoonlijke uitnodigingslinks: premiere.html?code=<code>. De codes staan in
 // dit tabblad van de sheet (niet in de repo, die is publiek). installeren maakt
@@ -127,6 +138,8 @@ function doPost(e) {
     rij[KOL_GOEDKEUREN] = false;
     rij[KOL_GOEDGEKEURD_OP] = '';
     rij[KOL_UITNODIGING] = '';
+    rij[KOL_AFWIJZEN] = false;
+    rij[KOL_AFGEWEZEN_OP] = '';
     const code = String(data['Code'] || '').trim();
 
     let uitkomst;
@@ -268,9 +281,11 @@ function schrijfRij(rij, code) {
 
     const waarden = koppen.map(k => (k in rij ? rij[k] : ''));
     sheet.appendRow(waarden);
-    // Het vinkje: een echte checkbox in plaats van het woord TRUE/FALSE.
-    const kVink = koppen.indexOf(KOL_GOEDKEUREN);
-    if (kVink > -1) sheet.getRange(sheet.getLastRow(), kVink + 1).insertCheckboxes();
+    // De vinkjes: echte checkboxes in plaats van het woord TRUE/FALSE.
+    [KOL_GOEDKEUREN, KOL_AFWIJZEN].forEach(k => {
+      const kVink = koppen.indexOf(k);
+      if (kVink > -1) sheet.getRange(sheet.getLastRow(), kVink + 1).insertCheckboxes();
+    });
     return uitkomst;
   } finally {
     lock.releaseLock();
@@ -337,8 +352,9 @@ function nieuweCode(van) {
 
 /**
  * Eenmalig uitvoeren (Run → installeren, of via het menu Première):
- * kolommen aanmaken, vinkjes bij bestaande rijen zetten, lege status op
- * "Wachtrij" en de trigger installeren die op het vinkje reageert.
+ * kolommen aanmaken, vinkjes (Goedkeuren en Afwijzen) bij bestaande rijen
+ * zetten, lege status op "Wachtrij" en de trigger installeren die op de
+ * vinkjes reageert.
  * Mag vaker draaien; doet dan niets dubbel.
  */
 function installeren() {
@@ -346,9 +362,11 @@ function installeren() {
   const koppen = koppenVan(sheet, WACHTRIJ_KOPPEN);
   const kStatus = koppen.indexOf(KOL_STATUS) + 1;
   const kVink = koppen.indexOf(KOL_GOEDKEUREN) + 1;
+  const kAfwijzen = koppen.indexOf(KOL_AFWIJZEN) + 1;
   const laatsteRij = sheet.getLastRow();
   if (laatsteRij > 1) {
     sheet.getRange(2, kVink, laatsteRij - 1, 1).insertCheckboxes();
+    sheet.getRange(2, kAfwijzen, laatsteRij - 1, 1).insertCheckboxes();
     const statussen = sheet.getRange(2, kStatus, laatsteRij - 1, 1).getValues();
     for (let i = 0; i < statussen.length; i++) {
       if (!String(statussen[i][0]).trim()) sheet.getRange(i + 2, kStatus).setValue(STATUS_WACHTRIJ);
@@ -360,7 +378,7 @@ function installeren() {
     ScriptApp.newTrigger('bijBewerking').forSpreadsheet(SpreadsheetApp.getActiveSpreadsheet()).onEdit().create();
   }
   const nieuwTab = maakUitnodigingenTab(openSpreadsheet());
-  melding('Wachtrij staat klaar: vink "' + KOL_GOEDKEUREN + '" aan om iemand toe te laten.' +
+  melding('Wachtrij staat klaar: vink "' + KOL_GOEDKEUREN + '" aan om iemand toe te laten, "' + KOL_AFWIJZEN + '" als er geen plek is.' +
     (nieuwTab ? ' Tabblad "' + TAB_UITNODIGINGEN + '" aangemaakt met de uitnodigingscodes.' : ''));
 }
 
@@ -368,14 +386,16 @@ function installeren() {
 function onOpen() {
   SpreadsheetApp.getUi().createMenu('Première')
     .addItem('Geselecteerde rijen goedkeuren', 'keurSelectieGoed')
+    .addItem('Geselecteerde rijen afwijzen', 'wijsSelectieAf')
     .addSeparator()
     .addItem('Wachtrij en uitnodigingen installeren / herstellen', 'installeren')
     .addToUi();
 }
 
 /**
- * Installeerbare onEdit-trigger. Reageert alleen op de kolom "Goedkeuren"
- * onder de kopregel: aan = goedkeuren, uit = terug naar de wachtrij.
+ * Installeerbare onEdit-trigger. Reageert alleen op de kolommen "Goedkeuren"
+ * en "Afwijzen" onder de kopregel: aan = goedkeuren of afwijzen, uit = terug
+ * naar de wachtrij.
  */
 function bijBewerking(e) {
   if (!e || !e.range) return;
@@ -383,11 +403,19 @@ function bijBewerking(e) {
   if (sheet.getSheetId() !== openSheet().getSheetId()) return;
   if (e.range.getRow() < 2 || e.range.getNumRows() !== 1 || e.range.getNumColumns() !== 1) return;
   const koppen = koppenVan(sheet);
-  if (e.range.getColumn() !== koppen.indexOf(KOL_GOEDKEUREN) + 1) return;
+  const kolom = e.range.getColumn();
+  const goedkeuren = kolom === koppen.indexOf(KOL_GOEDKEUREN) + 1;
+  const afwijzen = kolom === koppen.indexOf(KOL_AFWIJZEN) + 1;
+  if (!goedkeuren && !afwijzen) return;
   const aan = e.value === true || e.value === 'TRUE' || e.value === 'true';
   const uit = e.value === false || e.value === 'FALSE' || e.value === 'false';
-  if (aan) keurGoed(sheet, e.range.getRow());
-  else if (uit) zetTerugInWachtrij(sheet, e.range.getRow());
+  if (goedkeuren) {
+    if (aan) keurGoed(sheet, e.range.getRow());
+    else if (uit) zetTerugInWachtrij(sheet, e.range.getRow());
+  } else {
+    if (aan) wijsAf(sheet, e.range.getRow());
+    else if (uit) zetAfwijzingTerug(sheet, e.range.getRow());
+  }
 }
 
 // Menu: alle geselecteerde rijen goedkeuren (wat al goedgekeurd is, slaat het over).
@@ -400,6 +428,18 @@ function keurSelectieGoed() {
     if (keurGoed(sheet, r) === 'ok') n++;
   }
   melding(n === 1 ? '1 aanmelding goedgekeurd.' : n + ' aanmeldingen goedgekeurd.');
+}
+
+// Menu: alle geselecteerde rijen afwijzen (wat al afgewezen of goedgekeurd is, slaat het over).
+function wijsSelectieAf() {
+  const sheet = openSheet();
+  const sel = sheet.getActiveRange();
+  if (!sel) { melding('Selecteer eerst een of meer rijen.'); return; }
+  let n = 0;
+  for (let r = Math.max(2, sel.getRow()); r < sel.getRow() + sel.getNumRows(); r++) {
+    if (wijsAf(sheet, r) === 'ok') n++;
+  }
+  melding(n === 1 ? '1 aanmelding afgewezen.' : n + ' aanmeldingen afgewezen.');
 }
 
 /**
@@ -447,6 +487,9 @@ function keurGoed(sheet, rijNr) {
     sheet.getRange(rijNr, kStatus + 1).setValue(STATUS_GOEDGEKEURD);
     sheet.getRange(rijNr, kOp + 1).setValue(nu());
     if (rij[KOL_GOEDKEUREN] !== true) sheet.getRange(rijNr, kVink + 1).setValue(true);
+    // Was de rij eerder afgewezen (er kwam een plek vrij), dan gaat dat vinkje uit.
+    if (rij[KOL_AFWIJZEN] === true) sheet.getRange(rijNr, koppen.indexOf(KOL_AFWIJZEN) + 1).setValue(false);
+    if (rij[KOL_AFGEWEZEN_OP]) sheet.getRange(rijNr, koppen.indexOf(KOL_AFGEWEZEN_OP) + 1).setValue('');
 
     if (STUUR_BEVESTIGING) {
       const taal = rij['Taal'] === 'en' ? 'en' : 'nl';
@@ -471,6 +514,65 @@ function zetTerugInWachtrij(sheet, rijNr) {
   sheet.getRange(rijNr, kStatus).setValue(STATUS_WACHTRIJ);
   sheet.getRange(rijNr, kOp).setValue('');
   melding('Terug in de wachtrij. Let op: de bevestigingsmail was al verstuurd.');
+}
+
+/**
+ * Wijst één rij af: Status "Afgewezen", datum erbij, vinkje aan en de mail
+ * "de première zit helaas vol". Geeft terug:
+ * 'ok' | 'al' (was al afgewezen) | 'goedgekeurd' (niet afgewezen: haal eerst
+ * het vinkje bij Goedkeuren weg) | 'leeg' (geen aanmelding in de rij).
+ */
+function wijsAf(sheet, rijNr) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    const koppen = koppenVan(sheet, WACHTRIJ_KOPPEN);
+    const kStatus = koppen.indexOf(KOL_STATUS), kVink = koppen.indexOf(KOL_AFWIJZEN);
+    const kOp = koppen.indexOf(KOL_AFGEWEZEN_OP);
+    if (rijNr < 2 || rijNr > sheet.getLastRow()) return 'leeg';
+    const eigen = sheet.getRange(rijNr, 1, 1, koppen.length).getValues()[0];
+    const rij = {};
+    koppen.forEach((k, i) => { rij[k] = eigen[i]; });
+    if (!String(rij['Mailadress'] || '').trim()) return 'leeg';
+    const status = String(rij[KOL_STATUS]).trim();
+    if (status.indexOf(STATUS_AFGEWEZEN) === 0) {
+      if (rij[KOL_AFWIJZEN] !== true) sheet.getRange(rijNr, kVink + 1).setValue(true);
+      return 'al';
+    }
+    // Een bevestigde gast krijgt niet per ongeluk de mail dat het vol zit.
+    if (status.indexOf(STATUS_GOEDGEKEURD) === 0) {
+      sheet.getRange(rijNr, kVink + 1).setValue(false);
+      melding(rij['Mailadress'] + ' is al goedgekeurd en is niet afgewezen. Haal eerst het vinkje bij "' + KOL_GOEDKEUREN + '" weg.');
+      return 'goedgekeurd';
+    }
+
+    sheet.getRange(rijNr, kStatus + 1).setValue(STATUS_AFGEWEZEN);
+    sheet.getRange(rijNr, kOp + 1).setValue(nu());
+    if (rij[KOL_AFWIJZEN] !== true) sheet.getRange(rijNr, kVink + 1).setValue(true);
+
+    if (STUUR_BEVESTIGING) {
+      const taal = rij['Taal'] === 'en' ? 'en' : 'nl';
+      const mail = stuurMail(rij, taal, 'afgewezen');
+      if (!mail.ok) {
+        sheet.getRange(rijNr, kStatus + 1).setValue(STATUS_AFGEWEZEN + ' (mail mislukt)');
+        melding('Afgewezen, maar de mail naar ' + rij['Mailadress'] + ' is niet verstuurd: ' + mail.fout);
+      }
+    }
+    return 'ok';
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// Vinkje bij Afwijzen uit: terug naar de wachtrij. De mail blijft verstuurd.
+function zetAfwijzingTerug(sheet, rijNr) {
+  const koppen = koppenVan(sheet, WACHTRIJ_KOPPEN);
+  const kStatus = koppen.indexOf(KOL_STATUS) + 1, kOp = koppen.indexOf(KOL_AFGEWEZEN_OP) + 1;
+  const status = String(sheet.getRange(rijNr, kStatus).getValue()).trim();
+  if (status.indexOf(STATUS_AFGEWEZEN) !== 0) return;
+  sheet.getRange(rijNr, kStatus).setValue(STATUS_WACHTRIJ);
+  sheet.getRange(rijNr, kOp).setValue('');
+  melding('Terug in de wachtrij. Let op: de mail dat het vol zit was al verstuurd.');
 }
 
 // Klein bericht onderin de sheet; buiten de sheet (web-app) alleen in het log.
@@ -511,9 +613,12 @@ const MAIL_LINKS = {
   contact: 'caesar.schoorl@gmail.com',
 };
 
-// Teksten van de twee mails. De algemene regels staan per taal bovenaan; per
-// soort ('wachtrij' na de aanmelding, 'goedgekeurd' na het vinkje in de sheet)
-// verschillen onderwerp, preheader, titel, intro en de titel van het kaartje.
+// Teksten van de drie mails. De algemene regels staan per taal bovenaan; per
+// soort ('wachtrij' na de aanmelding, 'goedgekeurd' en 'afgewezen' na een
+// vinkje in de sheet) verschillen onderwerp, preheader, titel, intro en de
+// titel van het kaartje. Een soort mag ook een algemene regel overschrijven.
+// Leeg = weglaten: 'afgewezen' heeft geen kaartje en geen voetnoot, wel een
+// tweede alinea ('vervolg').
 const MAIL_TEKST = {
   nl: {
     aanhef: 'Beste {{naam}},',
@@ -527,9 +632,9 @@ const MAIL_TEKST = {
     website: 'Website',
     wachtrij: {
       onderwerp: 'Je aanmelding voor de première van Back to Being is ontvangen',
-      preheader: 'Je staat in de wachtrij. Zodra we je plek kunnen bevestigen, hoor je van ons.',
+      preheader: 'Je staat in de wachtrij. We laten je zo snel mogelijk weten of er een plek voor je is.',
       titel: 'Je staat in de wachtrij voor de première van Back to Being',
-      intro: 'Wat fijn dat je erbij wilt zijn. We hebben je aanmelding ontvangen en je staat nu in de wachtrij. Er is plek voor 70 mensen, dus we bekijken de aanmeldingen één voor één. Zodra we je plek kunnen bevestigen, krijg je van ons een mail.',
+      intro: 'Wat fijn dat je erbij wilt zijn. We hebben je aanmelding ontvangen en je staat nu in de wachtrij. Er is plek voor 70 mensen, dus we bekijken de aanmeldingen één voor één. We laten je zo snel mogelijk per mail weten of er een plek voor je is.',
       kaartTitel: 'Aanmeldingsgegevens',
     },
     goedgekeurd: {
@@ -538,6 +643,16 @@ const MAIL_TEKST = {
       titel: 'Je plek voor de première van Back to Being is bevestigd',
       intro: 'Goed nieuws: je bent erbij. Wat ontzettend fijn dat je komt. We kijken er enorm naar uit om dit bijzondere moment samen te beleven en de documentaire voor het eerst met jou te delen.',
       kaartTitel: 'Je plek',
+    },
+    afgewezen: {
+      onderwerp: 'De première van Back to Being zit helaas vol',
+      preheader: 'We hebben helaas geen plek meer. Na de première komt de documentaire naar verwachting online.',
+      titel: 'De première zit helaas vol',
+      intro: 'Wat fijn dat je erbij wilde zijn. Helaas moeten we je teleurstellen: er waren veel meer aanmeldingen dan de 70 plekken die we hebben, en de zaal zit vol. We hebben daardoor geen plek meer voor je.',
+      vervolg: 'Je hoeft de documentaire niet te missen. Na de première op 3 november komt hij naar verwachting online; zodra het zover is, vind je hem op backtobeing.tech en op onze socials. Daarnaast zoeken we naar een andere manier om iedereen die er niet bij kan zijn toch iets van de avond mee te laten maken.',
+      kaartTitel: '',
+      noot: '',
+      groet: 'Hartelijke groet,',
     },
   },
   en: {
@@ -552,9 +667,9 @@ const MAIL_TEKST = {
     website: 'Website',
     wachtrij: {
       onderwerp: 'We received your sign-up for the premiere of Back to Being',
-      preheader: 'You are on the waiting list. As soon as we can confirm your place, we will let you know.',
+      preheader: 'You are on the waiting list. We will let you know as soon as possible whether there is a place for you.',
       titel: 'You are on the waiting list for the premiere of Back to Being',
-      intro: "We're glad you want to be there. We received your sign-up and you are now on the waiting list. There is room for 70 people, so we go through the sign-ups one by one. As soon as we can confirm your place, you will get an email from us.",
+      intro: "We're glad you want to be there. We received your sign-up and you are now on the waiting list. There is room for 70 people, so we go through the sign-ups one by one. We will let you know by email as soon as possible whether there is a place for you.",
       kaartTitel: 'Registration Information',
     },
     goedgekeurd: {
@@ -563,6 +678,16 @@ const MAIL_TEKST = {
       titel: 'Your place at the premiere of Back to Being is confirmed',
       intro: "Good news: you're in. We're really looking forward to experiencing this special moment together and sharing the documentary with you for the first time.",
       kaartTitel: 'Your place',
+    },
+    afgewezen: {
+      onderwerp: 'The premiere of Back to Being is unfortunately full',
+      preheader: 'We have no places left. After the premiere the documentary is expected to come online.',
+      titel: 'The premiere is unfortunately full',
+      intro: 'Thank you for wanting to be there. We are sorry to disappoint you: there were many more sign-ups than the 70 places we have, and the room is full. That means we have no place left for you.',
+      vervolg: 'You do not have to miss the documentary. After the premiere on 3 November we expect to put it online; as soon as it is there, you will find it on backtobeing.tech and on our socials. We are also looking for another way to let everyone who cannot be in the room share in the evening.',
+      kaartTitel: '',
+      noot: '',
+      groet: 'Warm regards,',
     },
   },
 };
@@ -573,27 +698,29 @@ function escapeHtml(s) {
 
 /**
  * Bouwt een mail (onderwerp, platte tekst en HTML) uit de rij.
- * soort: 'wachtrij' (na de aanmelding) of 'goedgekeurd' (na het vinkje).
+ * soort: 'wachtrij' (na de aanmelding), 'goedgekeurd' of 'afgewezen' (na een
+ * vinkje in de sheet).
  * Placeholders: {{naam}} = voornaam in de aanhef, volledige naam op het kaartje;
  * het aantal personen komt uit de rij.
  */
 function bouwMail(rij, taal, soort) {
   const basis = MAIL_TEKST[taal === 'en' ? 'en' : 'nl'];
-  const t = Object.assign({}, basis, basis[soort === 'goedgekeurd' ? 'goedgekeurd' : 'wachtrij']);
+  const t = Object.assign({}, basis, basis[soort === 'goedgekeurd' || soort === 'afgewezen' ? soort : 'wachtrij']);
   const voornaam = rij['Voornaam'];
   const volledigeNaam = (rij['Voornaam'] + ' ' + rij['Achternaam']).trim();
   const aantal = String(rij['Aantal personen']);
   const k = MAIL_KLEUR;
 
-  const tekst =
-    t.aanhef.replace('{{naam}}', voornaam) + '\n\n' +
-    t.intro + '\n\n' +
-    t.kaartTitel + '\n' +
-    t.bezoeker + ': ' + volledigeNaam + '\n' +
-    t.aantal + ': ' + aantal + '\n\n' +
-    t.noot + '\n\n' +
-    t.groet + '\n' + t.team + '\n\n' +
-    t.reden + '\n' + MAIL_LINKS.website;
+  // Lege onderdelen (vervolg, kaartje, voetnoot) vallen weg.
+  const tekst = [
+    t.aanhef.replace('{{naam}}', voornaam),
+    t.intro,
+    t.vervolg,
+    t.kaartTitel && (t.kaartTitel + '\n' + t.bezoeker + ': ' + volledigeNaam + '\n' + t.aantal + ': ' + aantal),
+    t.noot,
+    t.groet + '\n' + t.team,
+    t.reden + '\n' + MAIL_LINKS.website,
+  ].filter(Boolean).join('\n\n');
 
   const link = (href, label) =>
     '<a href="' + href + '" style="color:' + k.inkLicht + ';font-family:' + MAIL_SANS + ';font-size:11px;text-decoration:underline;">' + label + '</a>';
@@ -622,8 +749,10 @@ function bouwMail(rij, taal, soort) {
     '<tr><td style="padding:0 32px 24px;">' +
     '<p style="margin:0 0 20px;font-family:' + MAIL_SANS + ';font-size:15px;font-weight:500;color:' + k.ink + ';">' + escapeHtml(t.aanhef.replace('{{naam}}', voornaam)) + '</p>' +
     '<p style="margin:0 0 20px;font-family:' + MAIL_SANS + ';font-size:14px;line-height:1.6;color:' + k.ink + ';">' + escapeHtml(t.intro) + '</p>' +
+    (t.vervolg ? '<p style="margin:0 0 20px;font-family:' + MAIL_SANS + ';font-size:14px;line-height:1.6;color:' + k.ink + ';">' + escapeHtml(t.vervolg) + '</p>' : '') +
 
-    // Kaartje met aanmeldingsgegevens
+    // Kaartje met aanmeldingsgegevens (niet in de afwijzingsmail)
+    (t.kaartTitel ?
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:' + k.kaart + ';border:1px solid ' + k.sand + ';border-radius:11px;">' +
     '<tr><td style="padding:24px;">' +
     '<div style="margin:0 0 16px;font-family:' + MAIL_SERIF + ';font-style:italic;font-size:20px;color:' + k.tree + ';">' + escapeHtml(t.kaartTitel) + '</div>' +
@@ -632,10 +761,10 @@ function bouwMail(rij, taal, soort) {
     '<tr><td colspan="2" style="border-top:1px solid ' + k.lijn + ';font-size:0;line-height:0;">&nbsp;</td></tr>' +
     '<tr><td style="padding:8px 0 0;color:' + k.inkLicht + ';">' + escapeHtml(t.aantal) + '</td><td align="right" style="padding:8px 0 0;font-weight:600;">' + escapeHtml(aantal) + '</td></tr>' +
     '</table>' +
-    '</td></tr></table>' +
+    '</td></tr></table>' : '') +
 
-    '<p style="margin:20px 0 0;font-family:' + MAIL_SANS + ';font-size:13px;line-height:1.6;color:' + k.inkZacht + ';">' + escapeHtml(t.noot) + '</p>' +
-    '<p style="margin:36px 0 0;font-family:' + MAIL_SANS + ';font-size:14px;color:' + k.ink + ';">' + escapeHtml(t.groet) + '</p>' +
+    (t.noot ? '<p style="margin:20px 0 0;font-family:' + MAIL_SANS + ';font-size:13px;line-height:1.6;color:' + k.inkZacht + ';">' + escapeHtml(t.noot) + '</p>' : '') +
+    '<p style="margin:' + (t.kaartTitel || t.noot ? '36px' : '16px') + ' 0 0;font-family:' + MAIL_SANS + ';font-size:14px;color:' + k.ink + ';">' + escapeHtml(t.groet) + '</p>' +
     '<p style="margin:4px 0 0;font-family:' + MAIL_SERIF + ';font-style:italic;font-size:18px;color:' + k.tree + ';">' + escapeHtml(t.team) + '</p>' +
     '</td></tr>' +
 
@@ -680,8 +809,8 @@ function stuurMail(rij, taal, soort) {
 
 /**
  * Handmatige test van alleen de mails: Run → testMail.
- * Stuurt de echte wachtrij-mail en de goedkeuringsmail (NL) naar jezelf, zonder
- * iets in de sheet te zetten. Bewust zonder try/catch: ontbreekt de toestemming
+ * Stuurt de echte wachtrij-mail, de goedkeuringsmail en de afwijzingsmail (NL)
+ * naar jezelf, zonder iets in de sheet te zetten. Bewust zonder try/catch: ontbreekt de toestemming
  * om te mailen, dan vraagt Google er nu om, en elke andere fout staat leesbaar
  * in het Execution log.
  */
@@ -689,11 +818,11 @@ function testMail() {
   const aan = Session.getActiveUser().getEmail();
   console.log('Nog te versturen vandaag: ' + MailApp.getRemainingDailyQuota());
   const rij = { 'Voornaam': 'Test', 'Achternaam': 'Persoon', 'Mailadress': aan, 'Aantal personen': 2 };
-  ['wachtrij', 'goedgekeurd'].forEach(soort => {
+  ['wachtrij', 'goedgekeurd', 'afgewezen'].forEach(soort => {
     const mail = bouwMail(rij, 'nl', soort);
     MailApp.sendEmail({ to: aan, subject: 'Test: ' + mail.onderwerp, body: mail.tekst, htmlBody: mail.html, name: AFZENDER_NAAM });
   });
-  console.log('Twee testmails verstuurd naar ' + aan);
+  console.log('Drie testmails verstuurd naar ' + aan);
 }
 
 function antwoord(obj) {

@@ -64,16 +64,17 @@ function maakWereld(opts = {}) {
   const get = code => JSON.parse(vm.runInContext('doGet', ctx)({ parameter: code ? { code } : {} }).getContent());
   const kol = naam => rijen[0].findIndex(k => String(k).trim() === naam);
   // Nabootsing van het vinkje in de sheet: waarde zetten en de trigger afvuren.
-  const vink = (rijNr, aan) => {
-    const c = kol('Goedkeuren') + 1;
+  const vink = (rijNr, aan, kolom = 'Goedkeuren') => {
+    const c = kol(kolom) + 1;
     rijen[rijNr - 1][c - 1] = aan;
     vm.runInContext('bijBewerking', ctx)({ range: range(rijNr, c, 1, 1), value: aan ? 'TRUE' : 'FALSE' });
   };
+  const vinkAf = (rijNr, aan) => vink(rijNr, aan, 'Afwijzen');
   // Een bewerking ergens anders in de sheet, zonder de waarde te zetten.
   const bewerk = (rijNr, c, v) => vm.runInContext('bijBewerking', ctx)({ range: range(rijNr, c, 1, 1), value: v });
   const run = naam => vm.runInContext(naam, ctx)();
   const status = rijNr => rijen[rijNr - 1][kol('Status')];
-  return { post, get, rijen, mails, triggers, toasts, kol, vink, bewerk, run, status, tabs };
+  return { post, get, rijen, mails, triggers, toasts, kol, vink, vinkAf, bewerk, run, status, tabs };
 }
 const basis = (mail, n = 1, extra = {}) => ({ Voornaam: 'A', Achternaam: 'B', Mailadress: mail, 'Aantal personen': String(n), Taal: 'nl', ...extra });
 const vijf = { 'Naam persoon (extra 1)': 'a', 'Naam persoon (extra 2)': 'b', 'Naam persoon (extra 3)': 'c', 'Naam persoon (extra 4)': 'd' };
@@ -165,6 +166,52 @@ for (let i = 0; i < 4; i++) w.post(basis('s' + i + '@v.nl'));
 w.run('keurSelectieGoed');
 check('menu: rijen 2 t/m 4 goedgekeurd, rij 5 niet', [2,3,4].every(n => w.status(n) === 'Goedgekeurd') && w.status(5) === 'Wachtrij', w.rijen.map(x => x[w.kol('Status')]));
 check('menu: drie goedkeuringsmails, vinkjes aan', w.mails.length === 7 && [1,2,3].every(i => w.rijen[i][w.kol('Goedkeuren')] === true), w.mails.length);
+
+// 6b. afwijzen via het vinkje
+w = maakWereld({ plafond: 70 });
+w.post(basis('anna@v.nl', 2, { Voornaam: 'Anna', Achternaam: 'de Vries', 'Naam persoon (extra 1)': 'x' }));
+w.post(basis('tom@v.nl', 1, { Voornaam: 'Tom', Taal: 'en' }));
+w.post(basis('eva@v.nl', 1, { Voornaam: 'Eva' }));
+check('nieuwe aanmelding: kolommen Afwijzen en Afgewezen op, vinkje leeg', w.rijen[0].includes('Afwijzen') && w.rijen[0].includes('Afgewezen op') && w.rijen[1][w.kol('Afwijzen')] === false && w.rijen[1][w.kol('Afgewezen op')] === '', w.rijen.slice(0, 2));
+w.vinkAf(2, true);
+check('afwijzen -> Status Afgewezen met datum', w.status(2) === 'Afgewezen' && w.rijen[1][w.kol('Afgewezen op')] === '17-09-2026 16:00', w.rijen[1]);
+let af = w.mails[3];
+check('afwijzing stuurt de "zit helaas vol"-mail', w.mails.length === 4 && /zit helaas vol/.test(af.subject) && /Beste Anna,/.test(af.htmlBody), w.mails.map(x => x.subject));
+check('afwijzingsmail: documentaire online en andere manier genoemd', /naar verwachting online/.test(af.htmlBody) && /andere manier/.test(af.htmlBody) && /naar verwachting online/.test(af.body), af.body);
+check('afwijzingsmail: geen kaartje, geen locatie, geen lege regels', !/Aanmeldingsgegevens|Je plek|Bezoeker|Vondelpark 3/.test(af.htmlBody) && !/Bezoeker|Vondelpark 3/.test(af.body) && !/\n\n\n/.test(af.body) && !/undefined/.test(af.htmlBody + af.body), af.body);
+check('afwijzing telt niet mee in de zaal en andere rijen blijven staan', w.status(3) === 'Wachtrij' && w.status(4) === 'Wachtrij');
+w.vinkAf(2, true);
+check('nog eens afwijzen -> geen tweede mail', w.mails.length === 4, w.mails.length);
+w.vinkAf(3, true);
+check('EN-rij krijgt de Engelse afwijzingsmail', /unfortunately full/.test(w.mails[4].subject) && /Dear Tom,/.test(w.mails[4].htmlBody) && /expect to put it online/.test(w.mails[4].htmlBody) && !/Beste|helaas|Hartelijke/.test(w.mails[4].htmlBody), w.mails[4].subject);
+w.vinkAf(2, false);
+check('afwijzen uit -> terug naar Wachtrij, datum leeg, melding, geen mail', w.status(2) === 'Wachtrij' && w.rijen[1][w.kol('Afgewezen op')] === '' && /al verstuurd/.test(w.toasts.at(-1)) && w.mails.length === 5, [w.rijen[1], w.toasts]);
+w.vink(4, true);
+w.vinkAf(4, true);
+check('goedgekeurde rij afwijzen: geweigerd, vinkje weer uit, geen mail, melding', w.status(4) === 'Goedgekeurd' && w.rijen[3][w.kol('Afwijzen')] === false && w.mails.length === 6 && /al goedgekeurd/.test(w.toasts.at(-1)), [w.rijen[3], w.toasts.at(-1), w.mails.length]);
+w.vink(3, true);
+check('afgewezen rij alsnog goedkeuren: Goedgekeurd, afwijsvinkje en datum weg, "je bent erbij"-mail', w.status(3) === 'Goedgekeurd' && w.rijen[2][w.kol('Afwijzen')] === false && w.rijen[2][w.kol('Afgewezen op')] === '' && /You are in/.test(w.mails[6].subject), [w.rijen[2], w.mails.map(x => x.subject)]);
+w.vink(3, false); w.vinkAf(3, true); w.vink(3, false);
+check('vinkje Goedkeuren uit op een afgewezen rij doet niets', w.status(3) === 'Afgewezen', w.rijen[2]);
+// menu: geselecteerde rijen afwijzen; goedgekeurde rijen slaat het over
+w = maakWereld({ plafond: 70, selectie: [2, 4] });
+for (let i = 0; i < 4; i++) w.post(basis('s' + i + '@v.nl'));
+w.vink(3, true);
+w.run('wijsSelectieAf');
+check('menu afwijzen: rij 2 en 4 afgewezen, 3 blijft goedgekeurd, 5 in de wachtrij', w.status(2) === 'Afgewezen' && w.status(3) === 'Goedgekeurd' && w.status(4) === 'Afgewezen' && w.status(5) === 'Wachtrij' && /2 aanmeldingen afgewezen/.test(w.toasts.at(-1)), [w.rijen.map(x => x[w.kol('Status')]), w.toasts]);
+check('menu afwijzen: twee afwijzingsmails', w.mails.filter(x => /zit helaas vol/.test(x.subject)).length === 2, w.mails.map(x => x.subject));
+// mail mislukt bij afwijzen
+w = maakWereld({ mailKapot: true });
+w.post(basis('m@v.nl'));
+w.vinkAf(2, true);
+check('afwijzing met kapotte mail: status meldt het', /Afgewezen \(mail mislukt\)/.test(w.status(2)) && /niet verstuurd/.test(w.toasts.at(-1)), [w.status(2), w.toasts]);
+// bestaande sheet zonder de nieuwe kolommen: installeren zet ze erbij
+w = maakWereld();
+w.rijen.push(['Oud','Persoon','oud@v.nl',1,'','','','']);
+w.run('installeren');
+check('installeren: kolom Afwijzen met leeg vinkje bij bestaande rij', w.rijen[0].includes('Afwijzen') && w.rijen[0].includes('Afgewezen op') && w.rijen[1][w.kol('Afwijzen')] === false, w.rijen);
+w.vinkAf(2, true);
+check('installeren + afwijzen werkt op een bestaande rij', w.status(2) === 'Afgewezen' && w.mails.length === 1, w.rijen[1]);
 
 // 7. installeren: kolommen, vinkjes, lege status, trigger (en nog eens is niets dubbel)
 w = maakWereld();

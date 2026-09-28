@@ -16,7 +16,7 @@ Voornaam | Achternaam | Mailadress | Aantal personen | Naam persoon (extra 1) | 
 ```
 
 Het script zet er zelf `Taal`, `Ingeschreven op`, `Status`, `Goedkeuren`,
-`Goedgekeurd op` en `Uitnodiging` achter. Kolommen mogen van plek wisselen: het script zoekt op
+`Goedgekeurd op`, `Uitnodiging`, `Afwijzen` en `Afgewezen op` achter. Kolommen mogen van plek wisselen: het script zoekt op
 naam in rij 1.
 
 ## Hoe een aanmelding loopt
@@ -51,6 +51,27 @@ naam in rij 1.
   Executions.
 
 Handig: filter of sorteer op de kolom `Status` om de wachtrij te zien.
+
+## Afwijzen: geen plek meer
+
+- **Vink `Afwijzen` aan** bij een rij. Het script zet dan `Status` op
+  `Afgewezen`, vult `Afgewezen op` en stuurt de mail "de première zit helaas
+  vol": de documentaire komt daarna naar verwachting online, en we zoeken naar
+  een andere manier om mensen de avond toch mee te laten maken.
+- **Een goedgekeurde rij wijs je niet per ongeluk af**: het vinkje gaat vanzelf
+  weer uit en er gaat geen mail weg. Haal eerst het vinkje bij `Goedkeuren` weg.
+- **Vink je het weer uit**, dan gaat de status terug naar `Wachtrij`. De mail
+  die al verstuurd is, gaat niet terug.
+- **Komt er toch een plek vrij**: vink bij een afgewezen rij `Goedkeuren` aan.
+  De rij wordt `Goedgekeurd`, het vinkje bij `Afwijzen` gaat uit en de persoon
+  krijgt de "je bent erbij"-mail.
+- **Meerdere tegelijk**: selecteer de rijen en kies menu **Première →
+  Geselecteerde rijen afwijzen**. Rijen die al afgewezen of goedgekeurd zijn
+  slaat het over. Let op het mailquotum (100 per dag): wijs grote groepen
+  verspreid over meerdere dagen af.
+- Afgewezen personen tellen niet mee voor de 70 plekken. Hun mailadres blijft
+  wel in de sheet staan, dus opnieuw aanmelden met hetzelfde adres kan niet.
+- Lukt de mail niet, dan staat er `Afgewezen (mail mislukt)` in de statuskolom.
 
 ## Uitnodigingslinks: wachtrij overslaan
 
@@ -134,9 +155,10 @@ De logica is lokaal te testen zonder Google: zie `test-apps-script.js`
 1. Open de sheet → **Extensions → Apps Script**.
 2. Vervang de inhoud van `Code.gs` door `apps-script.gs` → Save.
 3. Kies bovenin de functie **`installeren`** → **Run** → toestemmingen toestaan.
-   Dit maakt de kolommen `Status`, `Goedkeuren`, `Goedgekeurd op` en
-   `Uitnodiging`, zet vinkjes bij bestaande rijen (die komen in `Wachtrij`; vink
-   aan wie er al bij hoort), installeert de trigger die op het vinkje reageert en
+   Dit maakt de kolommen `Status`, `Goedkeuren`, `Goedgekeurd op`,
+   `Uitnodiging`, `Afwijzen` en `Afgewezen op`, zet vinkjes bij bestaande rijen
+   (die komen in `Wachtrij`; vink aan wie er al bij hoort), installeert de
+   trigger die op de vinkjes reageert en
    maakt het tabblad `Uitnodigingen` met de drie codes. Herlaad de sheet: het menu
    **Première** staat nu naast Help.
 4. **Deploy → New deployment** → type **Web app** → *Execute as: Me* ·
@@ -150,6 +172,8 @@ De logica is lokaal te testen zonder Google: zie `test-apps-script.js`
 Wijzig je het script later, dan moet je opnieuw deployen:
 **Deploy → Manage deployments → potlood → Version: New version → Deploy.**
 De trigger hoeft niet opnieuw; die wijst naar de functie, niet naar een versie.
+Komen er kolommen bij (zoals `Afwijzen`), draai dan ook `installeren` nog een
+keer: dat zet de vinkjes bij de bestaande rijen en doet verder niets dubbel.
 
 Is er bestaande data in de sheet van vóór de wachtrij, dan hebben die mensen de
 oude mail "je bent aangemeld" gekregen. Na `installeren` staan ze in `Wachtrij`;
@@ -160,9 +184,9 @@ vink ze aan om ze de bevestiging te sturen, of laat ze staan.
 Het formulier heeft een verborgen veld `website`. Vult een bot dat in, dan toont
 de pagina de bedanktekst zonder dat er iets in de sheet komt.
 
-## De twee mails
+## De drie mails
 
-Beide mails zijn HTML, vanuit het Google-account dat het script deployt
+Alle mails zijn HTML, vanuit het Google-account dat het script deployt
 (afzendernaam `AFZENDER_NAAM`), met hetzelfde ontwerp uit Figma, frames
 `back-to-being-mailing-nl` en `back-to-being-mailing-en`:
 - NL: https://www.figma.com/design/sAa0ga3n6JuO2OyhgKcuqp/Untitled?node-id=6-5
@@ -171,7 +195,12 @@ Beide mails zijn HTML, vanuit het Google-account dat het script deployt
 | soort | wanneer | onderwerp (NL) |
 | --- | --- | --- |
 | `wachtrij` | direct na de aanmelding | "Je aanmelding voor de première van Back to Being is ontvangen" |
-| `goedgekeurd` | na het vinkje in de sheet | "Je bent erbij: je plek voor de première van Back to Being is bevestigd" |
+| `goedgekeurd` | na het vinkje `Goedkeuren` in de sheet | "Je bent erbij: je plek voor de première van Back to Being is bevestigd" |
+| `afgewezen` | na het vinkje `Afwijzen` in de sheet | "De première van Back to Being zit helaas vol" |
+
+De wachtrij- en de goedkeuringsmail hebben een kaartje met de aanmeldgegevens
+en een voetnoot met datum, tijd en locatie. De afwijzingsmail heeft die niet,
+maar wel een tweede alinea (`vervolg`) over de documentaire die online komt.
 
 - De taal volgt de kolom `Taal` (de taalknop op de pagina): `nl` krijgt de
   Nederlandse mail, `en` de Engelse.
@@ -179,15 +208,16 @@ Beide mails zijn HTML, vanuit het Google-account dat het script deployt
   kaartje; het aantal personen komt uit de rij. Namen worden HTML-veilig gemaakt.
 - Elke mail heeft ook een platte-tekstversie voor clients zonder HTML.
 - Teksten staan in `MAIL_TEKST` in `apps-script.gs`: per taal de algemene regels,
-  en onder `wachtrij` en `goedgekeurd` onderwerp, preheader, titel, intro en de
-  titel van het kaartje. Kleuren en links in `MAIL_KLEUR` en `MAIL_LINKS`.
+  en onder `wachtrij`, `goedgekeurd` en `afgewezen` onderwerp, preheader, titel,
+  intro en de titel van het kaartje. Een lege `kaartTitel` of `noot` laat dat
+  onderdeel weg. Kleuren en links in `MAIL_KLEUR` en `MAIL_LINKS`.
   "Voorkeuren aanpassen" is een mailto naar het contactadres; er is geen
   voorkeurenpagina.
 - Lettertypes (Instrument Serif, Inter) laden via Google Fonts. Gmail toont in
   plaats daarvan Georgia en Arial; de opmaak blijft verder gelijk.
 
 Lokaal bekijken zonder te versturen: `node premiere/test-apps-script.js` test de
-inhoud; wil je de mails zien, run dan in Apps Script `testMail` (stuurt beide
+inhoud; wil je de mails zien, run dan in Apps Script `testMail` (stuurt de drie
 Nederlandse versies naar jezelf, zonder rij in de sheet).
 
 ## Mail controleren
@@ -197,7 +227,7 @@ Het antwoord van het script op een aanmelding zegt of het versturen gelukt is:
 De aanmelding staat in beide gevallen in de sheet.
 
 Komt er geen mail aan, run dan in Apps Script de functie **`testMail`**. Die
-stuurt de twee mails één keer naar jezelf, zonder iets in de sheet te zetten.
+stuurt de drie mails één keer naar jezelf, zonder iets in de sheet te zetten.
 Ontbreekt de toestemming om te mailen, dan vraagt Google er op dat moment om;
 elke andere fout staat in het Execution log. Daarna opnieuw deployen als New version.
 
@@ -205,5 +235,5 @@ elke andere fout staat in het Execution log. Daarna opnieuw deployen als New ver
 
 `MailApp` mag vanuit een gewoon Gmail-account 100 mails per dag sturen, vanuit
 Google Workspace 1500. Elke aanmelding kost nu twee mails (wachtrij plus
-goedkeuring), dus reken met zo'n 50 aanmeldingen per dag; zet anders
+goedkeuring of afwijzing), dus reken met zo'n 50 aanmeldingen per dag; zet anders
 `STUUR_BEVESTIGING` op `false` in het script.
