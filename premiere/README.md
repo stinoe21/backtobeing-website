@@ -1,7 +1,7 @@
 # Première · inschrijvingen met wachtrij
 
 `premiere.html` (in de root, live op `/premiere`) is één scherm: de aankondiging
-van de première in november en een formulier om je aan te melden. Wie zich
+van de première op 3 november 2026 (Het Vondelpark Paviljoen, Amsterdam) en een formulier om je aan te melden. Wie zich
 aanmeldt komt in de **wachtrij**; jij keurt in de sheet goed wie erbij is.
 
 ## Waar de data heen gaat

@@ -9,13 +9,13 @@
   <link rel="icon" href="favicon-512.png" type="image/png" sizes="512x512" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="canonical" href="https://backtobeing.tech/premiere" />
-  <meta name="description" content="In november gaat Back to Being in première: zes dagen Camino, 129 kilometer en een app gebouwd onderweg. Meld je aan en hoor als eerste waar en hoe laat." />
+  <meta name="description" content="Op dinsdag 3 november gaat Back to Being in première in Het Vondelpark Paviljoen in Amsterdam: zes dagen Camino, 129 kilometer en een app gebouwd onderweg. Meld je aan." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#fffef1" />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Back to Being gaat in première" />
-  <meta property="og:description" content="Zes dagen Camino, 129 kilometer en een app gebouwd onderweg. In november op één avond te zien. Meld je aan." />
+  <meta property="og:description" content="Zes dagen Camino, 129 kilometer en een app gebouwd onderweg. Op 3 november op één avond te zien in Het Vondelpark Paviljoen, Amsterdam. Meld je aan." />
   <meta property="og:locale" id="ogLocale" content="nl_NL" />
   <meta property="og:site_name" content="Back to Being" />
   <meta property="og:url" content="https://backtobeing.tech/premiere" />
@@ -36,7 +36,7 @@
        dezelfde nav. Wijzig je daar iets aan de huisstijl, doe het hier ook.
 
        Opzet: één scherm op desktop, met de footer van de hoofdsite eronder. Links de
-       aankondiging (november, plaats en tijd volgen), rechts het formulier
+       aankondiging (met wanneer en waar), rechts het formulier
        om je in te schrijven. Op mobiel staan ze onder elkaar en scrolt de
        pagina wél, want een formulier met vijf namen past niet op een
        telefoonscherm.
@@ -195,6 +195,29 @@
     .intro p.cta strong { font-weight: 600; color: var(--tree); }
     .intro p.klein { font-size: 0.85rem; margin-top: 0.6rem; }
     .intro p.klein strong { font-weight: 600; color: var(--ink); }
+
+    /* Wanneer en waar: tussen het verhaal en de oproep, naast elkaar. */
+    .praktisch {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem 1.5rem;
+      max-width: 32rem;
+      margin-top: 1.2rem; padding: 0.9rem 0 1rem;
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    }
+    .praktisch dt {
+      font-family: var(--subhead); font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
+    }
+    .praktisch dd {
+      margin-top: 0.3rem;
+      font-size: clamp(0.95rem, 1.15vw, 1.05rem); line-height: 1.4;
+      font-weight: 500; color: var(--ink);
+    }
+    .praktisch dd span {
+      display: block; margin-top: 0.15rem;
+      font-size: 0.85rem; font-weight: 400; color: var(--ink-soft);
+    }
+    .praktisch dd a { text-decoration: underline; text-underline-offset: 3px; }
+    .praktisch dd a:hover { color: var(--tree); }
 
     /* ---------- rechts: het formulier ---------- */
     .kaart {
@@ -383,7 +406,7 @@
 
       /* Onder de 16 px zoomt iOS Safari in zodra je een veld aantikt. */
       .veld input, .veld select { font-size: 16px; min-height: 50px; }
-      .veld label { font-size: 0.68rem; }
+      .veld label, .praktisch dt { font-size: 0.68rem; }
       .privacy { font-size: 0.8rem; }
 
       .plak {
@@ -473,6 +496,7 @@
       .rij { grid-template-columns: 1fr; gap: 0.75rem; }
       .kaart { padding: 1.25rem; border-radius: var(--radius); }
       .intro p + p { margin-top: 0.7rem; }
+      .praktisch { grid-template-columns: 1fr; }
       .voet { flex-direction: column; align-items: stretch; }
       .knop { width: 100%; }
       .privacy { max-width: none; }
@@ -509,11 +533,19 @@
       <h1 data-i18n="intro.titel">Back to Being gaat <em>in première.</em></h1>
       <p data-i18n="intro.p1">We hebben in zes dagen 129 kilometer over de Camino gelopen en onderweg ook nog een app gebouwd.</p>
       <p data-i18n="intro.p2">In die zes dagen hebben we veel meegemaakt. Lange dagen, heel veel regen, goede gesprekken, momenten waarop alles lekker liep en momenten waarop het juist even tegenzat. We hebben de hele reis gefilmd en alles vastgelegd.</p>
-      <p data-i18n="intro.p3">In november nemen we je een avond mee op onze reis. Binnen een half uur zie je wat we in die zes dagen hebben meegemaakt, waar we tegenaan liepen en wat er onderweg is ontstaan.</p>
+      <p data-i18n="intro.p3">Op dinsdag 3 november nemen we je een avond mee op onze reis. Binnen een half uur zie je wat we in die zes dagen hebben meegemaakt, waar we tegenaan liepen en wat er onderweg is ontstaan.</p>
+      <dl class="praktisch">
+        <div>
+          <dt data-i18n="prak.wanneerLabel">Wanneer</dt>
+          <dd data-i18n="prak.wanneer">Dinsdag 3 november 2026 <span>Inloop vanaf 19:00, tot uiterlijk 21:00</span></dd>
+        </div>
+        <div>
+          <dt data-i18n="prak.waarLabel">Waar</dt>
+          <dd data-i18n="prak.waar"><a href="https://hetvondelparkpaviljoen.nl/" target="_blank" rel="noopener noreferrer">Het Vondelpark Paviljoen</a> <span>Vondelpark 3, 1071 AA Amsterdam</span></dd>
+        </div>
+      </dl>
       <p class="cta" data-i18n="intro.p4">En jij kan erbij zijn. <strong>Meld je nu aan voor de première!</strong></p>
       <p class="klein" data-i18n="intro.plekken">Er is plek voor <strong>70 deelnemers</strong>. Na je aanmelding kom je in de wachtrij: omdat de plekken beperkt zijn, laten we mensen één voor één toe en krijg je een mail zodra je plek bevestigd is. Wees er snel bij, want vol is écht vol!</p>
-      <p class="klein" data-i18n="intro.p5">De plek en tijd maken we later bekend.</p>
-      </div>
     </section>
 
     <section class="kaart" aria-labelledby="formTitel">
@@ -640,10 +672,13 @@
         'intro.titel': 'Back to Being gaat <em>in première.</em>',
         'intro.p1': 'We hebben in zes dagen 129 kilometer over de Camino gelopen en onderweg ook nog een app gebouwd.',
         'intro.p2': 'In die zes dagen hebben we veel meegemaakt. Lange dagen, heel veel regen, goede gesprekken, momenten waarop alles lekker liep en momenten waarop het juist even tegenzat. We hebben de hele reis gefilmd en alles vastgelegd.',
-        'intro.p3': 'In november nemen we je een avond mee op onze reis. Binnen een half uur zie je wat we in die zes dagen hebben meegemaakt, waar we tegenaan liepen en wat er onderweg is ontstaan.',
+        'intro.p3': 'Op dinsdag 3 november nemen we je een avond mee op onze reis. Binnen een half uur zie je wat we in die zes dagen hebben meegemaakt, waar we tegenaan liepen en wat er onderweg is ontstaan.',
+        'prak.wanneerLabel': 'Wanneer',
+        'prak.wanneer': 'Dinsdag 3 november 2026 <span>Inloop vanaf 19:00, tot uiterlijk 21:00</span>',
+        'prak.waarLabel': 'Waar',
+        'prak.waar': '<a href="https://hetvondelparkpaviljoen.nl/" target="_blank" rel="noopener noreferrer">Het Vondelpark Paviljoen</a> <span>Vondelpark 3, 1071 AA Amsterdam</span>',
         'intro.p4': 'En jij kan erbij zijn. <strong>Meld je nu aan voor de première!</strong>',
         'intro.plekken': 'Er is plek voor <strong>70 deelnemers</strong>. Na je aanmelding kom je in de wachtrij: omdat de plekken beperkt zijn, laten we mensen één voor één toe en krijg je een mail zodra je plek bevestigd is. Wees er snel bij, want vol is écht vol!',
-        'intro.p5': 'De plek en tijd maken we later bekend.',
         'form.titel': 'Ik wil erbij zijn',
         'form.sub': 'Je komt eerst in de wachtrij. Zodra je plek bevestigd is, krijg je een mail.',
         'form.voornaam': 'Voornaam',
@@ -664,7 +699,7 @@
         'klaar.titel': 'Je staat in de wachtrij.',
         'klaar.een': 'Dank je, <b>{naam}</b>. We hebben je aanmelding ontvangen op {mail}.',
         'klaar.meer': 'Dank je, <b>{naam}</b>. We hebben je aanmelding voor {aantal} personen ontvangen op {mail}.',
-        'klaar.p2': 'We bekijken de aanmeldingen één voor één. Zodra je plek bevestigd is, krijg je een mail. Tot in november.',
+        'klaar.p2': 'We bekijken de aanmeldingen één voor één. Zodra je plek bevestigd is, krijg je een mail. Tot 3 november.',
         'al.titel': 'Je bent al aangemeld.',
         'al.tekst': 'Het adres <b>{mail}</b> is al aangemeld. Je hoeft niets meer te doen: zodra je plek bevestigd is, krijg je een mail.',
         'al.p2': 'Wil je het aantal personen of een naam wijzigen? Mail ons op <a href="mailto:{contact}">{contact}</a>.',
@@ -679,7 +714,7 @@
         'direct.titel': 'Je bent erbij.',
         'direct.een': 'Dank je, <b>{naam}</b>. Je plek is bevestigd via de uitnodiging van {van}. We hebben je een mail gestuurd op {mail}.',
         'direct.meer': 'Dank je, <b>{naam}</b>. Jullie plekken voor {aantal} personen zijn bevestigd via de uitnodiging van {van}. We hebben je een mail gestuurd op {mail}.',
-        'direct.p2': 'Zodra de plaats en tijd vaststaan krijg je een mail. Tot in november.',
+        'direct.p2': 'We zien je op dinsdag 3 november in Het Vondelpark Paviljoen in Amsterdam. Inloop vanaf 19:00.',
       },
       en: {
         'nav.story': 'Our story',
@@ -692,10 +727,13 @@
         'intro.titel': 'Back to Being <em>premieres.</em>',
         'intro.p1': 'In six days we walked 129 kilometres of the Camino and built an app along the way.',
         'intro.p2': 'Those six days held a lot. Long days, plenty of rain, good conversations, moments when everything flowed and moments when it did not. We filmed the whole journey and captured all of it.',
-        'intro.p3': 'In November we take you along for an evening. In half an hour you see what we went through in those six days, what we ran into and what came out of it.',
+        'intro.p3': 'On Tuesday 3 November we take you along for an evening. In half an hour you see what we went through in those six days, what we ran into and what came out of it.',
         'intro.p4': 'And you can be there. <strong>Sign up for the premiere now!</strong>',
         'intro.plekken': 'There is room for <strong>70 guests</strong>. After signing up you go on the waiting list: because places are limited, we admit people one by one and you get an email as soon as your place is confirmed. Be quick, because full really means full!',
-        'intro.p5': 'Venue and time will be announced later.',
+        'prak.wanneerLabel': 'When',
+        'prak.wanneer': 'Tuesday 3 November 2026 <span>Doors open at 19:00, ends by 21:00 at the latest</span>',
+        'prak.waarLabel': 'Where',
+        'prak.waar': '<a href="https://hetvondelparkpaviljoen.nl/" target="_blank" rel="noopener noreferrer">Het Vondelpark Paviljoen</a> <span>Vondelpark 3, 1071 AA Amsterdam</span>',
         'form.titel': 'I want to be there',
         'form.sub': 'You go on the waiting list first. As soon as your place is confirmed, you will get an email.',
         'form.voornaam': 'First name',
@@ -716,7 +754,7 @@
         'klaar.titel': 'You are on the waiting list.',
         'klaar.een': 'Thank you, <b>{naam}</b>. We received your sign-up at {mail}.',
         'klaar.meer': 'Thank you, <b>{naam}</b>. We received your sign-up for {aantal} people at {mail}.',
-        'klaar.p2': 'We go through the sign-ups one by one. As soon as your place is confirmed, you will get an email. See you in November.',
+        'klaar.p2': 'We go through the sign-ups one by one. As soon as your place is confirmed, you will get an email. See you on 3 November.',
         'al.titel': 'You have already signed up.',
         'al.tekst': 'The address <b>{mail}</b> has already signed up. There is nothing more to do: as soon as your place is confirmed, you will get an email.',
         'al.p2': 'Want to change the number of people or a name? Email us at <a href="mailto:{contact}">{contact}</a>.',
@@ -731,7 +769,7 @@
         'direct.titel': 'You are in.',
         'direct.een': "Thank you, <b>{naam}</b>. Your place is confirmed through {van}'s invitation. We have sent you an email at {mail}.",
         'direct.meer': "Thank you, <b>{naam}</b>. Your places for {aantal} people are confirmed through {van}'s invitation. We have sent you an email at {mail}.",
-        'direct.p2': 'As soon as the venue and time are set you will get an email. See you in November.',
+        'direct.p2': 'See you on Tuesday 3 November at Het Vondelpark Paviljoen in Amsterdam. Doors open at 19:00.',
       }
     };
 
