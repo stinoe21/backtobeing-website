@@ -632,9 +632,9 @@ const MAIL_TEKST = {
     website: 'Website',
     wachtrij: {
       onderwerp: 'Je aanmelding voor de première van Back to Being is ontvangen',
-      preheader: 'Je staat in de wachtrij. We laten je zo snel mogelijk weten of er een plek voor je is.',
-      titel: 'Je staat in de wachtrij voor de première van Back to Being',
-      intro: 'Wat fijn dat je erbij wilt zijn. We hebben je aanmelding ontvangen en je staat nu in de wachtrij. Er is plek voor 70 mensen, dus we bekijken de aanmeldingen één voor één. We laten je zo snel mogelijk per mail weten of er een plek voor je is.',
+      preheader: 'Je staat op de reservelijst. Komt er een plek vrij, dan laten we het je meteen weten.',
+      titel: 'Je staat op de reservelijst voor de première van Back to Being',
+      intro: 'Wat fijn dat je erbij wilt zijn. Alle 70 plekken zijn inmiddels vergeven, maar we hebben je aanmelding ontvangen en je staat nu op de reservelijst. Valt er iemand af, dan nemen we de reservelijst op volgorde van aanmelding door. Zodra er een plek voor je is, laten we het je per mail weten.',
       kaartTitel: 'Aanmeldingsgegevens',
     },
     goedgekeurd: {
@@ -667,9 +667,9 @@ const MAIL_TEKST = {
     website: 'Website',
     wachtrij: {
       onderwerp: 'We received your sign-up for the premiere of Back to Being',
-      preheader: 'You are on the waiting list. We will let you know as soon as possible whether there is a place for you.',
-      titel: 'You are on the waiting list for the premiere of Back to Being',
-      intro: "We're glad you want to be there. We received your sign-up and you are now on the waiting list. There is room for 70 people, so we go through the sign-ups one by one. We will let you know by email as soon as possible whether there is a place for you.",
+      preheader: 'You are on the reserve list. If a place opens up, we will let you know right away.',
+      titel: 'You are on the reserve list for the premiere of Back to Being',
+      intro: "We're glad you want to be there. All 70 places have now been taken, but we received your sign-up and you are on the reserve list. If someone drops out, we go through the reserve list in order of sign-up. As soon as there is a place for you, we will let you know by email.",
       kaartTitel: 'Registration Information',
     },
     goedgekeurd: {

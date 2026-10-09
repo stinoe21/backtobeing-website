@@ -89,7 +89,7 @@ check('mailadres in kleine letters opgeslagen', w.rijen[1][2] === 'jan@voorbeeld
 check('kolommen Taal en Ingeschreven op toegevoegd', w.rijen[0].includes('Taal') && w.rijen[0].includes('Ingeschreven op'), w.rijen[0]);
 check('kolommen Status, Goedkeuren en Goedgekeurd op toegevoegd', ['Status','Goedkeuren','Goedgekeurd op'].every(k => w.rijen[0].includes(k)), w.rijen[0]);
 check('nieuwe aanmelding staat in de wachtrij met leeg vinkje', w.status(2) === 'Wachtrij' && w.rijen[1][w.kol('Goedkeuren')] === false && w.rijen[1][w.kol('Goedgekeurd op')] === '', w.rijen[1]);
-check('aanmelding krijgt de wachtrij-mail', /aanmelding .* is ontvangen/.test(w.mails[0].subject) && /wachtrij/.test(w.mails[0].htmlBody), w.mails[0].subject);
+check('aanmelding krijgt de wachtrij-mail', /aanmelding .* is ontvangen/.test(w.mails[0].subject) && /reservelijst/.test(w.mails[0].htmlBody), w.mails[0].subject);
 r = w.post(basis('  JAN@voorbeeld.NL '));
 check('dubbel mailadres -> code bestaat', r.ok === false && r.code === 'bestaat', r);
 check('dubbel: geen tweede rij, geen tweede mail', w.rijen.length === 2 && w.mails.length === 1, [w.rijen.length, w.mails.length]);
