@@ -176,14 +176,14 @@ check('nieuwe aanmelding: kolommen Afwijzen en Afgewezen op, vinkje leeg', w.rij
 w.vinkAf(2, true);
 check('afwijzen -> Status Afgewezen met datum', w.status(2) === 'Afgewezen' && w.rijen[1][w.kol('Afgewezen op')] === '17-09-2026 16:00', w.rijen[1]);
 let af = w.mails[3];
-check('afwijzing stuurt de "zit helaas vol"-mail', w.mails.length === 4 && /zit helaas vol/.test(af.subject) && /Beste Anna,/.test(af.htmlBody), w.mails.map(x => x.subject));
-check('afwijzingsmail: documentaire online en andere manier genoemd', /naar verwachting online/.test(af.htmlBody) && /andere manier/.test(af.htmlBody) && /naar verwachting online/.test(af.body), af.body);
+check('afwijzing stuurt de "zit vol, reservelijst"-mail', w.mails.length === 4 && /zit vol, maar je staat op de reservelijst/.test(af.subject) && /Beste Anna,/.test(af.htmlBody), w.mails.map(x => x.subject));
+check('afwijzingsmail: reservelijst en documentaire online genoemd', /op de reservelijst gezet/.test(af.htmlBody) && /mail dat je mag komen/.test(af.htmlBody) && /naar verwachting online/.test(af.body), af.body);
 check('afwijzingsmail: geen kaartje, geen locatie, geen lege regels', !/Aanmeldingsgegevens|Je plek|Bezoeker|Vondelpark 3/.test(af.htmlBody) && !/Bezoeker|Vondelpark 3/.test(af.body) && !/\n\n\n/.test(af.body) && !/undefined/.test(af.htmlBody + af.body), af.body);
 check('afwijzing telt niet mee in de zaal en andere rijen blijven staan', w.status(3) === 'Wachtrij' && w.status(4) === 'Wachtrij');
 w.vinkAf(2, true);
 check('nog eens afwijzen -> geen tweede mail', w.mails.length === 4, w.mails.length);
 w.vinkAf(3, true);
-check('EN-rij krijgt de Engelse afwijzingsmail', /unfortunately full/.test(w.mails[4].subject) && /Dear Tom,/.test(w.mails[4].htmlBody) && /expect to put it online/.test(w.mails[4].htmlBody) && !/Beste|helaas|Hartelijke/.test(w.mails[4].htmlBody), w.mails[4].subject);
+check('EN-rij krijgt de Engelse afwijzingsmail', /is full, but you are on the reserve list/.test(w.mails[4].subject) && /Dear Tom,/.test(w.mails[4].htmlBody) && /expect to put it online/.test(w.mails[4].htmlBody) && !/Beste|helaas|Hartelijke/.test(w.mails[4].htmlBody), w.mails[4].subject);
 w.vinkAf(2, false);
 check('afwijzen uit -> terug naar Wachtrij, datum leeg, melding, geen mail', w.status(2) === 'Wachtrij' && w.rijen[1][w.kol('Afgewezen op')] === '' && /al verstuurd/.test(w.toasts.at(-1)) && w.mails.length === 5, [w.rijen[1], w.toasts]);
 w.vink(4, true);
@@ -199,7 +199,7 @@ for (let i = 0; i < 4; i++) w.post(basis('s' + i + '@v.nl'));
 w.vink(3, true);
 w.run('wijsSelectieAf');
 check('menu afwijzen: rij 2 en 4 afgewezen, 3 blijft goedgekeurd, 5 in de wachtrij', w.status(2) === 'Afgewezen' && w.status(3) === 'Goedgekeurd' && w.status(4) === 'Afgewezen' && w.status(5) === 'Wachtrij' && /2 aanmeldingen afgewezen/.test(w.toasts.at(-1)), [w.rijen.map(x => x[w.kol('Status')]), w.toasts]);
-check('menu afwijzen: twee afwijzingsmails', w.mails.filter(x => /zit helaas vol/.test(x.subject)).length === 2, w.mails.map(x => x.subject));
+check('menu afwijzen: twee afwijzingsmails', w.mails.filter(x => /op de reservelijst/.test(x.subject)).length === 2, w.mails.map(x => x.subject));
 // mail mislukt bij afwijzen
 w = maakWereld({ mailKapot: true });
 w.post(basis('m@v.nl'));

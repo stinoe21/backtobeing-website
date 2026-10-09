@@ -55,9 +55,9 @@ Handig: filter of sorteer op de kolom `Status` om de wachtrij te zien.
 ## Afwijzen: geen plek meer
 
 - **Vink `Afwijzen` aan** bij een rij. Het script zet dan `Status` op
-  `Afgewezen`, vult `Afgewezen op` en stuurt de mail "de première zit helaas
-  vol": de documentaire komt daarna naar verwachting online, en we zoeken naar
-  een andere manier om mensen de avond toch mee te laten maken.
+  `Afgewezen`, vult `Afgewezen op` en stuurt de mail "de première zit vol, maar
+  je staat op de reservelijst": meldt iemand zich af, dan krijg je een mail dat
+  je mag komen; lukt het niet, dan komt de documentaire naar verwachting online.
 - **Een goedgekeurde rij wijs je niet per ongeluk af**: het vinkje gaat vanzelf
   weer uit en er gaat geen mail weg. Haal eerst het vinkje bij `Goedkeuren` weg.
 - **Vink je het weer uit**, dan gaat de status terug naar `Wachtrij`. De mail
@@ -196,7 +196,7 @@ Alle mails zijn HTML, vanuit het Google-account dat het script deployt
 | --- | --- | --- |
 | `wachtrij` | direct na de aanmelding | "Je aanmelding voor de première van Back to Being is ontvangen" |
 | `goedgekeurd` | na het vinkje `Goedkeuren` in de sheet | "Je bent erbij: je plek voor de première van Back to Being is bevestigd" |
-| `afgewezen` | na het vinkje `Afwijzen` in de sheet | "De première van Back to Being zit helaas vol" |
+| `afgewezen` | na het vinkje `Afwijzen` in de sheet | "De première van Back to Being zit vol, maar je staat op de reservelijst" |
 
 De wachtrij- en de goedkeuringsmail hebben een kaartje met de aanmeldgegevens
 en een voetnoot met datum, tijd en locatie. De afwijzingsmail heeft die niet,
