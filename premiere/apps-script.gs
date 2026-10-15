@@ -8,7 +8,8 @@
  *   1. Open de sheet → Extensions → Apps Script.
  *   2. Vervang de inhoud van Code.gs door dit bestand → Save.
  *   3. Run → installeren (eenmalig): maakt de kolommen Status / Goedkeuren /
- *      Goedgekeurd op / Afwijzen / Afgewezen op, zet vinkjes bij bestaande
+ *      Goedgekeurd op / Afwijzen / Afgewezen op / Herinnering sturen /
+ *      Herinnering verstuurd op, zet vinkjes bij bestaande
  *      rijen en installeert de trigger die op de vinkjes reageert. Sta de
  *      toestemmingen toe.
  *   4. Deploy → New deployment → type "Web app":
@@ -38,6 +39,18 @@
  *   - Menu "Première" in de sheet: geselecteerde rijen in één keer goedkeuren
  *     of afwijzen, en opnieuw installeren als de kolommen of de trigger
  *     ontbreken.
+ *   - Herinnering: vink je "Herinnering sturen" aan bij een goedgekeurde rij,
+ *     dan gaat de herinneringsmail "Nog één week tot de première" (praktische
+ *     info, adres, foto's van de locatie) naar die gast en vult het script
+ *     "Herinnering verstuurd op". Bij een rij die niet goedgekeurd is, gaat het
+ *     vinkje weer uit. Is de datum al gevuld, dan gaat er geen tweede mail.
+ *     Vinkje uit = niets (de mail is al weg). Voor iedereen in één keer: menu
+ *     "Première → Herinnering sturen naar alle goedgekeurde gasten" (slaat
+ *     rijen met een datum over, dus gerust vaker te draaien). Nog eens sturen:
+ *     "Herinnering (opnieuw) sturen naar geselecteerde rijen". De tekst zegt
+ *     "over precies een week": stuur hem dus op dinsdag 27 oktober. De foto's
+ *     staan op backtobeing.tech (premiere-foyer.jpg, premiere-spiegel.jpg):
+ *     eerst deployen.
  *   - Uitnodigingen: het tabblad "Uitnodigingen" heeft per persoon een code
  *     (Code | Van | Max personen | Gebruikt). Wie aanmeldt via
  *     premiere.html?code=<code> slaat de wachtrij over en is meteen
@@ -100,7 +113,13 @@ const KOL_UITNODIGING = 'Uitnodiging';
 const KOL_AFWIJZEN = 'Afwijzen';
 const KOL_AFGEWEZEN_OP = 'Afgewezen op';
 const STATUS_AFGEWEZEN = 'Afgewezen';
-const WACHTRIJ_KOPPEN = [KOL_STATUS, KOL_GOEDKEUREN, KOL_GOEDGEKEURD_OP, KOL_UITNODIGING, KOL_AFWIJZEN, KOL_AFGEWEZEN_OP];
+// Herinnering vlak voor de première: een vinkje om hem te sturen, en wanneer
+// die naar deze rij is gegaan.
+const KOL_HERINNERING = 'Herinnering sturen';
+const KOL_HERINNERING_OP = 'Herinnering verstuurd op';
+const WACHTRIJ_KOPPEN = [KOL_STATUS, KOL_GOEDKEUREN, KOL_GOEDGEKEURD_OP, KOL_UITNODIGING, KOL_AFWIJZEN, KOL_AFGEWEZEN_OP, KOL_HERINNERING, KOL_HERINNERING_OP];
+// De kolommen met een vinkje: krijgen echte checkboxes.
+const VINK_KOPPEN = [KOL_GOEDKEUREN, KOL_AFWIJZEN, KOL_HERINNERING];
 
 // Persoonlijke uitnodigingslinks: premiere.html?code=<code>. De codes staan in
 // dit tabblad van de sheet (niet in de repo, die is publiek). installeren maakt
@@ -140,6 +159,8 @@ function doPost(e) {
     rij[KOL_UITNODIGING] = '';
     rij[KOL_AFWIJZEN] = false;
     rij[KOL_AFGEWEZEN_OP] = '';
+    rij[KOL_HERINNERING] = false;
+    rij[KOL_HERINNERING_OP] = '';
     const code = String(data['Code'] || '').trim();
 
     let uitkomst;
@@ -282,7 +303,7 @@ function schrijfRij(rij, code) {
     const waarden = koppen.map(k => (k in rij ? rij[k] : ''));
     sheet.appendRow(waarden);
     // De vinkjes: echte checkboxes in plaats van het woord TRUE/FALSE.
-    [KOL_GOEDKEUREN, KOL_AFWIJZEN].forEach(k => {
+    VINK_KOPPEN.forEach(k => {
       const kVink = koppen.indexOf(k);
       if (kVink > -1) sheet.getRange(sheet.getLastRow(), kVink + 1).insertCheckboxes();
     });
@@ -352,21 +373,27 @@ function nieuweCode(van) {
 
 /**
  * Eenmalig uitvoeren (Run → installeren, of via het menu Première):
- * kolommen aanmaken, vinkjes (Goedkeuren en Afwijzen) bij bestaande rijen
+ * kolommen aanmaken, vinkjes (Goedkeuren, Afwijzen, Herinnering sturen) bij bestaande rijen
  * zetten, lege status op "Wachtrij" en de trigger installeren die op de
  * vinkjes reageert.
  * Mag vaker draaien; doet dan niets dubbel.
  */
 function installeren() {
   const sheet = openSheet();
+  // Het vinkje "Herinnering sturen" hoort naast "Herinnering verstuurd op", niet
+  // helemaal rechts. Bestaat de datumkolom al en het vinkje nog niet, dan komt
+  // er een kolom links ervan bij.
+  const bestaand = koppenVan(sheet);
+  if (bestaand.indexOf(KOL_HERINNERING) === -1 && bestaand.indexOf(KOL_HERINNERING_OP) > -1) {
+    const kOp = bestaand.indexOf(KOL_HERINNERING_OP) + 1;
+    sheet.insertColumnBefore(kOp);
+    sheet.getRange(1, kOp).setValue(KOL_HERINNERING);
+  }
   const koppen = koppenVan(sheet, WACHTRIJ_KOPPEN);
   const kStatus = koppen.indexOf(KOL_STATUS) + 1;
-  const kVink = koppen.indexOf(KOL_GOEDKEUREN) + 1;
-  const kAfwijzen = koppen.indexOf(KOL_AFWIJZEN) + 1;
   const laatsteRij = sheet.getLastRow();
   if (laatsteRij > 1) {
-    sheet.getRange(2, kVink, laatsteRij - 1, 1).insertCheckboxes();
-    sheet.getRange(2, kAfwijzen, laatsteRij - 1, 1).insertCheckboxes();
+    VINK_KOPPEN.forEach(k => sheet.getRange(2, koppen.indexOf(k) + 1, laatsteRij - 1, 1).insertCheckboxes());
     const statussen = sheet.getRange(2, kStatus, laatsteRij - 1, 1).getValues();
     for (let i = 0; i < statussen.length; i++) {
       if (!String(statussen[i][0]).trim()) sheet.getRange(i + 2, kStatus).setValue(STATUS_WACHTRIJ);
@@ -378,7 +405,7 @@ function installeren() {
     ScriptApp.newTrigger('bijBewerking').forSpreadsheet(SpreadsheetApp.getActiveSpreadsheet()).onEdit().create();
   }
   const nieuwTab = maakUitnodigingenTab(openSpreadsheet());
-  melding('Wachtrij staat klaar: vink "' + KOL_GOEDKEUREN + '" aan om iemand toe te laten, "' + KOL_AFWIJZEN + '" als er geen plek is.' +
+  melding('Wachtrij staat klaar: vink "' + KOL_GOEDKEUREN + '" aan om iemand toe te laten, "' + KOL_AFWIJZEN + '" als er geen plek is, "' + KOL_HERINNERING + '" voor de herinnering.' +
     (nieuwTab ? ' Tabblad "' + TAB_UITNODIGINGEN + '" aangemaakt met de uitnodigingscodes.' : ''));
 }
 
@@ -388,14 +415,18 @@ function onOpen() {
     .addItem('Geselecteerde rijen goedkeuren', 'keurSelectieGoed')
     .addItem('Geselecteerde rijen afwijzen', 'wijsSelectieAf')
     .addSeparator()
+    .addItem('Herinnering sturen naar alle goedgekeurde gasten', 'stuurHerinneringen')
+    .addItem('Herinnering (opnieuw) sturen naar geselecteerde rijen', 'stuurHerinneringSelectie')
+    .addSeparator()
     .addItem('Wachtrij en uitnodigingen installeren / herstellen', 'installeren')
     .addToUi();
 }
 
 /**
- * Installeerbare onEdit-trigger. Reageert alleen op de kolommen "Goedkeuren"
- * en "Afwijzen" onder de kopregel: aan = goedkeuren of afwijzen, uit = terug
- * naar de wachtrij.
+ * Installeerbare onEdit-trigger. Reageert alleen op de vinkjes onder de
+ * kopregel: "Goedkeuren" en "Afwijzen" (aan = goedkeuren of afwijzen, uit =
+ * terug naar de wachtrij) en "Herinnering sturen" (aan = de herinnering
+ * sturen; uit doet niets, de mail is al weg).
  */
 function bijBewerking(e) {
   if (!e || !e.range) return;
@@ -406,15 +437,19 @@ function bijBewerking(e) {
   const kolom = e.range.getColumn();
   const goedkeuren = kolom === koppen.indexOf(KOL_GOEDKEUREN) + 1;
   const afwijzen = kolom === koppen.indexOf(KOL_AFWIJZEN) + 1;
-  if (!goedkeuren && !afwijzen) return;
+  const herinnering = kolom === koppen.indexOf(KOL_HERINNERING) + 1;
+  if (!goedkeuren && !afwijzen && !herinnering) return;
   const aan = e.value === true || e.value === 'TRUE' || e.value === 'true';
   const uit = e.value === false || e.value === 'FALSE' || e.value === 'false';
   if (goedkeuren) {
     if (aan) keurGoed(sheet, e.range.getRow());
     else if (uit) zetTerugInWachtrij(sheet, e.range.getRow());
-  } else {
+  } else if (afwijzen) {
     if (aan) wijsAf(sheet, e.range.getRow());
     else if (uit) zetAfwijzingTerug(sheet, e.range.getRow());
+  } else {
+    if (aan) stuurHerinneringRij(sheet, e.range.getRow());
+    else if (uit) melding('De herinnering die al verstuurd is, gaat niet terug. Nog eens sturen: menu Première → Herinnering (opnieuw) sturen naar geselecteerde rijen.');
   }
 }
 
@@ -575,6 +610,135 @@ function zetAfwijzingTerug(sheet, rijNr) {
   melding('Terug in de wachtrij. Let op: de mail dat het vol zit was al verstuurd.');
 }
 
+/* ---------- herinnering vlak voor de première ---------- */
+
+/**
+ * Vinkje "Herinnering sturen" aan: stuurt de herinnering naar die ene rij en
+ * vult de datum. Geeft terug: 'ok' | 'al' (datum stond al, geen tweede mail) |
+ * 'niet-goedgekeurd' (vinkje gaat weer uit) | 'leeg' | 'mislukt'.
+ * Binnen het slot, zodat een dubbele klik niet twee mails stuurt.
+ */
+function stuurHerinneringRij(sheet, rijNr) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    const koppen = koppenVan(sheet, WACHTRIJ_KOPPEN);
+    const kStatus = koppen.indexOf(KOL_STATUS), kVink = koppen.indexOf(KOL_HERINNERING);
+    const kOp = koppen.indexOf(KOL_HERINNERING_OP);
+    if (rijNr < 2 || rijNr > sheet.getLastRow()) return 'leeg';
+    const eigen = sheet.getRange(rijNr, 1, 1, koppen.length).getValues()[0];
+    const rij = {};
+    koppen.forEach((k, i) => { rij[k] = eigen[i]; });
+    if (!String(rij['Mailadress'] || '').trim()) return 'leeg';
+    if (String(rij[KOL_STATUS]).trim().indexOf(STATUS_GOEDGEKEURD) !== 0) {
+      sheet.getRange(rijNr, kVink + 1).setValue(false);
+      melding(rij['Mailadress'] + ' is niet goedgekeurd, dus geen herinnering. Keur de rij eerst goed.');
+      return 'niet-goedgekeurd';
+    }
+    if (String(rij[KOL_HERINNERING_OP]).trim()) {
+      melding('De herinnering naar ' + rij['Mailadress'] + ' is al verstuurd op ' + rij[KOL_HERINNERING_OP] + '. Nog eens sturen: menu Première → Herinnering (opnieuw) sturen naar geselecteerde rijen.');
+      return 'al';
+    }
+    const uitkomst = verstuurHerinneringen(sheet, koppen, [rijNr]);
+    return uitkomst.gelukt === 1 ? 'ok' : 'mislukt';
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/**
+ * Menu: de herinneringsmail naar iedereen met Status "Goedgekeurd" die hem nog
+ * niet had (kolom "Herinnering verstuurd op" leeg). Vraagt eerst om bevestiging
+ * en houdt het dagquotum van MailApp in de gaten: is dat op, dan stopt het en
+ * zegt de melding hoeveel rijen er nog wachten; morgen gewoon nog eens draaien.
+ * Ook aan te roepen via Run → stuurHerinneringen (zonder bevestigingsvraag).
+ */
+function stuurHerinneringen() {
+  const sheet = openSheet();
+  const koppen = koppenVan(sheet, WACHTRIJ_KOPPEN);
+  const kStatus = koppen.indexOf(KOL_STATUS), kOp = koppen.indexOf(KOL_HERINNERING_OP);
+  const kMail = koppen.indexOf('Mailadress'), kAantal = koppen.indexOf('Aantal personen');
+  const laatsteRij = sheet.getLastRow();
+  const rijNrs = [];
+  let personen = 0;
+  if (laatsteRij > 1) {
+    const rijen = sheet.getRange(2, 1, laatsteRij - 1, koppen.length).getValues();
+    for (let i = 0; i < rijen.length; i++) {
+      if (String(rijen[i][kStatus]).trim().indexOf(STATUS_GOEDGEKEURD) !== 0) continue;
+      if (!String(rijen[i][kMail]).trim() || String(rijen[i][kOp]).trim()) continue;
+      rijNrs.push(i + 2);
+      personen += parseInt(rijen[i][kAantal], 10) || 1;
+    }
+  }
+  if (!rijNrs.length) { melding('Iedereen die goedgekeurd is, heeft de herinnering al gehad.'); return; }
+  const quotum = MailApp.getRemainingDailyQuota();
+  if (!bevestig('Herinnering sturen naar ' + rijNrs.length + ' gasten (' + personen + ' personen)?\n' +
+      'Vandaag kunnen er nog ' + quotum + ' mails weg.' + (quotum < rijNrs.length ? ' Dat is niet genoeg: de rest kun je morgen sturen.' : ''))) {
+    melding('Niets verstuurd.');
+    return;
+  }
+  verstuurHerinneringen(sheet, koppen, rijNrs);
+}
+
+// Menu: de herinnering (nog eens) naar de geselecteerde rijen, ook als die hem al hadden.
+function stuurHerinneringSelectie() {
+  const sheet = openSheet();
+  const sel = sheet.getActiveRange();
+  if (!sel) { melding('Selecteer eerst een of meer rijen.'); return; }
+  const koppen = koppenVan(sheet, WACHTRIJ_KOPPEN);
+  const kStatus = koppen.indexOf(KOL_STATUS), kMail = koppen.indexOf('Mailadress');
+  const rijNrs = [], overgeslagen = [];
+  for (let r = Math.max(2, sel.getRow()); r < sel.getRow() + sel.getNumRows() && r <= sheet.getLastRow(); r++) {
+    const eigen = sheet.getRange(r, 1, 1, koppen.length).getValues()[0];
+    if (!String(eigen[kMail]).trim()) continue;
+    if (String(eigen[kStatus]).trim().indexOf(STATUS_GOEDGEKEURD) === 0) rijNrs.push(r);
+    else overgeslagen.push(String(eigen[kMail]).trim());
+  }
+  if (overgeslagen.length) melding('Niet goedgekeurd, dus geen herinnering: ' + overgeslagen.join(', '));
+  if (!rijNrs.length) { if (!overgeslagen.length) melding('Geen aanmeldingen in de selectie.'); return; }
+  if (!bevestig('Herinnering sturen naar ' + rijNrs.length + (rijNrs.length === 1 ? ' gast' : ' gasten') + ' in de selectie?')) {
+    melding('Niets verstuurd.');
+    return;
+  }
+  verstuurHerinneringen(sheet, koppen, rijNrs);
+}
+
+/** Stuurt de herinnering naar de rijen, vult de datum en zet het vinkje aan.
+ *  Stopt als het quotum op is. Geeft { gelukt, mislukt, quotumOp } terug. */
+function verstuurHerinneringen(sheet, koppen, rijNrs) {
+  const kOp = koppen.indexOf(KOL_HERINNERING_OP), kVink = koppen.indexOf(KOL_HERINNERING);
+  let gelukt = 0, mislukt = [], quotumOp = 0;
+  for (let i = 0; i < rijNrs.length; i++) {
+    if (MailApp.getRemainingDailyQuota() < 1) { quotumOp = rijNrs.length - i; break; }
+    const eigen = sheet.getRange(rijNrs[i], 1, 1, koppen.length).getValues()[0];
+    const rij = {};
+    koppen.forEach((k, j) => { rij[k] = eigen[j]; });
+    const taal = rij['Taal'] === 'en' ? 'en' : 'nl';
+    const mail = stuurMail(rij, taal, 'herinnering');
+    if (mail.ok) {
+      sheet.getRange(rijNrs[i], kOp + 1).setValue(nu());
+      if (rij[KOL_HERINNERING] !== true) sheet.getRange(rijNrs[i], kVink + 1).setValue(true);
+      gelukt++;
+    } else {
+      // Geen datum en vinkje uit, zodat de rij bij een volgende ronde weer meegaat.
+      if (rij[KOL_HERINNERING] === true) sheet.getRange(rijNrs[i], kVink + 1).setValue(false);
+      mislukt.push(rij['Mailadress'] + ' (' + mail.fout + ')');
+    }
+  }
+  let tekst = (gelukt === 1 ? '1 herinnering verstuurd.' : gelukt + ' herinneringen verstuurd.');
+  if (mislukt.length) tekst += ' Mislukt: ' + mislukt.join(', ') + '.';
+  if (quotumOp) tekst += ' Het dagquotum is op: ' + quotumOp + ' rijen wachten nog, draai dit morgen opnieuw.';
+  melding(tekst);
+  return { gelukt: gelukt, mislukt: mislukt.length, quotumOp: quotumOp };
+}
+
+// Ja/nee-vraag in de sheet. Vanuit de editor (Run) is er geen venster: dan is het ja.
+function bevestig(vraag) {
+  let ui;
+  try { ui = SpreadsheetApp.getUi(); } catch (err) { console.log('Geen venster, dus door: ' + vraag); return true; }
+  return ui.alert('Première', vraag, ui.ButtonSet.YES_NO) === ui.Button.YES;
+}
+
 // Klein bericht onderin de sheet; buiten de sheet (web-app) alleen in het log.
 function melding(tekst) {
   console.log(tekst);
@@ -611,14 +775,22 @@ const MAIL_LINKS = {
   youtube: 'https://www.youtube.com/watch?v=v32XZxS0QCA',
   website: 'https://backtobeing.tech',
   contact: 'caesar.schoorl@gmail.com',
+  // Voor de herinnering: route, de twee zalen en de foto's (staan in de root
+  // van de site, dus pas na een deploy bereikbaar).
+  route: 'https://www.google.com/maps/search/?api=1&query=Het+Vondelpark+Paviljoen%2C+Vondelpark+3%2C+1071+AA+Amsterdam',
+  foyer: 'https://hetvondelparkpaviljoen.nl/zalen/de-foyer-bar/',
+  spiegel: 'https://hetvondelparkpaviljoen.nl/zalen/de-spiegel/',
+  fotoFoyer: 'https://backtobeing.tech/premiere-foyer.jpg',
+  fotoSpiegel: 'https://backtobeing.tech/premiere-spiegel.jpg',
 };
 
-// Teksten van de drie mails. De algemene regels staan per taal bovenaan; per
-// soort ('wachtrij' na de aanmelding, 'goedgekeurd' en 'afgewezen' na een
-// vinkje in de sheet) verschillen onderwerp, preheader, titel, intro en de
-// titel van het kaartje. Een soort mag ook een algemene regel overschrijven.
-// Leeg = weglaten: 'afgewezen' heeft geen kaartje en geen voetnoot, wel een
-// tweede alinea ('vervolg').
+// Teksten van de drie mails rond de aanmelding. De algemene regels staan per
+// taal bovenaan; per soort ('wachtrij' na de aanmelding, 'goedgekeurd' en
+// 'afgewezen' na een vinkje in de sheet) verschillen onderwerp, preheader,
+// titel, intro en de titel van het kaartje. Een soort mag ook een algemene
+// regel overschrijven. Leeg = weglaten: 'afgewezen' heeft geen kaartje en geen
+// voetnoot, wel een tweede alinea ('vervolg').
+// De herinnering vlak voor de première heeft een eigen ontwerp: HERINNERING_TEKST.
 const MAIL_TEKST = {
   nl: {
     aanhef: 'Beste {{naam}},',
@@ -699,12 +871,14 @@ function escapeHtml(s) {
 /**
  * Bouwt een mail (onderwerp, platte tekst en HTML) uit de rij.
  * soort: 'wachtrij' (na de aanmelding), 'goedgekeurd' of 'afgewezen' (na een
- * vinkje in de sheet).
+ * vinkje in de sheet) of 'herinnering' (via het menu, een week voor de
+ * première; eigen ontwerp, zie bouwHerinnering).
  * Placeholders: {{naam}} = voornaam in de aanhef, volledige naam op het kaartje;
  * het aantal personen komt uit de rij.
  */
 function bouwMail(rij, taal, soort) {
   const basis = MAIL_TEKST[taal === 'en' ? 'en' : 'nl'];
+  if (soort === 'herinnering') return bouwHerinnering(rij, taal);
   const t = Object.assign({}, basis, basis[soort === 'goedgekeurd' || soort === 'afgewezen' ? soort : 'wachtrij']);
   const voornaam = rij['Voornaam'];
   const volledigeNaam = (rij['Voornaam'] + ' ' + rij['Achternaam']).trim();
@@ -787,6 +961,188 @@ function bouwMail(rij, taal, soort) {
   return { onderwerp: t.onderwerp, tekst: tekst, html: html };
 }
 
+// De herinnering een week voor de première. Ontwerp uit Figma, frame
+// "back-to-being-herinnering-premiere-nl" (node 39-2); de Engelse versie
+// (node 52-5) is hier een vertaling van de Nederlandse.
+// **vet** in een alinea wordt vet in de mail; {{naam}} = voornaam.
+const HERINNERING_TEKST = {
+  nl: {
+    onderwerp: 'Reminder: Nog één week tot de première van Back to Being',
+    preheader: 'Dinsdag 3 november, vanaf 19.00 uur in Het Vondelparkpaviljoen. Alles wat je moet weten op een rij.',
+    titel: 'Nog één week tot de première',
+    datum: '3 november 2026',
+    aanhef: 'Hi {{naam}},',
+    intro: [
+      'Over precies een week, gaat **Back to Being** in première, en jij bent erbij!',
+      'Met meer dan 120 aanmeldingen en slechts 70 beschikbare plekken kijken we ernaar uit om jou op deze bijzondere locatie te verwelkomen en de première samen te beleven.',
+    ],
+    kopPraktisch: 'Praktische informatie',
+    praktisch: [
+      'Vanaf **19.00 uur** ben je van harte welkom om in de foyer alvast gezellig een drankje te drinken, bestel gerust waar je zin in hebt, want alle drankjes zijn voor onze rekening.',
+      'Om **19.30 uur** begint de première en sluiten de deuren, zorg dus dat je op tijd aanwezig bent om rustig binnen te komen en je plek in te nemen.',
+      'We rekenen op je komst, maar mocht je toch verhinderd zijn of vertraging hebben, laat het ons dan zo snel mogelijk weten via **06 83032377**, zodat we bij een afmelding iemand anders blij kunnen maken met jouw plek.',
+    ],
+    kopLocatie: 'Locatie',
+    adres: ['Het Vondelparkpaviljoen', 'Vondelpark 3', '1071 AA Amsterdam'],
+    routeLink: 'Bekijk de locatie in Google Maps',
+    kopImpressies: 'Impressies van de locatie',
+    fotos: [
+      { titel: 'Foyer', tekst: 'Een warm welkom in de foyer.', src: MAIL_LINKS.fotoFoyer, href: MAIL_LINKS.foyer },
+      { titel: 'Bioscoopzaal', tekst: 'De Spiegel in het paviljoen.', src: MAIL_LINKS.fotoSpiegel, href: MAIL_LINKS.spiegel },
+    ],
+    slot: 'Tot bij de première!',
+    groet: 'Met vriendelijke groet,',
+    afzender: ['Caesar Schoorl', 'Team Back to Being'],
+    meerInfo: 'Meer informatie',
+    // De voettekst: label, linktekst, link. Gescheiden door bolletjes.
+    links: [
+      ['Website', 'backtobeing.tech', MAIL_LINKS.website],
+      ['Instagram', '@backtobeingtech', MAIL_LINKS.instagram],
+      ['TikTok', '@backtobeing.tech', MAIL_LINKS.tiktok],
+      ['YouTube', 'Back to Being', MAIL_LINKS.youtube],
+      ['Route', 'Google Maps', MAIL_LINKS.route],
+    ],
+    ruimtes: 'Ruimtes',
+    ruimteLinks: [['Foyer', MAIL_LINKS.foyer], ['De Spiegel', MAIL_LINKS.spiegel]],
+  },
+  en: {
+    onderwerp: 'Reminder: One week to go until the premiere of Back to Being',
+    preheader: 'Tuesday 3 November, from 19:00 at Het Vondelparkpaviljoen. Everything you need to know at a glance.',
+    titel: 'One week to go until the premiere',
+    datum: '3 November 2026',
+    aanhef: 'Hi {{naam}},',
+    intro: [
+      "In exactly one week, **Back to Being** premieres, and you're in!",
+      'With more than 120 sign-ups and only 70 available places, we look forward to welcoming you at this special venue and experiencing the premiere together.',
+    ],
+    kopPraktisch: 'Practical information',
+    praktisch: [
+      "From **19:00** you're welcome in the foyer for a drink beforehand. Order whatever you like: all drinks are on us.",
+      'At **19:30** the premiere starts and the doors close, so please make sure you arrive on time to come in calmly and take your seat.',
+      "We're counting on you, but if you can't make it after all or are running late, please let us know as soon as possible on **+31 6 83032377**, so that if you cancel we can make someone else happy with your place.",
+    ],
+    kopLocatie: 'Venue',
+    adres: ['Het Vondelparkpaviljoen', 'Vondelpark 3', '1071 AA Amsterdam'],
+    routeLink: 'View the location in Google Maps',
+    kopImpressies: 'Impressions of the venue',
+    fotos: [
+      { titel: 'Foyer', tekst: 'A warm welcome in the foyer.', src: MAIL_LINKS.fotoFoyer, href: MAIL_LINKS.foyer },
+      { titel: 'Cinema', tekst: 'De Spiegel in the pavilion.', src: MAIL_LINKS.fotoSpiegel, href: MAIL_LINKS.spiegel },
+    ],
+    slot: 'See you at the premiere!',
+    groet: 'Kind regards,',
+    afzender: ['Caesar Schoorl', 'Team Back to Being'],
+    meerInfo: 'More information',
+    links: [
+      ['Website', 'backtobeing.tech', MAIL_LINKS.website],
+      ['Instagram', '@backtobeingtech', MAIL_LINKS.instagram],
+      ['TikTok', '@backtobeing.tech', MAIL_LINKS.tiktok],
+      ['YouTube', 'Back to Being', MAIL_LINKS.youtube],
+      ['Route', 'Google Maps', MAIL_LINKS.route],
+    ],
+    ruimtes: 'Rooms',
+    ruimteLinks: [['Foyer', MAIL_LINKS.foyer], ['De Spiegel', MAIL_LINKS.spiegel]],
+  },
+};
+
+// **vet** naar <strong>, de rest HTML-veilig.
+function vetNaarHtml(tekst) {
+  return escapeHtml(tekst).replace(/\*\*(.+?)\*\*/g, '<strong style="font-weight:600;">$1</strong>');
+}
+
+/** De herinneringsmail: eigen opbouw, zelfde kleuren en lettertypes als de andere mails. */
+function bouwHerinnering(rij, taal) {
+  const t = HERINNERING_TEKST[taal === 'en' ? 'en' : 'nl'];
+  const k = MAIL_KLEUR;
+  const aanhef = t.aanhef.replace('{{naam}}', rij['Voornaam']);
+  const plat = s => s.replace(/\*\*/g, '');
+
+  const tekst = [
+    aanhef,
+    t.intro.map(plat).join('\n\n'),
+    t.kopPraktisch + '\n\n' + t.praktisch.map(plat).join('\n\n'),
+    t.kopLocatie + '\n' + t.adres.join('\n') + '\n' + t.routeLink + ': ' + MAIL_LINKS.route,
+    t.kopImpressies + '\n' + t.fotos.map(f => f.titel + ': ' + f.tekst + ' ' + f.href).join('\n'),
+    t.slot,
+    t.groet + '\n' + t.afzender.join('\n'),
+    t.meerInfo + '\n' + t.links.map(l => l[0] + ': ' + l[2]).join('\n') + '\n' + t.ruimtes + ': ' + t.ruimteLinks.map(r => r[0] + ' ' + r[1]).join(' / '),
+  ].join('\n\n');
+
+  const alinea = s => '<p style="margin:0 0 20px;font-family:' + MAIL_SANS + ';font-size:14px;line-height:1.6;color:' + k.ink + ';">' + vetNaarHtml(s) + '</p>';
+  const kop = s => '<p style="margin:28px 0 20px;font-family:' + MAIL_SANS + ';font-size:15px;font-weight:600;color:' + k.tree + ';">' + escapeHtml(s) + '</p>';
+  const voetLink = (href, label) => '<a href="' + href + '" style="color:' + k.inkZacht + ';text-decoration:underline;">' + escapeHtml(label) + '</a>';
+  const bolletje = ' <span style="color:' + k.sand + ';">&bull;</span> ';
+  const kaart = f =>
+    '<td width="50%" valign="top" style="padding:0 8px;">' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border:1px solid ' + k.lijn + ';border-radius:11px;overflow:hidden;">' +
+    '<tr><td style="border-radius:11px 11px 0 0;overflow:hidden;line-height:0;font-size:0;">' +
+    '<a href="' + f.href + '" style="display:block;"><img src="' + f.src + '" width="100%" alt="' + escapeHtml(f.titel) + '" style="display:block;width:100%;height:auto;border:0;border-radius:11px 11px 0 0;"></a>' +
+    '</td></tr>' +
+    '<tr><td style="padding:16px 16px 20px;">' +
+    '<div style="font-family:' + MAIL_SANS + ';font-size:14px;font-weight:600;color:' + k.tree + ';">' + escapeHtml(f.titel) + '</div>' +
+    '<div style="margin-top:6px;font-family:' + MAIL_SANS + ';font-size:13px;line-height:1.5;color:' + k.inkZacht + ';">' + escapeHtml(f.tekst) + '</div>' +
+    '</td></tr></table></td>';
+
+  const html =
+    '<!DOCTYPE html><html lang="' + (taal === 'en' ? 'en' : 'nl') + '"><head><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light">' +
+    '<title>' + escapeHtml(t.onderwerp) + '</title>' +
+    '<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">' +
+    '</head>' +
+    '<body style="margin:0;padding:0;background:' + k.canvas + ';">' +
+    '<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:' + k.canvas + ';opacity:0;">' + escapeHtml(t.preheader) + '</div>' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:' + k.canvas + ';">' +
+    '<tr><td align="center" style="padding:48px 0 0;">' +
+    '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;">' +
+
+    // Titel en datum
+    '<tr><td align="center" style="padding:40px 32px 0;">' +
+    '<div style="font-family:' + MAIL_SERIF + ';font-size:36px;line-height:1.15;color:' + k.tree + ';">' + escapeHtml(t.titel) + '</div>' +
+    '<div style="margin-top:24px;font-family:' + MAIL_SERIF + ';font-size:18px;color:' + k.inkZacht + ';">' + escapeHtml(t.datum) + '</div>' +
+    '</td></tr>' +
+
+    // Bericht
+    '<tr><td style="padding:40px 32px 0;">' +
+    '<p style="margin:0 0 28px;font-family:' + MAIL_SANS + ';font-size:15px;font-weight:500;color:' + k.ink + ';">' + escapeHtml(aanhef) + '</p>' +
+    t.intro.map(alinea).join('') +
+    kop(t.kopPraktisch) +
+    t.praktisch.map(alinea).join('') +
+    kop(t.kopLocatie) +
+    '<p style="margin:0;font-family:' + MAIL_SANS + ';font-size:14px;line-height:1.6;color:' + k.ink + ';">' + t.adres.map(escapeHtml).join('<br>') + '<br>' +
+    '<a href="' + MAIL_LINKS.route + '" style="color:' + k.ink + ';font-weight:600;text-decoration:underline;">' + escapeHtml(t.routeLink) + '</a></p>' +
+    kop(t.kopImpressies) +
+    '</td></tr>' +
+
+    // Fotokaarten
+    '<tr><td style="padding:0 24px;">' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' + t.fotos.map(kaart).join('') + '</tr></table>' +
+    '</td></tr>' +
+
+    // Afsluiting
+    '<tr><td style="padding:40px 32px 56px;">' +
+    '<p style="margin:0 0 24px;font-family:' + MAIL_SANS + ';font-size:14px;line-height:1.6;color:' + k.ink + ';">' + escapeHtml(t.slot) + '</p>' +
+    '<p style="margin:0 0 24px;font-family:' + MAIL_SERIF + ';font-style:italic;font-size:18px;color:' + k.tree + ';">' + escapeHtml(t.groet) + '</p>' +
+    '<p style="margin:0;font-family:' + MAIL_SERIF + ';font-style:italic;font-size:18px;line-height:1.4;color:' + k.tree + ';">' + t.afzender.map(escapeHtml).join('<br>') + '</p>' +
+    '</td></tr>' +
+    '</table></td></tr>' +
+
+    // Voettekst: meer informatie
+    '<tr><td align="center" style="background:' + k.kaart + ';border-top:1px solid ' + k.lijn + ';padding:32px 0 40px;">' +
+    '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;"><tr><td style="padding:0 32px;">' +
+    '<p style="margin:0 0 12px;font-family:' + MAIL_SANS + ';font-size:13px;font-weight:600;color:' + k.ink + ';">' + escapeHtml(t.meerInfo) + '</p>' +
+    '<p style="margin:0;font-family:' + MAIL_SANS + ';font-size:12px;line-height:1.8;color:' + k.inkZacht + ';">' +
+    t.links.map(l => escapeHtml(l[0]) + ': ' + voetLink(l[2], l[1])).join(bolletje) + bolletje +
+    escapeHtml(t.ruimtes) + ': ' + t.ruimteLinks.map(r => voetLink(r[1], r[0])).join(' / ') +
+    '</p>' +
+    '</td></tr></table>' +
+    '</td></tr>' +
+
+    '</table></body></html>';
+
+  return { onderwerp: t.onderwerp, tekst: tekst, html: html };
+}
+
 function stuurMail(rij, taal, soort) {
   const mail = bouwMail(rij, taal, soort);
   try {
@@ -809,8 +1165,8 @@ function stuurMail(rij, taal, soort) {
 
 /**
  * Handmatige test van alleen de mails: Run → testMail.
- * Stuurt de echte wachtrij-mail, de goedkeuringsmail en de afwijzingsmail (NL)
- * naar jezelf, zonder iets in de sheet te zetten. Bewust zonder try/catch: ontbreekt de toestemming
+ * Stuurt de echte wachtrij-mail, de goedkeuringsmail, de afwijzingsmail en de
+ * herinneringsmail (NL) naar jezelf, zonder iets in de sheet te zetten. Bewust zonder try/catch: ontbreekt de toestemming
  * om te mailen, dan vraagt Google er nu om, en elke andere fout staat leesbaar
  * in het Execution log.
  */
@@ -818,11 +1174,11 @@ function testMail() {
   const aan = Session.getActiveUser().getEmail();
   console.log('Nog te versturen vandaag: ' + MailApp.getRemainingDailyQuota());
   const rij = { 'Voornaam': 'Test', 'Achternaam': 'Persoon', 'Mailadress': aan, 'Aantal personen': 2 };
-  ['wachtrij', 'goedgekeurd', 'afgewezen'].forEach(soort => {
+  ['wachtrij', 'goedgekeurd', 'afgewezen', 'herinnering'].forEach(soort => {
     const mail = bouwMail(rij, 'nl', soort);
     MailApp.sendEmail({ to: aan, subject: 'Test: ' + mail.onderwerp, body: mail.tekst, htmlBody: mail.html, name: AFZENDER_NAAM });
   });
-  console.log('Drie testmails verstuurd naar ' + aan);
+  console.log('Vier testmails verstuurd naar ' + aan);
 }
 
 function antwoord(obj) {

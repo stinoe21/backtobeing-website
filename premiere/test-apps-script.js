@@ -3,7 +3,7 @@ const fs = require('fs'), vm = require('vm');
 const bron = fs.readFileSync(process.argv[2] || require('path').join(__dirname, 'apps-script.gs'), 'utf8');
 
 function maakWereld(opts = {}) {
-  const mails = []; const cache = {}; const triggers = []; const toasts = [];
+  const mails = []; const cache = {}; const triggers = []; const toasts = []; const vragen = [];
   const tabs = {};
   let volgendId = 1;
   function maakTab(naam, rijen) {
@@ -17,6 +17,8 @@ function maakWereld(opts = {}) {
       getActiveRange: () => opts.selectie ? range(opts.selectie[0], 1, opts.selectie[1] - opts.selectie[0] + 1, 1) : null,
       getRange: (r, c, nr = 1, nc = 1) => range(r, c, nr, nc),
       appendRow: w => rijen.push(w),
+      // Nieuwe lege kolom vóór kolom c, in elke rij.
+      insertColumnBefore: c => rijen.forEach(x => { while (x.length < c - 1) x.push(''); x.splice(c - 1, 0, ''); }),
     };
     function range(r, c, nr, nc) {
       return {
@@ -42,10 +44,18 @@ function maakWereld(opts = {}) {
   const menu = { addItem() { return this; }, addSeparator() { return this; }, addToUi() {} };
   const ctx = {
     console: { log() {}, error() {} },
-    SpreadsheetApp: { getActiveSpreadsheet: () => ss, openById: () => null, getUi: () => ({ createMenu: () => menu }) },
+    SpreadsheetApp: { getActiveSpreadsheet: () => ss, openById: () => null, getUi: () => {
+      if (opts.geenVenster) throw new Error('Cannot call SpreadsheetApp.getUi() from this context');
+      // Het ja/nee-venster: antwoordt met opts.antwoord ('ja' tenzij 'nee').
+      return { createMenu: () => menu, ButtonSet: { YES_NO: 'yn' }, Button: { YES: 'ja', NO: 'nee' }, alert: (titel, vraag) => { vragen.push(vraag); return opts.antwoord === 'nee' ? 'nee' : 'ja'; } };
+    } },
     LockService: { getScriptLock: () => ({ tryLock: () => !opts.slotBezet, waitLock() {}, releaseLock() {} }) },
     CacheService: { getScriptCache: () => ({ get: k => cache[k] ?? null, put: (k, v) => { cache[k] = v; } }) },
-    MailApp: { sendEmail: m => { if (opts.mailKapot) throw new Error('geen toestemming om te mailen'); mails.push(m); }, getRemainingDailyQuota: () => 100 },
+    MailApp: {
+      sendEmail: m => { if (opts.mailKapot) throw new Error('geen toestemming om te mailen'); mails.push(m); },
+      // Dagquotum: opts.quotum mails (standaard 100), min wat er al verstuurd is.
+      getRemainingDailyQuota: () => Math.max(0, (opts.quotum ?? 100) - mails.length),
+    },
     ScriptApp: {
       getProjectTriggers: () => triggers,
       newTrigger: fn => ({ forSpreadsheet() { return this; }, onEdit() { return this; }, create: () => triggers.push({ getHandlerFunction: () => fn }) }),
@@ -74,7 +84,7 @@ function maakWereld(opts = {}) {
   const bewerk = (rijNr, c, v) => vm.runInContext('bijBewerking', ctx)({ range: range(rijNr, c, 1, 1), value: v });
   const run = naam => vm.runInContext(naam, ctx)();
   const status = rijNr => rijen[rijNr - 1][kol('Status')];
-  return { post, get, rijen, mails, triggers, toasts, kol, vink, vinkAf, bewerk, run, status, tabs };
+  return { post, get, rijen, mails, triggers, toasts, vragen, kol, vink, vinkAf, bewerk, run, status, tabs };
 }
 const basis = (mail, n = 1, extra = {}) => ({ Voornaam: 'A', Achternaam: 'B', Mailadress: mail, 'Aantal personen': String(n), Taal: 'nl', ...extra });
 const vijf = { 'Naam persoon (extra 1)': 'a', 'Naam persoon (extra 2)': 'b', 'Naam persoon (extra 3)': 'c', 'Naam persoon (extra 4)': 'd' };
@@ -299,5 +309,111 @@ check('EN: HTML in de naam wordt onschadelijk gemaakt', /O&#39;Brien &lt;b&gt;/.
 check('EN: Nederlandse tekst komt niet voor', !/Aanmeldingsgegevens|Bezoeker|Tot snel|wachtrij/.test(m.htmlBody));
 w.post(basis('geen-taal@v.nl', 1, { Taal: 'xx' }));
 check('onbekende taal -> Nederlands', /aanmelding voor de première/.test(w.mails[2].subject), w.mails[2].subject);
+
+// 12. herinnering: alleen naar goedgekeurde rijen, met bevestiging, datum in de kolom, niet dubbel
+w = maakWereld({ plafond: 70 });
+w.post(basis('anna@v.nl', 2, { Voornaam: 'Anna', Achternaam: 'de Vries', 'Naam persoon (extra 1)': 'x' }));
+w.post(basis('tom@v.nl', 1, { Voornaam: 'Tom', Taal: 'en' }));
+w.post(basis('eva@v.nl', 1, { Voornaam: 'Eva' }));
+w.post(basis('bob@v.nl', 1, { Voornaam: 'Bob' }));
+check('kolom Herinnering verstuurd op aangemaakt en leeg', w.rijen[0].includes('Herinnering verstuurd op') && w.rijen[1][w.kol('Herinnering verstuurd op')] === '', w.rijen[0]);
+w.vink(2, true); w.vink(3, true); w.vinkAf(4, true);
+let voor = w.mails.length;
+w.run('stuurHerinneringen');
+check('herinnering: bevestigingsvraag met aantal gasten en personen', w.vragen.length === 1 && /2 gasten \(3 personen\)/.test(w.vragen[0]), w.vragen);
+check('herinnering: twee mails, alleen naar de goedgekeurde rijen', w.mails.length === voor + 2 && w.mails.slice(voor).map(x => x.to).sort().join() === 'anna@v.nl,tom@v.nl', w.mails.slice(voor).map(x => x.to));
+m = w.mails[voor];
+check('NL herinnering: onderwerp, titel, aanhef "Hi Anna,", koppen en adres uit het Figma-ontwerp', /Nog één week tot de première/.test(m.subject) && /Nog één week tot de première<\/div>/.test(m.htmlBody) && /Hi Anna,/.test(m.htmlBody) && /Praktische informatie/.test(m.htmlBody) && /Locatie<\/p>/.test(m.htmlBody) && /Vondelpark 3<br>1071 AA Amsterdam/.test(m.htmlBody) && /Impressies van de locatie/.test(m.htmlBody), m.subject);
+check('NL herinnering: vet via **..**, foto-kaarten met links, Google Maps, telefoonnummer, voettekst', /<strong[^>]*>19.00 uur<\/strong>/.test(m.htmlBody) && !/\*\*/.test(m.htmlBody) && /premiere-foyer\.jpg/.test(m.htmlBody) && /premiere-spiegel\.jpg/.test(m.htmlBody) && /de-spiegel\//.test(m.htmlBody) && /google\.com\/maps/.test(m.htmlBody) && /06 83032377/.test(m.htmlBody) && /Meer informatie/.test(m.htmlBody) && /Caesar Schoorl<br>Team Back to Being/.test(m.htmlBody), m.htmlBody.length);
+check('NL herinnering: tekstversie zonder sterretjes, met adres en links', /Hi Anna,/.test(m.body) && !/\*\*/.test(m.body) && /Vanaf 19.00 uur/.test(m.body) && /1071 AA Amsterdam/.test(m.body) && /de-foyer-bar/.test(m.body), m.body);
+m = w.mails[voor + 1];
+check('EN herinnering: Engels, zonder Nederlandse tekst', /One week to go/.test(m.subject) && /Hi Tom,/.test(m.htmlBody) && /Practical information/.test(m.htmlBody) && /Venue<\/p>/.test(m.htmlBody) && !/Beste|Praktische|Locatie<|Impressies|vriendelijke/.test(m.htmlBody), m.subject);
+check('herinnering: datum ingevuld bij goedgekeurde rijen, niet bij de rest', w.rijen[1][w.kol('Herinnering verstuurd op')] !== '' && w.rijen[2][w.kol('Herinnering verstuurd op')] !== '' && w.rijen[3][w.kol('Herinnering verstuurd op')] === '' && w.rijen[4][w.kol('Herinnering verstuurd op')] === '', w.rijen.map(x => x[w.kol('Herinnering verstuurd op')]));
+check('herinnering: melding met het aantal', /2 herinneringen verstuurd/.test(w.toasts.at(-1)), w.toasts.at(-1));
+voor = w.mails.length;
+w.run('stuurHerinneringen');
+check('nog eens draaien: niets dubbel, melding dat iedereen hem al had', w.mails.length === voor && /al gehad/.test(w.toasts.at(-1)), w.toasts.at(-1));
+w.vink(5, true); voor = w.mails.length;
+w.run('stuurHerinneringen');
+check('nieuwe goedkeuring daarna: alleen die krijgt de herinnering', w.mails.length === voor + 1 && w.mails.at(-1).to === 'bob@v.nl', w.mails.slice(voor).map(x => x.to));
+
+// 12b. nee in het venster = niets versturen; zonder venster (Run in de editor) = gewoon door
+w = maakWereld({ plafond: 70, antwoord: 'nee' });
+w.post(basis('a@v.nl')); w.vink(2, true); voor = w.mails.length;
+w.run('stuurHerinneringen');
+check('nee -> geen mail, geen datum', w.mails.length === voor && w.rijen[1][w.kol('Herinnering verstuurd op')] === '' && /Niets verstuurd/.test(w.toasts.at(-1)), w.toasts.at(-1));
+w = maakWereld({ plafond: 70, geenVenster: true });
+w.post(basis('a@v.nl')); w.vink(2, true); voor = w.mails.length;
+w.run('stuurHerinneringen');
+check('zonder venster (Run) -> gewoon versturen', w.mails.length === voor + 1 && /Nog één week/.test(w.mails.at(-1).subject), w.mails.length);
+
+// 12c. quotum op: stoppen en zeggen hoeveel er nog wachten; mislukte mail: geen datum
+w = maakWereld({ plafond: 70, quotum: 7 });
+for (let i = 0; i < 4; i++) { w.post(basis('h' + i + '@v.nl')); w.vink(i + 2, true); }
+voor = w.mails.length; // 8 mails weg, quotum 7: niets kan meer
+w.run('stuurHerinneringen');
+check('quotum op: geen mail, melding over morgen', w.mails.length === voor && /dagquotum is op: 4 rijen/.test(w.toasts.at(-1)), w.toasts.at(-1));
+w = maakWereld({ plafond: 70, quotum: 10 });
+for (let i = 0; i < 4; i++) { w.post(basis('h' + i + '@v.nl')); w.vink(i + 2, true); }
+voor = w.mails.length; // 8 weg, nog 2 over
+w.run('stuurHerinneringen');
+check('quotum voor 2 van de 4: twee verstuurd, twee wachten', w.mails.length === voor + 2 && /2 herinneringen verstuurd.*2 rijen wachten/.test(w.toasts.at(-1)) && w.rijen[3][w.kol('Herinnering verstuurd op')] === '', w.toasts.at(-1));
+w = maakWereld({ plafond: 70, mailKapot: true });
+w.post(basis('k@v.nl')); w.vink(2, true);
+w.run('stuurHerinneringen');
+check('mail mislukt: geen datum, reden in de melding', w.rijen[1][w.kol('Herinnering verstuurd op')] === '' && /Mislukt: k@v.nl/.test(w.toasts.at(-1)), w.toasts.at(-1));
+
+// 12d. menu: herinnering (opnieuw) naar de selectie; niet-goedgekeurde rijen overslaan
+w = maakWereld({ plafond: 70, selectie: [2, 3] });
+w.post(basis('a@v.nl')); w.post(basis('b@v.nl')); w.post(basis('c@v.nl'));
+w.vink(2, true); w.vink(4, true);
+w.run('stuurHerinneringen'); voor = w.mails.length;
+w.run('stuurHerinneringSelectie');
+check('selectie: rij 2 krijgt hem opnieuw, rij 3 (wachtrij) niet, rij 4 niet geselecteerd', w.mails.length === voor + 1 && w.mails.at(-1).to === 'a@v.nl' && /Niet goedgekeurd.*b@v.nl/.test(w.toasts.at(-2)), w.toasts.slice(-2));
+
+// 12e. het vinkje "Herinnering sturen", net als Goedkeuren en Afwijzen
+w = maakWereld({ plafond: 70 });
+w.post(basis('anna@v.nl', 2, { Voornaam: 'Anna', 'Naam persoon (extra 1)': 'x' }));
+w.post(basis('eva@v.nl', 1, { Voornaam: 'Eva' }));
+check('kolom Herinnering sturen aangemaakt met leeg vinkje', w.rijen[0].includes('Herinnering sturen') && w.rijen[1][w.kol('Herinnering sturen')] === false, w.rijen[0]);
+w.vink(2, true); voor = w.mails.length;
+w.vink(2, true, 'Herinnering sturen');
+check('vinkje aan bij goedgekeurde rij: herinnering verstuurd, datum gevuld, vinkje blijft aan', w.mails.length === voor + 1 && /Nog één week/.test(w.mails.at(-1).subject) && w.mails.at(-1).to === 'anna@v.nl' && w.rijen[1][w.kol('Herinnering verstuurd op')] !== '' && w.rijen[1][w.kol('Herinnering sturen')] === true, [w.mails.length - voor, w.rijen[1]]);
+w.vink(2, false, 'Herinnering sturen');
+check('vinkje uit: niets, melding dat de mail niet terug kan', w.mails.length === voor + 1 && w.rijen[1][w.kol('Herinnering verstuurd op')] !== '' && /gaat niet terug/.test(w.toasts.at(-1)), w.toasts.at(-1));
+w.vink(2, true, 'Herinnering sturen');
+check('nog eens aanvinken: geen tweede mail, melding "al verstuurd"', w.mails.length === voor + 1 && /al verstuurd op/.test(w.toasts.at(-1)), w.toasts.at(-1));
+w.vink(3, true, 'Herinnering sturen');
+check('vinkje bij wachtrij-rij: gaat weer uit, geen mail, melding', w.mails.length === voor + 1 && w.rijen[2][w.kol('Herinnering sturen')] === false && w.rijen[2][w.kol('Herinnering verstuurd op')] === '' && /niet goedgekeurd/.test(w.toasts.at(-1)), w.toasts.at(-1));
+w.vink(3, true); voor = w.mails.length;
+w.run('stuurHerinneringen');
+check('menu daarna: alleen Eva krijgt hem nog, vinkje gaat aan', w.mails.length === voor + 1 && w.mails.at(-1).to === 'eva@v.nl' && w.rijen[2][w.kol('Herinnering sturen')] === true, w.mails.slice(voor).map(x => x.to));
+w = maakWereld({ plafond: 70, mailKapot: true });
+w.post(basis('k@v.nl')); w.vink(2, true);
+w.vink(2, true, 'Herinnering sturen');
+check('vinkje aan, mail mislukt: vinkje weer uit, geen datum', w.rijen[1][w.kol('Herinnering sturen')] === false && w.rijen[1][w.kol('Herinnering verstuurd op')] === '' && /Mislukt: k@v.nl/.test(w.toasts.at(-1)), w.toasts.at(-1));
+w = maakWereld({ plafond: 70 });
+w.post(basis('q@v.nl')); w.vink(2, true); voor = w.mails.length;
+w.bewerk(2, w.kol('Herinnering sturen') + 1, 'x');
+check('andere waarde dan aan/uit in de kolom: niets', w.mails.length === voor, w.mails.length);
+
+// 12f. installeren op een sheet uit de vorige versie: "Herinnering sturen" komt links van de datumkolom, met vinkjes
+w = maakWereld();
+w.rijen[0].push('Status', 'Goedkeuren', 'Goedgekeurd op', 'Uitnodiging', 'Afwijzen', 'Afgewezen op', 'Herinnering verstuurd op');
+w.rijen.push(['A', 'B', 'a@v.nl', 1, '', '', '', '', 'Goedgekeurd', true, 'x', '', false, '', '']);
+w.rijen.push(['C', 'D', 'c@v.nl', 1, '', '', '', '', 'Wachtrij', false, '', '', false, '', '']);
+w.run('installeren');
+check('installeren: kolom Herinnering sturen direct links van Herinnering verstuurd op', w.kol('Herinnering sturen') === w.kol('Herinnering verstuurd op') - 1 && w.kol('Herinnering sturen') > w.kol('Afgewezen op'), w.rijen[0]);
+check('installeren: vinkjes in de nieuwe kolom, datumkolom en rest onaangeroerd', w.rijen[1][w.kol('Herinnering sturen')] === false && w.rijen[2][w.kol('Herinnering sturen')] === false && w.rijen[1][w.kol('Herinnering verstuurd op')] === '' && w.status(2) === 'Goedgekeurd' && w.rijen[1][w.kol('Goedkeuren')] === true, [w.rijen[1], w.rijen[2]]);
+w.vink(2, true, 'Herinnering sturen');
+check('installeren: vinkje in de verplaatste kolom stuurt de herinnering', /Reminder: Nog één week/.test(w.mails.at(-1).subject) && w.mails.at(-1).to === 'a@v.nl' && w.rijen[1][w.kol('Herinnering verstuurd op')] !== '', w.mails.map(x => x.subject));
+w.run('installeren');
+check('installeren nog eens: geen tweede kolom', w.rijen[0].filter(k => k === 'Herinnering sturen').length === 1, w.rijen[0]);
+
+// 13. HTML in de voornaam wordt ook in de herinnering onschadelijk gemaakt
+w = maakWereld({ plafond: 70 });
+w.post(basis('z@v.nl', 1, { Voornaam: '<b>Zoë', Achternaam: 'Z' })); w.vink(2, true);
+w.run('stuurHerinneringen');
+check('herinnering: HTML in de naam onschadelijk', /Hi &lt;b&gt;Zoë,/.test(w.mails.at(-1).htmlBody) && !/<b>Zoë/.test(w.mails.at(-1).htmlBody), w.mails.at(-1).htmlBody.slice(0, 100));
 
 console.log(fouten ? '\n' + fouten + ' FOUT(EN)' : '\nalles ok'); process.exit(fouten ? 1 : 0);

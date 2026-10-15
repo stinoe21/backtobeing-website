@@ -16,7 +16,8 @@ Voornaam | Achternaam | Mailadress | Aantal personen | Naam persoon (extra 1) | 
 ```
 
 Het script zet er zelf `Taal`, `Ingeschreven op`, `Status`, `Goedkeuren`,
-`Goedgekeurd op`, `Uitnodiging`, `Afwijzen` en `Afgewezen op` achter. Kolommen mogen van plek wisselen: het script zoekt op
+`Goedgekeurd op`, `Uitnodiging`, `Afwijzen`, `Afgewezen op`, `Herinnering
+sturen` en `Herinnering verstuurd op` achter. Kolommen mogen van plek wisselen: het script zoekt op
 naam in rij 1.
 
 ## Hoe een aanmelding loopt
@@ -72,6 +73,42 @@ Handig: filter of sorteer op de kolom `Status` om de wachtrij te zien.
 - Afgewezen personen tellen niet mee voor de 70 plekken. Hun mailadres blijft
   wel in de sheet staan, dus opnieuw aanmelden met hetzelfde adres kan niet.
 - Lukt de mail niet, dan staat er `Afgewezen (mail mislukt)` in de statuskolom.
+
+## Herinnering vlak voor de première
+
+- **Vink `Herinnering sturen` aan** bij een goedgekeurde rij. Het script stuurt
+  dan de mail "Nog één week tot de première" (praktische informatie, adres met
+  Google Maps-link, twee foto's van de locatie, telefoonnummer voor afmelden)
+  in de taal van de aanmelding en vult `Herinnering verstuurd op`.
+- **Niet goedgekeurd?** Dan gaat het vinkje vanzelf weer uit en er gaat geen
+  mail. Keur de rij eerst goed.
+- **Al verstuurd?** Staat er al een datum, dan gaat er geen tweede mail en zie
+  je rechtsonder wanneer de eerste weg is. Het vinkje weer uitzetten doet
+  niets: de mail is al weg.
+- **Iedereen in één keer: menu Première → Herinnering sturen naar alle
+  goedgekeurde gasten**: hetzelfde voor elke rij met `Status` `Goedgekeurd`
+  waar `Herinnering verstuurd op` nog leeg is. Je ziet eerst een ja/nee-venster
+  met het aantal gasten en hoeveel mails er vandaag nog mogen. Het vinkje gaat
+  bij elke verstuurde rij aan.
+- **Wanneer**: de tekst zegt "over precies een week", dus op **dinsdag 27
+  oktober**. Eerder of later? Pas dan de eerste alinea in `HERINNERING_TEKST`
+  aan.
+- **Eerst deployen**: de foto's in de mail zijn `premiere-foyer.jpg` en
+  `premiere-spiegel.jpg` in de root van de site. Die moeten live staan op
+  backtobeing.tech vóór je de mail stuurt, anders blijven de kaartjes leeg.
+- **Nog eens draaien is veilig**: wie de datum al heeft, slaat het over. Doe dat
+  dus gerust na een mislukte mail, als het quotum op was, of als je na de
+  eerste ronde nog iemand hebt goedgekeurd.
+- **Quotum** (100 per dag vanuit Gmail): is het op, dan stopt het script en zegt
+  de melding hoeveel rijen er nog wachten. Morgen opnieuw draaien. Stuur de
+  herinnering dus op een dag dat je niet veel goedkeurt of afwijst.
+- **Menu Première → Herinnering (opnieuw) sturen naar geselecteerde rijen**:
+  stuurt hem wél nog een keer, alleen aan de geselecteerde rijen. Rijen die niet
+  goedgekeurd zijn, slaat het over met een melding.
+- Mislukt een mail, dan blijft `Herinnering verstuurd op` leeg, gaat het
+  vinkje weer uit en staat de reden in de melding en in Executions.
+- Wie afzegt (per telefoon of mail): haal het vinkje bij `Goedkeuren` weg (de
+  rij gaat terug naar `Wachtrij`) en keur iemand van de reservelijst goed.
 
 ## Uitnodigingslinks: wachtrij overslaan
 
@@ -184,23 +221,35 @@ vink ze aan om ze de bevestiging te sturen, of laat ze staan.
 Het formulier heeft een verborgen veld `website`. Vult een bot dat in, dan toont
 de pagina de bedanktekst zonder dat er iets in de sheet komt.
 
-## De drie mails
+## De vier mails
 
 Alle mails zijn HTML, vanuit het Google-account dat het script deployt
 (afzendernaam `AFZENDER_NAAM`), met hetzelfde ontwerp uit Figma, frames
 `back-to-being-mailing-nl` en `back-to-being-mailing-en`:
 - NL: https://www.figma.com/design/sAa0ga3n6JuO2OyhgKcuqp/Untitled?node-id=6-5
 - EN: https://www.figma.com/design/sAa0ga3n6JuO2OyhgKcuqp/Untitled?node-id=15-57
+- Herinnering NL: https://www.figma.com/design/sAa0ga3n6JuO2OyhgKcuqp/Untitled?node-id=39-2
+- Herinnering EN: https://www.figma.com/design/sAa0ga3n6JuO2OyhgKcuqp/Untitled?node-id=52-5
 
 | soort | wanneer | onderwerp (NL) |
 | --- | --- | --- |
 | `wachtrij` | direct na de aanmelding | "Je aanmelding voor de première van Back to Being is ontvangen" |
 | `goedgekeurd` | na het vinkje `Goedkeuren` in de sheet | "Je bent erbij: je plek voor de première van Back to Being is bevestigd" |
 | `afgewezen` | na het vinkje `Afwijzen` in de sheet | "De première van Back to Being zit vol, maar je staat op de reservelijst" |
+| `herinnering` | via het menu, een week voor de première | "Reminder: Nog één week tot de première van Back to Being" |
 
 De wachtrij- en de goedkeuringsmail hebben een kaartje met de aanmeldgegevens
 en een voetnoot met datum, tijd en locatie. De afwijzingsmail heeft die niet,
 maar wel een tweede alinea (`vervolg`) over de documentaire die online komt.
+De herinnering heeft een eigen ontwerp (Figma-frame
+`back-to-being-herinnering-premiere-nl`, node 39-2; de Engelse versie is een
+vertaling daarvan): titel en datum, "Hi {{naam}}," twee alinea's intro, kop
+"Praktische informatie" met drie alinea's, kop "Locatie" met adres en
+Google Maps-link, kop "Impressies van de locatie" met twee fotokaartjes (Foyer
+en De Spiegel, elk met link naar de zaal op hetvondelparkpaviljoen.nl),
+afsluiting met handtekening, en een voettekst "Meer informatie" met links.
+Teksten in `HERINNERING_TEKST` in `apps-script.gs`; `**vet**` in een alinea
+wordt vet in de mail. Het telefoonnummer voor afmeldingen staat daar ook.
 
 - De taal volgt de kolom `Taal` (de taalknop op de pagina): `nl` krijgt de
   Nederlandse mail, `en` de Engelse.
@@ -210,14 +259,14 @@ maar wel een tweede alinea (`vervolg`) over de documentaire die online komt.
 - Teksten staan in `MAIL_TEKST` in `apps-script.gs`: per taal de algemene regels,
   en onder `wachtrij`, `goedgekeurd` en `afgewezen` onderwerp, preheader, titel,
   intro en de titel van het kaartje. Een lege `kaartTitel` of `noot` laat dat
-  onderdeel weg. Kleuren en links in `MAIL_KLEUR` en `MAIL_LINKS`.
+  onderdeel weg. De herinnering staat apart in `HERINNERING_TEKST`. Kleuren en links in `MAIL_KLEUR` en `MAIL_LINKS`.
   "Voorkeuren aanpassen" is een mailto naar het contactadres; er is geen
   voorkeurenpagina.
 - Lettertypes (Instrument Serif, Inter) laden via Google Fonts. Gmail toont in
   plaats daarvan Georgia en Arial; de opmaak blijft verder gelijk.
 
 Lokaal bekijken zonder te versturen: `node premiere/test-apps-script.js` test de
-inhoud; wil je de mails zien, run dan in Apps Script `testMail` (stuurt de drie
+inhoud; wil je de mails zien, run dan in Apps Script `testMail` (stuurt de vier
 Nederlandse versies naar jezelf, zonder rij in de sheet).
 
 ## Mail controleren
@@ -227,7 +276,7 @@ Het antwoord van het script op een aanmelding zegt of het versturen gelukt is:
 De aanmelding staat in beide gevallen in de sheet.
 
 Komt er geen mail aan, run dan in Apps Script de functie **`testMail`**. Die
-stuurt de drie mails één keer naar jezelf, zonder iets in de sheet te zetten.
+stuurt de vier mails één keer naar jezelf, zonder iets in de sheet te zetten.
 Ontbreekt de toestemming om te mailen, dan vraagt Google er op dat moment om;
 elke andere fout staat in het Execution log. Daarna opnieuw deployen als New version.
 
@@ -236,4 +285,5 @@ elke andere fout staat in het Execution log. Daarna opnieuw deployen als New ver
 `MailApp` mag vanuit een gewoon Gmail-account 100 mails per dag sturen, vanuit
 Google Workspace 1500. Elke aanmelding kost nu twee mails (wachtrij plus
 goedkeuring of afwijzing), dus reken met zo'n 50 aanmeldingen per dag; zet anders
-`STUUR_BEVESTIGING` op `false` in het script.
+`STUUR_BEVESTIGING` op `false` in het script. De herinnering kost één mail per
+goedgekeurde rij (niet per persoon); het script stopt zelf als het quotum op is.
