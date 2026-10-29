@@ -9,13 +9,13 @@
   <link rel="icon" href="favicon-512.png" type="image/png" sizes="512x512" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="canonical" href="https://backtobeing.tech/premiere" />
-  <meta name="description" content="Op dinsdag 3 november gaat Back to Being in première in Het Vondelpark Paviljoen in Amsterdam: zes dagen Camino, 129 kilometer en een app gebouwd onderweg. Alle 70 plekken zijn vol; meld je aan voor de reservelijst." />
+  <meta name="description" content="Op dinsdag 3 november gaat Back to Being in première in Het Vondelpark Paviljoen in Amsterdam: zes dagen Camino, 129 kilometer en een app gebouwd onderweg. Alle 70 plekken zijn vol." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#fffef1" />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Back to Being gaat in première" />
-  <meta property="og:description" content="Zes dagen Camino, 129 kilometer en een app gebouwd onderweg. Op 3 november op één avond te zien in Het Vondelpark Paviljoen, Amsterdam. Alle 70 plekken zijn vol; meld je aan voor de reservelijst." />
+  <meta property="og:description" content="Zes dagen Camino, 129 kilometer en een app gebouwd onderweg. Op 3 november op één avond te zien in Het Vondelpark Paviljoen, Amsterdam. Alle 70 plekken zijn vol." />
   <meta property="og:locale" id="ogLocale" content="nl_NL" />
   <meta property="og:site_name" content="Back to Being" />
   <meta property="og:url" content="https://backtobeing.tech/premiere" />
@@ -35,11 +35,10 @@
        Deze pagina hoort bij index.html en volg.html: dezelfde tokens en
        dezelfde nav. Wijzig je daar iets aan de huisstijl, doe het hier ook.
 
-       Opzet: één scherm op desktop, met de footer van de hoofdsite eronder. Links de
-       aankondiging (met wanneer en waar), rechts het formulier
-       om je in te schrijven. Op mobiel staan ze onder elkaar en scrolt de
-       pagina wél, want een formulier met vijf namen past niet op een
-       telefoonscherm.
+       Opzet: één scherm op desktop, met de footer van de hoofdsite eronder. Bovenaan de
+       trailer, daaronder links het verhaal en rechts wanneer en waar. De
+       première is vol, dus er is geen aanmeldformulier meer. Op mobiel staan
+       ze onder elkaar.
        ============================================================ */
     :root {
       --tree:        #2a3723;
@@ -160,6 +159,188 @@
     .lang-sep { color: var(--ink-soft); opacity: 0.35; font-size: 0.7rem; user-select: none; }
 
     /* ============================================================
+       BIOSCOOP — de trailer, bovenaan, over het hele scherm.
+       Rust: de trailer speelt zonder geluid gedimd op de achtergrond,
+       met zwarte balken (2.39:1) en een titelkaart erover.
+       Spelen: balken weg, titel weg, beeld helder, geluid aan.
+       Het bestand heet premiere-trailer.mp4 en staat in de root.
+       ============================================================ */
+    .bioscoop {
+      --zwart: #0b0b09;
+      --doek-licht: rgba(255,254,241,0.92);
+      --goud: #cdb47c;
+      position: relative; isolation: isolate;
+      min-height: 100svh;
+      display: grid; place-items: center;
+      overflow: hidden;
+      background: var(--zwart);
+      color: var(--canvas);
+    }
+    .doek, .doek video { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .doek { z-index: -2; background: var(--zwart) center / cover no-repeat; }
+    .doek video {
+      object-fit: cover;
+      opacity: 0;
+      filter: brightness(0.42) saturate(0.85) contrast(1.05);
+      transform: scale(1.08);
+      transition: opacity 1.6s ease, filter 1.2s ease, transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .doek video.is-er { opacity: 1; }
+    @media (prefers-reduced-motion: no-preference) {
+      .bioscoop:not(.speelt) .doek video.is-er { animation: drift 28s ease-in-out infinite alternate; }
+      @keyframes drift { from { transform: scale(1.08); } to { transform: scale(1.16) translate3d(-1%, -1%, 0); } }
+    }
+
+    /* Vignet en filmkorrel. De korrel is een SVG-ruis die op zijn plek trilt. */
+    .bioscoop::before, .bioscoop::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; transition: opacity 0.8s ease; }
+    .bioscoop::before {
+      background:
+        radial-gradient(ellipse 75% 65% at 50% 48%, transparent 30%, rgba(0,0,0,0.72) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,0.35), transparent 30%, transparent 70%, rgba(0,0,0,0.55));
+    }
+    .bioscoop::after {
+      inset: -50%;
+      opacity: 0.11; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .bioscoop::after { animation: korrel 0.9s steps(6) infinite; }
+      @keyframes korrel {
+        0% { transform: translate(0, 0); } 20% { transform: translate(-4%, 3%); }
+        40% { transform: translate(3%, -5%); } 60% { transform: translate(-6%, -2%); }
+        80% { transform: translate(5%, 4%); } 100% { transform: translate(0, 0); }
+      }
+    }
+
+    /* Letterbox: de balken laten een 2.39:1-beeld over, maar worden op een
+       staande telefoon niet hoger dan 9vh. */
+    .balk {
+      position: absolute; left: 0; right: 0; z-index: 3;
+      height: clamp(0px, calc((100svh - 100vw / 2.39) / 2), 9vh);
+      background: var(--zwart);
+      transition: height 1.1s cubic-bezier(0.65, 0, 0.35, 1);
+      pointer-events: none;
+    }
+    .balk.boven { top: 0; }
+    .balk.onder { bottom: 0; }
+
+    /* Titelkaart */
+    .titelkaart {
+      position: relative; z-index: 4;
+      max-width: 60rem;
+      padding: calc(var(--nav-h) + 2rem) var(--pane-x) 6rem;
+      text-align: center;
+      transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease;
+    }
+    .titelkaart .presenteert {
+      font-family: var(--subhead); font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.42em; text-transform: uppercase;
+      color: rgba(255,254,241,0.6);
+      margin-bottom: 1.6rem;
+    }
+    .titelkaart h2 {
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(2.8rem, 8.4vw, 7.4rem);
+      line-height: 0.92; letter-spacing: -0.015em;
+      color: var(--doek-licht);
+      text-shadow: 0 2px 40px rgba(0,0,0,0.5);
+    }
+    .titelkaart h2 em { font-style: italic; color: var(--goud); }
+    .titelkaart .aftiteling {
+      display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+      gap: 0.5rem 1.1rem;
+      margin-top: 1.8rem;
+      font-family: var(--subhead); font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: rgba(255,254,241,0.72);
+    }
+    .aftiteling .stip { width: 4px; height: 4px; border-radius: 50%; background: var(--goud); opacity: 0.8; }
+
+    .speel {
+      display: inline-flex; align-items: center; gap: 1rem;
+      margin-top: 2.6rem; padding: 0.55rem 1.6rem 0.55rem 0.55rem;
+      border: 1px solid rgba(255,254,241,0.28);
+      border-radius: var(--radius-pill);
+      background: rgba(255,254,241,0.06);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      color: var(--canvas); cursor: pointer;
+      font-family: var(--subhead); font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+    .speel:hover { background: rgba(255,254,241,0.14); border-color: rgba(255,254,241,0.55); transform: translateY(-2px); }
+    .speel-rondje {
+      position: relative;
+      width: 56px; height: 56px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: var(--canvas); color: var(--zwart);
+    }
+    .speel-rondje svg { width: 20px; height: 20px; margin-left: 3px; }
+    .speel-duur { color: rgba(255,254,241,0.55); font-weight: 500; }
+    .speel-duur:empty { display: none; }
+    @media (prefers-reduced-motion: no-preference) {
+      .speel-rondje::after {
+        content: ""; position: absolute; inset: -1px; border-radius: 50%;
+        border: 1px solid var(--canvas);
+        animation: puls 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      }
+      @keyframes puls { from { transform: scale(1); opacity: 0.7; } to { transform: scale(1.7); opacity: 0; } }
+    }
+    .bioscoop.geen-film .speel { display: none; }
+
+
+    /* Bedieningsknoppen tijdens het kijken */
+    .film-knoppen {
+      position: absolute; z-index: 5;
+      top: calc(var(--nav-h) + 1rem); right: var(--pane-x);
+      display: flex; gap: 0.6rem;
+      opacity: 0; pointer-events: none; transform: translateY(-6px);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .film-knop {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      min-height: 44px; padding: 0 1.1rem;
+      border: 1px solid rgba(255,254,241,0.25); border-radius: var(--radius-pill);
+      background: rgba(11,11,9,0.55);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      color: var(--canvas); cursor: pointer;
+      font-family: var(--subhead); font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .film-knop:hover { background: rgba(11,11,9,0.8); border-color: rgba(255,254,241,0.5); }
+    .film-knop svg { width: 16px; height: 16px; }
+    .bioscoop a:focus-visible, .bioscoop button:focus-visible { outline-color: var(--goud); }
+
+    /* Staat: de trailer speelt */
+    .bioscoop.speelt .doek video {
+      object-fit: contain;
+      filter: none; transform: none;
+    }
+    .bioscoop.speelt::before, .bioscoop.speelt::after { opacity: 0; }
+    .bioscoop.speelt .balk { height: 0; }
+    .bioscoop.speelt .titelkaart { opacity: 0; transform: scale(0.96); filter: blur(6px); pointer-events: none; }
+    .bioscoop.speelt .film-knoppen { opacity: 1; pointer-events: auto; transform: none; }
+    
+    /* Openingssequentie: titelkaart komt regel voor regel op. */
+    @media (prefers-reduced-motion: no-preference) {
+      .titelkaart > * { animation: opkomen 1.4s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+      .titelkaart .presenteert { animation-delay: 0.3s; animation-name: opkomen, spatie; }
+      .titelkaart h2 { animation-delay: 0.6s; }
+      .titelkaart .aftiteling { animation-delay: 1.1s; }
+      .titelkaart .speel { animation-delay: 1.5s; }
+      @keyframes opkomen { from { opacity: 0; transform: translateY(18px); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+      @keyframes spatie { from { letter-spacing: 0.9em; } to { letter-spacing: 0.42em; } }
+    }
+    @media (max-width: 760px) {
+      .titelkaart .presenteert { font-size: 0.6rem; letter-spacing: 0.32em; }
+      .titelkaart .aftiteling { font-size: 0.64rem; letter-spacing: 0.18em; flex-direction: column; gap: 0.45rem; }
+      .aftiteling .stip { display: none; }
+      .film-knop span { display: none; }
+      .film-knop { padding: 0 0.8rem; }
+    }
+
+    /* ============================================================
        SCHERM
        ============================================================ */
     .shell {
@@ -191,165 +372,51 @@
       max-width: 32rem;
     }
     .intro p + p { margin-top: 0.8rem; }
-    .intro p.cta { color: var(--ink); font-weight: 600; margin-top: 1.1rem; }
-    .intro p.cta strong { font-weight: 600; color: var(--tree); }
-    .intro p.klein { font-size: 0.85rem; margin-top: 0.6rem; }
-    .intro p.klein strong { font-weight: 600; color: var(--ink); }
 
-    /* Wanneer en waar: tussen het verhaal en de oproep, naast elkaar. */
-    .praktisch {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem 1.5rem;
-      max-width: 32rem;
-      margin-top: 1.2rem; padding: 0.9rem 0 1rem;
-      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-    }
+    /* Wanneer en waar: in de kaart rechts, onder elkaar. */
+    .praktisch { display: grid; gap: 1.1rem; }
+    .praktisch > div + div { padding-top: 1.1rem; border-top: 1px solid var(--line); }
     .praktisch dt {
       font-family: var(--subhead); font-size: 0.62rem; font-weight: 600;
       letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
     }
     .praktisch dd {
       margin-top: 0.3rem;
-      font-size: clamp(0.95rem, 1.15vw, 1.05rem); line-height: 1.4;
-      font-weight: 500; color: var(--ink);
+      font-family: var(--serif); font-weight: 400;
+      font-size: clamp(1.45rem, 2vw, 1.75rem); line-height: 1.15;
+      color: var(--ink);
     }
     .praktisch dd span {
-      display: block; margin-top: 0.15rem;
-      font-size: 0.85rem; font-weight: 400; color: var(--ink-soft);
+      display: block;
+      margin-top: 0.35rem;
+      font-family: var(--sans); font-size: 0.88rem; line-height: 1.5; color: var(--ink-soft);
     }
     .praktisch dd a { text-decoration: underline; text-underline-offset: 3px; }
     .praktisch dd a:hover { color: var(--tree); }
 
-    /* ---------- rechts: het formulier ---------- */
+    /* ---------- rechts: wanneer en waar ---------- */
     .kaart {
-      position: relative;
-      scroll-margin-top: calc(var(--nav-h) + 1rem);
       padding: clamp(1.4rem, 2.6vw, 2.2rem);
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
       background: rgba(255,254,241,0.9);
       box-shadow: 0 18px 50px rgba(42,55,35,0.08);
     }
-    .kaart h2 {
-      font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.5rem, 2.2vw, 1.9rem); line-height: 1.05;
-      margin-bottom: 0.4rem;
-    }
-    .kaart .sub {
-      font-size: 0.9rem; line-height: 1.5; color: var(--ink-soft);
-      margin-bottom: 1.4rem;
-    }
 
-    .rij { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-    .veld { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
-    .veld + .veld, .rij + .veld, .veld + .rij, .rij + .rij { margin-top: 0.75rem; }
-    .rij > .veld { margin-top: 0; }
-    .veld label {
-      font-family: var(--subhead); font-size: 0.62rem; font-weight: 600;
-      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
+    /* De première is vol. */
+    .vol {
+      margin-top: 1.5rem; padding: 1rem 1.1rem;
+      border: 1px solid var(--sand); border-radius: var(--radius-ctrl);
+      background: rgba(185,162,110,0.12);
     }
-    .veld input, .veld select {
-      width: 100%; min-height: 48px;
-      padding: 0.7rem 1rem;
-      border: 1px solid rgba(42,55,35,0.22);
-      border-radius: var(--radius-ctrl);
-      background: #fff; color: var(--ink);
-      font-size: 0.95rem;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      appearance: none; -webkit-appearance: none;
+    .vol-label {
+      display: inline-block; margin-bottom: 0.45rem;
+      padding: 0.25rem 0.65rem; border-radius: var(--radius-pill);
+      background: var(--tree); color: var(--canvas);
+      font-family: var(--subhead); font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
     }
-    .veld input::placeholder { color: rgba(22,22,22,0.32); }
-    .veld input:focus, .veld select:focus {
-      outline: none; border-color: var(--tree);
-      box-shadow: 0 0 0 3px rgba(151,160,129,0.28);
-    }
-    .veld input:user-invalid { border-color: #a4462b; }
-    .veld.select { position: relative; }
-    .veld.select::after {
-      content: ""; position: absolute; right: 1.05rem; bottom: 20px;
-      width: 8px; height: 8px;
-      border-right: 1.5px solid var(--ink-soft); border-bottom: 1.5px solid var(--ink-soft);
-      transform: rotate(45deg); pointer-events: none;
-    }
-
-    /* Extra namen: pas zichtbaar als er meer dan één persoon komt. Ze
-       staan in een licht vlak zodat duidelijk is dat het bij elkaar hoort. */
-    .extra {
-      margin-top: 0.9rem;
-      padding: 0.9rem 1rem 1rem;
-      border-radius: var(--radius-ctrl);
-      background: rgba(151,160,129,0.12);
-    }
-    .extra[hidden] { display: none; }
-    .extra .veld label { color: var(--tree); }
-    .extra .veld:first-child { margin-top: 0; }
-    .extra .veld[hidden] { display: none; }
-
-    /* Honeypot: voor mensen onzichtbaar, bots vullen hem in. */
-    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
-
-    .voet {
-      display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem 1.25rem;
-      margin-top: 1.4rem;
-    }
-    .knop {
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
-      min-height: 52px; padding: 0.85rem 1.7rem;
-      border: none; border-radius: var(--radius-pill);
-      background: var(--tree); color: var(--canvas); cursor: pointer;
-      font-family: var(--subhead); font-size: 0.78rem; font-weight: 600;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      transition: background 0.2s, transform 0.2s, opacity 0.2s;
-    }
-    .knop:hover { background: #1F2A19; transform: translateY(-1px); }
-    .knop[disabled] { opacity: 0.55; cursor: progress; transform: none; }
-    .privacy {
-      font-size: 0.78rem; line-height: 1.5; color: var(--ink-soft);
-      max-width: 18rem;
-    }
-    .privacy a { text-decoration: underline; text-underline-offset: 3px; }
-
-    .fout {
-      margin-top: 0.9rem; padding: 0.75rem 1rem;
-      border-radius: var(--radius-ctrl);
-      background: rgba(164,70,43,0.1); color: #7d3320;
-      font-size: 0.85rem; line-height: 1.45;
-    }
-    .fout[hidden] { display: none; }
-
-    /* Persoonlijke uitnodigingslink (?code=...): banner boven de velden. */
-    .uitnodiging {
-      margin: -0.6rem 0 1.4rem; padding: 0.75rem 1rem;
-      border-radius: var(--radius-ctrl);
-      border: 1px solid var(--sand); background: rgba(185,162,110,0.12);
-      font-size: 0.9rem; line-height: 1.5; color: var(--ink);
-    }
-    .uitnodiging.is-niet { border-color: rgba(164,70,43,0.35); background: rgba(164,70,43,0.07); }
-    .uitnodiging[hidden] { display: none; }
-
-    /* Na versturen: hetzelfde vlak, andere inhoud. Geen redirect. */
-    .klaar { text-align: left; }
-    .klaar[hidden] { display: none; }
-    .klaar .vink {
-      width: 52px; height: 52px; border-radius: 50%;
-      display: grid; place-items: center;
-      background: var(--grass); color: var(--canvas);
-      margin-bottom: 1.2rem;
-    }
-    .klaar h2 { margin-bottom: 0.6rem; }
-    /* Krijgt focus vanuit het script zodat een schermlezer de bevestiging
-       voorleest; het is geen bedienbaar element, dus geen focusrand. */
-    .klaar h2:focus { outline: none; }
-    .klaar p { font-size: 0.95rem; line-height: 1.55; color: var(--ink-soft); }
-    .klaar p + p { margin-top: 0.6rem; }
-    .klaar p b { color: var(--ink); font-weight: 500; }
-    .klaar p a { text-decoration: underline; text-underline-offset: 3px; color: var(--ink); }
-    .tekstknop {
-      margin-top: 1.1rem; padding: 0.5rem 0; min-height: 44px;
-      background: none; border: none; cursor: pointer;
-      font-size: 0.9rem; font-weight: 500; color: var(--tree);
-      text-decoration: underline; text-underline-offset: 4px;
-    }
-    .tekstknop[hidden] { display: none; }
+    .vol p { font-size: 0.95rem; line-height: 1.5; color: var(--ink); }
 
     /* ---------- FOOTER (gelijk aan index.html) ---------- */
     .site-footer {
@@ -372,11 +439,10 @@
     .footer-social a:hover { opacity: 1; color: var(--tree); }
     .footer-social svg { width: 18px; height: 18px; display: block; }
 
-    /* Vaste aanmeldknop onderin. Alleen op smalle schermen, en alleen zolang
-       het formulier zelf nog niet in beeld is: daar staat het onder het hele
-       verhaal, en zonder deze knop zie je op het eerste scherm geen enkele
-       manier om je aan te melden. */
-    .plak { display: none; }
+    /* Onder de bioscoop: de nav staat niet meer boven dit blok, dus minder
+       ruimte bovenin, en het blijft op desktop zelf één scherm hoog. */
+    .shell.na-film { padding-top: clamp(3rem, 9vh, 6rem); min-height: 100svh; scroll-margin-top: var(--nav-h); }
+    @media (max-width: 900px) { .shell.na-film { padding-top: 2.5rem; min-height: 0; } }
 
     @media (prefers-reduced-motion: no-preference) {
       .intro, .kaart { animation: op 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
@@ -403,29 +469,8 @@
       .intro h1 { font-size: clamp(2.3rem, 9.5vw, 3.4rem); margin-bottom: 1rem; }
       /* Op een tablet in staande stand niet over de volle breedte uitrekken. */
       .intro, .kaart { max-width: 36rem; width: 100%; }
+      .praktisch dt { font-size: 0.68rem; }
 
-      /* Onder de 16 px zoomt iOS Safari in zodra je een veld aantikt. */
-      .veld input, .veld select { font-size: 16px; min-height: 50px; }
-      .veld label, .praktisch dt { font-size: 0.68rem; }
-      .privacy { font-size: 0.8rem; }
-
-      .plak {
-        display: block;
-        position: fixed; left: 0; right: 0; bottom: 0; z-index: 150;
-        padding:
-          0.75rem
-          max(var(--pane-x), env(safe-area-inset-right, 0px))
-          calc(0.75rem + env(safe-area-inset-bottom, 0px))
-          max(var(--pane-x), env(safe-area-inset-left, 0px));
-        background: rgba(255,254,241,0.94);
-        backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-        border-top: 1px solid var(--line);
-        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
-      }
-      .plak .knop { width: 100%; max-width: 36rem; }
-      .plak.is-weg { transform: translateY(110%); opacity: 0; pointer-events: none; }
-      .plak[hidden] { display: none; }
-      @media (prefers-reduced-motion: reduce) { .plak { transition: none; } }
     }
     /* Op index.html en volg.html ligt deze grens op 760px. Hier op 900px: met
        vier links, de taalwissel en Contact breekt het menu daaronder in
@@ -493,13 +538,8 @@
       .footer-social a { padding: 0.3rem; margin: -0.3rem; }
     }
     @media (max-width: 480px) {
-      .rij { grid-template-columns: 1fr; gap: 0.75rem; }
       .kaart { padding: 1.25rem; border-radius: var(--radius); }
       .intro p + p { margin-top: 0.7rem; }
-      .praktisch { grid-template-columns: 1fr; }
-      .voet { flex-direction: column; align-items: stretch; }
-      .knop { width: 100%; }
-      .privacy { max-width: none; }
     }
   </style>
 </head>
@@ -527,13 +567,47 @@
     </div>
   </nav>
 
-  <main class="shell">
+  <section class="bioscoop" id="trailer" aria-labelledby="trailerTitel">
+    <div class="doek" style="background-image:url('premiere-trailer-poster.jpg')">
+      <video id="trailerVideo" muted loop playsinline preload="metadata" poster="premiere-trailer-poster.jpg">
+        <source src="premiere-trailer.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="balk boven" aria-hidden="true"></div>
+    <div class="balk onder" aria-hidden="true"></div>
+
+    <div class="titelkaart">
+      <p class="presenteert" data-i18n="trailer.presenteert">Back to Being presenteert</p>
+      <h2 id="trailerTitel" data-i18n="trailer.titel">Zes dagen. 129 kilometer.<br><em>Eén film.</em></h2>
+      <p class="aftiteling">
+        <span data-i18n="trailer.datum">Dinsdag 3 november</span><span class="stip" aria-hidden="true"></span>
+        <span data-i18n="trailer.plek">Het Vondelpark Paviljoen</span>
+      </p>
+      <button class="speel" id="trailerSpeel" type="button" aria-controls="trailerVideo">
+        <span class="speel-rondje" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.7v12.6c0 .8.9 1.3 1.6.8l9-6.3c.6-.4.6-1.2 0-1.6l-9-6.3C8.9 4.4 8 4.9 8 5.7Z"/></svg></span>
+        <span data-i18n="trailer.speel">Bekijk de trailer</span>
+        <span class="speel-duur" id="trailerDuur"></span>
+      </button>
+    </div>
+
+    <div class="film-knoppen">
+      <button class="film-knop" id="trailerSluit" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        <span data-i18n="trailer.sluit">Sluiten</span>
+      </button>
+    </div>
+  </section>
+
+  <main class="shell na-film">
 
     <section class="intro">
       <h1 data-i18n="intro.titel">Back to Being gaat <em>in première.</em></h1>
       <p data-i18n="intro.p1">We hebben in zes dagen 129 kilometer over de Camino gelopen en onderweg ook nog een app gebouwd.</p>
       <p data-i18n="intro.p2">In die zes dagen hebben we veel meegemaakt. Lange dagen, heel veel regen, goede gesprekken, momenten waarop alles lekker liep en momenten waarop het juist even tegenzat. We hebben de hele reis gefilmd en alles vastgelegd.</p>
       <p data-i18n="intro.p3">Op dinsdag 3 november nemen we je een avond mee op onze reis. Binnen een half uur zie je wat we in die zes dagen hebben meegemaakt, waar we tegenaan liepen en wat er onderweg is ontstaan.</p>
+    </section>
+
+    <aside class="kaart" aria-label="Wanneer en waar" data-i18n-aria="kaart.aria">
       <dl class="praktisch">
         <div>
           <dt data-i18n="prak.wanneerLabel">Wanneer</dt>
@@ -544,89 +618,11 @@
           <dd data-i18n="prak.waar"><a href="https://hetvondelparkpaviljoen.nl/" target="_blank" rel="noopener noreferrer">Het Vondelpark Paviljoen</a> <span>Vondelpark 3, 1071 AA Amsterdam</span></dd>
         </div>
       </dl>
-      <p class="cta" data-i18n="intro.p4">Alle 70 plekken zijn inmiddels gevuld. <strong>Je kunt je nog wel aanmelden voor de reservelijst.</strong></p>
-      <p class="klein" data-i18n="intro.plekken">De première is <strong>vol</strong>: alle 70 plekken zijn vergeven. Valt er iemand af, dan komt die plek vrij voor de reservelijst. Meld je aan en je krijgt een mail zodra er een plek voor je is.</p>
-    </section>
-
-    <section class="kaart" aria-labelledby="formTitel">
-      <form id="premiereForm" novalidate>
-        <h2 id="formTitel" data-i18n="form.titel">Ik wil erbij zijn</h2>
-        <p class="sub" id="formSub" data-i18n="form.sub">Je komt op de reservelijst. Komt er een plek vrij, dan krijg je een mail.</p>
-        <p class="uitnodiging" id="uitnodiging" hidden></p>
-
-        <div class="rij">
-          <div class="veld">
-            <label for="voornaam" data-i18n="form.voornaam">Voornaam</label>
-            <input id="voornaam" name="Voornaam" type="text" autocomplete="given-name" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" required maxlength="80" />
-          </div>
-          <div class="veld">
-            <label for="achternaam" data-i18n="form.achternaam">Achternaam</label>
-            <input id="achternaam" name="Achternaam" type="text" autocomplete="family-name" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" required maxlength="80" />
-          </div>
-        </div>
-
-        <div class="rij">
-          <div class="veld">
-            <label for="mail" data-i18n="form.mail">Mailadres</label>
-            <input id="mail" name="Mailadress" type="email" autocomplete="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="next" required maxlength="160" />
-          </div>
-          <div class="veld select">
-            <label for="aantal" data-i18n="form.aantal">Aantal personen</label>
-            <select id="aantal" name="Aantal personen" required>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="extra" id="extraNamen" hidden>
-          <div class="veld">
-            <label for="extra1" data-i18n="form.extra1">Naam persoon 2</label>
-            <input id="extra1" name="Naam persoon (extra 1)" type="text" autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" maxlength="120" />
-          </div>
-          <div class="veld" hidden>
-            <label for="extra2" data-i18n="form.extra2">Naam persoon 3</label>
-            <input id="extra2" name="Naam persoon (extra 2)" type="text" autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" maxlength="120" />
-          </div>
-          <div class="veld" hidden>
-            <label for="extra3" data-i18n="form.extra3">Naam persoon 4</label>
-            <input id="extra3" name="Naam persoon (extra 3)" type="text" autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" maxlength="120" />
-          </div>
-          <div class="veld" hidden>
-            <label for="extra4" data-i18n="form.extra4">Naam persoon 5</label>
-            <input id="extra4" name="Naam persoon (extra 4)" type="text" autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="next" maxlength="120" />
-          </div>
-        </div>
-
-        <!-- Honeypot. Niet in het woordenboek en niet in de sheet. -->
-        <div class="hp" aria-hidden="true">
-          <label for="website">Website</label>
-          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
-        </div>
-
-        <div class="fout" id="formFout" hidden role="alert"></div>
-
-        <div class="voet">
-          <button class="knop" id="verstuur" type="submit">
-            <span data-i18n="form.knop">Zet mij op de reservelijst</span>
-          </button>
-          <p class="privacy" data-i18n="form.privacy">We gebruiken je gegevens alleen voor deze uitnodiging. <a href="privacybeleid.html">Privacybeleid</a>.</p>
-        </div>
-      </form>
-
-      <div class="klaar" id="klaar" hidden>
-        <div class="vink" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="m5 11.5 4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <h2 id="klaarTitel">Je staat op de reservelijst.</h2>
-        <p id="klaarTekst"></p>
-        <p id="klaarP2"></p>
-        <button class="tekstknop" id="klaarAnder" type="button" hidden data-i18n="al.ander">Aanmelden met een ander mailadres</button>
+      <div class="vol">
+        <span class="vol-label" data-i18n="vol.label">Vol</span>
+        <p data-i18n="vol.tekst">Alle 70 plekken zijn inmiddels gevuld. Aanmelden is helaas niet meer mogelijk.</p>
       </div>
-    </section>
+    </aside>
 
   </main>
 
@@ -645,20 +641,7 @@
     </div>
   </footer>
 
-  <div class="plak is-weg" id="plak">
-    <button class="knop" id="plakKnop" type="button"><span data-i18n="plak.knop">Reservelijst</span></button>
-  </div>
-
   <script>
-    /* ---------- instellingen ---------- */
-    // Web-app-URL van het Apps Script dat aan de Google Sheet hangt. Dat zet
-    // de inschrijving in de sheet en stuurt de bevestigingsmail.
-    // Zie premiere/apps-script.gs en premiere/README.md voor het deployen.
-    const INSCHRIJF_URL = 'https://script.google.com/macros/s/AKfycbxgvGKEzELZlS_vZ0w08MLE_f3Gw6Zi38gbvltGE8h8_tvsuJOfjK5QgoCqkF2RX8PC/exec';
-
-    // Voor wijzigingen; hetzelfde adres als op de contactpagina.
-    const CONTACT_MAIL = 'caesar.schoorl@gmail.com';
-
     /* ---------- woordenboek ---------- */
     const I18N = {
       nl: {
@@ -669,6 +652,12 @@
         'nav.contact': 'Contact',
         'footer.privacy': 'Privacybeleid',
         'footer.terms': 'Algemene voorwaarden',
+        'trailer.presenteert': 'Back to Being presenteert',
+        'trailer.titel': 'Zes dagen. 129 kilometer.<br><em>Eén film.</em>',
+        'trailer.datum': 'Dinsdag 3 november',
+        'trailer.plek': 'Het Vondelpark Paviljoen',
+        'trailer.speel': 'Bekijk de trailer',
+        'trailer.sluit': 'Sluiten',
         'intro.titel': 'Back to Being gaat <em>in première.</em>',
         'intro.p1': 'We hebben in zes dagen 129 kilometer over de Camino gelopen en onderweg ook nog een app gebouwd.',
         'intro.p2': 'In die zes dagen hebben we veel meegemaakt. Lange dagen, heel veel regen, goede gesprekken, momenten waarop alles lekker liep en momenten waarop het juist even tegenzat. We hebben de hele reis gefilmd en alles vastgelegd.',
@@ -676,45 +665,10 @@
         'prak.wanneerLabel': 'Wanneer',
         'prak.wanneer': 'Dinsdag 3 november 2026 <span>Inloop vanaf 19:00, we beginnen om 19:30. De avond duurt tot uiterlijk 21:00.</span>',
         'prak.waarLabel': 'Waar',
+        'vol.label': 'Vol',
+        'vol.tekst': 'Alle 70 plekken zijn inmiddels gevuld. Aanmelden is helaas niet meer mogelijk.',
+        'kaart.aria': 'Wanneer en waar',
         'prak.waar': '<a href="https://hetvondelparkpaviljoen.nl/" target="_blank" rel="noopener noreferrer">Het Vondelpark Paviljoen</a> <span>Vondelpark 3, 1071 AA Amsterdam</span>',
-        'intro.p4': 'Alle 70 plekken zijn inmiddels gevuld. <strong>Je kunt je nog wel aanmelden voor de reservelijst.</strong>',
-        'intro.plekken': 'De première is <strong>vol</strong>: alle 70 plekken zijn vergeven. Valt er iemand af, dan komt die plek vrij voor de reservelijst. Meld je aan en je krijgt een mail zodra er een plek voor je is.',
-        'form.titel': 'Zet mij op de reservelijst',
-        'form.sub': 'Je komt op de reservelijst. Komt er een plek vrij, dan krijg je een mail.',
-        'form.voornaam': 'Voornaam',
-        'form.achternaam': 'Achternaam',
-        'form.mail': 'Mailadres',
-        'form.aantal': 'Aantal personen',
-        'form.extra1': 'Naam persoon 2',
-        'form.extra2': 'Naam persoon 3',
-        'form.extra3': 'Naam persoon 4',
-        'form.extra4': 'Naam persoon 5',
-        'form.knop': 'Zet mij op de reservelijst',
-        'plak.knop': 'Reservelijst',
-        'form.privacy': 'We gebruiken je gegevens alleen voor deze uitnodiging. <a href="privacybeleid.html">Privacybeleid</a>.',
-        'form.foutVelden': 'Vul je voor- en achternaam en een geldig mailadres in.',
-        'form.foutNamen': 'Vul de naam in van iedereen die meekomt.',
-        'form.foutNet': 'Versturen lukte niet. Probeer het zo nog eens, of mail ons via de contactpagina.',
-        'form.bezig': 'Even geduld',
-        'klaar.titel': 'Je staat op de reservelijst.',
-        'klaar.een': 'Dank je, <b>{naam}</b>. We hebben je aanmelding ontvangen op {mail}.',
-        'klaar.meer': 'Dank je, <b>{naam}</b>. We hebben je aanmelding voor {aantal} personen ontvangen op {mail}.',
-        'klaar.p2': 'Valt er iemand af, dan nemen we de reservelijst op volgorde van aanmelding door. Zodra er een plek voor je is, krijg je een mail.',
-        'al.titel': 'Je bent al aangemeld.',
-        'al.tekst': 'Het adres <b>{mail}</b> is al aangemeld. Je hoeft niets meer te doen: zodra er een plek voor je is, krijg je een mail.',
-        'al.p2': 'Wil je het aantal personen of een naam wijzigen? Mail ons op <a href="mailto:{contact}">{contact}</a>.',
-        'al.ander': 'Aanmelden met een ander mailadres',
-        'form.foutDruk': 'Het is nu erg druk met aanmeldingen. Probeer het over een paar minuten opnieuw, je gegevens blijven hier staan.',
-        'form.foutVol': 'De reservelijst is vol. Mail ons op {contact}, dan kijken we wat er nog kan.',
-        'uit.geldig': 'Persoonlijke uitnodiging van <b>{van}</b>. Je slaat de reservelijst over: na je aanmelding is je plek meteen bevestigd.',
-        'uit.vol': 'De uitnodiging van <b>{van}</b> is helaas al volgeboekt. Je kunt je wel aanmelden voor de reservelijst.',
-        'uit.onbekend': 'Deze uitnodigingslink is niet (meer) geldig. Je kunt je wel aanmelden voor de reservelijst.',
-        'form.subUit': 'Na je aanmelding is je plek meteen bevestigd.',
-        'intro.plekkenUit': 'De 70 plekken zijn vergeven, maar jij hebt een persoonlijke uitnodiging van <strong>{van}</strong>: je plek is gereserveerd en je slaat de reservelijst over.',
-        'direct.titel': 'Je bent erbij.',
-        'direct.een': 'Dank je, <b>{naam}</b>. Je plek is bevestigd via de uitnodiging van {van}. We hebben je een mail gestuurd op {mail}.',
-        'direct.meer': 'Dank je, <b>{naam}</b>. Jullie plekken voor {aantal} personen zijn bevestigd via de uitnodiging van {van}. We hebben je een mail gestuurd op {mail}.',
-        'direct.p2': 'We zien je op dinsdag 3 november in Het Vondelpark Paviljoen in Amsterdam. Inloop vanaf 19:00, we beginnen om 19:30.',
       },
       en: {
         'nav.story': 'Our story',
@@ -724,52 +678,23 @@
         'nav.contact': 'Contact',
         'footer.privacy': 'Privacy policy',
         'footer.terms': 'Terms &amp; conditions',
+        'trailer.presenteert': 'Back to Being presents',
+        'trailer.titel': 'Six days. 129 kilometres.<br><em>One film.</em>',
+        'trailer.datum': 'Tuesday 3 November',
+        'trailer.plek': 'Het Vondelpark Paviljoen',
+        'trailer.speel': 'Watch the trailer',
+        'trailer.sluit': 'Close',
         'intro.titel': 'Back to Being <em>premieres.</em>',
         'intro.p1': 'In six days we walked 129 kilometres of the Camino and built an app along the way.',
         'intro.p2': 'Those six days held a lot. Long days, plenty of rain, good conversations, moments when everything flowed and moments when it did not. We filmed the whole journey and captured all of it.',
         'intro.p3': 'On Tuesday 3 November we take you along for an evening. In half an hour you see what we went through in those six days, what we ran into and what came out of it.',
-        'intro.p4': 'All 70 places have now been taken. <strong>You can still join the reserve list.</strong>',
-        'intro.plekken': 'The premiere is <strong>full</strong>: all 70 places are taken. If someone drops out, that place goes to the reserve list. Sign up and you will get an email as soon as there is a place for you.',
         'prak.wanneerLabel': 'When',
         'prak.wanneer': 'Tuesday 3 November 2026 <span>Doors open at 19:00, we start at 19:30. The evening ends by 21:00 at the latest.</span>',
         'prak.waarLabel': 'Where',
+        'vol.label': 'Full',
+        'vol.tekst': 'All 70 places have now been taken. Unfortunately, signing up is no longer possible.',
+        'kaart.aria': 'When and where',
         'prak.waar': '<a href="https://hetvondelparkpaviljoen.nl/" target="_blank" rel="noopener noreferrer">Het Vondelpark Paviljoen</a> <span>Vondelpark 3, 1071 AA Amsterdam</span>',
-        'form.titel': 'Put me on the reserve list',
-        'form.sub': 'You go on the reserve list. If a place opens up, you will get an email.',
-        'form.voornaam': 'First name',
-        'form.achternaam': 'Last name',
-        'form.mail': 'Email',
-        'form.aantal': 'Number of people',
-        'form.extra1': 'Name of person 2',
-        'form.extra2': 'Name of person 3',
-        'form.extra3': 'Name of person 4',
-        'form.extra4': 'Name of person 5',
-        'form.knop': 'Put me on the reserve list',
-        'plak.knop': 'Reserve list',
-        'form.privacy': 'We only use your details for this invitation. <a href="privacybeleid.html">Privacy policy</a>.',
-        'form.foutVelden': 'Please fill in your first and last name and a valid email address.',
-        'form.foutNamen': 'Please fill in the name of everyone joining you.',
-        'form.foutNet': 'Sending failed. Please try again in a moment, or email us via the contact page.',
-        'form.bezig': 'One moment',
-        'klaar.titel': 'You are on the reserve list.',
-        'klaar.een': 'Thank you, <b>{naam}</b>. We received your sign-up at {mail}.',
-        'klaar.meer': 'Thank you, <b>{naam}</b>. We received your sign-up for {aantal} people at {mail}.',
-        'klaar.p2': 'If someone drops out, we go through the reserve list in order of sign-up. As soon as there is a place for you, you will get an email.',
-        'al.titel': 'You have already signed up.',
-        'al.tekst': 'The address <b>{mail}</b> has already signed up. There is nothing more to do: as soon as there is a place for you, you will get an email.',
-        'al.p2': 'Want to change the number of people or a name? Email us at <a href="mailto:{contact}">{contact}</a>.',
-        'al.ander': 'Sign up with a different email address',
-        'form.foutDruk': 'Sign-ups are very busy right now. Please try again in a few minutes, your details will stay here.',
-        'form.foutVol': 'The reserve list is full. Email us at {contact} and we will see what we can do.',
-        'uit.geldig': 'Personal invitation from <b>{van}</b>. You skip the reserve list: your place is confirmed as soon as you sign up.',
-        'uit.vol': "Unfortunately {van}'s invitation is fully booked. You can still join the reserve list.",
-        'uit.onbekend': 'This invitation link is not (or no longer) valid. You can still join the reserve list.',
-        'form.subUit': 'Your place is confirmed as soon as you sign up.',
-        'intro.plekkenUit': 'All 70 places are taken, but you have a personal invitation from <strong>{van}</strong>: your place is reserved and you skip the reserve list.',
-        'direct.titel': 'You are in.',
-        'direct.een': "Thank you, <b>{naam}</b>. Your place is confirmed through {van}'s invitation. We have sent you an email at {mail}.",
-        'direct.meer': "Thank you, <b>{naam}</b>. Your places for {aantal} people are confirmed through {van}'s invitation. We have sent you an email at {mail}.",
-        'direct.p2': 'See you on Tuesday 3 November at Het Vondelpark Paviljoen in Amsterdam. Doors open at 19:00, we start at 19:30.',
       }
     };
 
@@ -783,51 +708,94 @@
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         // Woordenboek staat inline en komt nooit van buiten, dus innerHTML
-        // is hier veilig. Invoer van de bezoeker gaat via textContent/escape.
+        // is hier veilig.
         if (I18N[lang] && I18N[lang][key] !== undefined) el.innerHTML = I18N[lang][key];
+      });
+      document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
       });
       document.querySelectorAll('.lang-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.lang === lang);
       });
-      vulUitnodiging();
     }
 
-    /* ---------- persoonlijke uitnodiging (?code=...) ---------- */
-    // Max, Stijn en Caesar delen elk een eigen link. Het script kent de codes
-    // (tabblad "Uitnodigingen" in de sheet); de pagina vraagt alleen na of de
-    // code geldig is, van wie, en of die al vol is. Zonder antwoord gaat de
-    // code gewoon mee met de aanmelding en beslist het script alsnog.
-    const UIT_CODE = (new URLSearchParams(location.search).get('code') || '').trim();
-    let uitStaat = null; // { staat: 'geldig' | 'vol' | 'onbekend', van }
+    const rustig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function vulUitnodiging() {
-      const el = document.getElementById('uitnodiging');
-      const plekken = document.querySelector('[data-i18n="intro.plekken"]');
-      const sub = document.getElementById('formSub');
-      if (!uitStaat) { el.hidden = true; return; }
-      const van = escapeHtml(uitStaat.van || '');
-      const geldig = uitStaat.staat === 'geldig';
-      el.innerHTML = t('uit.' + uitStaat.staat).split('{van}').join(van);
-      el.classList.toggle('is-niet', !geldig);
-      el.hidden = false;
-      if (geldig) {
-        if (plekken) plekken.innerHTML = t('intro.plekkenUit').split('{van}').join(van);
-        if (sub) sub.textContent = t('form.subUit');
-      }
-    }
+    /* ---------- de trailer ---------- */
+    function bindTrailer() {
+      const zaal = document.getElementById('trailer');
+      const video = document.getElementById('trailerVideo');
+      const speel = document.getElementById('trailerSpeel');
+      const sluit = document.getElementById('trailerSluit');
+      const duur = document.getElementById('trailerDuur');
+      const klein = () => window.matchMedia('(max-width: 760px)').matches;
+      const zuinig = navigator.connection && navigator.connection.saveData;
+      const sfeer = !rustig && !zuinig; // stil meespelen op de achtergrond?
+      let speelt = false;
 
-    async function checkUitnodiging() {
-      if (!UIT_CODE || !/^https:\/\//.test(INSCHRIJF_URL)) return;
-      try {
-        const r = await fetch(INSCHRIJF_URL + '?code=' + encodeURIComponent(UIT_CODE));
-        const uit = await r.json();
-        if (!uit.ok) return;
-        uitStaat = uit.geldig ? { staat: uit.vol ? 'vol' : 'geldig', van: uit.van } : { staat: 'onbekend' };
-      } catch (err) {
-        console.warn('Uitnodiging controleren lukte niet', err);
-        return;
+      // Geen bestand (nog niet geüpload, of kapot): dan blijft het een
+      // titelkaart op de foto, zonder afspeelknop.
+      video.querySelector('source').addEventListener('error', () => zaal.classList.add('geen-film'));
+
+      video.addEventListener('loadedmetadata', () => {
+        const s = Math.round(video.duration);
+        if (isFinite(s) && s > 0) duur.textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+      });
+      video.addEventListener('playing', () => video.classList.add('is-er'));
+
+      function sfeerAan() {
+        if (!sfeer || speelt) return;
+        video.muted = true; video.loop = true;
+        video.play().catch(() => {});
       }
-      vulUitnodiging();
+      if (sfeer) {
+        // Alleen draaien als de zaal in beeld is.
+        new IntersectionObserver(([e]) => {
+          if (speelt) return;
+          if (e.isIntersecting) sfeerAan(); else video.pause();
+        }, { threshold: 0.15 }).observe(zaal);
+      }
+
+      function start() {
+        speelt = true;
+        zaal.classList.add('speelt');
+        document.body.classList.add('film-speelt');
+        video.loop = false;
+        video.muted = false;
+        video.controls = true;
+        video.currentTime = 0;
+        video.classList.add('is-er');
+        zaal.scrollIntoView({ behavior: rustig ? 'auto' : 'smooth', block: 'start' });
+        video.play().catch(() => {});
+        // Op een telefoon is volledig scherm (en dan liggend) veel mooier.
+        if (klein()) {
+          try {
+            if (video.requestFullscreen) video.requestFullscreen().catch(() => {});
+            else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+          } catch (err) { /* dan maar in de pagina */ }
+        }
+        sluit.focus({ preventScroll: true });
+      }
+
+      function stop() {
+        if (!speelt) return;
+        speelt = false;
+        video.pause();
+        video.controls = false;
+        video.muted = true;
+        zaal.classList.remove('speelt');
+        document.body.classList.remove('film-speelt');
+        if (!sfeer) { video.classList.remove('is-er'); video.load(); }
+        else { video.currentTime = 0; sfeerAan(); }
+        speel.focus({ preventScroll: true });
+      }
+
+      speel.addEventListener('click', start);
+      sluit.addEventListener('click', stop);
+      video.addEventListener('ended', stop);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') stop(); });
+      // iOS: wie het volledige scherm sluit, wil meestal terug naar de pagina.
+      video.addEventListener('webkitendfullscreen', () => { if (video.paused) stop(); });
     }
 
     function bindLang() {
@@ -836,7 +804,6 @@
           lang = b.dataset.lang === 'en' ? 'en' : 'nl';
           localStorage.setItem('b2b-lang', lang);
           applyStaticText();
-          vulKlaar();
         });
       });
     }
@@ -863,195 +830,11 @@
       });
     }
 
-    /* ---------- formulier ---------- */
-    const form = document.getElementById('premiereForm');
-    const aantalEl = document.getElementById('aantal');
-    const extraBlok = document.getElementById('extraNamen');
-    const extraVelden = Array.from(extraBlok.querySelectorAll('.veld'));
-    const foutEl = document.getElementById('formFout');
-    const knop = document.getElementById('verstuur');
-
-    // Zoveel naamvelden als er extra mensen meekomen. Verborgen velden
-    // worden leeggemaakt, zodat er geen oude naam in de sheet belandt.
-    function toonExtra() {
-      const n = parseInt(aantalEl.value, 10) || 1;
-      extraBlok.hidden = n < 2;
-      extraVelden.forEach((veld, i) => {
-        const zichtbaar = i < n - 1;
-        veld.hidden = !zichtbaar;
-        const input = veld.querySelector('input');
-        input.required = zichtbaar;
-        if (!zichtbaar) input.value = '';
-      });
-    }
-
-    const rustig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function inBeeld(el, block) {
-      el.scrollIntoView({ behavior: rustig ? 'auto' : 'smooth', block: block || 'center' });
-    }
-
-    function toonFout(key) {
-      foutEl.textContent = t(key).split('{contact}').join(CONTACT_MAIL);
-      foutEl.hidden = false;
-      // Op een telefoon staat de melding anders onder het toetsenbord.
-      inBeeld(foutEl, 'center');
-    }
-
-    function escapeHtml(s) {
-      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-    }
-
-    async function verstuur(e) {
-      e.preventDefault();
-      foutEl.hidden = true;
-
-      const data = Object.fromEntries(new FormData(form).entries());
-      for (const k in data) data[k] = String(data[k]).trim();
-
-      // Bots vullen het verborgen veld in. Doe dan alsof het gelukt is,
-      // zodat ze niet leren waar de drempel zit.
-      if (data.website) { toonKlaar(data); return; }
-
-      const mailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data['Mailadress']);
-      if (!data['Voornaam'] || !data['Achternaam'] || !mailOk) {
-        toonFout('form.foutVelden');
-        form.querySelector(':invalid')?.focus();
-        return;
-      }
-      const n = parseInt(data['Aantal personen'], 10) || 1;
-      for (let i = 1; i < n; i++) {
-        if (!data['Naam persoon (extra ' + i + ')']) {
-          toonFout('form.foutNamen');
-          document.getElementById('extra' + i).focus();
-          return;
-        }
-      }
-      delete data.website;
-      data['Taal'] = lang;
-      data['Bron'] = location.href.split('?')[0];
-      if (UIT_CODE) data['Code'] = UIT_CODE;
-
-      knop.disabled = true;
-      const knopTekst = knop.firstElementChild;
-      const oud = knopTekst.textContent;
-      knopTekst.textContent = t('form.bezig');
-
-      try {
-        if (!/^https:\/\//.test(INSCHRIJF_URL)) throw new Error('INSCHRIJF_URL is nog niet ingevuld');
-        // Bewust geen JSON-header: Apps Script ondersteunt geen CORS-preflight,
-        // en een 'simple request' met text/plain heeft er geen nodig.
-        const r = await fetch(INSCHRIJF_URL, {
-          method: 'POST',
-          body: JSON.stringify(data),
-        });
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        // Apps Script antwoordt altijd met 200; het echte resultaat staat in de body.
-        const uit = await r.json().catch(() => ({}));
-        if (uit.ok) { toonKlaar(data, uit.uitnodiging === true ? 'direct' : 'nieuw', uit.via); return; }
-        // Het script schreef niets weg en zegt waarom.
-        if (uit.code === 'bestaat') { toonKlaar(data, 'al'); return; }
-        if (uit.code === 'druk') { toonFout('form.foutDruk'); return; }
-        if (uit.code === 'vol') { toonFout('form.foutVol'); return; }
-        if (uit.code === 'ongeldig') { toonFout('form.foutVelden'); return; }
-        throw new Error(uit.fout || 'onbekende fout');
-      } catch (err) {
-        console.warn('Inschrijving mislukt', err);
-        toonFout('form.foutNet');
-      } finally {
-        knop.disabled = false;
-        knopTekst.textContent = oud;
-      }
-    }
-
-    // variant 'al': dit mailadres stond al in de sheet, er is niets geschreven.
-    // variant 'direct': via een geldige uitnodigingslink, meteen goedgekeurd.
-    let klaarStaat = null;
-    function toonKlaar(data, variant, via) {
-      klaarStaat = { data: data, variant: variant || 'nieuw', via: via || '' };
-      vulKlaar();
-      form.hidden = true;
-      const klaar = document.getElementById('klaar');
-      klaar.hidden = false;
-      klaar.querySelector('h2').setAttribute('tabindex', '-1');
-      klaar.querySelector('h2').focus({ preventScroll: true });
-      document.getElementById('plak').hidden = true;
-      // Het vlak is nu veel korter dan het formulier: breng het terug in beeld.
-      inBeeld(document.querySelector('.kaart'), 'start');
-    }
-
-    // Los van toonKlaar, zodat een taalwissel de bevestiging mee kan vertalen.
-    function vulKlaar() {
-      if (!klaarStaat) return;
-      const data = klaarStaat.data, al = klaarStaat.variant === 'al', direct = klaarStaat.variant === 'direct';
-      const n = parseInt(data['Aantal personen'], 10) || 1;
-      const mail = escapeHtml(data['Mailadress']);
-      const soort = direct ? 'direct' : 'klaar';
-      document.getElementById('klaarTitel').textContent = t(al ? 'al.titel' : soort + '.titel');
-      document.getElementById('klaarTekst').innerHTML = al
-        ? t('al.tekst').replace('{mail}', mail)
-        : t(soort + (n > 1 ? '.meer' : '.een'))
-            .replace('{naam}', escapeHtml(data['Voornaam']))
-            .replace('{mail}', mail)
-            .replace('{aantal}', String(n))
-            .replace('{van}', escapeHtml(klaarStaat.via));
-      document.getElementById('klaarP2').innerHTML = al
-        ? t('al.p2').split('{contact}').join(CONTACT_MAIL)
-        : t(soort + '.p2');
-      document.getElementById('klaarAnder').hidden = !al;
-    }
-
-    // Vanuit 'je staat al op de lijst' terug naar het formulier, met alleen
-    // het mailadres leeg: de rest hoeft niemand opnieuw te typen.
-    function anderAdres() {
-      klaarStaat = null;
-      document.getElementById('klaar').hidden = true;
-      form.hidden = false;
-      document.getElementById('plak').hidden = false;
-      // reset() wist ook de 'al eens verstuurd'-staat van de browser, anders
-      // krijgt het lege mailveld meteen een rode rand. Daarna alles terugzetten
-      // behalve het mailadres.
-      const bewaard = Array.from(form.elements).filter(el => el.name && el.id !== 'mail' && el.name !== 'website').map(el => [el, el.value]);
-      form.reset();
-      bewaard.forEach(([el, v]) => { el.value = v; });
-      toonExtra();
-      foutEl.hidden = true;
-      document.getElementById('mail').focus();
-    }
-
-    /* ---------- vaste aanmeldknop (mobiel) ---------- */
-    function bindPlak() {
-      const plak = document.getElementById('plak');
-      const kaart = document.querySelector('.kaart');
-      document.getElementById('plakKnop').addEventListener('click', () => {
-        inBeeld(kaart, 'start');
-        // Focus zonder eigen sprong; het toetsenbord komt pas na het scrollen.
-        setTimeout(() => document.getElementById('voornaam').focus({ preventScroll: true }), rustig ? 0 : 450);
-      });
-      // Pas weg als er echt een stuk formulier te zien is (de kop plus het
-      // eerste veld), niet zodra de rand van het vlak onderin komt piepen.
-      // Bewust een positiemeting en geen IntersectionObserver: diens
-      // rootMargin wordt niet overal toegepast, en dit is één element.
-      let gepland = false;
-      function meet() {
-        gepland = false;
-        plak.classList.toggle('is-weg', kaart.getBoundingClientRect().top < window.innerHeight - 220);
-      }
-      function plan() { if (!gepland) { gepland = true; requestAnimationFrame(meet); } }
-      window.addEventListener('scroll', plan, { passive: true });
-      window.addEventListener('resize', plan);
-      meet();
-    }
-
     /* ---------- init ---------- */
     applyStaticText();
     bindLang();
     bindNav();
-    bindPlak();
-    aantalEl.addEventListener('change', toonExtra);
-    toonExtra();
-    form.addEventListener('submit', verstuur);
-    document.getElementById('klaarAnder').addEventListener('click', anderAdres);
-    checkUitnodiging();
+    bindTrailer();
   </script>
 </body>
 </html>

@@ -37,3 +37,7 @@ photos-origineel/
 
 # Grote video-masters (te groot voor GitHub; alleen de gecomprimeerde web-versie committen)
 back_to_being_intro_video_v5.mp4
+
+# 4K-origineel van de trailer (146 MB, te groot voor GitHub). De site
+# gebruikt de 1080p-versie premiere-trailer.mp4 in de root.
+premiere/premiere-trailer.mp4
