@@ -36,8 +36,8 @@
        dezelfde nav. Wijzig je daar iets aan de huisstijl, doe het hier ook.
 
        Opzet: één scherm op desktop, met de footer van de hoofdsite eronder. Bovenaan de
-       trailer, daaronder links het verhaal, de drie thema's van de avond en de
-       overhandiging aan MIND; rechts het programma, waar, pers en vertoningen.
+       trailer, daaronder links het verhaal en de overhandiging aan MIND;
+       rechts het programma, waar, pers en vertoningen.
        De première is vol, dus er is geen aanmeldformulier meer. Op mobiel staan
        ze onder elkaar.
        ============================================================ */
@@ -375,28 +375,6 @@
     .intro p + p { margin-top: 0.8rem; }
     .intro .lead { font-size: clamp(1.05rem, 1.35vw, 1.2rem); color: var(--ink); }
 
-    /* Waar de avond over gaat: drie genummerde thema's. */
-    .kopje {
-      margin-top: 1.9rem;
-      font-family: var(--subhead); font-size: 0.62rem; font-weight: 600;
-      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
-    }
-    .themas { list-style: none; margin-top: 0.7rem; border-top: 1px solid var(--line); }
-    .themas li {
-      display: grid; grid-template-columns: 2.4rem 1fr; gap: 0.2rem 0.9rem;
-      padding: 0.9rem 0; border-bottom: 1px solid var(--line);
-    }
-    .thema-nr {
-      grid-row: span 2;
-      font-family: var(--serif); font-style: italic;
-      font-size: 1.7rem; line-height: 1; color: var(--grass);
-    }
-    .themas h2 {
-      font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.3rem, 1.8vw, 1.55rem); line-height: 1.1;
-    }
-    .intro .themas p { font-size: 0.92rem; line-height: 1.5; }
-
     /* De overhandiging aan MIND: het moment van de avond. */
     .overdracht {
       margin-top: 1.6rem; padding: 1.1rem 1.25rem;
@@ -409,16 +387,11 @@
       border-radius: 14px; background: var(--canvas);
       object-fit: contain;
     }
-    .overdracht-label {
-      font-family: var(--subhead); font-size: 0.6rem; font-weight: 600;
-      letter-spacing: 0.16em; text-transform: uppercase; color: var(--grass);
-    }
     .overdracht h2 {
-      margin-top: 0.15rem;
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.35rem, 1.9vw, 1.6rem); line-height: 1.1;
+      font-size: clamp(1.15rem, 1.5vw, 1.3rem); line-height: 1.15;
     }
-    .intro .overdracht p { margin-top: 0.35rem; font-size: 0.92rem; line-height: 1.5; color: rgba(255,254,241,0.8); }
+    .intro .overdracht p { margin-top: 0.35rem; font-size: 0.88rem; line-height: 1.5; color: rgba(255,254,241,0.8); }
 
     /* Wanneer en waar: in de kaart rechts, onder elkaar. */
     .praktisch { display: grid; gap: 1.1rem; }
@@ -697,33 +670,13 @@
     <section class="intro">
       <h1 data-i18n="intro.titel">Back to Being gaat <em>in première.</em></h1>
       <p class="lead" data-i18n="intro.p1">Zes dagen, 129 kilometer over de Camino en onderweg een app gebouwd voor MIND. Nu is het tijd om ons verhaal te vertellen, en de app daarna op een feestelijke avond aan MIND te overhandigen.</p>
-      <p data-i18n="intro.p2">We hebben de hele reis gefilmd. Op dinsdag 3 november nemen we je in een half uur mee langs alles wat we onderweg meemaakten.</p>
-
-      <p class="kopje" data-i18n="themas.kopje">Waar de avond over gaat</p>
-      <ol class="themas">
-        <li>
-          <span class="thema-nr" aria-hidden="true">01</span>
-          <h2 data-i18n="thema1.h">Van idee naar werkelijkheid</h2>
-          <p data-i18n="thema1.p">Wat is er nodig om een idee echt werkelijkheid te laten worden?</p>
-        </li>
-        <li>
-          <span class="thema-nr" aria-hidden="true">02</span>
-          <h2 data-i18n="thema2.h">Roet in het eten</h2>
-          <p data-i18n="thema2.p">Lange dagen en heel veel regen: hoe de elementen ons plan op de proef stelden.</p>
-        </li>
-        <li>
-          <span class="thema-nr" aria-hidden="true">03</span>
-          <h2 data-i18n="thema3.h">Hoe we ermee omgingen</h2>
-          <p data-i18n="thema3.p">Wat we deden toen het tegenzat, en wat er onderweg toch is ontstaan.</p>
-        </li>
-      </ol>
+      <p data-i18n="intro.p2">We hebben de hele reis gefilmd. Op dinsdag 3 november nemen we je in een half uur mee: wat er nodig was om ons idee werkelijkheid te maken, hoe de elementen roet in het eten gooiden en hoe we daarmee omgingen.</p>
 
       <div class="overdracht">
         <img class="overdracht-logo" src="mind-logo.webp" alt="Stichting MIND" />
         <div>
-          <p class="overdracht-label" data-i18n="overdracht.label">Overhandiging</p>
-          <h2 data-i18n="overdracht.h">De app gaat naar MIND</h2>
-          <p data-i18n="overdracht.p">Na de documentaire overhandigen we de app aan MIND. Dienke, directeur van MIND, en Cisca van Innovatie nemen hem in ontvangst.</p>
+          <h2 data-i18n="overdracht.h">Daarna geven we de app door aan MIND</h2>
+          <p data-i18n="overdracht.p">Wat we onderweg bouwden, een app die mentale gezondheid bespreekbaar maakt, dragen we kosteloos over aan stichting MIND. Dienke, directeur van MIND, en Cisca, die bij MIND aan innovatie werkt, nemen hem namens de stichting in ontvangst.</p>
         </div>
       </div>
     </section>
@@ -797,17 +750,9 @@
         'trailer.sluit': 'Sluiten',
         'intro.titel': 'Back to Being gaat <em>in première.</em>',
         'intro.p1': 'Zes dagen, 129 kilometer over de Camino en onderweg een app gebouwd voor MIND. Nu is het tijd om ons verhaal te vertellen, en de app daarna op een feestelijke avond aan MIND te overhandigen.',
-        'intro.p2': 'We hebben de hele reis gefilmd. Op dinsdag 3 november nemen we je in een half uur mee langs alles wat we onderweg meemaakten.',
-        'themas.kopje': 'Waar de avond over gaat',
-        'thema1.h': 'Van idee naar werkelijkheid',
-        'thema1.p': 'Wat is er nodig om een idee echt werkelijkheid te laten worden?',
-        'thema2.h': 'Roet in het eten',
-        'thema2.p': 'Lange dagen en heel veel regen: hoe de elementen ons plan op de proef stelden.',
-        'thema3.h': 'Hoe we ermee omgingen',
-        'thema3.p': 'Wat we deden toen het tegenzat, en wat er onderweg toch is ontstaan.',
-        'overdracht.label': 'Overhandiging',
-        'overdracht.h': 'De app gaat naar MIND',
-        'overdracht.p': 'Na de documentaire overhandigen we de app aan MIND. Dienke, directeur van MIND, en Cisca van Innovatie nemen hem in ontvangst.',
+        'intro.p2': 'We hebben de hele reis gefilmd. Op dinsdag 3 november nemen we je in een half uur mee: wat er nodig was om ons idee werkelijkheid te maken, hoe de elementen roet in het eten gooiden en hoe we daarmee omgingen.',
+        'overdracht.h': 'Daarna geven we de app door aan MIND',
+        'overdracht.p': 'Wat we onderweg bouwden, een app die mentale gezondheid bespreekbaar maakt, dragen we kosteloos over aan stichting MIND. Dienke, directeur van MIND, en Cisca, die bij MIND aan innovatie werkt, nemen hem namens de stichting in ontvangst.',
         'prak.wanneerLabel': 'Wanneer',
         'prak.wanneer': 'Dinsdag 3 november 2026 <ol class="programma"><li><b>19:00</b>Inloop</li><li><b>19:15</b>Start programma en documentaire</li><li class="hoogtepunt"><b>Daarna</b>Overhandiging van de app aan MIND</li><li><b>21:00</b>Einde van de avond</li></ol>',
         'prak.waarLabel': 'Waar',
@@ -835,17 +780,9 @@
         'trailer.sluit': 'Close',
         'intro.titel': 'Back to Being <em>premieres.</em>',
         'intro.p1': 'Six days, 129 kilometres of the Camino and an app built for MIND along the way. Now it is time to tell our story, and then hand the app over to MIND on a festive evening.',
-        'intro.p2': 'We filmed the whole journey. On Tuesday 3 November we take you through everything we went through in half an hour.',
-        'themas.kopje': 'What the evening is about',
-        'thema1.h': 'From idea to reality',
-        'thema1.p': 'What does it take to turn an idea into something real?',
-        'thema2.h': 'When the elements interfere',
-        'thema2.p': 'Long days and a lot of rain: how the elements put our plan to the test.',
-        'thema3.h': 'How we dealt with it',
-        'thema3.p': 'What we did when things got hard, and what still came out of it along the way.',
-        'overdracht.label': 'Handover',
-        'overdracht.h': 'The app goes to MIND',
-        'overdracht.p': 'After the documentary we hand the app over to MIND. Dienke, director of MIND, and Cisca from Innovation receive it.',
+        'intro.p2': 'We filmed the whole journey. On Tuesday 3 November we take you along in half an hour: what it took to turn our idea into something real, how the elements got in the way and how we dealt with that.',
+        'overdracht.h': 'Then we pass the app on to MIND',
+        'overdracht.p': 'What we built along the way, an app that makes mental health easier to talk about, we hand over free of charge to the MIND foundation. Dienke, director of MIND, and Cisca, who works on innovation at MIND, receive it on behalf of the foundation.',
         'prak.wanneerLabel': 'When',
         'prak.wanneer': 'Tuesday 3 November 2026 <ol class="programma"><li><b>19:00</b>Doors open</li><li><b>19:15</b>Programme and documentary start</li><li class="hoogtepunt"><b>After</b>Handover of the app to MIND</li><li><b>21:00</b>End of the evening</li></ol>',
         'prak.waarLabel': 'Where',
