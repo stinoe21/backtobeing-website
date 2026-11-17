@@ -390,7 +390,8 @@
     .docu .overdracht h2 em { color: var(--sand); }
     .docu .overdracht-tekst p { color: rgba(255,254,241,0.8); }
 
-    /* De avond in beeld: kolommen, zodat staand en liggend door elkaar kan. */
+    /* De avond in beeld: één rij die je horizontaal doorscrolt. De rij loopt
+       door tot de rand van het scherm, maar begint gelijk met de tekst. */
     .avond { padding: 0 0 clamp(4rem, 10vh, 7rem); }
     .avond-kop {
       display: flex; align-items: flex-end; justify-content: space-between;
@@ -399,9 +400,36 @@
     }
     .docu .avond-kop h2 { margin-bottom: 0; }
     .avond-credit { font-size: 0.8rem; color: var(--ink-soft); }
-    .avond-fotos { columns: 3; column-gap: clamp(0.9rem, 1.6vw, 1.4rem); }
-    .avond-fotos figure { break-inside: avoid; margin-bottom: clamp(1.1rem, 2vw, 1.6rem); }
-    .docu .avond-fotos img { height: auto; border-radius: var(--radius-ctrl); }
+    .avond-meta { display: flex; align-items: center; gap: 1.25rem; }
+    .avond-pijlen { display: flex; gap: 0.5rem; }
+    .avond-pijl {
+      width: 44px; height: 44px;
+      display: inline-grid; place-items: center;
+      border: 1px solid var(--line); border-radius: 50%;
+      background: transparent; color: var(--ink); cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+    }
+    .avond-pijl:hover:not(:disabled) { background: var(--tree); border-color: var(--tree); color: var(--canvas); }
+    .avond-pijl:disabled { opacity: 0.3; cursor: default; }
+    .avond-pijl svg { width: 18px; height: 18px; }
+    .avond-fotos {
+      --rand: max(var(--pane-x), calc((100vw - 1240px) / 2 + var(--pane-x)));
+      display: flex; gap: clamp(0.9rem, 1.6vw, 1.4rem);
+      margin-inline: calc(50% - 50vw);
+      padding-inline: var(--rand);
+      scroll-padding-inline: var(--rand);
+      overflow-x: auto; overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+    .avond-fotos::-webkit-scrollbar { display: none; }
+    .avond-fotos:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+    .avond-fotos figure { flex: 0 0 auto; width: min-content; scroll-snap-align: start; }
+    .docu .avond-fotos img {
+      /* max-width: none, anders krimpt een foto in een min-content figure tot niets. */
+      width: auto; max-width: none; height: clamp(300px, 58vh, 540px);
+      border-radius: var(--radius-ctrl);
+    }
 
     /* Hoe verder: donker blok onderaan, met een knop naar contact. */
     .verder { padding: clamp(4rem, 11vh, 7rem) 0; background: var(--tree); color: var(--canvas); }
@@ -467,7 +495,6 @@
       .overdracht .docu-wrap { grid-template-columns: 1fr; }
       .overdracht figure img { aspect-ratio: 3 / 2; border-radius: var(--radius) var(--radius) 0 0; }
       .overdracht-tekst { border-radius: 0 0 var(--radius) var(--radius); }
-      .avond-fotos { columns: 2; }
     }
     /* Op index.html en volg.html ligt deze grens op 760px. Hier op 900px: met
        vier links, de taalwissel en Contact breekt het menu daaronder in
@@ -534,9 +561,12 @@
       .footer-social { gap: 1.4rem; }
       .footer-social a { padding: 0.3rem; margin: -0.3rem; }
     }
+    @media (max-width: 600px) {
+      /* Op een telefoon swipe je; de pijlen zijn dan overbodig. */
+      .avond-pijlen { display: none; }
+      .docu .avond-fotos img { height: clamp(260px, 52vh, 420px); }
+    }
     @media (max-width: 480px) {
-      .avond-fotos { column-gap: 0.7rem; }
-      .avond-fotos figure { margin-bottom: 1rem; }
       .docu figcaption { font-size: 0.74rem; }
     }
   </style>
@@ -629,41 +659,47 @@
       <div class="docu-wrap">
         <div class="avond-kop">
           <h2 id="avondTitel" data-i18n="avond.h">De avond <em>in beeld.</em></h2>
-          <p class="avond-credit" data-i18n="avond.credit">Foto&rsquo;s: Choukri van der Slik</p>
+          <div class="avond-meta">
+            <p class="avond-credit" data-i18n="avond.credit">Foto&rsquo;s: Choukri van der Slik</p>
+            <div class="avond-pijlen">
+              <button class="avond-pijl" id="avondTerug" type="button" aria-controls="avondFotos" aria-label="Vorige" data-i18n-aria="avond.terug">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+              </button>
+              <button class="avond-pijl" id="avondVerder" type="button" aria-controls="avondFotos" aria-label="Volgende" data-i18n-aria="avond.verder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="avond-fotos">
-        <figure>
-          <img src="photos/premiere/premiere-04-makers-met-app.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Stijn, Caesar en Max met de symbolische cheque" data-i18n-alt="foto.makers" />
-          <figcaption data-i18n="foto.makers">Stijn, Caesar en Max met de symbolische cheque</figcaption>
-        </figure>
-        <figure>
-          <img src="photos/premiere/premiere-07-cadeau-mind.webp" width="1800" height="1200" loading="lazy" decoding="async" alt="Stijn, Max en Caesar krijgen een cadeau van MIND" data-i18n-alt="foto.cadeau" />
-          <figcaption data-i18n="foto.cadeau">Stijn, Max en Caesar krijgen een cadeau van MIND</figcaption>
-        </figure>
-        <figure>
-          <img src="photos/premiere/premiere-08-sophie-van-etten.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Sophie van Etten tijdens haar talk" data-i18n-alt="foto.sophie" />
-          <figcaption data-i18n="foto.sophie">Sophie van Etten tijdens haar talk</figcaption>
-        </figure>
-        <figure>
-          <img src="photos/premiere/premiere-11-max-op-podium.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Max op het podium" data-i18n-alt="foto.max" />
-          <figcaption data-i18n="foto.max">Max op het podium</figcaption>
-        </figure>
-        <figure>
-          <img src="photos/premiere/premiere-03-dienke-bos-cisca-goedhart.webp" width="1800" height="1200" loading="lazy" decoding="async" alt="Dienke Bos en Cisca Goedhart van MIND" data-i18n-alt="foto.mind" />
-          <figcaption data-i18n="foto.mind">Dienke Bos en Cisca Goedhart van MIND</figcaption>
-        </figure>
-        <figure>
-          <img src="photos/premiere/premiere-10-applaus.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Applaus in de zaal" data-i18n-alt="foto.applaus" />
-          <figcaption data-i18n="foto.applaus">Applaus in de zaal</figcaption>
-        </figure>
-        <figure>
-          <img src="photos/premiere/premiere-12-kaart.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="De kaart Dear Fellow Wanderer" data-i18n-alt="foto.kaart" />
-          <figcaption data-i18n="foto.kaart">De kaart Dear Fellow Wanderer</figcaption>
-        </figure>
-        <figure>
-          <img src="photos/premiere/premiere-06-max-en-dienke-bos.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Max en Dienke Bos tijdens de overdracht" data-i18n-alt="foto.overdracht" />
-          <figcaption data-i18n="foto.overdracht">Max en Dienke Bos tijdens de overdracht</figcaption>
-        </figure>
+        <div class="avond-fotos" id="avondFotos" tabindex="0" role="region" aria-label="Foto&rsquo;s van de avond" data-i18n-aria="avond.aria">
+          <figure>
+            <img src="photos/premiere/premiere-04-makers-met-app.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Stijn, Caesar en Max met de symbolische cheque" data-i18n-alt="foto.makers" />
+            <figcaption data-i18n="foto.makers">Stijn, Caesar en Max met de symbolische cheque</figcaption>
+          </figure>
+          <figure>
+            <img src="photos/premiere/premiere-08-sophie-van-etten.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Sophie van Etten tijdens haar talk over verbinding" data-i18n-alt="foto.sophie" />
+            <figcaption data-i18n="foto.sophie">Sophie van Etten tijdens haar talk over verbinding</figcaption>
+          </figure>
+          <figure>
+            <img src="photos/premiere/premiere-07-cadeau-mind.webp" width="1800" height="1200" loading="lazy" decoding="async" alt="Stijn, Max en Caesar krijgen een cadeau van MIND" data-i18n-alt="foto.cadeau" />
+            <figcaption data-i18n="foto.cadeau">Stijn, Max en Caesar krijgen een cadeau van MIND</figcaption>
+          </figure>
+          <figure>
+            <img src="photos/premiere/premiere-11-max-op-podium.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Max op het podium" data-i18n-alt="foto.max" />
+            <figcaption data-i18n="foto.max">Max op het podium</figcaption>
+          </figure>
+          <figure>
+            <img src="photos/premiere/premiere-10-applaus.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Applaus in de zaal" data-i18n-alt="foto.applaus" />
+            <figcaption data-i18n="foto.applaus">Applaus in de zaal</figcaption>
+          </figure>
+          <figure>
+            <img src="photos/premiere/premiere-06-max-en-dienke-bos.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Max en Dienke Bos tijdens de overdracht" data-i18n-alt="foto.overdracht" />
+            <figcaption data-i18n="foto.overdracht">Max en Dienke Bos tijdens de overdracht</figcaption>
+          </figure>
+          <figure>
+            <img src="photos/premiere/premiere-12-kaart.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="De kaart Dear Fellow Wanderer" data-i18n-alt="foto.kaart" />
+            <figcaption data-i18n="foto.kaart">De kaart Dear Fellow Wanderer</figcaption>
+          </figure>
         </div>
       </div>
     </section>
@@ -729,11 +765,13 @@
         'overdracht.alt': 'Stijn Smit, Caesar Schoorl, Max Helmantel, Dienke Bos en Cisca Goedhart met de symbolische cheque',
         'avond.h': 'De avond <em>in beeld.</em>',
         'avond.credit': 'Foto&rsquo;s: Choukri van der Slik',
+        'avond.aria': 'Foto’s van de avond',
+        'avond.terug': 'Vorige',
+        'avond.verder': 'Volgende',
         'foto.makers': 'Stijn, Caesar en Max met de symbolische cheque',
         'foto.cadeau': 'Stijn, Max en Caesar krijgen een cadeau van MIND',
-        'foto.sophie': 'Sophie van Etten tijdens haar talk',
+        'foto.sophie': 'Sophie van Etten tijdens haar talk over verbinding',
         'foto.max': 'Max op het podium',
-        'foto.mind': 'Dienke Bos en Cisca Goedhart van MIND',
         'foto.applaus': 'Applaus in de zaal',
         'foto.kaart': 'De kaart Dear Fellow Wanderer',
         'foto.overdracht': 'Max en Dienke Bos tijdens de overdracht',
@@ -773,11 +811,13 @@
         'overdracht.alt': 'Stijn Smit, Caesar Schoorl, Max Helmantel, Dienke Bos and Cisca Goedhart with the symbolic cheque',
         'avond.h': 'The evening <em>in pictures.</em>',
         'avond.credit': 'Photos: Choukri van der Slik',
+        'avond.aria': 'Photos of the evening',
+        'avond.terug': 'Previous',
+        'avond.verder': 'Next',
         'foto.makers': 'Stijn, Caesar and Max with the symbolic cheque',
         'foto.cadeau': 'Stijn, Max and Caesar receive a gift from MIND',
-        'foto.sophie': 'Sophie van Etten during her talk',
+        'foto.sophie': 'Sophie van Etten during her talk on connection',
         'foto.max': 'Max on stage',
-        'foto.mind': 'Dienke Bos and Cisca Goedhart of MIND',
         'foto.applaus': 'Applause in the hall',
         'foto.kaart': 'The Dear Fellow Wanderer card',
         'foto.overdracht': 'Max and Dienke Bos during the handover',
@@ -898,6 +938,23 @@
       video.addEventListener('webkitendfullscreen', () => { if (video.paused) stop(); });
     }
 
+    /* ---------- de avond in beeld ---------- */
+    function bindFotos() {
+      const rij = document.getElementById('avondFotos');
+      const terug = document.getElementById('avondTerug');
+      const verder = document.getElementById('avondVerder');
+      const stap = richting => rij.scrollBy({ left: richting * rij.clientWidth * 0.8, behavior: rustig ? 'auto' : 'smooth' });
+      function knoppen() {
+        terug.disabled = rij.scrollLeft <= 4;
+        verder.disabled = rij.scrollLeft + rij.clientWidth >= rij.scrollWidth - 4;
+      }
+      terug.addEventListener('click', () => stap(-1));
+      verder.addEventListener('click', () => stap(1));
+      rij.addEventListener('scroll', knoppen, { passive: true });
+      window.addEventListener('resize', knoppen);
+      knoppen();
+    }
+
     function bindLang() {
       document.querySelectorAll('.lang-btn').forEach(b => {
         b.addEventListener('click', () => {
@@ -935,6 +992,7 @@
     bindLang();
     bindNav();
     bindTrailer();
+    bindFotos();
   </script>
 </body>
 </html>
