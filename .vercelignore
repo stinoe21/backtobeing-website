@@ -18,4 +18,5 @@ postcss.config.mjs
 tsconfig*
 # Apps Script, test en README van de première-aanmeldingen: horen in git, niet op
 # de site. premiere.html zelf staat in de root en wordt wel geserveerd.
-premiere/
+# Met / ervoor: alleen de map in de root, niet photos/premiere/.
+/premiere/
