@@ -360,7 +360,6 @@
       border-radius: var(--radius);
       background: rgba(42,55,35,0.08);
     }
-    .docu figcaption { margin-top: 0.55rem; font-size: 0.8rem; line-height: 1.4; color: var(--ink-soft); }
 
     /* Terugblik: de tekst links, de zaal rechts. */
     .terugblik { padding: clamp(4rem, 11vh, 7rem) 0 clamp(3rem, 7vh, 5rem); scroll-margin-top: var(--nav-h); }
@@ -400,6 +399,8 @@
     }
     .docu .avond-kop h2 { margin-bottom: 0; }
     .avond-credit { font-size: 0.8rem; color: var(--ink-soft); }
+    .avond-credit a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+    .avond-credit a:hover { color: var(--tree); }
     .avond-meta { display: flex; align-items: center; gap: 1.25rem; }
     .avond-pijlen { display: flex; gap: 0.5rem; }
     .avond-pijl {
@@ -567,7 +568,6 @@
       .docu .avond-fotos img { height: clamp(260px, 52vh, 420px); }
     }
     @media (max-width: 480px) {
-      .docu figcaption { font-size: 0.74rem; }
     }
   </style>
 </head>
@@ -633,7 +633,7 @@
           <span class="docu-label" data-i18n="terug.label">3 november 2026 · Het Vondelpark Paviljoen</span>
           <h1 data-i18n="terug.titel">Back to Being ging <em>in première.</em></h1>
           <p class="lead" data-i18n="terug.p1">Onlangs ging de documentaire die we zelf maakten tijdens het lopen in première in Het Vondelpark Paviljoen in Amsterdam.</p>
-          <p data-i18n="terug.p2">Het werd een bijzondere avond waarin verbinding centraal stond. In zo&rsquo;n 40 minuten namen we de hele zaal mee op de Camino: wat er nodig was om ons idee werkelijkheid te maken, hoe de elementen roet in het eten gooiden en hoe we daarmee omgingen.</p>
+          <p data-i18n="terug.p2">Het werd een bijzondere avond waarin verbinding centraal stond. Sophie van Etten gaf daar een talk over, en in zo&rsquo;n 40 minuten namen we de hele zaal mee op de Camino: wat er nodig was om ons idee werkelijkheid te maken, hoe de elementen roet in het eten gooiden en hoe we daarmee omgingen.</p>
         </div>
         <figure>
           <img src="photos/premiere/premiere-09-publiek.webp" width="1200" height="1800" alt="Publiek in de zaal van Het Vondelpark Paviljoen" data-i18n-alt="terug.alt" />
@@ -660,7 +660,7 @@
         <div class="avond-kop">
           <h2 id="avondTitel" data-i18n="avond.h">De avond <em>in beeld.</em></h2>
           <div class="avond-meta">
-            <p class="avond-credit" data-i18n="avond.credit">Foto&rsquo;s: Choukri van der Slik</p>
+            <p class="avond-credit" data-i18n="avond.credit">Foto&rsquo;s: <a href="https://www.instagram.com/choukrisliks/" target="_blank" rel="noopener noreferrer">Choukri van der Slik</a></p>
             <div class="avond-pijlen">
               <button class="avond-pijl" id="avondTerug" type="button" aria-controls="avondFotos" aria-label="Vorige" data-i18n-aria="avond.terug">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
@@ -673,32 +673,25 @@
         </div>
         <div class="avond-fotos" id="avondFotos" tabindex="0" role="region" aria-label="Foto&rsquo;s van de avond" data-i18n-aria="avond.aria">
           <figure>
-            <img src="photos/premiere/premiere-04-makers-met-app.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Stijn, Caesar en Max met de symbolische cheque" data-i18n-alt="foto.makers" />
-            <figcaption data-i18n="foto.makers">Stijn, Caesar en Max met de symbolische cheque</figcaption>
+            <img src="photos/premiere/premiere-12-kaart.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="De kaart Dear Fellow Wanderer" data-i18n-alt="foto.kaart" />
           </figure>
           <figure>
-            <img src="photos/premiere/premiere-08-sophie-van-etten.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Sophie van Etten tijdens haar talk over verbinding" data-i18n-alt="foto.sophie" />
-            <figcaption data-i18n="foto.sophie">Sophie van Etten tijdens haar talk over verbinding</figcaption>
-          </figure>
-          <figure>
-            <img src="photos/premiere/premiere-07-cadeau-mind.webp" width="1800" height="1200" loading="lazy" decoding="async" alt="Stijn, Max en Caesar krijgen een cadeau van MIND" data-i18n-alt="foto.cadeau" />
-            <figcaption data-i18n="foto.cadeau">Stijn, Max en Caesar krijgen een cadeau van MIND</figcaption>
-          </figure>
-          <figure>
-            <img src="photos/premiere/premiere-11-max-op-podium.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Max op het podium" data-i18n-alt="foto.max" />
-            <figcaption data-i18n="foto.max">Max op het podium</figcaption>
-          </figure>
-          <figure>
-            <img src="photos/premiere/premiere-10-applaus.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Applaus in de zaal" data-i18n-alt="foto.applaus" />
-            <figcaption data-i18n="foto.applaus">Applaus in de zaal</figcaption>
+            <img src="photos/premiere/premiere-05-podium.webp" width="1800" height="1200" loading="lazy" decoding="async" alt="Stijn, Caesar en Max met Dienke Bos, directeur-bestuurder van MIND, op het podium" data-i18n-alt="foto.podium" />
           </figure>
           <figure>
             <img src="photos/premiere/premiere-06-max-en-dienke-bos.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Max en Dienke Bos tijdens de overdracht" data-i18n-alt="foto.overdracht" />
-            <figcaption data-i18n="foto.overdracht">Max en Dienke Bos tijdens de overdracht</figcaption>
           </figure>
           <figure>
-            <img src="photos/premiere/premiere-12-kaart.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="De kaart Dear Fellow Wanderer" data-i18n-alt="foto.kaart" />
-            <figcaption data-i18n="foto.kaart">De kaart Dear Fellow Wanderer</figcaption>
+            <img src="photos/premiere/premiere-11-max-op-podium.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Max op het podium" data-i18n-alt="foto.max" />
+          </figure>
+          <figure>
+            <img src="photos/premiere/premiere-08-sophie-van-etten.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Sophie van Etten tijdens haar talk over verbinding" data-i18n-alt="foto.sophie" />
+          </figure>
+          <figure>
+            <img src="photos/premiere/premiere-07-cadeau-mind.webp" width="1800" height="1200" loading="lazy" decoding="async" alt="Stijn, Max en Caesar krijgen een cadeau van MIND" data-i18n-alt="foto.cadeau" />
+          </figure>
+          <figure>
+            <img src="photos/premiere/premiere-10-applaus.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Applaus in de zaal" data-i18n-alt="foto.applaus" />
           </figure>
         </div>
       </div>
@@ -757,18 +750,18 @@
         'terug.label': '3 november 2026 · Het Vondelpark Paviljoen',
         'terug.titel': 'Back to Being ging <em>in première.</em>',
         'terug.p1': 'Onlangs ging de documentaire die we zelf maakten tijdens het lopen in première in Het Vondelpark Paviljoen in Amsterdam.',
-        'terug.p2': 'Het werd een bijzondere avond waarin verbinding centraal stond. In zo&rsquo;n 40 minuten namen we de hele zaal mee op de Camino: wat er nodig was om ons idee werkelijkheid te maken, hoe de elementen roet in het eten gooiden en hoe we daarmee omgingen.',
+        'terug.p2': 'Het werd een bijzondere avond waarin verbinding centraal stond. Sophie van Etten gaf daar een talk over, en in zo&rsquo;n 40 minuten namen we de hele zaal mee op de Camino: wat er nodig was om ons idee werkelijkheid te maken, hoe de elementen roet in het eten gooiden en hoe we daarmee omgingen.',
         'terug.alt': 'Publiek in de zaal van Het Vondelpark Paviljoen',
         'overdracht.label': 'De overdracht',
         'overdracht.h': 'De app is nu <em>van MIND.</em>',
         'overdracht.p': 'Na de film hebben we Weertje, de app die we onderweg bouwden, kosteloos overgedragen aan stichting MIND. Dienke Bos, directeur-bestuurder, en Cisca Goedhart, manager Kennis, Innovatie en Onderzoek, namen hem namens MIND in ontvangst.',
         'overdracht.alt': 'Stijn Smit, Caesar Schoorl, Max Helmantel, Dienke Bos en Cisca Goedhart met de symbolische cheque',
         'avond.h': 'De avond <em>in beeld.</em>',
-        'avond.credit': 'Foto&rsquo;s: Choukri van der Slik',
+        'avond.credit': 'Foto&rsquo;s: <a href="https://www.instagram.com/choukrisliks/" target="_blank" rel="noopener noreferrer">Choukri van der Slik</a>',
         'avond.aria': 'Foto’s van de avond',
         'avond.terug': 'Vorige',
         'avond.verder': 'Volgende',
-        'foto.makers': 'Stijn, Caesar en Max met de symbolische cheque',
+        'foto.podium': 'Stijn, Caesar en Max met Dienke Bos, directeur-bestuurder van MIND, op het podium',
         'foto.cadeau': 'Stijn, Max en Caesar krijgen een cadeau van MIND',
         'foto.sophie': 'Sophie van Etten tijdens haar talk over verbinding',
         'foto.max': 'Max op het podium',
@@ -803,18 +796,18 @@
         'terug.label': '3 November 2026 · Het Vondelpark Paviljoen',
         'terug.titel': 'Back to Being <em>premiered.</em>',
         'terug.p1': 'The documentary we made ourselves while walking recently premiered at Het Vondelpark Paviljoen in Amsterdam.',
-        'terug.p2': 'It was a special evening centred on connection. In about 40 minutes we took the whole room along on the Camino: what it took to turn our idea into something real, how the elements got in the way and how we dealt with that.',
+        'terug.p2': 'It was a special evening centred on connection. Sophie van Etten gave a talk on the subject, and in about 40 minutes we took the whole room along on the Camino: what it took to turn our idea into something real, how the elements got in the way and how we dealt with that.',
         'terug.alt': 'The audience in the hall of Het Vondelpark Paviljoen',
         'overdracht.label': 'The handover',
         'overdracht.h': 'The app now <em>belongs to MIND.</em>',
         'overdracht.p': 'After the film we handed over Weertje, the app we built along the way, to the MIND foundation free of charge. Dienke Bos, managing director, and Cisca Goedhart, manager Knowledge, Innovation and Research, received it on behalf of MIND.',
         'overdracht.alt': 'Stijn Smit, Caesar Schoorl, Max Helmantel, Dienke Bos and Cisca Goedhart with the symbolic cheque',
         'avond.h': 'The evening <em>in pictures.</em>',
-        'avond.credit': 'Photos: Choukri van der Slik',
+        'avond.credit': 'Photos: <a href="https://www.instagram.com/choukrisliks/" target="_blank" rel="noopener noreferrer">Choukri van der Slik</a>',
         'avond.aria': 'Photos of the evening',
         'avond.terug': 'Previous',
         'avond.verder': 'Next',
-        'foto.makers': 'Stijn, Caesar and Max with the symbolic cheque',
+        'foto.podium': 'Stijn, Caesar and Max with Dienke Bos, managing director of MIND, on stage',
         'foto.cadeau': 'Stijn, Max and Caesar receive a gift from MIND',
         'foto.sophie': 'Sophie van Etten during her talk on connection',
         'foto.max': 'Max on stage',
