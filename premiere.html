@@ -4,25 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-  <title>Première · Back to Being</title>
+  <title>Documentaire · Back to Being</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon-512.png" type="image/png" sizes="512x512" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="canonical" href="https://backtobeing.tech/premiere" />
-  <meta name="description" content="Op dinsdag 3 november gaat Back to Being in première in Het Vondelpark Paviljoen in Amsterdam: zes dagen Camino, 130 kilometer en een app gebouwd onderweg, die we die avond aan MIND overhandigen. Alle 70 plekken zijn vol." />
+  <link rel="canonical" href="https://backtobeing.tech/documentaire" />
+  <meta name="description" content="Back to Being is een mini-documentaire van zo’n 40 minuten: zes dagen en 130 kilometer over de Camino, waarin drie oprichters onderweg een app bouwden voor stichting MIND. De film ging op 3 november 2026 in première in Het Vondelpark Paviljoen in Amsterdam." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#fffef1" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Back to Being gaat in première" />
-  <meta property="og:description" content="Zes dagen Camino, 130 kilometer en een app gebouwd onderweg. Op 3 november op één avond te zien in Het Vondelpark Paviljoen, Amsterdam. Alle 70 plekken zijn vol." />
+  <meta property="og:title" content="Back to Being: de documentaire" />
+  <meta property="og:description" content="Zes dagen, 130 kilometer over de Camino en een app gebouwd voor MIND. De documentaire ging op 3 november in première; nu willen we hem op meer plekken laten zien." />
   <meta property="og:locale" id="ogLocale" content="nl_NL" />
   <meta property="og:site_name" content="Back to Being" />
-  <meta property="og:url" content="https://backtobeing.tech/premiere" />
-  <meta property="og:image" content="https://backtobeing.tech/founders-group.jpg" />
-  <meta property="og:image:width" content="2000" />
-  <meta property="og:image:height" content="1333" />
-  <meta property="og:image:alt" content="Max, Caesar en Stijn tegen een bewolkte lucht" />
+  <meta property="og:url" content="https://backtobeing.tech/documentaire" />
+  <meta property="og:image" content="https://backtobeing.tech/photos/premiere/premiere-og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="De overdracht van Weertje aan MIND op de première in Het Vondelpark Paviljoen" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -35,11 +35,10 @@
        Deze pagina hoort bij index.html en volg.html: dezelfde tokens en
        dezelfde nav. Wijzig je daar iets aan de huisstijl, doe het hier ook.
 
-       Opzet: één scherm op desktop, met de footer van de hoofdsite eronder. Bovenaan de
-       trailer, daaronder links het verhaal en de overhandiging aan MIND;
-       rechts het programma, waar, pers en vertoningen.
-       De première is vol, dus er is geen aanmeldformulier meer. Op mobiel staan
-       ze onder elkaar.
+       Opzet: bovenaan de trailer over het hele scherm. Daaronder een
+       terugblik op de première, de overdracht van de app aan MIND, de
+       avond in foto's en tot slot wat we nu met de film willen. Contact
+       loopt via het contactformulier op de hoofdsite.
        ============================================================ */
     :root {
       --tree:        #2a3723;
@@ -332,145 +331,108 @@
     }
 
     /* ============================================================
-       SCHERM
+       DOCUMENTAIRE — onder de trailer
        ============================================================ */
-    .shell {
-      /* Vult wat er tussen de nav en de footer overblijft; de inhoud staat
-         daar verticaal in het midden. */
-      flex: 1 0 auto; width: 100%;
-      align-content: center;
-      padding: calc(var(--nav-h) + clamp(1.5rem, 4vh, 3rem)) var(--pane-x) clamp(1.5rem, 4vh, 3rem);
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-      gap: clamp(2rem, 5vw, 5rem);
-      align-items: center;
-      max-width: 1240px;
-      margin: 0 auto;
+    .docu { width: 100%; }
+    .docu-wrap { max-width: 1240px; margin: 0 auto; padding: 0 var(--pane-x); }
+    .docu-label {
+      display: block; margin-bottom: 1rem;
+      font-family: var(--subhead); font-size: 0.66rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
     }
-
-    /* ---------- links: de aankondiging ---------- */
-    .intro { max-width: 34rem; }
-    .intro h1 {
+    .docu h1, .docu h2 {
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(2.4rem, 4.6vw, 3.8rem);
       line-height: 0.98; letter-spacing: -0.01em;
-      margin-bottom: 1.2rem;
     }
-    .intro h1 em { font-style: italic; color: var(--tree); }
-    .intro p {
-      font-size: clamp(0.95rem, 1.15vw, 1.05rem);
-      line-height: 1.55; color: var(--ink-soft);
-      max-width: 32rem;
+    .docu h1 { font-size: clamp(2.6rem, 5vw, 4.2rem); margin-bottom: 1.4rem; }
+    .docu h2 { font-size: clamp(2.1rem, 3.8vw, 3.2rem); margin-bottom: 1.1rem; }
+    .docu h1 em, .docu h2 em { font-style: italic; color: var(--tree); }
+    .docu p {
+      font-size: clamp(0.98rem, 1.15vw, 1.06rem);
+      line-height: 1.6; color: var(--ink-soft);
+      max-width: 34rem;
     }
-    .intro p + p { margin-top: 0.8rem; }
-    .intro .lead { font-size: clamp(1.05rem, 1.35vw, 1.2rem); color: var(--ink); }
+    .docu p + p { margin-top: 0.9rem; }
+    .docu .lead { font-size: clamp(1.1rem, 1.4vw, 1.25rem); line-height: 1.5; color: var(--ink); }
+    .docu figure { margin: 0; }
+    .docu figure img {
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: var(--radius);
+      background: rgba(42,55,35,0.08);
+    }
+    .docu figcaption { margin-top: 0.55rem; font-size: 0.8rem; line-height: 1.4; color: var(--ink-soft); }
 
-    /* De overhandiging aan MIND: het moment van de avond. */
-    .overdracht {
-      margin-top: 1.6rem; padding: 1.1rem 1.25rem;
-      display: grid; grid-template-columns: auto 1fr; gap: 1.1rem; align-items: center;
-      border-radius: var(--radius-ctrl);
+    /* Terugblik: de tekst links, de zaal rechts. */
+    .terugblik { padding: clamp(4rem, 11vh, 7rem) 0 clamp(3rem, 7vh, 5rem); scroll-margin-top: var(--nav-h); }
+    .terugblik .docu-wrap {
+      display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: clamp(2rem, 6vw, 6rem); align-items: center;
+    }
+    .terugblik figure { aspect-ratio: 4 / 5; }
+
+    /* De overdracht: grote foto met de tekst ernaast op het groen. */
+    .overdracht { padding: 0 0 clamp(4rem, 9vh, 6rem); }
+    .overdracht .docu-wrap { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+    .overdracht figure { min-height: 100%; }
+    .overdracht figure img { border-radius: var(--radius-lg) 0 0 var(--radius-lg); }
+    .overdracht-tekst {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: clamp(1.75rem, 3.5vw, 3.25rem);
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
       background: var(--tree); color: var(--canvas);
     }
     .overdracht-logo {
-      width: 64px; height: 64px; padding: 6px;
+      width: 56px; height: 56px; padding: 6px; margin-bottom: 1.5rem;
       border-radius: 14px; background: var(--canvas);
       object-fit: contain;
     }
-    .overdracht h2 {
+    .overdracht .docu-label { color: rgba(255,254,241,0.6); }
+    .docu .overdracht h2 em { color: var(--sand); }
+    .docu .overdracht-tekst p { color: rgba(255,254,241,0.8); }
+
+    /* De avond in beeld: kolommen, zodat staand en liggend door elkaar kan. */
+    .avond { padding: 0 0 clamp(4rem, 10vh, 7rem); }
+    .avond-kop {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 0.75rem 2rem; flex-wrap: wrap;
+      margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    }
+    .docu .avond-kop h2 { margin-bottom: 0; }
+    .avond-credit { font-size: 0.8rem; color: var(--ink-soft); }
+    .avond-fotos { columns: 3; column-gap: clamp(0.9rem, 1.6vw, 1.4rem); }
+    .avond-fotos figure { break-inside: avoid; margin-bottom: clamp(1.1rem, 2vw, 1.6rem); }
+    .docu .avond-fotos img { height: auto; border-radius: var(--radius-ctrl); }
+
+    /* Hoe verder: donker blok onderaan, met een knop naar contact. */
+    .verder { padding: clamp(4rem, 11vh, 7rem) 0; background: var(--tree); color: var(--canvas); }
+    .verder .docu-wrap {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(2rem, 6vw, 6rem); align-items: start;
+    }
+    .verder .docu-label { color: rgba(255,254,241,0.6); }
+    .docu .verder h2 em { color: var(--sand); }
+    .docu .verder p { color: rgba(255,254,241,0.78); }
+    .docu .verder .lead { color: var(--canvas); }
+    .verder-lijst { list-style: none; border-top: 1px solid rgba(255,254,241,0.18); }
+    .verder-lijst li { padding: 1.15rem 0; border-bottom: 1px solid rgba(255,254,241,0.18); }
+    .verder-lijst b {
+      display: block; margin-bottom: 0.25rem;
       font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.15rem, 1.5vw, 1.3rem); line-height: 1.15;
+      font-size: clamp(1.35rem, 1.9vw, 1.6rem); line-height: 1.15;
     }
-    .intro .overdracht p { margin-top: 0.35rem; font-size: 0.88rem; line-height: 1.5; color: rgba(255,254,241,0.8); }
-
-    /* Wanneer en waar: in de kaart rechts, onder elkaar. */
-    .praktisch { display: grid; gap: 1.1rem; }
-    .praktisch > div + div { padding-top: 1.1rem; border-top: 1px solid var(--line); }
-    .praktisch dt {
-      font-family: var(--subhead); font-size: 0.62rem; font-weight: 600;
-      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
+    .verder-lijst span { font-size: 0.92rem; line-height: 1.5; color: rgba(255,254,241,0.72); }
+    .verder-knop {
+      margin-top: 1.8rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      min-height: 48px; padding: 0 1.5rem;
+      border-radius: var(--radius-pill);
+      background: var(--canvas); color: var(--tree);
+      font-family: var(--subhead); font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      transition: transform 0.2s, background 0.2s;
     }
-    .praktisch dd {
-      margin-top: 0.3rem;
-      font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.45rem, 2vw, 1.75rem); line-height: 1.15;
-      color: var(--ink);
-    }
-    .praktisch dd span {
-      display: block;
-      margin-top: 0.35rem;
-      font-family: var(--sans); font-size: 0.88rem; line-height: 1.5; color: var(--ink-soft);
-    }
-    .praktisch dd a { text-decoration: underline; text-underline-offset: 3px; }
-    .praktisch dd a:hover { color: var(--tree); }
-
-    /* Programma onder de datum. */
-    .programma {
-      list-style: none; margin-top: 0.7rem;
-      display: grid; gap: 0.4rem;
-      font-family: var(--sans); font-size: 0.88rem; line-height: 1.4; color: var(--ink-soft);
-    }
-    .programma li { display: grid; grid-template-columns: 4.6rem 1fr; gap: 0.75rem; }
-    .programma b {
-      font-family: var(--subhead); font-weight: 600; color: var(--ink);
-      font-variant-numeric: tabular-nums;
-    }
-
-    /* ---------- rechts: wanneer en waar ---------- */
-    .kaart {
-      padding: clamp(1.4rem, 2.6vw, 2.2rem);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      background: rgba(255,254,241,0.9);
-      box-shadow: 0 18px 50px rgba(42,55,35,0.08);
-    }
-
-    /* De première is vol. */
-    .vol {
-      margin-top: 1.5rem; padding: 1rem 1.1rem;
-      border: 1px solid var(--sand); border-radius: var(--radius-ctrl);
-      background: rgba(185,162,110,0.12);
-    }
-    .vol-label {
-      display: inline-block; margin-bottom: 0.45rem;
-      padding: 0.25rem 0.65rem; border-radius: var(--radius-pill);
-      background: var(--tree); color: var(--canvas);
-      font-family: var(--subhead); font-size: 0.6rem; font-weight: 600;
-      letter-spacing: 0.16em; text-transform: uppercase;
-    }
-    .vol p { font-size: 0.95rem; line-height: 1.5; color: var(--ink); }
-
-    /* Pers bij het persmoment van de overhandiging. */
-    .pers {
-      margin-top: 0.85rem; padding: 1rem 1.1rem;
-      border: 1px solid var(--line); border-radius: var(--radius-ctrl);
-      background: rgba(151,160,129,0.1);
-    }
-    .pers-label {
-      display: inline-block; margin-bottom: 0.45rem;
-      padding: 0.22rem 0.62rem; border-radius: var(--radius-pill);
-      border: 1px solid var(--tree); color: var(--tree);
-      font-family: var(--subhead); font-size: 0.6rem; font-weight: 600;
-      letter-spacing: 0.16em; text-transform: uppercase;
-    }
-    .pers p { font-size: 0.95rem; line-height: 1.5; color: var(--ink); }
-    .pers-contact { margin-top: 0.7rem; display: grid; gap: 0.3rem; }
-    .pers-contact a {
-      display: inline-flex; align-items: center; gap: 0.55rem;
-      min-height: 32px; width: fit-content;
-      font-weight: 500; color: var(--tree);
-      overflow-wrap: anywhere;
-    }
-    .pers-contact a:hover { text-decoration: underline; text-underline-offset: 3px; }
-    .pers-contact svg { width: 16px; height: 16px; flex: 0 0 auto; }
-
-    /* Vertoningen: bewust klein onderaan de kaart. */
-    .vertoning {
-      margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--line);
-      font-size: 0.82rem; line-height: 1.5; color: var(--ink-soft);
-    }
-    .vertoning a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
-    .vertoning a:hover { color: var(--tree); }
+    .verder-knop:hover { background: #fff; transform: translateY(-1px); }
+    .verder-knop:focus-visible { outline-color: var(--canvas); }
 
     /* ---------- FOOTER (gelijk aan index.html) ---------- */
     .site-footer {
@@ -493,38 +455,19 @@
     .footer-social a:hover { opacity: 1; color: var(--tree); }
     .footer-social svg { width: 18px; height: 18px; display: block; }
 
-    /* Onder de bioscoop: de nav staat niet meer boven dit blok, dus minder
-       ruimte bovenin, en het blijft op desktop zelf één scherm hoog. */
-    .shell.na-film { padding-top: clamp(3rem, 9vh, 6rem); min-height: 100svh; scroll-margin-top: var(--nav-h); }
-    @media (max-width: 900px) { .shell.na-film { padding-top: 2.5rem; min-height: 0; } }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .intro, .kaart { animation: op 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
-      .kaart { animation-delay: 0.12s; }
-      @keyframes op { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-    }
-
     /* ---------- mobiel ---------- */
     @media (max-width: 900px) {
-      .shell {
-        grid-template-columns: 1fr;
-        gap: 1.75rem;
-        align-items: start;
-        /* Bovenaan beginnen: op een hoog scherm (tablet staand) geeft
-           centreren een gat onder het menu. */
-        align-content: start;
-        /* viewport-fit=cover: zelf ruimte houden voor notch en home-balk. */
-        padding:
-          calc(var(--nav-h) + 1.5rem)
-          max(var(--pane-x), env(safe-area-inset-right, 0px))
-          2.5rem
-          max(var(--pane-x), env(safe-area-inset-left, 0px));
+      .docu-wrap {
+        padding-left: max(var(--pane-x), env(safe-area-inset-left, 0px));
+        padding-right: max(var(--pane-x), env(safe-area-inset-right, 0px));
       }
-      .intro h1 { font-size: clamp(2.3rem, 9.5vw, 3.4rem); margin-bottom: 1rem; }
-      /* Op een tablet in staande stand niet over de volle breedte uitrekken. */
-      .intro, .kaart { max-width: 36rem; width: 100%; }
-      .praktisch dt { font-size: 0.68rem; }
-
+      .terugblik { padding-top: 3rem; }
+      .terugblik .docu-wrap, .verder .docu-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .terugblik figure { max-width: 30rem; aspect-ratio: 4 / 3; }
+      .overdracht .docu-wrap { grid-template-columns: 1fr; }
+      .overdracht figure img { aspect-ratio: 3 / 2; border-radius: var(--radius) var(--radius) 0 0; }
+      .overdracht-tekst { border-radius: 0 0 var(--radius) var(--radius); }
+      .avond-fotos { columns: 2; }
     }
     /* Op index.html en volg.html ligt deze grens op 760px. Hier op 900px: met
        vier links, de taalwissel en Contact breekt het menu daaronder in
@@ -592,10 +535,9 @@
       .footer-social a { padding: 0.3rem; margin: -0.3rem; }
     }
     @media (max-width: 480px) {
-      .kaart { padding: 1.25rem; border-radius: var(--radius); }
-      .overdracht { grid-template-columns: 1fr; gap: 0.8rem; }
-      .overdracht-logo { width: 52px; height: 52px; }
-      .intro p + p { margin-top: 0.7rem; }
+      .avond-fotos { column-gap: 0.7rem; }
+      .avond-fotos figure { margin-bottom: 1rem; }
+      .docu figcaption { font-size: 0.74rem; }
     }
   </style>
 </head>
@@ -611,9 +553,8 @@
     </button>
     <div class="nav-links" id="navLinks">
       <a class="nav-link" href="/#verhaal" data-i18n="nav.story">Ons verhaal</a>
-      <a class="nav-link" href="/reis" data-i18n="nav.reis">Dag voor dag</a>
       <a class="nav-link" href="/#pers" data-i18n="nav.press">In de pers</a>
-      <a class="nav-link active" href="/premiere" data-i18n="nav.premiere" aria-current="page">Première</a>
+      <a class="nav-link active" href="/documentaire" data-i18n="nav.premiere" aria-current="page">Documentaire</a>
       <div class="lang-toggle" role="group" aria-label="Language">
         <button class="lang-btn" data-lang="nl" type="button" aria-label="Nederlands">NL</button>
         <span class="lang-sep" aria-hidden="true">·</span>
@@ -636,8 +577,8 @@
       <p class="presenteert" data-i18n="trailer.presenteert">Back to Being presenteert</p>
       <h2 id="trailerTitel" data-i18n="trailer.titel">Zes dagen. 130 kilometer.<br><em>Eén film.</em></h2>
       <p class="aftiteling">
-        <span data-i18n="trailer.datum">Dinsdag 3 november</span><span class="stip" aria-hidden="true"></span>
-        <span data-i18n="trailer.plek">Het Vondelpark Paviljoen</span>
+        <span data-i18n="trailer.soort">Mini-documentaire</span><span class="stip" aria-hidden="true"></span>
+        <span data-i18n="trailer.duur">± 40 minuten</span>
       </p>
       <button class="speel" id="trailerSpeel" type="button" aria-controls="trailerVideo">
         <svg class="speel-icoon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.7v12.6c0 .8.9 1.3 1.6.8l9-6.3c.6-.4.6-1.2 0-1.6l-9-6.3C8.9 4.4 8 4.9 8 5.7Z"/></svg>
@@ -654,53 +595,95 @@
     </div>
   </section>
 
-  <main class="shell na-film">
+  <main class="docu">
 
-    <section class="intro">
-      <h1 data-i18n="intro.titel">Back to Being gaat <em>in première.</em></h1>
-      <p class="lead" data-i18n="intro.p1">Zes dagen, 130 kilometer over de Camino en onderweg een app gebouwd voor MIND. Nu is het tijd om ons verhaal te vertellen, en de app daarna op een bijzondere avond aan MIND te overhandigen.</p>
-      <p data-i18n="intro.p2">We hebben de hele reis gefilmd. Op dinsdag 3 november nemen we je in zo&rsquo;n 40 minuten mee: wat er nodig was om ons idee werkelijkheid te maken, hoe de elementen roet in het eten gooiden en hoe we daarmee omgingen.</p>
-
-      <div class="overdracht">
-        <img class="overdracht-logo" src="mind-logo.webp" alt="Stichting MIND" />
+    <section class="terugblik" id="premiere">
+      <div class="docu-wrap">
         <div>
-          <h2 data-i18n="overdracht.h">Daarna geven we de app door aan MIND</h2>
-          <p data-i18n="overdracht.p">We dragen de app kosteloos over aan stichting MIND. Dienke Bos, directeur van MIND, neemt hem in ontvangst.</p>
+          <span class="docu-label" data-i18n="terug.label">3 november 2026 · Het Vondelpark Paviljoen</span>
+          <h1 data-i18n="terug.titel">Back to Being ging <em>in première.</em></h1>
+          <p class="lead" data-i18n="terug.p1">Onlangs ging de documentaire die we zelf maakten tijdens het lopen in première in Het Vondelpark Paviljoen in Amsterdam.</p>
+          <p data-i18n="terug.p2">Het werd een bijzondere avond waarin verbinding centraal stond. In zo&rsquo;n 40 minuten namen we de hele zaal mee op de Camino: wat er nodig was om ons idee werkelijkheid te maken, hoe de elementen roet in het eten gooiden en hoe we daarmee omgingen.</p>
+        </div>
+        <figure>
+          <img src="photos/premiere/premiere-09-publiek.webp" width="1200" height="1800" alt="Publiek in de zaal van Het Vondelpark Paviljoen" data-i18n-alt="terug.alt" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="overdracht" aria-labelledby="overdrachtTitel">
+      <div class="docu-wrap">
+        <figure>
+          <img src="photos/premiere/premiere-01-overdracht.webp" width="1800" height="1278" loading="lazy" decoding="async" alt="Stijn Smit, Caesar Schoorl, Max Helmantel, Dienke Bos en Cisca Goedhart met de symbolische cheque" data-i18n-alt="overdracht.alt" />
+        </figure>
+        <div class="overdracht-tekst">
+          <img class="overdracht-logo" src="mind-logo.webp" alt="Stichting MIND" />
+          <span class="docu-label" data-i18n="overdracht.label">De overdracht</span>
+          <h2 id="overdrachtTitel" data-i18n="overdracht.h">De app is nu <em>van MIND.</em></h2>
+          <p data-i18n="overdracht.p">Na de film hebben we Weertje, de app die we onderweg bouwden, kosteloos overgedragen aan stichting MIND. Dienke Bos, directeur-bestuurder, en Cisca Goedhart, manager Kennis, Innovatie en Onderzoek, namen hem namens MIND in ontvangst.</p>
         </div>
       </div>
     </section>
 
-    <aside class="kaart" aria-label="Wanneer en waar" data-i18n-aria="kaart.aria">
-      <dl class="praktisch">
-        <div>
-          <dt data-i18n="prak.wanneerLabel">Wanneer</dt>
-          <dd data-i18n="prak.wanneer">Dinsdag 3 november 2026
-            <ol class="programma">
-              <li><b>19:00</b>Inloop</li>
-              <li><b>19:15</b>Deuren dicht, start documentaire (±&nbsp;40&nbsp;min)</li>
-              <li><b>21:00</b>Einde van de avond</li>
-            </ol>
-          </dd>
+    <section class="avond" aria-labelledby="avondTitel">
+      <div class="docu-wrap">
+        <div class="avond-kop">
+          <h2 id="avondTitel" data-i18n="avond.h">De avond <em>in beeld.</em></h2>
+          <p class="avond-credit" data-i18n="avond.credit">Foto&rsquo;s: Choukri van der Slik</p>
         </div>
-        <div>
-          <dt data-i18n="prak.waarLabel">Waar</dt>
-          <dd data-i18n="prak.waar"><a href="https://hetvondelparkpaviljoen.nl/" target="_blank" rel="noopener noreferrer">Het Vondelpark Paviljoen</a> <span>Vondelpark 3, 1071 AA Amsterdam</span></dd>
+        <div class="avond-fotos">
+        <figure>
+          <img src="photos/premiere/premiere-04-makers-met-app.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Stijn, Caesar en Max met de symbolische cheque" data-i18n-alt="foto.makers" />
+          <figcaption data-i18n="foto.makers">Stijn, Caesar en Max met de symbolische cheque</figcaption>
+        </figure>
+        <figure>
+          <img src="photos/premiere/premiere-07-cadeau-mind.webp" width="1800" height="1200" loading="lazy" decoding="async" alt="Stijn, Max en Caesar krijgen een cadeau van MIND" data-i18n-alt="foto.cadeau" />
+          <figcaption data-i18n="foto.cadeau">Stijn, Max en Caesar krijgen een cadeau van MIND</figcaption>
+        </figure>
+        <figure>
+          <img src="photos/premiere/premiere-08-sophie-van-etten.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Sophie van Etten tijdens haar talk" data-i18n-alt="foto.sophie" />
+          <figcaption data-i18n="foto.sophie">Sophie van Etten tijdens haar talk</figcaption>
+        </figure>
+        <figure>
+          <img src="photos/premiere/premiere-11-max-op-podium.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Max op het podium" data-i18n-alt="foto.max" />
+          <figcaption data-i18n="foto.max">Max op het podium</figcaption>
+        </figure>
+        <figure>
+          <img src="photos/premiere/premiere-03-dienke-bos-cisca-goedhart.webp" width="1800" height="1200" loading="lazy" decoding="async" alt="Dienke Bos en Cisca Goedhart van MIND" data-i18n-alt="foto.mind" />
+          <figcaption data-i18n="foto.mind">Dienke Bos en Cisca Goedhart van MIND</figcaption>
+        </figure>
+        <figure>
+          <img src="photos/premiere/premiere-10-applaus.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Applaus in de zaal" data-i18n-alt="foto.applaus" />
+          <figcaption data-i18n="foto.applaus">Applaus in de zaal</figcaption>
+        </figure>
+        <figure>
+          <img src="photos/premiere/premiere-12-kaart.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="De kaart Dear Fellow Wanderer" data-i18n-alt="foto.kaart" />
+          <figcaption data-i18n="foto.kaart">De kaart Dear Fellow Wanderer</figcaption>
+        </figure>
+        <figure>
+          <img src="photos/premiere/premiere-06-max-en-dienke-bos.webp" width="1200" height="1800" loading="lazy" decoding="async" alt="Max en Dienke Bos tijdens de overdracht" data-i18n-alt="foto.overdracht" />
+          <figcaption data-i18n="foto.overdracht">Max en Dienke Bos tijdens de overdracht</figcaption>
+        </figure>
         </div>
-      </dl>
-      <div class="vol">
-        <span class="vol-label" data-i18n="vol.label">Vol</span>
-        <p data-i18n="vol.tekst">De première is alleen op uitnodiging en alle 70 plekken zijn inmiddels gevuld.</p>
       </div>
-      <div class="pers">
-        <span class="pers-label" data-i18n="pers.label">Pers</span>
-        <p data-i18n="pers.tekst">Pers is welkom bij het persmoment van de overhandiging. Neem vooraf contact op met Max Helmantel.</p>
-        <div class="pers-contact">
-          <a href="mailto:maxhelmantel@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg>maxhelmantel@gmail.com</a>
-          <a href="tel:+31618900821"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.1 6.1l1.4-2.3L20 15.5V19a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1Z"/></svg>06 18 90 08 21</a>
+    </section>
+
+    <section class="verder" aria-labelledby="verderTitel">
+      <div class="docu-wrap">
+        <div>
+          <span class="docu-label" data-i18n="verder.label">Hoe nu verder</span>
+          <h2 id="verderTitel" data-i18n="verder.h">Ons verhaal <em>verder vertellen.</em></h2>
+          <p class="lead" data-i18n="verder.p1">Met de documentaire willen we ons verhaal aan meer mensen vertellen, en zo mentale gezondheid makkelijker bespreekbaar maken.</p>
+          <p data-i18n="verder.p2">Daarom onderzoeken we hoe we de film naar bioscopen, filmtheaters en organisaties kunnen brengen.</p>
+          <a class="verder-knop" href="/#contact" data-i18n="verder.knop">Neem contact op &rarr;</a>
         </div>
+        <ul class="verder-lijst">
+          <li><b data-i18n="verder.org.h">Organisaties</b><span data-i18n="verder.org.p">Organiseer een vertoning voor je team, je leden of je publiek.</span></li>
+          <li><b data-i18n="verder.zaal.h">Bioscopen en filmtheaters</b><span data-i18n="verder.zaal.p">Laat de film zien op het grote doek.</span></li>
+          <li><b data-i18n="verder.omroep.h">Omroepen en streamingdiensten</b><span data-i18n="verder.omroep.p">Interesse om de documentaire uit te zenden? We horen het graag.</span></li>
+        </ul>
       </div>
-      <p class="vertoning" data-i18n="vertoning.tekst">Interesse in een vertoning van de documentaire bij jouw organisatie of op jouw locatie? Mail naar <a href="mailto:maxhelmantel@gmail.com">maxhelmantel@gmail.com</a>.</p>
-    </aside>
+    </section>
 
   </main>
 
@@ -725,62 +708,90 @@
       nl: {
         'nav.story': 'Ons verhaal',
         'nav.press': 'In de pers',
-        'nav.reis': 'Dag voor dag',
-        'nav.premiere': 'Première',
+        'nav.premiere': 'Documentaire',
         'nav.contact': 'Contact',
         'footer.privacy': 'Privacybeleid',
         'footer.terms': 'Algemene voorwaarden',
         'trailer.presenteert': 'Back to Being presenteert',
         'trailer.titel': 'Zes dagen. 130 kilometer.<br><em>Eén film.</em>',
-        'trailer.datum': 'Dinsdag 3 november',
-        'trailer.plek': 'Het Vondelpark Paviljoen',
+        'trailer.soort': 'Mini-documentaire',
+        'trailer.duur': '±&nbsp;40 minuten',
         'trailer.speel': 'Bekijk de trailer',
         'trailer.sluit': 'Sluiten',
-        'intro.titel': 'Back to Being gaat <em>in première.</em>',
-        'intro.p1': 'Zes dagen, 130 kilometer over de Camino en onderweg een app gebouwd voor MIND. Nu is het tijd om ons verhaal te vertellen, en de app daarna op een bijzondere avond aan MIND te overhandigen.',
-        'intro.p2': 'We hebben de hele reis gefilmd. Op dinsdag 3 november nemen we je in zo&rsquo;n 40 minuten mee: wat er nodig was om ons idee werkelijkheid te maken, hoe de elementen roet in het eten gooiden en hoe we daarmee omgingen.',
-        'overdracht.h': 'Daarna geven we de app door aan MIND',
-        'overdracht.p': 'We dragen de app kosteloos over aan stichting MIND. Dienke Bos, directeur van MIND, neemt hem in ontvangst.',
-        'prak.wanneerLabel': 'Wanneer',
-        'prak.wanneer': 'Dinsdag 3 november 2026 <ol class="programma"><li><b>19:00</b>Inloop</li><li><b>19:15</b>Deuren dicht, start documentaire (±&nbsp;40&nbsp;min)</li><li><b>21:00</b>Einde van de avond</li></ol>',
-        'prak.waarLabel': 'Waar',
-        'vol.label': 'Vol',
-        'vol.tekst': 'De première is alleen op uitnodiging en alle 70 plekken zijn inmiddels gevuld.',
-        'pers.label': 'Pers',
-        'pers.tekst': 'Pers is welkom bij het persmoment van de overhandiging. Neem vooraf contact op met Max Helmantel.',
-        'vertoning.tekst': 'Interesse in een vertoning van de documentaire bij jouw organisatie of op jouw locatie? Mail naar <a href="mailto:maxhelmantel@gmail.com">maxhelmantel@gmail.com</a>.',
-        'kaart.aria': 'Wanneer en waar',
-        'prak.waar': '<a href="https://hetvondelparkpaviljoen.nl/" target="_blank" rel="noopener noreferrer">Het Vondelpark Paviljoen</a> <span>Vondelpark 3, 1071 AA Amsterdam</span>',
+        'terug.label': '3 november 2026 · Het Vondelpark Paviljoen',
+        'terug.titel': 'Back to Being ging <em>in première.</em>',
+        'terug.p1': 'Onlangs ging de documentaire die we zelf maakten tijdens het lopen in première in Het Vondelpark Paviljoen in Amsterdam.',
+        'terug.p2': 'Het werd een bijzondere avond waarin verbinding centraal stond. In zo&rsquo;n 40 minuten namen we de hele zaal mee op de Camino: wat er nodig was om ons idee werkelijkheid te maken, hoe de elementen roet in het eten gooiden en hoe we daarmee omgingen.',
+        'terug.alt': 'Publiek in de zaal van Het Vondelpark Paviljoen',
+        'overdracht.label': 'De overdracht',
+        'overdracht.h': 'De app is nu <em>van MIND.</em>',
+        'overdracht.p': 'Na de film hebben we Weertje, de app die we onderweg bouwden, kosteloos overgedragen aan stichting MIND. Dienke Bos, directeur-bestuurder, en Cisca Goedhart, manager Kennis, Innovatie en Onderzoek, namen hem namens MIND in ontvangst.',
+        'overdracht.alt': 'Stijn Smit, Caesar Schoorl, Max Helmantel, Dienke Bos en Cisca Goedhart met de symbolische cheque',
+        'avond.h': 'De avond <em>in beeld.</em>',
+        'avond.credit': 'Foto&rsquo;s: Choukri van der Slik',
+        'foto.makers': 'Stijn, Caesar en Max met de symbolische cheque',
+        'foto.cadeau': 'Stijn, Max en Caesar krijgen een cadeau van MIND',
+        'foto.sophie': 'Sophie van Etten tijdens haar talk',
+        'foto.max': 'Max op het podium',
+        'foto.mind': 'Dienke Bos en Cisca Goedhart van MIND',
+        'foto.applaus': 'Applaus in de zaal',
+        'foto.kaart': 'De kaart Dear Fellow Wanderer',
+        'foto.overdracht': 'Max en Dienke Bos tijdens de overdracht',
+        'verder.label': 'Hoe nu verder',
+        'verder.h': 'Ons verhaal <em>verder vertellen.</em>',
+        'verder.p1': 'Met de documentaire willen we ons verhaal aan meer mensen vertellen, en zo mentale gezondheid makkelijker bespreekbaar maken.',
+        'verder.p2': 'Daarom onderzoeken we hoe we de film naar bioscopen, filmtheaters en organisaties kunnen brengen.',
+        'verder.knop': 'Neem contact op &rarr;',
+        'verder.org.h': 'Organisaties',
+        'verder.org.p': 'Organiseer een vertoning voor je team, je leden of je publiek.',
+        'verder.zaal.h': 'Bioscopen en filmtheaters',
+        'verder.zaal.p': 'Laat de film zien op het grote doek.',
+        'verder.omroep.h': 'Omroepen en streamingdiensten',
+        'verder.omroep.p': 'Interesse om de documentaire uit te zenden? We horen het graag.',
       },
       en: {
         'nav.story': 'Our story',
         'nav.press': 'Press',
-        'nav.reis': 'Day by day',
-        'nav.premiere': 'Premiere',
+        'nav.premiere': 'Documentary',
         'nav.contact': 'Contact',
         'footer.privacy': 'Privacy policy',
         'footer.terms': 'Terms &amp; conditions',
         'trailer.presenteert': 'Back to Being presents',
         'trailer.titel': 'Six days. 130 kilometres.<br><em>One film.</em>',
-        'trailer.datum': 'Tuesday 3 November',
-        'trailer.plek': 'Het Vondelpark Paviljoen',
+        'trailer.soort': 'Mini-documentary',
+        'trailer.duur': 'approx.&nbsp;40 minutes',
         'trailer.speel': 'Watch the trailer',
         'trailer.sluit': 'Close',
-        'intro.titel': 'Back to Being <em>premieres.</em>',
-        'intro.p1': 'Six days, 130 kilometres of the Camino and an app built for MIND along the way. Now it is time to tell our story, and then hand the app over to MIND on a special evening.',
-        'intro.p2': 'We filmed the whole journey. On Tuesday 3 November we take you along in about 40 minutes: what it took to turn our idea into something real, how the elements got in the way and how we dealt with that.',
-        'overdracht.h': 'Then we pass the app on to MIND',
-        'overdracht.p': 'We hand the app over to the MIND foundation free of charge. Dienke Bos, director of MIND, receives it.',
-        'prak.wanneerLabel': 'When',
-        'prak.wanneer': 'Tuesday 3 November 2026 <ol class="programma"><li><b>19:00</b>Doors open</li><li><b>19:15</b>Doors close, documentary starts (approx.&nbsp;40&nbsp;min)</li><li><b>21:00</b>End of the evening</li></ol>',
-        'prak.waarLabel': 'Where',
-        'vol.label': 'Full',
-        'vol.tekst': 'The premiere is by invitation only and all 70 places have now been taken.',
-        'pers.label': 'Press',
-        'pers.tekst': 'Press are welcome at the press moment of the handover. Please get in touch with Max Helmantel beforehand.',
-        'vertoning.tekst': 'Interested in a screening of the documentary at your organisation or venue? Email <a href="mailto:maxhelmantel@gmail.com">maxhelmantel@gmail.com</a>.',
-        'kaart.aria': 'When and where',
-        'prak.waar': '<a href="https://hetvondelparkpaviljoen.nl/" target="_blank" rel="noopener noreferrer">Het Vondelpark Paviljoen</a> <span>Vondelpark 3, 1071 AA Amsterdam</span>',
+        'terug.label': '3 November 2026 · Het Vondelpark Paviljoen',
+        'terug.titel': 'Back to Being <em>premiered.</em>',
+        'terug.p1': 'The documentary we made ourselves while walking recently premiered at Het Vondelpark Paviljoen in Amsterdam.',
+        'terug.p2': 'It was a special evening centred on connection. In about 40 minutes we took the whole room along on the Camino: what it took to turn our idea into something real, how the elements got in the way and how we dealt with that.',
+        'terug.alt': 'The audience in the hall of Het Vondelpark Paviljoen',
+        'overdracht.label': 'The handover',
+        'overdracht.h': 'The app now <em>belongs to MIND.</em>',
+        'overdracht.p': 'After the film we handed over Weertje, the app we built along the way, to the MIND foundation free of charge. Dienke Bos, managing director, and Cisca Goedhart, manager Knowledge, Innovation and Research, received it on behalf of MIND.',
+        'overdracht.alt': 'Stijn Smit, Caesar Schoorl, Max Helmantel, Dienke Bos and Cisca Goedhart with the symbolic cheque',
+        'avond.h': 'The evening <em>in pictures.</em>',
+        'avond.credit': 'Photos: Choukri van der Slik',
+        'foto.makers': 'Stijn, Caesar and Max with the symbolic cheque',
+        'foto.cadeau': 'Stijn, Max and Caesar receive a gift from MIND',
+        'foto.sophie': 'Sophie van Etten during her talk',
+        'foto.max': 'Max on stage',
+        'foto.mind': 'Dienke Bos and Cisca Goedhart of MIND',
+        'foto.applaus': 'Applause in the hall',
+        'foto.kaart': 'The Dear Fellow Wanderer card',
+        'foto.overdracht': 'Max and Dienke Bos during the handover',
+        'verder.label': 'What comes next',
+        'verder.h': 'Telling our story <em>further.</em>',
+        'verder.p1': 'With the documentary we want to share our story with more people, and help make mental health easier to talk about.',
+        'verder.p2': 'That is why we are exploring how to bring the film to cinemas, film theatres and organisations.',
+        'verder.knop': 'Get in touch &rarr;',
+        'verder.org.h': 'Organisations',
+        'verder.org.p': 'Host a screening for your team, your members or your audience.',
+        'verder.zaal.h': 'Cinemas and film theatres',
+        'verder.zaal.p': 'Show the film on the big screen.',
+        'verder.omroep.h': 'Broadcasters and streaming services',
+        'verder.omroep.p': 'Interested in showing the documentary? We would love to hear from you.',
       }
     };
 
@@ -799,6 +810,9 @@
       });
       document.querySelectorAll('[data-i18n-aria]').forEach(el => {
         el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
+      });
+      document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+        el.alt = t(el.getAttribute('data-i18n-alt'));
       });
       document.querySelectorAll('.lang-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.lang === lang);

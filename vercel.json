@@ -5,7 +5,8 @@
   "rewrites": [
     { "source": "/volg", "destination": "/volg.html" },
     { "source": "/reis", "destination": "/volg.html" },
-    { "source": "/premiere", "destination": "/premiere.html" }
+    { "source": "/premiere", "destination": "/premiere.html" },
+    { "source": "/documentaire", "destination": "/premiere.html" }
   ],
   "headers": [
     {
